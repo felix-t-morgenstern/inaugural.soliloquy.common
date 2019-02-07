@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 
 import inaugural.soliloquy.common.Map;
 import inaugural.soliloquy.common.test.java.Stubs.MapValidatorStub;
+import inaugural.soliloquy.common.test.java.Stubs.PairFactoryStub;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IFunction;
 import soliloquy.common.specs.IMap;
@@ -425,85 +426,5 @@ public class MapTests extends TestCase {
 			assertTrue(clonedMap.contains(item));
 		}
 		assertTrue(map.size() == clonedMap.size());
-	}
-	
-	private class PairFactoryStub implements IPairFactory
-	{
-
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		@Override
-		public <T1, T2> IPair<T1, T2> make(T1 item1, T2 item2) throws IllegalArgumentException {
-			return new PairStub(item1, item2);
-		}
-
-		@Override
-		public <T1, T2> IPair<T1, T2> make(T1 item1, T2 item2, T1 archetype1, T2 archetype2)
-				throws IllegalArgumentException {
-			// Stub class; not implemented
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public String getInterfaceName() {
-			// Stub method; unimplemented
-			throw new UnsupportedOperationException();
-		}
-		
-		private class PairStub<K,V> implements IPair<K,V>
-		{
-			private K _item1;
-			private V _item2;
-			
-			private PairStub(K item1, V item2)
-			{
-				_item1 = item1;
-				_item2 = item2;
-			}
-
-			@Override
-			public K getFirstArchetype() throws IllegalStateException {
-				// Stub method, unimplemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public V getSecondArchetype() throws IllegalStateException {
-				// Stub method, unimplemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public String getInterfaceName() {
-				// Stub method, unimplemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public K getItem1() {
-				return _item1;
-			}
-
-			@Override
-			public void setItem1(K item) throws IllegalArgumentException {
-				_item1 = item;
-			}
-
-			@Override
-			public V getItem2() {
-				return _item2;
-			}
-
-			@Override
-			public void setItem2(V item) throws IllegalArgumentException {
-				_item2 = item;
-			}
-
-			@Override
-			public String getUnparameterizedInterfaceName() {
-				// Stub method; unimplemented
-				throw new UnsupportedOperationException();
-			}
-			
-		}
 	}
 }

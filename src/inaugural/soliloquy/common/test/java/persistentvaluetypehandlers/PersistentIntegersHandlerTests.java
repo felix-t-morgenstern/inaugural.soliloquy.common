@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.java.persistentvaluetypehandlers;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
+import inaugural.soliloquy.common.test.java.Stubs.CollectionFactoryStub;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -108,129 +108,5 @@ public class PersistentIntegersHandlerTests extends TestCase {
 	public void testGetParameterizedClassName()
 	{
 		assertTrue(persistentIntegersHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.Integer>>"));
-	}
-	
-	private class CollectionFactoryStub implements ICollectionFactory
-	{
-		@Override
-		public <T> ICollection<T> make(T archetype) throws IllegalArgumentException {
-			return new CollectionStub<T>(archetype);
-		}
-
-		@Override
-		public <T> ICollection<T> make(T[] items, T archetype) throws IllegalArgumentException {
-			// Stub; not implemented
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public String getInterfaceName() {
-			// Stub method, unimplemented
-			throw new UnsupportedOperationException();
-		}
-		
-		private class CollectionStub<V> implements ICollection<V>
-		{
-			private final V ARCHETYPE;
-			
-			private CollectionStub(V archetype)
-			{
-				ARCHETYPE = archetype;
-			}
-			
-			private ArrayList<V> _collection = new ArrayList<V>();
-
-			@Override
-			public Iterator<V> iterator() {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public ICollection<V> makeClone() {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public V getArchetype() {
-				return ARCHETYPE;
-			}
-
-			@Override
-			public String getInterfaceName() {
-				return "soliloquy.common.specs.ICollection<" + ARCHETYPE.getClass().getCanonicalName() + ">";
-			}
-
-			@Override
-			public void add(V item) throws UnsupportedOperationException {
-				_collection.add(item);
-			}
-
-			@Override
-			public void addAll(ICollection<? extends V> items) throws UnsupportedOperationException {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void addAll(V[] items) throws UnsupportedOperationException {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public void clear() throws UnsupportedOperationException {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public boolean contains(V item) {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public boolean equals(ICollection<V> items) {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public V get(int index) {
-				return _collection.get(index);
-			}
-
-			@Override
-			public boolean isEmpty() {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public Object[] toArray() {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public int size() {
-				return _collection.size();
-			}
-
-			@Override
-			public boolean removeItem(V item) throws UnsupportedOperationException {
-				// Stub; not implemented
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public String getUnparameterizedInterfaceName() {
-				// Stub method, unimplemented
-				throw new UnsupportedOperationException();
-			}
-			
-		}
 	}
 }
