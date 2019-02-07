@@ -53,7 +53,6 @@ public class GenericParamsSetFactoryTests extends TestCase {
     	when(_persistentValuesHandlerMock.writeValues(any())).thenReturn(PERSISTENT_VARIABLE_WRITE_VALUE);
     	when(_persistentValuesHandlerMock.makePersistentValueToWrite(any(),any())).thenReturn(null);
 
-    	// TODO: Mock the MapFactory *somehow*, so this is truly a unit test again
     	_genericParamsSetFactory = new GenericParamsSetFactory(_persistentValuesHandlerMock, MAP_FACTORY);
     	
     }
@@ -76,6 +75,12 @@ public class GenericParamsSetFactoryTests extends TestCase {
 		public <K, V> IMap<K, V> make(K archetype1, V archetype2) {
 			return new MapStub();
 		}    	
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method; unimplemented
+			throw new UnsupportedOperationException();
+		}
     	
     	private class MapStub<K,V> implements IMap<K,V>
     	{
@@ -100,7 +105,7 @@ public class GenericParamsSetFactoryTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				// Stub method; unimplemented
 				throw new UnsupportedOperationException();
 			}
@@ -220,6 +225,12 @@ public class GenericParamsSetFactoryTests extends TestCase {
 				// Stub method; unimplemented
 				throw new UnsupportedOperationException();
 			}
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method; unimplemented
+				throw new UnsupportedOperationException();
+			}
     		
     	}
     }
@@ -246,7 +257,7 @@ public class GenericParamsSetFactoryTests extends TestCase {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public String getInterfaceName() {
 			// Stub method; unimplemented
 			throw new UnsupportedOperationException();
 		}
@@ -312,6 +323,12 @@ public class GenericParamsSetFactoryTests extends TestCase {
 
 		@Override
 		public boolean removeItem(V item) throws UnsupportedOperationException {
+			// Stub method; unimplemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
 			// Stub method; unimplemented
 			throw new UnsupportedOperationException();
 		}

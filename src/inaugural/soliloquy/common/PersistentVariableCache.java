@@ -14,6 +14,7 @@ import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.IPersistentVariable;
 import soliloquy.common.specs.IPersistentVariableCache;
 import soliloquy.common.specs.IPersistentVariableFactory;
+import soliloquy.common.specs.ISoliloquyClass;
 
 public class PersistentVariableCache extends Map<String,IPersistentVariable> implements IPersistentVariableCache {
 	private final ICollectionFactory COLLECTION_FACTORY;
@@ -53,9 +54,9 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 	}
 	
 	@Override
-	public String getParameterizedClassName()
+	public String getInterfaceName()
 	{
-		return "soliloquy.common.IPersistentVariableCache";
+		return IPersistentVariableCache.class.getCanonicalName();
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 		public PersistentValueToWrite(String name, T value)
 		{
 			this.typeName = value instanceof IHasGenericParams ?
-					((IHasGenericParams) value).getParameterizedClassName() :
+					((ISoliloquyClass) value).getInterfaceName() :
 						value.getClass().getCanonicalName();
 			this.name = name;
 			this.value = value;
@@ -121,7 +122,7 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public String getInterfaceName() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}
@@ -129,6 +130,11 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 		@Override
 		public T getArchetype() {
 			throw new UnsupportedOperationException("PersistentValueToWrite.getArchetype() is not supported");
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
+			throw new UnsupportedOperationException("PersistentValueToWrite.getUnparameterizedInterfaceName() is not supported");
 		}
 		
 	}
@@ -157,7 +163,7 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public String getInterfaceName() {
 			// Stub method; not implemented
 			throw new UnsupportedOperationException();
 		}
@@ -172,6 +178,11 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 				IPersistentVariable persistentVariable = PERSISTENT_VARIABLE_FACTORY.make(inputValue.name(), inputValue.value());
 				MAP.put(inputValue.name(), persistentVariable);
 			}
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
+			throw new UnsupportedOperationException();
 		}
 	}
 }

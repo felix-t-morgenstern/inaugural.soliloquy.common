@@ -10,4 +10,9 @@ public class SettingFactory implements ISettingFactory
 	public <T> ISetting<T> make(String id, String name, T defaultValue, IGenericParamsSet controlParams) {
 		return new Setting<T>(id, name, defaultValue, defaultValue, controlParams);
 	}
+
+	@Override
+	public String getInterfaceName() {
+		return ISettingFactory.class.getCanonicalName();
+	}
 }

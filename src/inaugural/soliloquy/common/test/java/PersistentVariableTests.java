@@ -61,7 +61,7 @@ public class PersistentVariableTests extends TestCase {
 		assertTrue(persistentValueToWrite.name().equals(PERSISTENT_VARIABLE_NAME));
 		assertTrue(persistentValueToWrite.value() == PERSISTENT_VARIABLE_DEFAULT_VALUE);
 		assertTrue(persistentValueToWrite.typeName().equals(PERSISTENT_VARIABLE_DEFAULT_VALUE.getClass().getCanonicalName()));
-		assertTrue(persistentValueToWrite.getParameterizedClassName()
+		assertTrue(persistentValueToWrite.getInterfaceName()
 				.equals("soliloquy.common.specs.IPersistentValueToWrite<" + PERSISTENT_VARIABLE_DEFAULT_VALUE.getClass().getCanonicalName() + ">"));
 	}
 }

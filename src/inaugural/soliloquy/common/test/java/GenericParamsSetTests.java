@@ -279,7 +279,13 @@ public class GenericParamsSetTests extends TestCase {
 		@Override
 		public <K, V> IMap<K, V> make(K archetype1, V archetype2) {
 			return new MapStub();
-		}    	
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method; unimplemented
+			throw new UnsupportedOperationException();
+		}
     	
     	private class MapStub<K,V> implements IMap<K,V>
     	{
@@ -304,7 +310,7 @@ public class GenericParamsSetTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				// Stub method; unimplemented
 				throw new UnsupportedOperationException();
 			}
@@ -421,6 +427,12 @@ public class GenericParamsSetTests extends TestCase {
 			public int size() {
 				return _map.size();
 			}
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method; unimplemented
+				throw new UnsupportedOperationException();
+			}
     		
     	}
     }
@@ -447,7 +459,7 @@ public class GenericParamsSetTests extends TestCase {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public String getInterfaceName() {
 			// Stub method; unimplemented
 			throw new UnsupportedOperationException();
 		}
@@ -513,6 +525,12 @@ public class GenericParamsSetTests extends TestCase {
 
 		@Override
 		public boolean removeItem(V item) throws UnsupportedOperationException {
+			// Stub method; unimplemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
 			// Stub method; unimplemented
 			throw new UnsupportedOperationException();
 		}

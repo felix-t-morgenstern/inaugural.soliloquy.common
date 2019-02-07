@@ -17,10 +17,6 @@ import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISetting;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.gamestate.specs.IGameState;
-import soliloquy.logger.specs.ILogger;
-import soliloquy.ruleset.primary.specs.IRuleset;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -34,8 +30,6 @@ public class SettingsRepoTests extends TestCase {
 	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
 	
 	private final IPersistentValuesHandler SETTINGS_REPO_PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
-	private final IGame SETTINGS_REPO_GAME = new GameStub();
-	private final ILogger SETTINGS_REPO_LOGGER = new LoggerStub();
 	
 	private final String SETTING_1_ID = "Setting1Id";
 	private final String SETTING_2_ID = "Setting2Id";
@@ -78,17 +72,7 @@ public class SettingsRepoTests extends TestCase {
 	@Override
     protected void setUp() throws Exception
     {
-    	_settingsRepo = new SettingsRepo(COLLECTION_FACTORY, PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTINGS_REPO_GAME, SETTINGS_REPO_LOGGER, SETTING_ARCHETYPE);
-    }
-    
-    public void testGame()
-    {
-    	assertTrue(_settingsRepo.game() == SETTINGS_REPO_GAME);
-    }
-    
-    public void testLogger()
-    {
-    	assertTrue(_settingsRepo.logger() == SETTINGS_REPO_LOGGER);
+    	_settingsRepo = new SettingsRepo(COLLECTION_FACTORY, PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
     
     @SuppressWarnings("rawtypes")
@@ -581,7 +565,7 @@ public class SettingsRepoTests extends TestCase {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public String getInterfaceName() {
 			return null;
 		}
 
@@ -599,49 +583,13 @@ public class SettingsRepoTests extends TestCase {
 		public IGenericParamsSet controlParams() {
 			return null;
 		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
+			// Stub method, unimplemented
+			throw new UnsupportedOperationException();
+		}
     	
-    }
-    
-    private class GameStub implements IGame
-    {
-		@Override
-		public IGameState gameState() {
-			// Stub class; no implementation needed
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public IRuleset ruleset() {
-			// Stub class; no implementation needed
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public ILogger logger() {
-			// Stub class; no implementation needed
-			throw new UnsupportedOperationException();
-		}
-    }
-    
-    private class LoggerStub implements ILogger
-    {
-		@Override
-		public void logException(Exception e, String origin, String timestamp) {
-			// Stub class; no implementation needed
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void logWarning(String warning, String origin, String timestamp) {
-			// Stub class; no implementation needed
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void logMessage(String message, String origin, String timestamp) {
-			// Stub class; no implementation needed
-			throw new UnsupportedOperationException();
-		}
     }
     
     private class PersistentValuesHandlerStub implements IPersistentValuesHandler
@@ -726,6 +674,12 @@ public class SettingsRepoTests extends TestCase {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();
 		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method, unimplemented
+			throw new UnsupportedOperationException();
+		}
     	
     }
 	
@@ -739,6 +693,12 @@ public class SettingsRepoTests extends TestCase {
 		@Override
 		public <T> ICollection<T> make(T[] items, T archetype) throws IllegalArgumentException {
 			// Stub; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method, unimplemented
 			throw new UnsupportedOperationException();
 		}
 		
@@ -765,7 +725,7 @@ public class SettingsRepoTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				// Stub; not implemented
 				throw new UnsupportedOperationException();
 			}
@@ -832,6 +792,12 @@ public class SettingsRepoTests extends TestCase {
 				// Stub; not implemented
 				throw new UnsupportedOperationException();
 			}
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method, unimplemented
+				throw new UnsupportedOperationException();
+			}
 			
 		}
 	}
@@ -848,8 +814,14 @@ public class SettingsRepoTests extends TestCase {
 		@Override
 		public <T1, T2> IPair<T1, T2> make(T1 item1, T2 item2, T1 archetype1, T2 archetype2)
 				throws IllegalArgumentException {
-			// TODO Auto-generated method stub
-			return null;
+			// Stub method, unimplemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method, unimplemented
+			throw new UnsupportedOperationException();
 		}
 		
 		private class PairStub<K,V> implements IPair<K,V>
@@ -876,7 +848,7 @@ public class SettingsRepoTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				// Stub method, unimplemented
 				throw new UnsupportedOperationException();
 			}
@@ -899,6 +871,12 @@ public class SettingsRepoTests extends TestCase {
 			@Override
 			public void setItem2(V item) throws IllegalArgumentException {
 				_item2 = item;
+			}
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method, unimplemented
+				throw new UnsupportedOperationException();
 			}
 			
 		}

@@ -151,10 +151,10 @@ public class CollectionTests extends TestCase {
     public void testGetParameterizedClassName()
     {
     	ICollection<String> strings = new Collection<String>("");
-    	assertTrue("soliloquy.common.specs.ICollection<java.lang.String>".equals(strings.getParameterizedClassName()));
+    	assertTrue("soliloquy.common.specs.ICollection<java.lang.String>".equals(strings.getInterfaceName()));
     	
     	ICollection<ICollection<ICollection<String>>> stringsCeption = new Collection<ICollection<ICollection<String>>>(new Collection<ICollection<String>>(new Collection<String>("")));
-    	assertTrue("soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>".equals(stringsCeption.getParameterizedClassName()));
+    	assertTrue("soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>".equals(stringsCeption.getInterfaceName()));
     }
     
     public void testGetArchetype()

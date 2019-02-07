@@ -167,7 +167,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	}
 
 	@Override
-	protected String getUnparameterizedClassName() {
+	public String getUnparameterizedInterfaceName() {
 		return "soliloquy.common.specs.IMap";
 	}
 

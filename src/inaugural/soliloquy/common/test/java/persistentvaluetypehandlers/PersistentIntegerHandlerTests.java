@@ -69,8 +69,8 @@ public class PersistentIntegerHandlerTests extends TestCase {
 		assertTrue(persistentIntegerHandler.getArchetype() != null);
 	}
 	
-	public void testGetParameterizedClassName()
+	public void testGetInterfaceName()
 	{
-		assertTrue(persistentIntegerHandler.getParameterizedClassName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Integer>"));
+		assertTrue(persistentIntegerHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Integer>"));
 	}
 }

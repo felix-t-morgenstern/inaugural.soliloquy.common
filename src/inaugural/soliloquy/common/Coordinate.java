@@ -49,4 +49,9 @@ public class Coordinate implements ICoordinate {
 		int coordinatesHitherto = (digitsSum * (digitsSum + 1))/2;
 		return 1 + coordinatesHitherto + coordinate.getX();
 	}
+
+	@Override
+	public String getInterfaceName() {
+		return ICoordinate.class.getCanonicalName();
+	}
 }

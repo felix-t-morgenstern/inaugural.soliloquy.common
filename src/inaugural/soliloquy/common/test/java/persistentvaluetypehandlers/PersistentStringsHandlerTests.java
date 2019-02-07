@@ -64,9 +64,9 @@ public class PersistentStringsHandlerTests extends TestCase {
 		assertTrue(parsedData.equals(expectedResult));
 	}
 	
-	public void testGetParameterizedClassName()
+	public void testGetInterfaceName()
 	{
-		assertTrue(_persistentStringsHandler.getParameterizedClassName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.String>>"));
+		assertTrue(_persistentStringsHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.String>>"));
 	}
 	
 	private class CollectionFactoryStub implements ICollectionFactory
@@ -79,6 +79,12 @@ public class PersistentStringsHandlerTests extends TestCase {
 		@Override
 		public <T> ICollection<T> make(T[] items, T archetype) throws IllegalArgumentException {
 			// Stub; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method, unimplemented
 			throw new UnsupportedOperationException();
 		}
 		
@@ -111,7 +117,7 @@ public class PersistentStringsHandlerTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				return "soliloquy.common.specs.ICollection<" + ARCHETYPE.getClass().getCanonicalName() + ">";
 			}
 
@@ -177,7 +183,12 @@ public class PersistentStringsHandlerTests extends TestCase {
 				// Stub; not implemented
 				throw new UnsupportedOperationException();
 			}
-			
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method, unimplemented
+				throw new UnsupportedOperationException();
+			}			
 		}
 	}
 }

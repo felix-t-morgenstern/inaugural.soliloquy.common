@@ -73,4 +73,10 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 		return resultMock;
 	}
 
+	@Override
+	public String getInterfaceName() {
+		// Stub method, unimplemented
+		throw new UnsupportedOperationException();
+	}
+
 }

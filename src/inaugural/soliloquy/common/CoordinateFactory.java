@@ -10,4 +10,9 @@ public class CoordinateFactory implements ICoordinateFactory {
 		return new Coordinate(x, y);
 	}
 
+	@Override
+	public String getInterfaceName() {
+		return ICoordinateFactory.class.getCanonicalName();
+	}
+
 }

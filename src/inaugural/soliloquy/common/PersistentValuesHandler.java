@@ -6,12 +6,12 @@ import com.google.gson.Gson;
 
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IHasGenericParams;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPersistentValueToRead;
 import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.common.specs.ISoliloquyClass;
 
 public class PersistentValuesHandler implements IPersistentValuesHandler {
 	private HashMap<String,IPersistentValueTypeHandler<?>> _persistentValueTypeHandlers;
@@ -23,8 +23,8 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	
 	@Override
 	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler) throws IllegalArgumentException {
-		String persistentValueType = persistentValueTypeHandler.getArchetype() instanceof IHasGenericParams ?
-				((IHasGenericParams) persistentValueTypeHandler.getArchetype()).getParameterizedClassName() :
+		String persistentValueType = persistentValueTypeHandler.getArchetype() instanceof ISoliloquyClass ?
+				((ISoliloquyClass) persistentValueTypeHandler.getArchetype()).getInterfaceName() :
 					persistentValueTypeHandler.getArchetype().getClass().getCanonicalName();
 		if (_persistentValueTypeHandlers.containsKey(persistentValueType))
 			throw new IllegalArgumentException("PersistentValuesHandler already has handler for " + persistentValueType);
@@ -84,14 +84,19 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	public <T> IPersistentValueToWrite<T> makePersistentValueToWrite(String name, T value) {
 		return new PersistentValueToWrite<T>(name, value);
 	}
+
+	@Override
+	public String getInterfaceName() {
+		return IPersistentValuesHandler.class.getCanonicalName();
+	}
 	
 	private <T> PersistentValueToRead convertPersistentValueToWriteToPersistentValueToRead(IPersistentValueToWrite<T> persistentValueToWrite)
 	{
 		PersistentValueToRead persistentValueToRead = new PersistentValueToRead();
 		persistentValueToRead.name = persistentValueToWrite.name();
 		persistentValueToRead.typeName = persistentValueToWrite.typeName();
-		String typeName = persistentValueToWrite.value() instanceof IHasGenericParams ?
-				((IHasGenericParams) persistentValueToWrite.value()).getParameterizedClassName() :
+		String typeName = persistentValueToWrite.value() instanceof ISoliloquyClass ?
+				((ISoliloquyClass) persistentValueToWrite.value()).getInterfaceName() :
 					persistentValueToWrite.value().getClass().getCanonicalName();
 		IPersistentValueTypeHandler<T> persistentValueTypeHandler = getPersistentValueTypeHandler(typeName);
 		persistentValueToRead.value = persistentValueTypeHandler.write(persistentValueToWrite.value());
@@ -129,6 +134,11 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		public String value() {
 			return this.value;
 		}
+
+		@Override
+		public String getInterfaceName() {
+			return "soliloquy.common.specs.IPersistentValueToRead";
+		}
 	}
 	
 	protected class PersistentValueToWrite<T> implements IPersistentValueToWrite<T>
@@ -139,8 +149,8 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		
 		public PersistentValueToWrite(String name, T value)
 		{
-			this.typeName = value instanceof IHasGenericParams ?
-					((IHasGenericParams) value).getParameterizedClassName() :
+			this.typeName = value instanceof ISoliloquyClass ?
+					((ISoliloquyClass) value).getInterfaceName() :
 						value.getClass().getCanonicalName();
 			this.name = name;
 			this.value = value;
@@ -162,7 +172,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public String getInterfaceName() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}
@@ -170,6 +180,12 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		@Override
 		public T getArchetype() {
 			throw new UnsupportedOperationException("PersistentValueToWrite.getArchetype() is not supported");
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 		
 	}

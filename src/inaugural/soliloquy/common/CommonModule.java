@@ -18,8 +18,6 @@ import soliloquy.common.specs.IPersistentVariableFactory;
 import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingFactory;
 import soliloquy.common.specs.ISettingsRepo;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
 
 public class CommonModule extends AbstractModule {
 	private ICollectionFactory _collectionFactory;
@@ -33,7 +31,7 @@ public class CommonModule extends AbstractModule {
 	private ISettingFactory _settingFactory;
 	private ISettingsRepo _settingsRepo;
 	
-	public CommonModule(IGame game, ILogger logger)
+	public CommonModule()
 	{
 		_collectionFactory = new CollectionFactory();
 		_coordinateFactory = new CoordinateFactory();
@@ -48,7 +46,7 @@ public class CommonModule extends AbstractModule {
 		_genericParamsSetFactory = new GenericParamsSetFactory(_persistentValuesHandler, _mapFactory);
 		
 		ISetting<String> settingArchetype = _settingFactory.make("archetypeId", "archetypeName", "archetypeValue", _genericParamsSetFactory.make());
-		_settingsRepo = new SettingsRepo(_collectionFactory, _pairFactory, _persistentValuesHandler, game, logger, settingArchetype);
+		_settingsRepo = new SettingsRepo(_collectionFactory, _pairFactory, _persistentValuesHandler, settingArchetype);
 
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentBooleanHandler());
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentIntegerHandler());

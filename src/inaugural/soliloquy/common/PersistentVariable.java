@@ -3,6 +3,7 @@ package inaugural.soliloquy.common;
 import soliloquy.common.specs.IHasGenericParams;
 import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentVariable;
+import soliloquy.common.specs.ISoliloquyClass;
 
 public class PersistentVariable implements IPersistentVariable {
 	private final String NAME;
@@ -35,7 +36,7 @@ public class PersistentVariable implements IPersistentVariable {
 	@Override
 	public <T> IPersistentValueToWrite<T> toWriteRepresentation() {
 		String typeName = _value instanceof IHasGenericParams ?
-				((IHasGenericParams) _value).getParameterizedClassName() : 
+				((ISoliloquyClass) _value).getInterfaceName() : 
 					_value.getClass().getCanonicalName();
 		return new PersistentValueToWrite<T>(NAME, typeName, (T) _value);
 	}
@@ -74,10 +75,16 @@ public class PersistentVariable implements IPersistentVariable {
 		}
 
 		@Override
-		protected String getUnparameterizedClassName() {
+		public String getUnparameterizedInterfaceName() {
 			return "soliloquy.common.specs.IPersistentValueToWrite";
 		}
 		
+	}
+
+	@Override
+	public String getInterfaceName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

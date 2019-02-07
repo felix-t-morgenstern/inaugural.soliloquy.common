@@ -5,12 +5,12 @@ import java.util.HashMap;
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.IHasGenericParams;
 import soliloquy.common.specs.IMap;
 import soliloquy.common.specs.IMapFactory;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.common.specs.ISoliloquyClass;
 
 public class GenericParamsSet implements IGenericParamsSet {
 	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<String,IMap<String,?>>();
@@ -38,7 +38,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 		{
 			throw new IllegalArgumentException("archetype must not be null");
 		}
-		String paramTypeName = archetype instanceof IHasGenericParams ? ((IHasGenericParams) archetype).getParameterizedClassName() : archetype.getClass().getCanonicalName();
+		String paramTypeName = archetype instanceof ISoliloquyClass ? ((ISoliloquyClass) archetype).getInterfaceName() : archetype.getClass().getCanonicalName();
 		if (getParamsSet(paramTypeName) == null)
 		{
 			addParamsSet(_mapFactory.make("", archetype), archetype);
@@ -50,7 +50,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 	public <T> void addParamsSet(IMap<String, T> paramsSet, T paramArchetype) throws IllegalArgumentException, UnsupportedOperationException {
 		if (paramsSet == null) throw new IllegalArgumentException("Cannot add null paramsSet");
 		if (paramArchetype == null) throw new IllegalArgumentException("paramArchetype cannot be null");
-		String paramTypeName = paramArchetype instanceof IHasGenericParams ? ((IHasGenericParams) paramArchetype).getParameterizedClassName() : paramArchetype.getClass().getCanonicalName();
+		String paramTypeName = paramArchetype instanceof ISoliloquyClass ? ((ISoliloquyClass) paramArchetype).getInterfaceName() : paramArchetype.getClass().getCanonicalName();
 		if (_paramsSetsRepository.containsKey(paramTypeName)) throw new UnsupportedOperationException("Params set of type " + paramTypeName + " already exists in this params set");
 		_paramsSetsRepository.put(paramTypeName, paramsSet);
 	}
@@ -122,6 +122,11 @@ public class GenericParamsSet implements IGenericParamsSet {
 		
 		return cloned;
 	}
+
+	@Override
+	public String getInterfaceName() {
+		return IGenericParamsSet.class.getCanonicalName();
+	}
 	
 	private class ProcessReadValue implements IAction<IPair<IPersistentValueToWrite<?>,Boolean>>
 	{
@@ -144,13 +149,18 @@ public class GenericParamsSet implements IGenericParamsSet {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
-			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getParameterizedClassName should never be called");
+		public String getInterfaceName() {
+			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getInterfaceName should never be called");
 		}
 
 		@Override
 		public IPair<IPersistentValueToWrite<?>, Boolean> getArchetype() {
 			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getArchetype should never be called");
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
+			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getUnparameterizedInterfaceName should never be called");
 		}
 		
 	}

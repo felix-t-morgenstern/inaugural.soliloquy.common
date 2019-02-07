@@ -60,7 +60,12 @@ public class Setting<T> implements ISetting<T> {
 	}
 
 	@Override
-	public String getParameterizedClassName() {
-		return "soliloquy.common.specs.ISetting";
+	public String getInterfaceName() {
+		return ISetting.class.getCanonicalName();
+	}
+
+	@Override
+	public String getUnparameterizedInterfaceName() {
+		throw new UnsupportedOperationException("Setting.getUnparameterizedInterfaceName is to never be called");
 	}
 }

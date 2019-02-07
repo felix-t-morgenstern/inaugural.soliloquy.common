@@ -232,6 +232,12 @@ public class PersistentVariableCacheTests extends TestCase {
 			
 			return new PersistentVariableStub(name, value);
 		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub; not implemented
+			throw new UnsupportedOperationException();
+		}
     	
 		private class PersistentVariableStub implements IPersistentVariable
 		{
@@ -264,6 +270,12 @@ public class PersistentVariableCacheTests extends TestCase {
 			@Override
 			public <T> IPersistentValueToWrite<T> toWriteRepresentation() {
 				// Stub method; not implemented
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public String getInterfaceName() {
+				// Stub; not implemented
 				throw new UnsupportedOperationException();
 			}
 			
@@ -344,6 +356,12 @@ public class PersistentVariableCacheTests extends TestCase {
 			// Stub method; not implemented
 			throw new UnsupportedOperationException();
 		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub; not implemented
+			throw new UnsupportedOperationException();
+		}
     	
     }
 	
@@ -360,6 +378,12 @@ public class PersistentVariableCacheTests extends TestCase {
 		public <T1, T2> IPair<T1, T2> make(T1 item1, T2 item2, T1 archetype1, T2 archetype2)
 				throws IllegalArgumentException {
 			// Stub class; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub; not implemented
 			throw new UnsupportedOperationException();
 		}
 		
@@ -387,7 +411,7 @@ public class PersistentVariableCacheTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				// Stub method, unimplemented
 				throw new UnsupportedOperationException();
 			}
@@ -411,6 +435,12 @@ public class PersistentVariableCacheTests extends TestCase {
 			public void setItem2(V item) throws IllegalArgumentException {
 				_item2 = item;
 			}
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method; unimplemented
+				throw new UnsupportedOperationException();
+			}
 			
 		}
 	}
@@ -425,6 +455,12 @@ public class PersistentVariableCacheTests extends TestCase {
 		@Override
 		public <T> ICollection<T> make(T[] items, T archetype) throws IllegalArgumentException {
 			// Stub; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method; unimplemented
 			throw new UnsupportedOperationException();
 		}
 		
@@ -450,7 +486,7 @@ public class PersistentVariableCacheTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				// Stub; not implemented
 				throw new UnsupportedOperationException();
 			}
@@ -517,6 +553,12 @@ public class PersistentVariableCacheTests extends TestCase {
 				// Stub; not implemented
 				throw new UnsupportedOperationException();
 			}
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method; unimplemented
+				throw new UnsupportedOperationException();
+			}
 			
 		}
 	}
@@ -541,7 +583,7 @@ public class PersistentVariableCacheTests extends TestCase {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public String getInterfaceName() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}
@@ -559,6 +601,12 @@ public class PersistentVariableCacheTests extends TestCase {
 		@Override
 		public T value() {
 			return VALUE;
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
+			// Stub method; unimplemented
+			throw new UnsupportedOperationException();
 		}
     	
     }

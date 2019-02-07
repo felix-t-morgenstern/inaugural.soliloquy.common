@@ -64,8 +64,8 @@ public class PersistentBooleanHandlerTests extends TestCase {
 		assertTrue(persistentBooleanHandler.getArchetype() != null);
 	}
 	
-	public void testGetParameterizedClassName()
+	public void testGetInterfaceName()
 	{
-		assertTrue(persistentBooleanHandler.getParameterizedClassName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Boolean>"));
+		assertTrue(persistentBooleanHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Boolean>"));
 	}
 }

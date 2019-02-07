@@ -81,7 +81,7 @@ public class SettingTests extends TestCase {
     
     public void testGetParameterizedClassName()
     {
-    	String parameterizedClassName = _setting.getParameterizedClassName();
+    	String parameterizedClassName = _setting.getInterfaceName();
     	assertTrue("soliloquy.common.specs.ISetting".equals(parameterizedClassName));
     }
     
@@ -168,6 +168,12 @@ public class SettingTests extends TestCase {
 		@Override
 		public boolean removeParam(String paramTypeName, String paramName) {
 			// Stub class; no implementation needed
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method, unimplemented
 			throw new UnsupportedOperationException();
 		}    	
     }

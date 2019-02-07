@@ -20,4 +20,9 @@ public class GenericParamsSetFactory implements IGenericParamsSetFactory {
 		return new GenericParamsSet(_persistentValuesHandler, _mapFactory);
 	}
 
+	@Override
+	public String getInterfaceName() {
+		return IGenericParamsSetFactory.class.getCanonicalName();
+	}
+
 }

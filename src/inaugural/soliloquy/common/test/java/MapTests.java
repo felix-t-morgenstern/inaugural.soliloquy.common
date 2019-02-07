@@ -406,9 +406,9 @@ public class MapTests extends TestCase {
 		assertTrue(SECOND_ARCHETYPE.equals(map.getSecondArchetype()));
 	}
 	
-	public void testGetParameterizedClassName()
+	public void testGetInterfaceName()
 	{
-		assertTrue("soliloquy.common.specs.IMap<java.lang.String,java.lang.String>".equals(map.getParameterizedClassName()));
+		assertTrue("soliloquy.common.specs.IMap<java.lang.String,java.lang.String>".equals(map.getInterfaceName()));
 	}
 	
 	public void testMakeClone()
@@ -442,6 +442,12 @@ public class MapTests extends TestCase {
 			// Stub class; not implemented
 			throw new UnsupportedOperationException();
 		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method; unimplemented
+			throw new UnsupportedOperationException();
+		}
 		
 		private class PairStub<K,V> implements IPair<K,V>
 		{
@@ -467,7 +473,7 @@ public class MapTests extends TestCase {
 			}
 
 			@Override
-			public String getParameterizedClassName() {
+			public String getInterfaceName() {
 				// Stub method, unimplemented
 				throw new UnsupportedOperationException();
 			}
@@ -490,6 +496,12 @@ public class MapTests extends TestCase {
 			@Override
 			public void setItem2(V item) throws IllegalArgumentException {
 				_item2 = item;
+			}
+
+			@Override
+			public String getUnparameterizedInterfaceName() {
+				// Stub method; unimplemented
+				throw new UnsupportedOperationException();
 			}
 			
 		}

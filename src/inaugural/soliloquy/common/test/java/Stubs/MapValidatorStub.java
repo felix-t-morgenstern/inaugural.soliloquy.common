@@ -17,7 +17,7 @@ public class MapValidatorStub implements IFunction<IPair<String,String>,String> 
 	}
 
 	@Override
-	public String getParameterizedClassName() {
+	public String getInterfaceName() {
 		// Ignore; stub class
 		return null;
 	}
@@ -30,6 +30,12 @@ public class MapValidatorStub implements IFunction<IPair<String,String>,String> 
 
 	@Override
 	public String getSecondArchetype() {
+		// Ignore; stub class
+		return null;
+	}
+
+	@Override
+	public String getUnparameterizedInterfaceName() {
 		// Ignore; stub class
 		return null;
 	}

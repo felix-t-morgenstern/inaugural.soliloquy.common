@@ -24,13 +24,19 @@ public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPe
 	}
 
 	@Override
-	public String getParameterizedClassName() {
+	public String getInterfaceName() {
 		// Not needed for test stub
 		return null;
 	}
 
 	@Override
 	public IPair<IPersistentValueToWrite<?>, Boolean> getArchetype() {
+		// Not needed for test stub
+		return null;
+	}
+
+	@Override
+	public String getUnparameterizedInterfaceName() {
 		// Not needed for test stub
 		return null;
 	}

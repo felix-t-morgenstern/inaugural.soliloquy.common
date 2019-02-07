@@ -18,4 +18,9 @@ public class MapFactory implements IMapFactory {
 		if (archetype2 == null) throw new IllegalArgumentException("archetype2 is null");
 		return new Map<K,V>(_pairFactory, archetype1, archetype2);
 	}
+
+	@Override
+	public String getInterfaceName() {
+		return IMapFactory.class.getCanonicalName();
+	}
 }

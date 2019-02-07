@@ -16,4 +16,9 @@ public class CollectionFactory implements ICollectionFactory {
 		return new Collection<T>(items, archetype);
 	}
 
+	@Override
+	public String getInterfaceName() {
+		return ICollectionFactory.class.getCanonicalName();
+	}
+
 }

@@ -39,4 +39,9 @@ public class EntityUuid implements IEntityUuid {
 				&& _uuid.getMostSignificantBits() == ((IEntityUuid)comparand).getMostSignificantBits() 
 				&& _uuid.getLeastSignificantBits() == ((IEntityUuid)comparand).getLeastSignificantBits();
 	}
+
+	@Override
+	public String getInterfaceName() {
+		return IEntityUuid.class.getCanonicalName();
+	}
 }

@@ -59,6 +59,6 @@ public class PairTests extends TestCase {
     
     public void testGetParameterizedClassName()
     {
-    	assertTrue("soliloquy.common.specs.IPair<java.lang.String,java.lang.Integer>".equals(pair.getParameterizedClassName()));
+    	assertTrue("soliloquy.common.specs.IPair<java.lang.String,java.lang.Integer>".equals(pair.getInterfaceName()));
     }
 }

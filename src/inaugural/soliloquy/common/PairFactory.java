@@ -19,4 +19,9 @@ public class PairFactory implements IPairFactory {
 		return new Pair<T1,T2>(item1, item2, archetype1, archetype2);
 	}
 
+	@Override
+	public String getInterfaceName() {
+		return IPairFactory.class.getCanonicalName();
+	}
+
 }

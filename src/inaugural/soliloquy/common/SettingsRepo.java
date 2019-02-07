@@ -9,15 +9,13 @@ import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 import soliloquy.common.specs.IEntityGroup;
 import soliloquy.common.specs.IEntityGroupItem;
-import soliloquy.common.specs.IHasGenericParams;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPairFactory;
 import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingsRepo;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
+import soliloquy.common.specs.ISoliloquyClass;
 
 public class SettingsRepo implements ISettingsRepo {
 	protected final HashMap<Integer,SettingsRepoItem> ITEMS;
@@ -26,13 +24,11 @@ public class SettingsRepo implements ISettingsRepo {
 	private final ICollectionFactory COLLECTION_FACTORY;
 	private final IPairFactory PAIR_FACTORY;
 	private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
-	private final IGame GAME;
-	private final ILogger LOGGER;
 	@SuppressWarnings("rawtypes")
 	private final ISetting SETTING_ARCHETYPE;
 	
 	@SuppressWarnings("rawtypes")
-	public SettingsRepo(ICollectionFactory collectionFactory, IPairFactory pairFactory, IPersistentValuesHandler persistentValuesHandler, IGame game, ILogger logger, ISetting settingArchetype)
+	public SettingsRepo(ICollectionFactory collectionFactory, IPairFactory pairFactory, IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype)
 	{
 		ID = null;
 		ITEMS = new HashMap<Integer,SettingsRepoItem>();
@@ -40,13 +36,11 @@ public class SettingsRepo implements ISettingsRepo {
 		COLLECTION_FACTORY = collectionFactory;
 		PAIR_FACTORY = pairFactory;
 		PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
-		GAME = game;
-		LOGGER = logger;
 		SETTING_ARCHETYPE = settingArchetype;
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public SettingsRepo(String id, ICollectionFactory collectionFactory, IPairFactory pairFactory, IPersistentValuesHandler persistentValuesHandler, IGame game, ILogger logger, ISetting settingArchetype)
+	public SettingsRepo(String id, ICollectionFactory collectionFactory, IPairFactory pairFactory, IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype)
 	{
 		if (id == null || id.equals(""))
 		{
@@ -58,19 +52,19 @@ public class SettingsRepo implements ISettingsRepo {
 		COLLECTION_FACTORY = collectionFactory;
 		PAIR_FACTORY = pairFactory;
 		PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
-		GAME = game;
-		LOGGER = logger;
 		SETTING_ARCHETYPE = settingArchetype;
 	}
 
 	@Override
-	public String id() throws IllegalStateException {
+	public String id() throws IllegalStateException
+	{
 		return ID;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ICollection<IEntityGroupItem<ISetting>> getAllGrouped() {
+	public ICollection<IEntityGroupItem<ISetting>> getAllGrouped()
+	{
 		ICollection<IEntityGroupItem<ISetting>> allGrouped = COLLECTION_FACTORY.make(new SettingsRepoItem(SETTING_ARCHETYPE, SETTING_ARCHETYPE));
 		Set<Integer> keysSet = ITEMS.keySet();
 		int[] keysArray = new int[keysSet.size()];
@@ -89,7 +83,8 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ICollection<ISetting> getAllUngrouped() {
+	public ICollection<ISetting> getAllUngrouped()
+	{
 		ICollection<ISetting> allSettingsUngrouped = COLLECTION_FACTORY.make(SETTING_ARCHETYPE);
 		addSettingsRecursively(allSettingsUngrouped);
 		return allSettingsUngrouped;
@@ -97,7 +92,8 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public IEntityGroupItem<ISetting> getItemByOrder(int order) throws IllegalArgumentException {
+	public IEntityGroupItem<ISetting> getItemByOrder(int order) throws IllegalArgumentException
+	{
 		IEntityGroupItem<ISetting> item = ITEMS.get(order);
 		if (item == null)
 		{
@@ -106,25 +102,17 @@ public class SettingsRepo implements ISettingsRepo {
 		return item;
 	}
 
-	@Override
-	public IGame game() {
-		return GAME;
-	}
-
-	@Override
-	public ILogger logger() {
-		return LOGGER;
-	}
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException {
+	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException
+	{
 		PERSISTENT_VALUES_HANDLER.readValues(data, new InsertSettingAction(this), true);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public String write() throws IllegalArgumentException {
+	public String write() throws IllegalArgumentException
+	{
 		IPersistentValueToWrite collectionArchetype = new SettingToProcess("", "");
 		ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = COLLECTION_FACTORY.make(collectionArchetype);
 		populatePersistentValuesToWriteRecursively(persistentValuesToWrite, true);
@@ -133,7 +121,8 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public <V> ISetting<V> getSetting(String settingId) throws IllegalArgumentException {
+	public <V> ISetting<V> getSetting(String settingId) throws IllegalArgumentException
+	{
 		if (settingId == null)
 		{
 			throw new IllegalArgumentException("SettingsRepo.getSetting: settingId cannot be null");
@@ -173,7 +162,8 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings({ "unchecked", })
 	@Override
-	public <V> void setSetting(String settingId, V value) throws IllegalArgumentException {
+	public <V> void setSetting(String settingId, V value) throws IllegalArgumentException
+	{
 		ISetting<V> setting = (ISetting<V>) getSetting(settingId);
 		if (setting == null)
 		{
@@ -184,7 +174,8 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void addEntity(ISetting setting, int order, String groupId) throws IllegalArgumentException {
+	public void addEntity(ISetting setting, int order, String groupId) throws IllegalArgumentException
+	{
 		if (getSettingRecursively(setting.id()) != null)
 		{
 			throw new IllegalArgumentException("Setting with Id of " + setting.id() + " already present in SettingsRepo");
@@ -214,7 +205,8 @@ public class SettingsRepo implements ISettingsRepo {
 	}
 
 	@Override
-	public void newSubgrouping(int order, String groupId, String parentGroupId) throws IllegalArgumentException {
+	public void newSubgrouping(int order, String groupId, String parentGroupId) throws IllegalArgumentException
+	{
 		SettingsRepo targetParentGrouping;
 		if (parentGroupId == null || parentGroupId.equals(""))
 		{
@@ -224,11 +216,12 @@ public class SettingsRepo implements ISettingsRepo {
 		{
 			targetParentGrouping = (SettingsRepo) getSubgrouping(parentGroupId);
 		}
-		targetParentGrouping.ITEMS.put(order, new SettingsRepoItem(new SettingsRepo(groupId, COLLECTION_FACTORY, PAIR_FACTORY, PERSISTENT_VALUES_HANDLER, GAME, LOGGER, SETTING_ARCHETYPE), SETTING_ARCHETYPE));
+		targetParentGrouping.ITEMS.put(order, new SettingsRepoItem(new SettingsRepo(groupId, COLLECTION_FACTORY, PAIR_FACTORY, PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE), SETTING_ARCHETYPE));
 	}
 
 	@Override
-	public boolean removeItem(String itemId) throws IllegalArgumentException {
+	public boolean removeItem(String itemId) throws IllegalArgumentException
+	{
 		if (itemId == null)
 		{
 			throw new IllegalArgumentException("SettingsRepo.removeItem: itemId cannot be null");
@@ -241,7 +234,8 @@ public class SettingsRepo implements ISettingsRepo {
 	}
 
 	@Override
-	public IPair<String,Integer> getGroupingIdAndOrder(String itemId) throws IllegalArgumentException {
+	public IPair<String,Integer> getGroupingIdAndOrder(String itemId) throws IllegalArgumentException
+	{
 		if (itemId == null || itemId.equals(""))
 		{
 			throw new IllegalArgumentException("SettingsRepo.getGroupingId: itemId cannot be null");
@@ -252,6 +246,12 @@ public class SettingsRepo implements ISettingsRepo {
 			throw new IllegalArgumentException("SettingsRepo.getGrouppingId: No item with itemId of " + itemId + " found");
 		}
 		return groupingIdAndOrderNumber;
+	}
+
+	@Override
+	public String getInterfaceName()
+	{
+		return ISettingsRepo.class.getCanonicalName();
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -383,16 +383,6 @@ public class SettingsRepo implements ISettingsRepo {
 		}
 
 		@Override
-		public IGame game() {
-			return GAME;
-		}
-
-		@Override
-		public ILogger logger() {
-			return LOGGER;
-		}
-
-		@Override
 		public boolean isGroup() {
 			if (!(SETTING == null ^ SETTINGS_REPO == null))
 			{
@@ -433,8 +423,14 @@ public class SettingsRepo implements ISettingsRepo {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
-			// Class only used internally; method not required
+		public String getUnparameterizedInterfaceName() {
+			// Stub method
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method
 			throw new UnsupportedOperationException();
 		}
 	}
@@ -457,15 +453,10 @@ public class SettingsRepo implements ISettingsRepo {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
-			return "soliloquy.common.IPersistentValueToWrite";
-		}
-
-		@Override
 		public String typeName() {
-			return VALUE instanceof IHasGenericParams ?
-					((IHasGenericParams) VALUE).getParameterizedClassName() :
-						VALUE.getClass().getCanonicalName();
+			return VALUE instanceof ISoliloquyClass ?
+				((ISoliloquyClass) VALUE).getInterfaceName() :
+					VALUE.getClass().getCanonicalName();
 		}
 
 		@Override
@@ -476,6 +467,18 @@ public class SettingsRepo implements ISettingsRepo {
 		@Override
 		public V value() {
 			return VALUE;
+		}
+
+		@Override
+		public String getUnparameterizedInterfaceName() {
+			// Stub method
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public String getInterfaceName() {
+			// Stub method
+			throw new UnsupportedOperationException();
 		}
 	}
 	
@@ -501,14 +504,20 @@ public class SettingsRepo implements ISettingsRepo {
 		}
 
 		@Override
-		public String getParameterizedClassName() {
+		public void run(IPair<IPersistentValueToWrite<V>, Boolean> input) throws IllegalArgumentException {
+			SETTINGS_REPO.setSetting(input.getItem1().name(), input.getItem1().value());
+		}
+
+		@Override
+		public String getInterfaceName() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public void run(IPair<IPersistentValueToWrite<V>, Boolean> input) throws IllegalArgumentException {
-			SETTINGS_REPO.setSetting(input.getItem1().name(), input.getItem1().value());
+		public String getUnparameterizedInterfaceName() {
+			// Stub method
+			throw new UnsupportedOperationException();
 		}
 		
 	}

@@ -158,7 +158,7 @@ public class SettingsRepoIntegrationTests extends TestCase {
 
 		ISetting<String> settingArchetype = _settingFactory.make("archetypeId", "archetypeName", "archetypeValue", _genericParamsSetFactory.make());
 		
-		_settingsRepo = new SettingsRepo(_collectionFactory, _pairFactory, _persistentValuesHandler, null, null, settingArchetype);
+		_settingsRepo = new SettingsRepo(_collectionFactory, _pairFactory, _persistentValuesHandler, settingArchetype);
 		
 		IGenericParamsSet setting1ControlParams = _genericParamsSetFactory.make();
 		setting1ControlParams.addParam(SETTING_1_CONTROL_PARAM_1_NAME, SETTING_1_CONTROL_PARAM_1_VALUE);

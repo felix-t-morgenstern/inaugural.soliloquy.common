@@ -98,7 +98,7 @@ public class Collection<V> extends HasOneGenericParam<V> implements ICollection<
 	}
 
 	@Override
-	protected String getUnparameterizedClassName() {
+	public String getUnparameterizedInterfaceName() {
 		return "soliloquy.common.specs.ICollection";
 	}
 

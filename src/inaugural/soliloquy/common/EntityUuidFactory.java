@@ -19,4 +19,9 @@ public class EntityUuidFactory implements IEntityUuidFactory {
 	public IEntityUuid createRandomEntityUuid() {
 		return new EntityUuid();
 	}
+
+	@Override
+	public String getInterfaceName() {
+		return IEntityUuidFactory.class.getCanonicalName();
+	}
 }

@@ -9,7 +9,7 @@ public abstract class PersistentTypeHandler<T> extends HasOneGenericParam<T> imp
 	public abstract T getArchetype();
 
 	@Override
-	protected String getUnparameterizedClassName() {
+	public String getUnparameterizedInterfaceName() {
 		return "soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler";
 	}
 
