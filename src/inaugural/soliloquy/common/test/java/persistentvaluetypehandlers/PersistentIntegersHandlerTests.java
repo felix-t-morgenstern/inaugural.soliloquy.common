@@ -16,9 +16,11 @@ public class PersistentIntegersHandlerTests extends TestCase {
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 	
 	private PersistentIntegersHandler persistentIntegersHandler;
-	
+
 	private ICollection<Integer> integerCollectionMock;
 	private Iterator<Integer> integerIteratorMock;
+	private ICollection<Integer> integerEmptyCollectionMock;
+	private Iterator<Integer> integerEmptyIteratorMock;
 	
     /**
      * Create the test case
@@ -50,6 +52,13 @@ public class PersistentIntegersHandlerTests extends TestCase {
 		
 		integerCollectionMock = mock(ICollection.class);
 		when(integerCollectionMock.iterator()).thenReturn(integerIteratorMock);
+		
+		integerEmptyIteratorMock = mock(Iterator.class);
+		when(integerEmptyIteratorMock.hasNext()).thenReturn(false);
+		when(integerEmptyIteratorMock.next()).thenReturn(null);
+		
+		integerEmptyCollectionMock = mock(ICollection.class);
+		when(integerEmptyCollectionMock.iterator()).thenReturn(integerEmptyIteratorMock);
     }
 	
 	public void testRead()
@@ -97,7 +106,9 @@ public class PersistentIntegersHandlerTests extends TestCase {
 	
 	public void testWriteEmpty()
 	{
-		//TODO: Write this test
+		String writtenValues = persistentIntegersHandler.write(integerEmptyCollectionMock);
+		
+		assertTrue("".equals(writtenValues));
 	}
 	
 	public void testGetArchetype()
