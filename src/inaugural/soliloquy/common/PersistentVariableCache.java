@@ -15,6 +15,7 @@ import soliloquy.common.specs.IPersistentVariable;
 import soliloquy.common.specs.IPersistentVariableCache;
 import soliloquy.common.specs.IPersistentVariableFactory;
 import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.game.primary.specs.IGame;
 
 public class PersistentVariableCache extends Map<String,IPersistentVariable> implements IPersistentVariableCache {
 	private final ICollectionFactory COLLECTION_FACTORY;
@@ -182,6 +183,13 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 
 		@Override
 		public String getUnparameterizedInterfaceName() {
+			// Stub method; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public IGame game() {
+			// Stub method; not implemented
 			throw new UnsupportedOperationException();
 		}
 	}

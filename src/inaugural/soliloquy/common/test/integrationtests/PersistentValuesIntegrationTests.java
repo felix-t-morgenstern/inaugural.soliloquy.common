@@ -27,6 +27,7 @@ import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.game.primary.specs.IGame;
 
 public class PersistentValuesIntegrationTests extends TestCase {
 	private IPersistentValuesHandler _persistentValuesHandler;
@@ -294,6 +295,12 @@ public class PersistentValuesIntegrationTests extends TestCase {
 
 		@Override
 		public String getUnparameterizedInterfaceName() {
+			// Stub method
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public IGame game() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}

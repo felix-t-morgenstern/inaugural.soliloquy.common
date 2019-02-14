@@ -2,6 +2,7 @@ package inaugural.soliloquy.common.test.java.Stubs;
 
 import soliloquy.common.specs.IFunction;
 import soliloquy.common.specs.IPair;
+import soliloquy.game.primary.specs.IGame;
 
 public class MapValidatorStub implements IFunction<IPair<String,String>,String> {
 	@Override
@@ -36,6 +37,12 @@ public class MapValidatorStub implements IFunction<IPair<String,String>,String> 
 
 	@Override
 	public String getUnparameterizedInterfaceName() {
+		// Ignore; stub class
+		return null;
+	}
+
+	@Override
+	public IGame game() {
 		// Ignore; stub class
 		return null;
 	}

@@ -16,6 +16,7 @@ import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingsRepo;
 import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.game.primary.specs.IGame;
 
 public class SettingsRepo implements ISettingsRepo {
 	protected final HashMap<Integer,SettingsRepoItem> ITEMS;
@@ -516,6 +517,12 @@ public class SettingsRepo implements ISettingsRepo {
 
 		@Override
 		public String getUnparameterizedInterfaceName() {
+			// Stub method
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public IGame game() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}

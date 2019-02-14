@@ -6,6 +6,7 @@ import java.util.Collection;
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPersistentValueToWrite;
+import soliloquy.game.primary.specs.IGame;
 
 public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPersistentValueToWrite<?>, Boolean>> {
 	public static Collection<IPersistentValueToWrite<?>> _results = new ArrayList<IPersistentValueToWrite<?>>();
@@ -37,6 +38,12 @@ public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPe
 
 	@Override
 	public String getUnparameterizedInterfaceName() {
+		// Not needed for test stub
+		return null;
+	}
+
+	@Override
+	public IGame game() {
 		// Not needed for test stub
 		return null;
 	}

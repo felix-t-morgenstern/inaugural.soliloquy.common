@@ -11,6 +11,7 @@ import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.game.primary.specs.IGame;
 
 public class GenericParamsSet implements IGenericParamsSet {
 	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<String,IMap<String,?>>();
@@ -161,6 +162,11 @@ public class GenericParamsSet implements IGenericParamsSet {
 		@Override
 		public String getUnparameterizedInterfaceName() {
 			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getUnparameterizedInterfaceName should never be called");
+		}
+
+		@Override
+		public IGame game() {
+			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.game should never be called");
 		}
 		
 	}
