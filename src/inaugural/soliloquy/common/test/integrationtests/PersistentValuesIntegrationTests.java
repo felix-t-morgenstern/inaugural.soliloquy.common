@@ -28,6 +28,7 @@ import soliloquy.common.specs.IPersistentValueTypeHandler;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
+import soliloquy.logger.specs.ILogger;
 
 public class PersistentValuesIntegrationTests extends TestCase {
 	private IPersistentValuesHandler _persistentValuesHandler;
@@ -301,6 +302,12 @@ public class PersistentValuesIntegrationTests extends TestCase {
 
 		@Override
 		public IGame game() {
+			// Stub method
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public ILogger logger() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}

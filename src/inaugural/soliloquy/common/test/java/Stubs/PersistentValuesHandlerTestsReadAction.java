@@ -7,6 +7,7 @@ import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.game.primary.specs.IGame;
+import soliloquy.logger.specs.ILogger;
 
 public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPersistentValueToWrite<?>, Boolean>> {
 	public static Collection<IPersistentValueToWrite<?>> _results = new ArrayList<IPersistentValueToWrite<?>>();
@@ -44,6 +45,12 @@ public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPe
 
 	@Override
 	public IGame game() {
+		// Not needed for test stub
+		return null;
+	}
+
+	@Override
+	public ILogger logger() {
 		// Not needed for test stub
 		return null;
 	}

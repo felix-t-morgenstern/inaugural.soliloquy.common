@@ -17,6 +17,7 @@ import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingsRepo;
 import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
+import soliloquy.logger.specs.ILogger;
 
 public class SettingsRepo implements ISettingsRepo {
 	protected final HashMap<Integer,SettingsRepoItem> ITEMS;
@@ -523,6 +524,12 @@ public class SettingsRepo implements ISettingsRepo {
 
 		@Override
 		public IGame game() {
+			// Stub method
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public ILogger logger() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}

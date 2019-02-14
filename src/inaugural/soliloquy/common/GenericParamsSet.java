@@ -12,6 +12,7 @@ import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
+import soliloquy.logger.specs.ILogger;
 
 public class GenericParamsSet implements IGenericParamsSet {
 	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<String,IMap<String,?>>();
@@ -166,6 +167,12 @@ public class GenericParamsSet implements IGenericParamsSet {
 
 		@Override
 		public IGame game() {
+			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.game should never be called");
+		}
+
+		@Override
+		public ILogger logger() {
+			// TODO: Verify whether this method should truly be unsupported
 			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.game should never be called");
 		}
 		

@@ -16,6 +16,7 @@ import soliloquy.common.specs.IPersistentVariableCache;
 import soliloquy.common.specs.IPersistentVariableFactory;
 import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
+import soliloquy.logger.specs.ILogger;
 
 public class PersistentVariableCache extends Map<String,IPersistentVariable> implements IPersistentVariableCache {
 	private final ICollectionFactory COLLECTION_FACTORY;
@@ -189,6 +190,12 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 
 		@Override
 		public IGame game() {
+			// Stub method; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public ILogger logger() {
 			// Stub method; not implemented
 			throw new UnsupportedOperationException();
 		}
