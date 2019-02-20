@@ -11,6 +11,7 @@ target/classes/inaugural/soliloquy/common/EntityUuidFactory.class
 target/classes/inaugural/soliloquy/common/GenericParamsSet$ProcessReadValue.class
 target/classes/inaugural/soliloquy/common/GenericParamsSet.class
 target/classes/inaugural/soliloquy/common/GenericParamsSetFactory.class
+target/classes/inaugural/soliloquy/common/HasGenericParams.class
 target/classes/inaugural/soliloquy/common/HasOneGenericParam.class
 target/classes/inaugural/soliloquy/common/HasTwoGenericParams.class
 target/classes/inaugural/soliloquy/common/Map$MapIterator.class
