@@ -1,4 +1,4 @@
-package inaugural.soliloquy.common.test.Stubs;
+package inaugural.soliloquy.common.test.stubs;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

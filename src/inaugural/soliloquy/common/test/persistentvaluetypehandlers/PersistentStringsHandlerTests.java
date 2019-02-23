@@ -2,7 +2,7 @@ package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.Collection;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringsHandler;
-import inaugural.soliloquy.common.test.Stubs.CollectionFactoryStub;
+import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -1,4 +1,4 @@
-package inaugural.soliloquy.common.test.Stubs;
+package inaugural.soliloquy.common.test.stubs;
 
 import java.util.ArrayList;
 import java.util.Collection;

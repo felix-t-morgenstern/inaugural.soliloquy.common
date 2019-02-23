@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.Setting;
-import inaugural.soliloquy.common.test.Stubs.GenericParamsSetStub;
+import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -3,7 +3,7 @@ package inaugural.soliloquy.common.test;
 import java.util.HashMap;
 
 import inaugural.soliloquy.common.PersistentVariableCache;
-import inaugural.soliloquy.common.test.Stubs.CollectionFactoryStub;
+import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

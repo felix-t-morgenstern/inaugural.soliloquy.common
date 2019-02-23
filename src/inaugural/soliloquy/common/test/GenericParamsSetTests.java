@@ -6,8 +6,8 @@ import junit.framework.TestSuite;
 import static org.mockito.Mockito.*;
 
 import inaugural.soliloquy.common.GenericParamsSet;
-import inaugural.soliloquy.common.test.Stubs.GenericParamsSetPersistentValuesHandlerStub;
-import inaugural.soliloquy.common.test.Stubs.MapFactoryStub;
+import inaugural.soliloquy.common.test.stubs.GenericParamsSetPersistentValuesHandlerStub;
+import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.IMap;

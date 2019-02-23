@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 
 import inaugural.soliloquy.common.Collection;
 import inaugural.soliloquy.common.PersistentValuesHandler;
-import inaugural.soliloquy.common.test.Stubs.PersistentValuesHandlerTestsReadAction;
+import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerTestsReadAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IPersistentValueToRead;
 import soliloquy.common.specs.IPersistentValueToWrite;

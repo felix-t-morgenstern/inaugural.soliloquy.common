@@ -2,8 +2,8 @@ package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.SettingsRepo;
 import inaugural.soliloquy.common.SettingsRepo.SettingToProcess;
-import inaugural.soliloquy.common.test.Stubs.CollectionFactoryStub;
-import inaugural.soliloquy.common.test.Stubs.PairFactoryStub;
+import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
+import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

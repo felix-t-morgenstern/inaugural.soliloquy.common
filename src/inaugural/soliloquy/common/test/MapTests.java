@@ -8,8 +8,8 @@ import static org.mockito.Mockito.*;
 import org.mockito.Mockito;
 
 import inaugural.soliloquy.common.Map;
-import inaugural.soliloquy.common.test.Stubs.MapValidatorStub;
-import inaugural.soliloquy.common.test.Stubs.PairFactoryStub;
+import inaugural.soliloquy.common.test.stubs.MapValidatorStub;
+import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IFunction;
 import soliloquy.common.specs.IMap;

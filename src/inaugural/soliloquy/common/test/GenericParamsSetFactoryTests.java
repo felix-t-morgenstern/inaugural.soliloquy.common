@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 
 import inaugural.soliloquy.common.GenericParamsSet;
 import inaugural.soliloquy.common.GenericParamsSetFactory;
-import inaugural.soliloquy.common.test.Stubs.MapFactoryStub;
+import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
 import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.IMapFactory;
 import soliloquy.common.specs.IPersistentValuesHandler;
