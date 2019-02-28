@@ -1,42 +1,28 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerHandler;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-public class PersistentIntegerHandlerTests extends TestCase {
+public class PersistentIntegerHandlerTests {
 	private PersistentIntegerHandler persistentIntegerHandler;
-	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentIntegerHandlerTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentIntegerHandlerTests.class );
-    }
     
-	@Override
+	@BeforeEach
     protected void setUp() throws Exception
     {
     	persistentIntegerHandler = new PersistentIntegerHandler();
     }
-	
+
+	@Test
 	public void testRead()
 	{
 		assertTrue(persistentIntegerHandler.read("123") == 123);
 	}
-	
+
+	@Test
 	public void testReadNull()
 	{
 		try
@@ -54,21 +40,25 @@ public class PersistentIntegerHandlerTests extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testWrite()
 	{
 		assertTrue(persistentIntegerHandler.write(123).equals("123"));
 	}
-	
+
+	@Test
 	public void testWriteWhenNull()
 	{
 		assertTrue(persistentIntegerHandler.write(null).equals(""));
 	}
-	
+
+	@Test
 	public void testGetArchetype()
 	{
 		assertTrue(persistentIntegerHandler.getArchetype() != null);
 	}
-	
+
+	@Test
 	public void testGetInterfaceName()
 	{
 		assertTrue(persistentIntegerHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Integer>"));

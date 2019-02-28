@@ -1,42 +1,28 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PersistentBooleanHandlerTests extends TestCase {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
+
+public class PersistentBooleanHandlerTests {
 	private PersistentBooleanHandler persistentBooleanHandler;
 	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentBooleanHandlerTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentBooleanHandlerTests.class );
-    }
-    
-	@Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
 		persistentBooleanHandler = new PersistentBooleanHandler();
     }
 	
+    @Test
 	public void testRead()
 	{
 		assertTrue(persistentBooleanHandler.read("true") == true);
 	}
-	
+
+    @Test
 	public void testReadNull()
 	{
 		try
@@ -53,17 +39,20 @@ public class PersistentBooleanHandlerTests extends TestCase {
 			assertTrue(false);
 		}
 	}
-	
+
+    @Test
 	public void testWrite()
 	{
 		assertTrue(persistentBooleanHandler.write(true).equals("true"));
 	}
-	
+
+    @Test
 	public void testGetArchetype()
 	{
 		assertTrue(persistentBooleanHandler.getArchetype() != null);
 	}
-	
+
+    @Test
 	public void testGetInterfaceName()
 	{
 		assertTrue(persistentBooleanHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Boolean>"));

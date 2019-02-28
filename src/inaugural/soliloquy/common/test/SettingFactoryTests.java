@@ -1,13 +1,15 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.SettingFactory;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.ISetting;
 
-public class SettingFactoryTests extends TestCase {
+public class SettingFactoryTests {
 	private final String SETTING_ID = "SettingId";
 	private final String SETTING_NAME = "SettingName";
 	private final Integer SETTING_VALUE = 123;
@@ -15,30 +17,13 @@ public class SettingFactoryTests extends TestCase {
 	
 	private SettingFactory _settingFactory;
 	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public SettingFactoryTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( SettingFactoryTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_settingFactory = new SettingFactory();
     }
     
+    @Test
     public void testMake()
     {
     	ISetting<Integer> setting = _settingFactory.make(SETTING_ID, SETTING_NAME, SETTING_VALUE, SETTING_CONTROL_PARAMS);

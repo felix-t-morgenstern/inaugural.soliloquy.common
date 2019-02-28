@@ -1,7 +1,12 @@
 package inaugural.soliloquy.common.test.integrationtests;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.CollectionFactory;
 import inaugural.soliloquy.common.GenericParamsSetFactory;
@@ -14,9 +19,6 @@ import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerH
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringsHandler;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
@@ -30,7 +32,7 @@ import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
 
-public class PersistentValuesIntegrationTests extends TestCase {
+public class PersistentValuesIntegrationTests {
 	private IPersistentValuesHandler _persistentValuesHandler;
 	
 	private ICollectionFactory _collectionFactory;
@@ -39,25 +41,7 @@ public class PersistentValuesIntegrationTests extends TestCase {
 	
 	private static List<IPair<IPersistentValueToWrite<?>, Boolean>> _readValues;
 	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentValuesIntegrationTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentValuesIntegrationTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_persistentValuesHandler = new PersistentValuesHandler();
@@ -83,6 +67,7 @@ public class PersistentValuesIntegrationTests extends TestCase {
     	_readValues = new ArrayList<IPair<IPersistentValueToWrite<?>, Boolean>>();
     }
     
+    @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testWriteValues()
     {
@@ -150,7 +135,8 @@ public class PersistentValuesIntegrationTests extends TestCase {
     	
     	assertTrue(expectedOutput.equals(writtenValue));
     }
-    
+
+    @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testReadValues()
     {

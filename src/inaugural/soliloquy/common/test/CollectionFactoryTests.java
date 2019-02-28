@@ -1,42 +1,27 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.CollectionFactory;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.ICollection;
 
-public class CollectionFactoryTests extends TestCase {
+public class CollectionFactoryTests {
 	private CollectionFactory _collectionFactory;
 
 	private String STRING1 = "STRING1";
 	private String STRING2 = "STRING2";
 	private String STRING3 = "STRING3";
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public CollectionFactoryTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( CollectionFactoryTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_collectionFactory = new CollectionFactory();
     }
-    
+
+    @Test
     public void testMake()
     {
     	ICollection<String> strings = _collectionFactory.make("Hello");
@@ -48,6 +33,7 @@ public class CollectionFactoryTests extends TestCase {
     }
     
     @SuppressWarnings("unused")
+    @Test
 	public void testMakeWithNullArchetype()
     {
     	try {
@@ -63,7 +49,8 @@ public class CollectionFactoryTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @Test
     public void testMakeFromArray()
     {
     	ICollection<String> newCollection = _collectionFactory.make(new String[] {STRING1, STRING2, STRING3}, "");

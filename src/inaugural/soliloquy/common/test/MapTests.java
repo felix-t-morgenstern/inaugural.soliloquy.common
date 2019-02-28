@@ -1,10 +1,12 @@
 package inaugural.soliloquy.common.test;
 
 import java.util.Iterator;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import inaugural.soliloquy.common.Map;
@@ -16,7 +18,7 @@ import soliloquy.common.specs.IMap;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPairFactory;
 
-public class MapTests extends TestCase {
+public class MapTests {
 	private Map<String,String> map;
 	private IPair<String,String> pairMock;
 	private IPair<String,String> pairMock2;
@@ -31,27 +33,9 @@ public class MapTests extends TestCase {
 	private Iterator<IPair<String,String>> pairCollectionIteratorMock;
 	
 	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
-
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public MapTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( MapTests.class );
-    }
-    
+	
     @SuppressWarnings("unchecked")
-	@Override
+	@BeforeEach
     protected void setUp() throws Exception
     {
     	Mockito.reset();
@@ -74,7 +58,8 @@ public class MapTests extends TestCase {
     	pairCollectionMock = mock(ICollection.class);
     	when(pairCollectionMock.iterator()).thenReturn(pairCollectionIteratorMock);
     }
-    
+
+    @Test
     public void testPutNullOrBlankKey()
     {
     	try
@@ -104,20 +89,23 @@ public class MapTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @Test
     public void testPutAndContainsKeyAndValue()
     {
     	map.put("Key1", "Value1");
     	assertTrue(map.containsKey("Key1"));
     	assertTrue(map.containsValue("Value1"));
     }
-    
+
+    @Test
     public void testGet()
     {
     	map.put("Key1", "Value1");
     	assertTrue(map.get("Key1") == "Value1");
     }
-    
+
+    @Test
     public void testGetExceptions()
     {
     	try
@@ -148,28 +136,32 @@ public class MapTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @Test
 	public void testPutAll()
     {
     	map.putAll(pairCollectionMock);
     	assertTrue(map.containsKey(PAIR_1_KEY));
     	assertTrue(map.containsKey(PAIR_2_KEY));
     }
-    
+
+    @Test
     public void testClear()
     {
     	map.put("String1", "String2");
     	map.clear();
     	assertTrue(map.isEmpty());
     }
-    
+
+    @Test
 	public void testContains()
     {
     	assertTrue(!map.contains(pairMock));
     	map.put(PAIR_1_KEY, PAIR_1_VALUE);
     	assertTrue(map.contains(pairMock));
     }
-	
+
+    @Test
 	public void testSize()
 	{
 		assertTrue(map.size() == 0);
@@ -184,6 +176,7 @@ public class MapTests extends TestCase {
 	}
 	
 	@SuppressWarnings("unchecked")
+    @Test
 	public void testEqualsCollection()
 	{
 		Iterator<String> stringsIteratorMock = mock(Iterator.class);
@@ -195,9 +188,9 @@ public class MapTests extends TestCase {
 		when(stringsMock.size()).thenReturn(3);
 
 		map.put("String1", "String1");
-		assertFalse(map.equals(stringsMock));
+		assertTrue(!map.equals(stringsMock));
 		map.put("String2", "String2");
-		assertFalse(map.equals(stringsMock));
+		assertTrue(!map.equals(stringsMock));
 		map.put("String3", "String3");
 		assertTrue(map.equals(stringsMock));
 		
@@ -212,13 +205,14 @@ public class MapTests extends TestCase {
 		when(stringsMock_2.size()).thenReturn(3);
 		
 		map.put("String1", "String1");
-		assertFalse(map.equals(stringsMock_2));
+		assertTrue(!map.equals(stringsMock_2));
 		map.put("String2", "String2");
-		assertFalse(map.equals(stringsMock_2));
+		assertTrue(!map.equals(stringsMock_2));
 		map.put("String3", "String4");
-		assertFalse(map.equals(stringsMock_2));
+		assertTrue(!map.equals(stringsMock_2));
 	}
-	
+
+    @Test
 	public void testEqualsException()
 	{
 		try
@@ -248,7 +242,8 @@ public class MapTests extends TestCase {
 			assertTrue(false);
 		}
 	}
-	
+
+    @Test
 	public void testGetKeys()
 	{
 		map.put("Key1", "Value1");
@@ -268,7 +263,8 @@ public class MapTests extends TestCase {
 		}
 		for(Integer i = 0; i < expectedIdsFound.length; i++) assertTrue(expectedIdsFound[i]);
 	}
-	
+
+    @Test
 	public void testGetValues()
 	{
 		map.put("Key1", "Value1");
@@ -288,7 +284,8 @@ public class MapTests extends TestCase {
 		}
 		for(Integer i = 0; i < expectedValuesFound.length; i++) assertTrue(expectedValuesFound[i]);
 	}
-	
+
+    @Test
 	public void testValidator()
 	{
 		map.setValidator(validatorStub);
@@ -321,7 +318,8 @@ public class MapTests extends TestCase {
 			assertTrue(false);
 		}
 	}
-	
+
+    @Test
 	public void testEqualsMap()
 	{
 		Map<String,String> secondMap = new Map<String,String>(null,"","");
@@ -333,7 +331,8 @@ public class MapTests extends TestCase {
 		secondMap.put("Key1", "Value1");
 		assertTrue(map.equals(secondMap));
 	}
-	
+
+    @Test
 	public void testRemoveByKey()
 	{
 		map.put(PAIR_1_KEY, PAIR_1_VALUE);
@@ -345,7 +344,8 @@ public class MapTests extends TestCase {
 		assertTrue(map.removeByKey(PAIR_1_KEY) == PAIR_1_VALUE);
 		assertTrue(map.size() == 1);
 	}
-	
+
+    @Test
 	public void testRemoveByKeyAndValue()
 	{
 		map.put(PAIR_1_KEY, PAIR_1_VALUE);
@@ -357,7 +357,8 @@ public class MapTests extends TestCase {
 		assertTrue(map.removeByKeyAndValue(PAIR_1_KEY, PAIR_1_VALUE));
 		assertTrue(map.size() == 1);
 	}
-	
+
+    @Test
 	public void testItemExists()
 	{
 		assertTrue(!map.itemExists(PAIR_1_KEY));
@@ -365,7 +366,8 @@ public class MapTests extends TestCase {
 		map.put(PAIR_1_KEY, PAIR_1_VALUE);
 		assertTrue(map.itemExists(PAIR_1_KEY));
 	}
-	
+
+    @Test
 	public void testIndicesOf()
 	{
 		assertTrue(map.indicesOf(PAIR_1_VALUE).size() == 0);
@@ -375,7 +377,8 @@ public class MapTests extends TestCase {
 		assertTrue(map.indicesOf(PAIR_1_VALUE).size() == 1);
 		assertTrue(map.indicesOf(PAIR_1_VALUE).contains(PAIR_1_KEY));
 	}
-	
+
+    @Test
 	public void testIterator()
 	{
 		map.put(PAIR_1_KEY, PAIR_1_VALUE);
@@ -396,22 +399,26 @@ public class MapTests extends TestCase {
 			counter++;
 		}
 	}
-	
+
+    @Test
 	public void testGetFirstArchetype()
 	{
 		assertTrue(FIRST_ARCHETYPE.equals(map.getFirstArchetype()));
 	}
-	
+
+    @Test
 	public void testGetSecondArchetype()
 	{
 		assertTrue(SECOND_ARCHETYPE.equals(map.getSecondArchetype()));
 	}
-	
+
+    @Test
 	public void testGetInterfaceName()
 	{
 		assertTrue("soliloquy.common.specs.IMap<java.lang.String,java.lang.String>".equals(map.getInterfaceName()));
 	}
-	
+
+    @Test
 	public void testMakeClone()
 	{
 		map.put(PAIR_1_KEY, PAIR_1_VALUE);

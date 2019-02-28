@@ -1,41 +1,25 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import inaugural.soliloquy.common.Coordinate;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.ICoordinate;
 
-public class CoordinateTests extends TestCase {
+public class CoordinateTests {
 	private Coordinate coordinate;
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public CoordinateTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( CoordinateTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	Mockito.reset();
     	coordinate = new Coordinate(0,0);
     }
-    
+
+    @Test
     public void testGetAndSetXAndY()
     {
     	coordinate.setX(123);
@@ -43,7 +27,8 @@ public class CoordinateTests extends TestCase {
     	coordinate.setY(456);
     	assertTrue(coordinate.getY() == 456);
     }
-    
+
+    @Test
     public void testCompareTo()
     {
     	coordinate.setX(0);
@@ -65,7 +50,8 @@ public class CoordinateTests extends TestCase {
     	coordinate.setX(3);
     	assertTrue(coordinate.compareTo(otherCoordinate) == 6);
     }
-    
+
+    @Test
     public void testMakeClone()
     {
     	coordinate.setX(123);

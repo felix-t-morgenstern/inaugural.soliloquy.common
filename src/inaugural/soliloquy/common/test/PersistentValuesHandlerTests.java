@@ -1,9 +1,10 @@
 package inaugural.soliloquy.common.test;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.Collection;
 import inaugural.soliloquy.common.PersistentValuesHandler;
@@ -13,7 +14,7 @@ import soliloquy.common.specs.IPersistentValueToRead;
 import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 
-public class PersistentValuesHandlerTests extends TestCase {
+public class PersistentValuesHandlerTests {
 	private PersistentValuesHandler _persistentValuesHandler;
 
 	private IPersistentValueTypeHandler<Integer> _persistentIntegerHandler;
@@ -29,27 +30,9 @@ public class PersistentValuesHandlerTests extends TestCase {
 	private final String STR_PARAM_1_VALUE = "String1";
 	private final String STR_PARAM_2_VALUE = "String2";
 	private final String STR_PARAM_3_VALUE = "String3";
-	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentValuesHandlerTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentValuesHandlerTests.class );
-    }
     
     @SuppressWarnings("unchecked")
-	@Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_persistentValuesHandler = new PersistentValuesHandler();
@@ -73,6 +56,7 @@ public class PersistentValuesHandlerTests extends TestCase {
     	when(_persistentStringHandler.read(STR_PARAM_3_VALUE)).thenReturn(STR_PARAM_3_VALUE);
     }
     
+    @Test
     public void testMakePersistentValueToRead()
     {
     	IPersistentValueToRead persistentValueToRead = _persistentValuesHandler.makePersistentValueToRead(Integer.class.getCanonicalName(), "Int_Param_1", "123");
@@ -80,7 +64,8 @@ public class PersistentValuesHandlerTests extends TestCase {
     	assertTrue(persistentValueToRead.name() == "Int_Param_1");
     	assertTrue(persistentValueToRead.value() == "123");
     }
-    
+
+    @Test
     public void testMakePersistentValueToWrite()
     {
     	IPersistentValueToWrite<Integer> persistentValueToWrite = _persistentValuesHandler.makePersistentValueToWrite("Int_Param_1", 123);
@@ -89,13 +74,15 @@ public class PersistentValuesHandlerTests extends TestCase {
     	assertTrue(persistentValueToWrite.name() == "Int_Param_1");
     	assertTrue(persistentValueToWrite.value() == 123);
     }
-    
+
+    @Test
     public void testAddAndGetPersistentValueTypeHandler()
     {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
     	assertTrue(_persistentValuesHandler.<Integer>getPersistentValueTypeHandler(Integer.class.getCanonicalName()) == _persistentIntegerHandler);
     }
-    
+
+    @Test
     public void testAddPersistentValueTypeHandlerTwiceException()
     {
     	try
@@ -113,15 +100,17 @@ public class PersistentValuesHandlerTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @Test
     public void testRemovePersistentValueTypeHandler()
     {
-    	assertFalse(_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
+    	assertTrue(!_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
     	assertTrue(_persistentValuesHandler.<Integer>getPersistentValueTypeHandler(Integer.class.getCanonicalName()) == _persistentIntegerHandler);
     	assertTrue(_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
     }
-    
+
+    @Test
     public void testPersistentValueTypesHandled()
     {
     	assertTrue(_persistentValuesHandler.persistentValueTypesHandled().isEmpty());
@@ -131,7 +120,8 @@ public class PersistentValuesHandlerTests extends TestCase {
     	assertTrue(_persistentValuesHandler.persistentValueTypesHandled().contains(Integer.class.getCanonicalName()));
     	assertTrue(_persistentValuesHandler.persistentValueTypesHandled().contains(String.class.getCanonicalName()));
     }
-    
+
+    @Test
     public void testReadValues()
     {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
@@ -154,7 +144,8 @@ public class PersistentValuesHandlerTests extends TestCase {
     		if (persistentValueToWrite.name().equals("String2")) assertTrue(persistentValueToWrite.value().equals(STR_PARAM_2_VALUE));
     	}
     }
-    
+
+    @Test
     public void testWriteValues()
     {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);

@@ -1,9 +1,10 @@
 package inaugural.soliloquy.common.test;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.GenericParamsSet;
 import inaugural.soliloquy.common.GenericParamsSetFactory;
@@ -12,7 +13,7 @@ import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.IMapFactory;
 import soliloquy.common.specs.IPersistentValuesHandler;
 
-public class GenericParamsSetFactoryTests extends TestCase {
+public class GenericParamsSetFactoryTests {
 	private GenericParamsSetFactory _genericParamsSetFactory;
 	
 	private IPersistentValuesHandler _persistentValuesHandlerMock;
@@ -21,25 +22,7 @@ public class GenericParamsSetFactoryTests extends TestCase {
 	
 	private static final String PERSISTENT_VARIABLE_WRITE_VALUE = "GenericString";
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public GenericParamsSetFactoryTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( GenericParamsSetFactoryTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_persistentValuesHandlerMock = mock(IPersistentValuesHandler.class);
@@ -49,7 +32,8 @@ public class GenericParamsSetFactoryTests extends TestCase {
     	_genericParamsSetFactory = new GenericParamsSetFactory(_persistentValuesHandlerMock, MAP_FACTORY);
     	
     }
-    
+
+    @Test
     public void testMake()
     {
     	IGenericParamsSet genericParamsSet = _genericParamsSetFactory.make();

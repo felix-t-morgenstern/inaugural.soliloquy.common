@@ -4,9 +4,6 @@ import inaugural.soliloquy.common.SettingsRepo;
 import inaugural.soliloquy.common.SettingsRepo.SettingToProcess;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
@@ -19,9 +16,13 @@ import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISetting;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-public class SettingsRepoTests extends TestCase {
+import org.junit.jupiter.api.BeforeEach;
+
+public class SettingsRepoTests {
 	private SettingsRepo _settingsRepo;
 	
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
@@ -50,30 +51,13 @@ public class SettingsRepoTests extends TestCase {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private final ISetting SETTING_ARCHETYPE = new SettingStub(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
 	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public SettingsRepoTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( SettingsRepoTests.class );
-    }
-    
-	@Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_settingsRepo = new SettingsRepo(COLLECTION_FACTORY, PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testAddItemToTopLevel()
     {
@@ -85,7 +69,8 @@ public class SettingsRepoTests extends TestCase {
     	
     	assertTrue(_settingsRepo.getSetting(SETTING_1_ID).getValue().equals(SETTING_1_VALUE));
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testAddTwoItemsToTopLevelWithSameId()
     {
@@ -113,7 +98,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testAddTwoItemsToTopLevelWithSameOrder()
     {
@@ -141,7 +127,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testAddItemToNonexistentSubGrouping()
     {
@@ -163,7 +150,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testAddItemToExistentSubGrouping()
     {
@@ -179,7 +167,8 @@ public class SettingsRepoTests extends TestCase {
     	
     	assertTrue(getResult.getValue().equals(SETTING_1_VALUE));
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testSetNonexistentSetting()
     {
     	try
@@ -196,7 +185,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testGetSettingWithBlankId()
     {
     	try
@@ -213,7 +203,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testSetSettingWithBlankId()
     {
     	try
@@ -230,7 +221,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testAddSetAndGetSetting()
     {
     	ISetting<Integer> setting = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
@@ -241,7 +233,8 @@ public class SettingsRepoTests extends TestCase {
     	
     	assertTrue(_settingsRepo.getSetting(SETTING_1_ID).getValue().equals(SETTING_1_VALUE_ALT));
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testAddSetAndGetSettingInSubgrouping()
     {
     	ISetting<Integer> setting = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
@@ -256,14 +249,16 @@ public class SettingsRepoTests extends TestCase {
     	
     	assertTrue(_settingsRepo.getSetting(SETTING_1_ID).getValue().equals(SETTING_1_VALUE_ALT));
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testGetItemByOrder()
     {
     	ISetting<Integer> setting = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
     	_settingsRepo.addEntity(setting, 123, null);
     	assertTrue(_settingsRepo.getItemByOrder(123).entity().getValue().equals(SETTING_1_VALUE));
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testGetNonexistentItemByOrder()
     {
     	try
@@ -280,7 +275,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testGetAllGrouped()
     {
@@ -313,7 +309,8 @@ public class SettingsRepoTests extends TestCase {
     	assertTrue(bottomLevelGrouped.size() == 1);
     	assertTrue(bottomLevelGrouped.get(0).entity().getValue().equals(SETTING_3_VALUE));
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testGetAllUngrouped()
     {
@@ -359,6 +356,7 @@ public class SettingsRepoTests extends TestCase {
     	assertTrue(setting3Used);
     }
 
+    @org.junit.jupiter.api.Test
     public void testRemoveItem()
     {
     	ISetting<Integer> setting1 = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
@@ -381,7 +379,8 @@ public class SettingsRepoTests extends TestCase {
     	
     	assertTrue(_settingsRepo.getSetting(SETTING_2_ID) == null);
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testRemoveItemWithNullOrBlankId()
     {
     	try
@@ -412,7 +411,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     public void testGetGroupingIdAndOrder()
     {
     	ISetting<Integer> setting1 = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
@@ -469,7 +469,8 @@ public class SettingsRepoTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testRead()
     {
@@ -494,7 +495,8 @@ public class SettingsRepoTests extends TestCase {
     	assertTrue(setting1GroupingIdAndOrder.getItem2() == 1);
     	assertTrue(_settingsRepo.getSetting(SETTING_1_ID).getValue().equals("Hello1"));
     }
-    
+
+    @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
 	public void testWrite()
     {

@@ -1,40 +1,25 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.PairFactory;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.IPair;
 
-public class PairFactoryTests extends TestCase {
+public class PairFactoryTests {
 	private PairFactory _pairfactory;
 	
 	private IPair<String,Integer> newPair;
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PairFactoryTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PairFactoryTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_pairfactory = new PairFactory();
     }
     
+    @Test
     public void testMake()
     {
     	newPair = _pairfactory.make("String", 123);
@@ -42,7 +27,8 @@ public class PairFactoryTests extends TestCase {
     	assertTrue(newPair.getItem1() == "String");
     	assertTrue(newPair.getItem2() == 123);
     }
-    
+
+    @Test
     public void testMakeWithNullParams()
     {
     	try

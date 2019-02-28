@@ -1,14 +1,15 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import inaugural.soliloquy.common.EntityUuidFactory;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.IEntityUuid;
 
-public class EntityUuidFactoryTests extends TestCase {
+public class EntityUuidFactoryTests {
 	private EntityUuidFactory entityUuidFactory;
 	
 	private final String ENTITY_UUID_STRING = "64a853a4-a156-42e1-b8c2-02ddb44f5e64";
@@ -17,44 +18,29 @@ public class EntityUuidFactoryTests extends TestCase {
 	
 	private final String BLANK_ENTITY_UUID_STRING = "00000000-0000-0000-0000-000000000000";
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public EntityUuidFactoryTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( EntityUuidFactoryTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	Mockito.reset();
     	entityUuidFactory = new EntityUuidFactory();
     }
-    
+
+    @Test
     public void testCreateFromLongs()
     {
     	IEntityUuid createdEntityUuid = entityUuidFactory.createFromLongs(ENTITY_UUID_MOST_SIGNIFICANT_BITS, ENTITY_UUID_LEAST_SIGNIFICANT_BITS);
     	assertTrue(ENTITY_UUID_MOST_SIGNIFICANT_BITS == createdEntityUuid.getMostSignificantBits());
     	assertTrue(ENTITY_UUID_LEAST_SIGNIFICANT_BITS == createdEntityUuid.getLeastSignificantBits());
     }
-    
+
+    @Test
     public void testCreateFromString()
     {
     	IEntityUuid createdEntityUuid = entityUuidFactory.createFromString(ENTITY_UUID_STRING);
     	assertTrue(ENTITY_UUID_STRING.equals(createdEntityUuid.toString()));
     }
-    
+
+    @Test
     public void testCreateRandomEntityUuid()
     {
     	IEntityUuid createdEntityUuid = entityUuidFactory.createRandomEntityUuid();

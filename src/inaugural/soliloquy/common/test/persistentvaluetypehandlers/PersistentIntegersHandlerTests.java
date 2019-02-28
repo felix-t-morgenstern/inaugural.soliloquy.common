@@ -2,17 +2,19 @@ package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import java.util.Iterator;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 
-public class PersistentIntegersHandlerTests extends TestCase {
+public class PersistentIntegersHandlerTests {
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 	
 	private PersistentIntegersHandler persistentIntegersHandler;
@@ -21,27 +23,9 @@ public class PersistentIntegersHandlerTests extends TestCase {
 	private Iterator<Integer> integerIteratorMock;
 	private ICollection<Integer> integerEmptyCollectionMock;
 	private Iterator<Integer> integerEmptyIteratorMock;
-	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentIntegersHandlerTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentIntegersHandlerTests.class );
-    }
     
 	@SuppressWarnings("unchecked")
-	@Override
+	@BeforeEach
     protected void setUp() throws Exception
     {
 		persistentIntegersHandler = new PersistentIntegersHandler(COLLECTION_FACTORY);
@@ -61,6 +45,7 @@ public class PersistentIntegersHandlerTests extends TestCase {
 		when(integerEmptyCollectionMock.iterator()).thenReturn(integerEmptyIteratorMock);
     }
 	
+	@Test
 	public void testRead()
 	{
 		ICollection<Integer> readValue = persistentIntegersHandler.read("0,1,2,3");
@@ -72,14 +57,16 @@ public class PersistentIntegersHandlerTests extends TestCase {
 		assertTrue(readValue.get(2) == 2);
 		assertTrue(readValue.get(3) == 3);
 	}
-	
+
+	@Test
 	public void testReadEmpty()
 	{
 		ICollection<Integer> readValue = persistentIntegersHandler.read("");
 		assertTrue(readValue instanceof ICollection<?>);
 		assertTrue(readValue.size() == 0);
 	}
-	
+
+	@Test
 	public void testReadNull()
 	{
 		try
@@ -96,26 +83,30 @@ public class PersistentIntegersHandlerTests extends TestCase {
 			assertTrue(false);
 		}
 	}
-	
+
+	@Test
 	public void testWrite()
 	{
 		String writtenValues = persistentIntegersHandler.write(integerCollectionMock);
 		
 		assertTrue("1,2,3,4".equals(writtenValues));
 	}
-	
+
+	@Test
 	public void testWriteEmpty()
 	{
 		String writtenValues = persistentIntegersHandler.write(integerEmptyCollectionMock);
 		
 		assertTrue("".equals(writtenValues));
 	}
-	
+
+	@Test
 	public void testGetArchetype()
 	{
 		assertTrue(persistentIntegersHandler.getArchetype() != null);
 	}
-	
+
+	@Test
 	public void testGetParameterizedClassName()
 	{
 		assertTrue(persistentIntegersHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.Integer>>"));

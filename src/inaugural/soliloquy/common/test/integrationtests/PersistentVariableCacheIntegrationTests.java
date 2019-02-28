@@ -1,5 +1,10 @@
 package inaugural.soliloquy.common.test.integrationtests;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.CollectionFactory;
 import inaugural.soliloquy.common.MapFactory;
 import inaugural.soliloquy.common.PairFactory;
@@ -11,9 +16,6 @@ import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerH
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringsHandler;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 import soliloquy.common.specs.IPairFactory;
@@ -22,7 +24,7 @@ import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.IPersistentVariable;
 import soliloquy.common.specs.IPersistentVariableFactory;
 
-public class PersistentVariableCacheIntegrationTests extends TestCase {
+public class PersistentVariableCacheIntegrationTests {
 	private ICollectionFactory _collectionFactory;
 	private IPairFactory _pairFactory;
 	private IPersistentVariableFactory _persistentVariableFactory;
@@ -48,26 +50,8 @@ public class PersistentVariableCacheIntegrationTests extends TestCase {
 	private final String VARIABLE_5_VALUE_1 = "Variable5Value1";
 	private final String VARIABLE_5_VALUE_2 = "Variable5Value2";
 	private final String VARIABLE_5_VALUE_3 = "Variable5Value3";
-	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentVariableCacheIntegrationTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentVariableCacheIntegrationTests.class );
-    }
     
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_collectionFactory = new CollectionFactory();
@@ -105,7 +89,8 @@ public class PersistentVariableCacheIntegrationTests extends TestCase {
     	_variable5Value.add("Variable5Value2");
     	_variable5Value.add("Variable5Value3");
     }
-    
+
+    @Test
     public void testWrite()
     {
     	String expectedValue = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"123,456,789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"Variable5Value1\\u001fVariable5Value2\\u001fVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
@@ -126,7 +111,8 @@ public class PersistentVariableCacheIntegrationTests extends TestCase {
     	
     	assertTrue(expectedValue.equals(writtenValue));
     }
-    
+
+    @Test
     public void testRead()
     {
     	String valueToRead = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"123,456,789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"Variable5Value1\\u001fVariable5Value2\\u001fVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";

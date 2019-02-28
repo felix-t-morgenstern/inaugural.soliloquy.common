@@ -1,42 +1,28 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-public class PersistentStringHandlerTests extends TestCase {
+public class PersistentStringHandlerTests {
 	private PersistentStringHandler persistentStringHandler;
-	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentStringHandlerTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentStringHandlerTests.class );
-    }
     
-	@Override
+	@BeforeAll
     protected void setUp() throws Exception
     {
     	persistentStringHandler = new PersistentStringHandler();
     }
-    
+
+	@Test
     public void testRead()
     {
     	assertTrue(persistentStringHandler.read("This Value!").equals("This Value!"));
     }
-	
+
+	@Test
 	public void testReadNull()
 	{
 		try
@@ -53,17 +39,20 @@ public class PersistentStringHandlerTests extends TestCase {
 			assertTrue(false);
 		}
 	}
-    
+
+	@Test
     public void testWrite()
     {
     	assertTrue(persistentStringHandler.write("This Value!").equals("This Value!"));
     }
-	
+
+	@Test
 	public void testGetArchetype()
 	{
 		assertTrue(persistentStringHandler.getArchetype() != null);
 	}
-	
+
+	@Test
 	public void testGetInterfaceName()
 	{
 		assertTrue(persistentStringHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.String>"));

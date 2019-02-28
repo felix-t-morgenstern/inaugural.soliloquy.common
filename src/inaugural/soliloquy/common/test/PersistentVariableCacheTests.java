@@ -1,12 +1,14 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PersistentVariableCache;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
@@ -19,7 +21,7 @@ import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.IPersistentVariable;
 import soliloquy.common.specs.IPersistentVariableFactory;
 
-public class PersistentVariableCacheTests extends TestCase {
+public class PersistentVariableCacheTests {
 	private PersistentVariableCache _persistentVariableCache;
 	
 	private static String _persistentValuesHandlerDataRead;
@@ -32,25 +34,7 @@ public class PersistentVariableCacheTests extends TestCase {
 	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public PersistentVariableCacheTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( PersistentVariableCacheTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	// PairFactory and archetype not necessary for test suite
@@ -61,6 +45,7 @@ public class PersistentVariableCacheTests extends TestCase {
     	_persistentVariableFactoryValuesWritten = new HashMap<String,Object>();
     }
     
+    @Test
     public void testPut()
     {
     	IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
@@ -70,7 +55,8 @@ public class PersistentVariableCacheTests extends TestCase {
     	assertTrue(_persistentVariableCache.size() == 1);
     	assertTrue(_persistentVariableCache.get("variable1").getValue().equals("value1"));
     }
-    
+
+    @Test
     public void testPutWithInvalidName()
     {
     	try
@@ -88,7 +74,8 @@ public class PersistentVariableCacheTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @Test
     public void testPutWithNullOrEmptyParams()
     {
     	try
@@ -149,7 +136,8 @@ public class PersistentVariableCacheTests extends TestCase {
     		assertTrue(false);
     	}
     }
-    
+
+    @Test
     public void testRead()
     {
     	String jankyInput = "name1,value1;name2,value2;name3,value3";
@@ -194,9 +182,8 @@ public class PersistentVariableCacheTests extends TestCase {
     	assertTrue(_persistentVariableCache.get("name3").getValue().equals("value3"));
     	assertTrue(_persistentVariableCache.get("name4").getValue().equals("newValue4"));
     }
-    
-    
-    
+
+    @Test
     public void testWrite()
     {
     	IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");

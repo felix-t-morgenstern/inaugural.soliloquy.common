@@ -1,5 +1,10 @@
 package inaugural.soliloquy.common.test.integrationtests;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import inaugural.soliloquy.common.CollectionFactory;
 import inaugural.soliloquy.common.GenericParamsSetFactory;
 import inaugural.soliloquy.common.MapFactory;
@@ -12,9 +17,6 @@ import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerH
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringsHandler;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 import soliloquy.common.specs.IGenericParamsSet;
@@ -28,7 +30,7 @@ import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingFactory;
 import soliloquy.common.specs.ISettingsRepo;
 
-public class SettingsRepoIntegrationTests extends TestCase {
+public class SettingsRepoIntegrationTests {
 	private ISettingsRepo _settingsRepo;
 	
 	private ICollectionFactory _collectionFactory;
@@ -113,25 +115,7 @@ public class SettingsRepoIntegrationTests extends TestCase {
 	@SuppressWarnings("rawtypes")
 	private ISetting _setting5;
 	
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public SettingsRepoIntegrationTests( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( SettingsRepoIntegrationTests.class );
-    }
-    
-    @Override
+    @BeforeEach
     protected void setUp() throws Exception
     {
     	_collectionFactory = new CollectionFactory();
@@ -201,7 +185,8 @@ public class SettingsRepoIntegrationTests extends TestCase {
 		_settingsRepo.addEntity(_setting4, SETTING_4_ORDER, SETTING_4_GROUP_ID);
 		_settingsRepo.addEntity(_setting5, SETTING_5_ORDER, SETTING_5_GROUP_ID);
     }
-    
+
+	@Test
     public void testWrite()
     {
     	String expectedValue = "[{\"typeName\":\"java.lang.Integer\",\"name\":\"Setting2Id\",\"value\":\"456\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Setting3Id\",\"value\":\"123,456,789\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Setting5Id\",\"value\":\"Value1\\u001fValue2\\u001fValue3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Setting4Id\",\"value\":\"Setting4Value\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Setting1Id\",\"value\":\"true\"}]";
@@ -210,7 +195,8 @@ public class SettingsRepoIntegrationTests extends TestCase {
 
     	assertTrue(expectedValue.equals(writtenSettingsRepo));
     }
-    
+
+	@Test
     @SuppressWarnings("unchecked")
 	public void testRead()
     {
