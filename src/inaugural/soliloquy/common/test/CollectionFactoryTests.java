@@ -4,16 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import inaugural.soliloquy.common.CollectionFactory;
 import soliloquy.common.specs.ICollection;
 
 public class CollectionFactoryTests {
 	private CollectionFactory _collectionFactory;
 
-	private String STRING1 = "STRING1";
-	private String STRING2 = "STRING2";
-	private String STRING3 = "STRING3";
+	private String _string1 = "STRING1";
+	private String _string2 = "STRING2";
+	private String _string3 = "STRING3";
 
     @BeforeEach
     protected void setUp() throws Exception
@@ -53,11 +52,11 @@ public class CollectionFactoryTests {
     @Test
     public void testMakeFromArray()
     {
-    	ICollection<String> newCollection = _collectionFactory.make(new String[] {STRING1, STRING2, STRING3}, "");
+    	ICollection<String> newCollection = _collectionFactory.make(new String[] {_string1, _string2, _string3}, "");
     	
     	assertTrue(newCollection.size() == 3);
-    	assertTrue(newCollection.get(0) == STRING1);
-    	assertTrue(newCollection.get(1) == STRING2);
-    	assertTrue(newCollection.get(2) == STRING3);
+    	assertTrue(newCollection.get(0) == _string1);
+    	assertTrue(newCollection.get(1) == _string2);
+    	assertTrue(newCollection.get(2) == _string2);
     }
 }

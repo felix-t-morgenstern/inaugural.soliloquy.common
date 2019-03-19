@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import inaugural.soliloquy.common.GenericParamsSet;
 import inaugural.soliloquy.common.test.stubs.GenericParamsSetPersistentValuesHandlerStub;
 import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
@@ -34,8 +33,7 @@ public class GenericParamsSetTests {
 	
     @SuppressWarnings("unchecked")
 	@BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_mapIntMock = (IMap<String,Integer>) mock(IMap.class);
     	when(_mapIntMock.get("String")).thenReturn(123);
     	_mapIntMock2 = (IMap<String,Integer>) mock(IMap.class);
@@ -43,12 +41,12 @@ public class GenericParamsSetTests {
     	_mapBoolMock = (IMap<String,Boolean>) mock(IMap.class);
     	when(_mapBoolMock.get("String")).thenReturn(true);
     	
-    	_genericParamsSet = new GenericParamsSet(new GenericParamsSetPersistentValuesHandlerStub(), MAP_FACTORY);
+    	_genericParamsSet = new GenericParamsSet(new GenericParamsSetPersistentValuesHandlerStub(),
+    			MAP_FACTORY);
     }
 
     @Test
-    public void testAddAndGetParamAndParamExists()
-    {
+    public void testAddAndGetParamAndParamExists() {
     	assertTrue(_genericParamsSet.getParam(Integer.class.getCanonicalName(), INT_PARAM_1_NAME) == null);
     	assertTrue(!_genericParamsSet.paramExists(Integer.class.getCanonicalName(), INT_PARAM_1_NAME));
     	
@@ -59,44 +57,31 @@ public class GenericParamsSetTests {
     }
 
     @Test
-    public void testAddParamWithNullValue()
-    {
-    	try
-    	{
+    public void testAddParamWithNullValue() {
+    	try {
     		_genericParamsSet.addParam(INT_PARAM_1_NAME, null);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testAddParamWithNullArchetype()
-    {
-    	try
-    	{
+    public void testAddParamWithNullArchetype() {
+    	try {
     		_genericParamsSet.addParam(INT_PARAM_1_NAME, INT_PARAM_1_VALUE, null);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testRemoveParam()
-    {
+    public void testRemoveParam() {
     	assertTrue(!_genericParamsSet.removeParam(Integer.class.getCanonicalName(), INT_PARAM_1_NAME));
     	_genericParamsSet.addParam(INT_PARAM_1_NAME, INT_PARAM_1_VALUE);
     	assertTrue(_genericParamsSet.paramExists(Integer.class.getCanonicalName(), INT_PARAM_1_NAME));
@@ -106,59 +91,44 @@ public class GenericParamsSetTests {
     }
 
     @Test
-    public void testAddParamsSet()
-    {
+    public void testAddParamsSet() {
     	assertTrue(_genericParamsSet.getParamsSet(Integer.class.getCanonicalName()) == null);
     	_genericParamsSet.addParamsSet(_mapIntMock, 0);
     	assertTrue((IMap<String,Integer>)_genericParamsSet.<Integer>getParamsSet(Integer.class.getCanonicalName()) == _mapIntMock);
     }
 
     @Test
-    public void testAddNullParamsSet()
-    {
-    	try
-    	{
+    public void testAddNullParamsSet() {
+    	try {
     		_genericParamsSet.addParamsSet(null, 0);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testAddParamsSetWithNullArchetype()
-    {
-    	try
-    	{
+    public void testAddParamsSetWithNullArchetype() {
+    	try {
     		_genericParamsSet.addParamsSet(_mapIntMock, null);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testGetNullParamsSet()
-    {
+    public void testGetNullParamsSet() {
     	IMap<String,Integer> paramsSet = _genericParamsSet.getParamsSet(Integer.class.getCanonicalName());
     	assertTrue(paramsSet == null);
     }
 
     @Test
-    public void testAddThenGetParamsSet()
-    {
+    public void testAddThenGetParamsSet() {
     	assertTrue(_genericParamsSet.getParamsSet(Integer.class.getCanonicalName()) == null);
     	_genericParamsSet.addParamsSet(_mapIntMock, 0);
     	IMap<String,Integer> paramsSet = _genericParamsSet.getParamsSet(Integer.class.getCanonicalName());
@@ -167,27 +137,20 @@ public class GenericParamsSetTests {
     }
 
     @Test
-    public void testAddParamsSetTwice()
-    {
-    	try
-    	{
+    public void testAddParamsSetTwice() {
+    	try {
     		_genericParamsSet.addParamsSet(_mapIntMock, 0);
     		_genericParamsSet.addParamsSet(_mapIntMock2, 0);
     		assertTrue(false);
-    	}
-    	catch(UnsupportedOperationException e)
-    	{
+    	} catch(UnsupportedOperationException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testParamTypes()
-    {
+    public void testParamTypes() {
     	ICollection<String> paramTypes = _genericParamsSet.paramTypes();
     	assertTrue(paramTypes.isEmpty());
     	
@@ -202,8 +165,7 @@ public class GenericParamsSetTests {
     }
 
     @Test
-    public void testMakeClone()
-    {
+    public void testMakeClone() {
     	_genericParamsSet.addParam("Int_Param_1",1);
     	_genericParamsSet.addParam("Int_Param_2",2);
     	_genericParamsSet.addParam("Bool_Param_1",true);
@@ -225,21 +187,15 @@ public class GenericParamsSetTests {
     }
 
     @Test
-    public void testRead()
-    {
+    public void testRead() {
     	assertTrue(_genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue") != "This is just some data");
     	_genericParamsSet.read("This is just some data", false);
-    	try
-    	{
+    	try {
         	_genericParamsSet.read("This is just some data", false);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     	assertTrue(_genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue") == "This is just some data");
@@ -248,8 +204,7 @@ public class GenericParamsSetTests {
     }
 
     @Test
-    public void testWrite()
-    {
+    public void testWrite() {
     	assertTrue(_genericParamsSet.write() == "");
 
     	_genericParamsSet.addParam(INT_PARAM_1_NAME, INT_PARAM_1_VALUE);

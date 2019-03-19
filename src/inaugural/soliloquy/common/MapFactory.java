@@ -14,8 +14,12 @@ public class MapFactory implements IMapFactory {
 	
 	public <K, V> IMap<K,V> make(K archetype1, V archetype2)
 	{
-		if (archetype1 == null) throw new IllegalArgumentException("archetype1 is null");
-		if (archetype2 == null) throw new IllegalArgumentException("archetype2 is null");
+		if (archetype1 == null) {
+			throw new IllegalArgumentException("archetype1 is null");
+		}
+		if (archetype2 == null) {
+			throw new IllegalArgumentException("archetype2 is null");
+		}
 		return new Map<K,V>(_pairFactory, archetype1, archetype2);
 	}
 

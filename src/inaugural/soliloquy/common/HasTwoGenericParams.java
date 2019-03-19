@@ -3,15 +3,24 @@ package inaugural.soliloquy.common;
 import soliloquy.common.specs.IHasTwoGenericParams;
 import soliloquy.common.specs.ISoliloquyClass;
 
-public abstract class HasTwoGenericParams<P1,P2> extends HasGenericParams implements IHasTwoGenericParams<P1,P2> {	
+public abstract class HasTwoGenericParams<P1,P2> extends HasGenericParams implements IHasTwoGenericParams<P1,P2> {
+	private String _parameterizedClassName;
+	
 	@Override
 	public String getInterfaceName() {
+		if (_parameterizedClassName != null)
+		{
+			return _parameterizedClassName;
+		}
+		
 		String innerClassName_1;
 		String innerClassName_2;
 		
 		if (getFirstArchetype() instanceof ISoliloquyClass)
 		{
-			if (getFirstArchetype() == null) throw new IllegalStateException("Archetype of a generic type must not be null (first param)");
+			if (getFirstArchetype() == null) {
+				throw new IllegalStateException("Archetype of a generic type must not be null (first param)");
+			}
 			innerClassName_1 = ((ISoliloquyClass) getFirstArchetype()).getInterfaceName();
 		}
 		else
@@ -20,7 +29,9 @@ public abstract class HasTwoGenericParams<P1,P2> extends HasGenericParams implem
 		}
 		if (getSecondArchetype() instanceof ISoliloquyClass)
 		{
-			if (getSecondArchetype() == null) throw new IllegalStateException("Archetype of a generic type must not be null (second param)");
+			if (getSecondArchetype() == null) {
+				throw new IllegalStateException("Archetype of a generic type must not be null (second param)");
+			}
 			innerClassName_2 = ((ISoliloquyClass) getSecondArchetype()).getInterfaceName();
 		}
 		else
@@ -28,7 +39,8 @@ public abstract class HasTwoGenericParams<P1,P2> extends HasGenericParams implem
 			innerClassName_2 = getSecondArchetype().getClass().getCanonicalName();
 		}
 		
-		return getUnparameterizedInterfaceName() + "<" + innerClassName_1 + "," + innerClassName_2 + ">";
+		return _parameterizedClassName = getUnparameterizedInterfaceName() +
+				"<" + innerClassName_1 + "," + innerClassName_2 + ">";
 	}
 
 }

@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import inaugural.soliloquy.common.GenericParamsSet;
 import inaugural.soliloquy.common.GenericParamsSetFactory;
 import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
@@ -23,8 +22,7 @@ public class GenericParamsSetFactoryTests {
 	private static final String PERSISTENT_VARIABLE_WRITE_VALUE = "GenericString";
 
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_persistentValuesHandlerMock = mock(IPersistentValuesHandler.class);
     	when(_persistentValuesHandlerMock.writeValues(any())).thenReturn(PERSISTENT_VARIABLE_WRITE_VALUE);
     	when(_persistentValuesHandlerMock.makePersistentValueToWrite(any(),any())).thenReturn(null);
@@ -34,8 +32,7 @@ public class GenericParamsSetFactoryTests {
     }
 
     @Test
-    public void testMake()
-    {
+    public void testMake() {
     	IGenericParamsSet genericParamsSet = _genericParamsSetFactory.make();
     	assertTrue(genericParamsSet instanceof GenericParamsSet);
     	

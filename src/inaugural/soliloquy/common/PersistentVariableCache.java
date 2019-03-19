@@ -2,7 +2,6 @@ package inaugural.soliloquy.common;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
@@ -47,10 +46,12 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 	public String write() throws IllegalArgumentException
 	{
 		IPersistentValueToWrite collectionArchetype = new PersistentValueToWrite("", "");
-		ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = COLLECTION_FACTORY.make(collectionArchetype);
+		ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = COLLECTION_FACTORY
+				.make(collectionArchetype);
 		for (Entry<String, IPersistentVariable> entry : _map.entrySet())
 		{
-			persistentValuesToWrite.add(new PersistentValueToWrite(entry.getValue().getName(), entry.getValue().getValue()));
+			persistentValuesToWrite.add(new PersistentValueToWrite(entry.getValue().getName(),
+					entry.getValue().getValue()));
 		}
 		return PERSISTENT_VALUES_HANDLER.writeValues(persistentValuesToWrite);
 	}
@@ -146,7 +147,8 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 		private final HashMap<String,IPersistentVariable> MAP;
 		private final IPersistentVariableFactory PERSISTENT_VARIABLE_FACTORY;
 		
-		private ProcessReadValueAction(HashMap<String,IPersistentVariable> map, IPersistentVariableFactory persistentVariableFactory)
+		private ProcessReadValueAction(HashMap<String,IPersistentVariable> map,
+				IPersistentVariableFactory persistentVariableFactory)
 		{
 			MAP = map;
 			PERSISTENT_VARIABLE_FACTORY = persistentVariableFactory;
@@ -172,12 +174,14 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 
 		@SuppressWarnings("rawtypes")
 		@Override
-		public void run(IPair<IPersistentValueToWrite<?>, Boolean> input) throws IllegalArgumentException {
+		public void run(IPair<IPersistentValueToWrite<?>, Boolean> input)
+				throws IllegalArgumentException {
 			boolean overridePreviousData = input.getItem2();
 			IPersistentValueToWrite inputValue = input.getItem1();
 			if (overridePreviousData || !MAP.containsKey(inputValue.name()))
 			{
-				IPersistentVariable persistentVariable = PERSISTENT_VARIABLE_FACTORY.make(inputValue.name(), inputValue.value());
+				IPersistentVariable persistentVariable = PERSISTENT_VARIABLE_FACTORY
+						.make(inputValue.name(), inputValue.value());
 				MAP.put(inputValue.name(), persistentVariable);
 			}
 		}

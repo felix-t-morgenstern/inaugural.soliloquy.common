@@ -3,7 +3,6 @@ package inaugural.soliloquy.common;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IFunction;
 import soliloquy.common.specs.IMap;

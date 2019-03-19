@@ -3,7 +3,6 @@ package inaugural.soliloquy.common;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
-
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
@@ -30,8 +29,8 @@ public class SettingsRepo implements ISettingsRepo {
 	private final ISetting SETTING_ARCHETYPE;
 	
 	@SuppressWarnings("rawtypes")
-	public SettingsRepo(ICollectionFactory collectionFactory, IPairFactory pairFactory, IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype)
-	{
+	public SettingsRepo(ICollectionFactory collectionFactory, IPairFactory pairFactory,
+			IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype) {
 		ID = null;
 		ITEMS = new HashMap<Integer,SettingsRepoItem>();
 		
@@ -42,10 +41,9 @@ public class SettingsRepo implements ISettingsRepo {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public SettingsRepo(String id, ICollectionFactory collectionFactory, IPairFactory pairFactory, IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype)
-	{
-		if (id == null || id.equals(""))
-		{
+	public SettingsRepo(String id, ICollectionFactory collectionFactory, IPairFactory pairFactory,
+			IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype) {
+		if (id == null || id.equals("")) {
 			throw new IllegalArgumentException("SettingsRepo(String, IPersistentValuesHandler, IGame, ILogger) called with null or empty id");
 		}
 		ID = id;
@@ -65,19 +63,17 @@ public class SettingsRepo implements ISettingsRepo {
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ICollection<IEntityGroupItem<ISetting>> getAllGrouped()
-	{
-		ICollection<IEntityGroupItem<ISetting>> allGrouped = COLLECTION_FACTORY.make(new SettingsRepoItem(SETTING_ARCHETYPE, SETTING_ARCHETYPE));
+	public ICollection<IEntityGroupItem<ISetting>> getAllGrouped() {
+		ICollection<IEntityGroupItem<ISetting>> allGrouped = COLLECTION_FACTORY
+				.make(new SettingsRepoItem(SETTING_ARCHETYPE, SETTING_ARCHETYPE));
 		Set<Integer> keysSet = ITEMS.keySet();
 		int[] keysArray = new int[keysSet.size()];
 		int cursor = 0;
-		for(Integer key : keysSet)
-		{
+		for(Integer key : keysSet) {
 			keysArray[cursor++] = key;
 		}
 		Arrays.sort(keysArray);
-		for(cursor = 0; cursor < keysArray.length; cursor++)
-		{
+		for(cursor = 0; cursor < keysArray.length; cursor++) {
 			allGrouped.add(getItemByOrder(keysArray[cursor]));
 		}
 		return allGrouped;
@@ -85,8 +81,7 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public ICollection<ISetting> getAllUngrouped()
-	{
+	public ICollection<ISetting> getAllUngrouped() {
 		ICollection<ISetting> allSettingsUngrouped = COLLECTION_FACTORY.make(SETTING_ARCHETYPE);
 		addSettingsRecursively(allSettingsUngrouped);
 		return allSettingsUngrouped;
@@ -94,8 +89,7 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public IEntityGroupItem<ISetting> getItemByOrder(int order) throws IllegalArgumentException
-	{
+	public IEntityGroupItem<ISetting> getItemByOrder(int order) throws IllegalArgumentException {
 		IEntityGroupItem<ISetting> item = ITEMS.get(order);
 		if (item == null)
 		{
@@ -106,31 +100,27 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException
-	{
+	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException {
 		PERSISTENT_VALUES_HANDLER.readValues(data, new InsertSettingAction(this), true);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public String write() throws IllegalArgumentException
-	{
+	public String write() throws IllegalArgumentException {
 		IPersistentValueToWrite collectionArchetype = new SettingToProcess("", "");
-		ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = COLLECTION_FACTORY.make(collectionArchetype);
+		ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite =
+				COLLECTION_FACTORY.make(collectionArchetype);
 		populatePersistentValuesToWriteRecursively(persistentValuesToWrite, true);
 		return PERSISTENT_VALUES_HANDLER.writeValues(persistentValuesToWrite);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public <V> ISetting<V> getSetting(String settingId) throws IllegalArgumentException
-	{
-		if (settingId == null)
-		{
+	public <V> ISetting<V> getSetting(String settingId) throws IllegalArgumentException	{
+		if (settingId == null) {
 			throw new IllegalArgumentException("SettingsRepo.getSetting: settingId cannot be null");
 		}
-		if (settingId.equals(""))
-		{
+		if (settingId.equals("")) {
 			throw new IllegalArgumentException("SettingsRepo.getSetting: settingId cannot be blank");
 		}
 		ISetting setting = getSettingRecursively(settingId);
@@ -138,22 +128,16 @@ public class SettingsRepo implements ISettingsRepo {
 	}
 	
 	@Override
-	public ISettingsRepo getSubgrouping(String groupId)
-	{
-		for (SettingsRepoItem settingsRepoItem : ITEMS.values())
-		{
-			if (settingsRepoItem.isGroup())
-			{
+	public ISettingsRepo getSubgrouping(String groupId) {
+		for (SettingsRepoItem settingsRepoItem : ITEMS.values()) {
+			if (settingsRepoItem.isGroup()) {
 				SettingsRepo settingsRepo = (SettingsRepo) settingsRepoItem.group();
-				if (settingsRepo.id().equals(groupId))
-				{
+				if (settingsRepo.id().equals(groupId)) {
 					return settingsRepo;
 				}
-				else
-				{
+				else {
 					ISettingsRepo childrenResult = settingsRepo.getSubgrouping(groupId);
-					if (childrenResult != null)
-					{
+					if (childrenResult != null) {
 						return childrenResult;
 					}
 				}
@@ -167,48 +151,44 @@ public class SettingsRepo implements ISettingsRepo {
 	public <V> void setSetting(String settingId, V value) throws IllegalArgumentException
 	{
 		ISetting<V> setting = (ISetting<V>) getSetting(settingId);
-		if (setting == null)
-		{
-			throw new IllegalArgumentException("SettingsRepo.setSetting: setting with id = " + settingId + " not found");
+		if (setting == null) {
+			throw new IllegalArgumentException("SettingsRepo.setSetting: setting with id = "
+					+ settingId + " not found");
 		}
 		setting.setValue(value);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void addEntity(ISetting setting, int order, String groupId) throws IllegalArgumentException
-	{
-		if (getSettingRecursively(setting.id()) != null)
-		{
-			throw new IllegalArgumentException("Setting with Id of " + setting.id() + " already present in SettingsRepo");
+	public void addEntity(ISetting setting, int order, String groupId) throws IllegalArgumentException {
+		if (getSettingRecursively(setting.id()) != null) {
+			throw new IllegalArgumentException("Setting with Id of " + setting.id()
+					+ " already present in SettingsRepo");
 		}
 		SettingsRepo targetedGrouping = this;
-		if (groupId != null && !groupId.equals(""))
-		{
+		if (groupId != null && !groupId.equals("")) {
 			targetedGrouping = (SettingsRepo) getSubgrouping(groupId);
-			if (targetedGrouping == null)
-			{
+			if (targetedGrouping == null) {
 				throw new IllegalArgumentException("Group with id = " + groupId + " not found");
 			}
 		}
-		if (targetedGrouping.ITEMS.get(order) != null)
-		{
+		if (targetedGrouping.ITEMS.get(order) != null) {
 			String group = "top-level grouping";
 			if (groupId == null || groupId.equals(""))
 			{
 				group = "group " + groupId;
 			}
-			throw new IllegalArgumentException("Item with order of " + order + " already present in " + group);
+			throw new IllegalArgumentException("Item with order of " + order
+					+ " already present in " + group);
 		}
-		else
-		{
+		else {
 			targetedGrouping.ITEMS.put(order, new SettingsRepoItem(setting, setting));
 		}
 	}
 
 	@Override
-	public void newSubgrouping(int order, String groupId, String parentGroupId) throws IllegalArgumentException
-	{
+	public void newSubgrouping(int order, String groupId, String parentGroupId)
+			throws IllegalArgumentException {
 		SettingsRepo targetParentGrouping;
 		if (parentGroupId == null || parentGroupId.equals(""))
 		{
@@ -484,12 +464,10 @@ public class SettingsRepo implements ISettingsRepo {
 		}
 	}
 	
-	private class InsertSettingAction<V> implements IAction<IPair<IPersistentValueToWrite<V>,Boolean>>
-	{
+	private class InsertSettingAction<V> implements IAction<IPair<IPersistentValueToWrite<V>,Boolean>> {
 		private final SettingsRepo SETTINGS_REPO;
 		
-		private InsertSettingAction(SettingsRepo settingsRepo)
-		{
+		private InsertSettingAction(SettingsRepo settingsRepo) {
 			SETTINGS_REPO = settingsRepo;
 		}
 

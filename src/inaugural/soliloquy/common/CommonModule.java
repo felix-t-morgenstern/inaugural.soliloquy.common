@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common;
 
 import com.google.inject.AbstractModule;
-
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
@@ -31,8 +30,7 @@ public class CommonModule extends AbstractModule {
 	private ISettingFactory _settingFactory;
 	private ISettingsRepo _settingsRepo;
 	
-	public CommonModule()
-	{
+	public CommonModule() {
 		_collectionFactory = new CollectionFactory();
 		_coordinateFactory = new CoordinateFactory();
 		_entityUuidFactory = new EntityUuidFactory();
@@ -45,7 +43,8 @@ public class CommonModule extends AbstractModule {
 		
 		_genericParamsSetFactory = new GenericParamsSetFactory(_persistentValuesHandler, _mapFactory);
 		
-		ISetting<String> settingArchetype = _settingFactory.make("archetypeId", "archetypeName", "archetypeValue", _genericParamsSetFactory.make());
+		ISetting<String> settingArchetype =
+				_settingFactory.make("archetypeId", "archetypeName", "archetypeValue", _genericParamsSetFactory.make());
 		_settingsRepo = new SettingsRepo(_collectionFactory, _pairFactory, _persistentValuesHandler, settingArchetype);
 
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentBooleanHandler());

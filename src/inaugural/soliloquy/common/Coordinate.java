@@ -4,13 +4,13 @@ import soliloquy.common.specs.ICoordinate;
 
 public class Coordinate implements ICoordinate {
 	
-	private int x;
+	private int _x;
 	
-	private int y;
+	private int _y;
 	
 	public Coordinate(int x, int y) {
-		this.x = x;
-		this.y = y;
+		_x = x;
+		_y = y;
 	}
 
 	@Override
@@ -25,26 +25,25 @@ public class Coordinate implements ICoordinate {
 
 	@Override
 	public int getX() {
-		return x;
+		return _x;
 	}
 
 	@Override
 	public void setX(int x) {
-		this.x = x;
+		_x = x;
 	}
 
 	@Override
 	public int getY() {
-		return y;
+		return _y;
 	}
 
 	@Override
 	public void setY(int y) {
-		this.y = y;
+		_y = y;
 	}
 	
-	private int coordinateCount(ICoordinate coordinate)
-	{
+	private int coordinateCount(ICoordinate coordinate)	{
 		int digitsSum = (coordinate.getX() + coordinate.getY());
 		int coordinatesHitherto = (digitsSum * (digitsSum + 1))/2;
 		return 1 + coordinatesHitherto + coordinate.getX();

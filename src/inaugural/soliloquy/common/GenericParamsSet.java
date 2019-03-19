@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common;
 
 import java.util.HashMap;
-
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IGenericParamsSet;
@@ -20,27 +19,28 @@ public class GenericParamsSet implements IGenericParamsSet {
 	private IMapFactory _mapFactory;
 	private ProcessReadValue _processReadValue;
 	
-	public GenericParamsSet(IPersistentValuesHandler persistentValuesHandler, IMapFactory mapFactory)
-	{
+	public GenericParamsSet(IPersistentValuesHandler persistentValuesHandler, IMapFactory mapFactory) {
 		_persistentValuesHandler = persistentValuesHandler;
 		_mapFactory = mapFactory;
 		_processReadValue = new ProcessReadValue(this);
 	}
 	
-	public <T> void addParam(String name, T value) throws IllegalArgumentException
-	{
-		if (value == null) throw new IllegalArgumentException("value must not be null");
+	public <T> void addParam(String name, T value) throws IllegalArgumentException {
+		if (value == null) {
+			throw new IllegalArgumentException("value must not be null");
+		}
 		addParam(name, value, value);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> void addParam(String name, T value, T archetype) throws IllegalArgumentException
-	{
+	public <T> void addParam(String name, T value, T archetype) throws IllegalArgumentException {
 		if (archetype == null)
 		{
 			throw new IllegalArgumentException("archetype must not be null");
 		}
-		String paramTypeName = archetype instanceof ISoliloquyClass ? ((ISoliloquyClass) archetype).getInterfaceName() : archetype.getClass().getCanonicalName();
+		String paramTypeName = archetype instanceof ISoliloquyClass ?
+				((ISoliloquyClass) archetype).getInterfaceName() :
+					archetype.getClass().getCanonicalName();
 		if (getParamsSet(paramTypeName) == null)
 		{
 			addParamsSet(_mapFactory.make("", archetype), archetype);
@@ -49,11 +49,21 @@ public class GenericParamsSet implements IGenericParamsSet {
 	}
 
 	@Override
-	public <T> void addParamsSet(IMap<String, T> paramsSet, T paramArchetype) throws IllegalArgumentException, UnsupportedOperationException {
-		if (paramsSet == null) throw new IllegalArgumentException("Cannot add null paramsSet");
-		if (paramArchetype == null) throw new IllegalArgumentException("paramArchetype cannot be null");
-		String paramTypeName = paramArchetype instanceof ISoliloquyClass ? ((ISoliloquyClass) paramArchetype).getInterfaceName() : paramArchetype.getClass().getCanonicalName();
-		if (_paramsSetsRepository.containsKey(paramTypeName)) throw new UnsupportedOperationException("Params set of type " + paramTypeName + " already exists in this params set");
+	public <T> void addParamsSet(IMap<String, T> paramsSet, T paramArchetype)
+			throws IllegalArgumentException, UnsupportedOperationException {
+		if (paramsSet == null) {
+			throw new IllegalArgumentException("Cannot add null paramsSet");
+		}
+		if (paramArchetype == null) {
+			throw new IllegalArgumentException("paramArchetype cannot be null");
+		}
+		String paramTypeName = paramArchetype instanceof ISoliloquyClass ?
+				((ISoliloquyClass) paramArchetype).getInterfaceName() :
+					paramArchetype.getClass().getCanonicalName();
+		if (_paramsSetsRepository.containsKey(paramTypeName)) {
+			throw new UnsupportedOperationException("Params set of type "
+					+ paramTypeName + " already exists in this params set");
+		}
 		_paramsSetsRepository.put(paramTypeName, paramsSet);
 	}
 
@@ -61,12 +71,15 @@ public class GenericParamsSet implements IGenericParamsSet {
 	public <T> T getParam(String paramTypeName, String paramName) {
 		@SuppressWarnings("unchecked")
 		IMap<String,T> repository = (IMap<String, T>) _paramsSetsRepository.get(paramTypeName);
-		if (repository == null) return null;
+		if (repository == null) {
+			return null;
+		}
 		return repository.get(paramName);
 	}
 
 	@Override
-	public <T> IMap<String, T> getParamsSet(String paramTypeName) throws IllegalArgumentException, IllegalStateException {
+	public <T> IMap<String, T> getParamsSet(String paramTypeName)
+			throws IllegalArgumentException, IllegalStateException {
 		@SuppressWarnings("unchecked")
 		IMap<String, T> map = (IMap<String, T>) _paramsSetsRepository.get(paramTypeName);
 		return map;
@@ -75,7 +88,9 @@ public class GenericParamsSet implements IGenericParamsSet {
 	@Override
 	public boolean paramExists(String paramTypeName, String paramName) {
 		IMap<String,?> repository = _paramsSetsRepository.get(paramTypeName);
-		if (repository == null) return false;
+		if (repository == null) {
+			return false;
+		}
 		return repository.containsKey(paramName);
 	}
 
@@ -83,13 +98,17 @@ public class GenericParamsSet implements IGenericParamsSet {
 	public ICollection<String> paramTypes() {
 		// Class isn't parameterized, thus no archetype is needed by Collection
 		ICollection<String> paramTypeNames = new Collection<String>("");
-		for(String paramTypeName : _paramsSetsRepository.keySet()) paramTypeNames.add(paramTypeName);
+		for(String paramTypeName : _paramsSetsRepository.keySet()) {
+			paramTypeNames.add(paramTypeName);
+		}
 		return paramTypeNames;
 	}
 
 	@Override
 	public boolean removeParam(String paramTypeName, String paramName) {
-		if (getParamsSet(paramTypeName) == null) return false;
+		if (getParamsSet(paramTypeName) == null) {
+			return false;
+		}
 		return (_paramsSetsRepository.get(paramTypeName)).removeByKey(paramName) != null;
 	}
 
@@ -101,13 +120,15 @@ public class GenericParamsSet implements IGenericParamsSet {
 	@Override
 	public String write() throws IllegalArgumentException {
 		// NB: No archetype is required by PersistentValuesHandler.writeValues()
-		ICollection<IPersistentValueToWrite<?>> parameters = new Collection<IPersistentValueToWrite<?>>(null);
+		ICollection<IPersistentValueToWrite<?>> parameters =
+				new Collection<IPersistentValueToWrite<?>>(null);
 		for(String typeName : _paramsSetsRepository.keySet())
 		{
 			IMap<String,?> paramsSet = _paramsSetsRepository.get(typeName);
 			for(String name : paramsSet.getKeys())
 			{
-				parameters.add(_persistentValuesHandler.makePersistentValueToWrite(name, paramsSet.get(name)));
+				parameters.add(_persistentValuesHandler
+						.makePersistentValueToWrite(name, paramsSet.get(name)));
 			}
 		}
 		return _persistentValuesHandler.writeValues(parameters);
@@ -116,12 +137,10 @@ public class GenericParamsSet implements IGenericParamsSet {
 	@Override
 	public IGenericParamsSet makeClone() {
 		GenericParamsSet cloned = new GenericParamsSet(_persistentValuesHandler, _mapFactory);
-		
 		for(IMap<String,?> map : _paramsSetsRepository.values())
 		{
 			for(String key : map.getKeys()) cloned.addParam(key, map.get(key));
 		}
-		
 		return cloned;
 	}
 
@@ -146,8 +165,15 @@ public class GenericParamsSet implements IGenericParamsSet {
 
 		@Override
 		public void run(IPair<IPersistentValueToWrite<?>,Boolean> input) throws IllegalArgumentException {
-			if (!input.getItem2() && _genericParamsSet.paramExists(input.getItem1().typeName(), input.getItem1().name())) throw new IllegalArgumentException("Parameter " + input.getItem1().name() + ", type " + input.getItem1().typeName() + ", already exists");
-			_genericParamsSet.addParam(input.getItem1().name(), input.getItem1().value());
+			String typeName = input.getItem1().typeName();
+			String name = input.getItem1().name();
+			Object value = input.getItem1().value();
+			if (!input.getItem2() && _genericParamsSet.paramExists(typeName, name)) {
+				throw new IllegalArgumentException("Parameter "
+						+ name + ", type "
+						+ typeName + ", already exists");
+			}
+			_genericParamsSet.addParam(name, value);
 		}
 
 		@Override

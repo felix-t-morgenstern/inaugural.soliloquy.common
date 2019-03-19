@@ -5,13 +5,12 @@ import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 
-public class PersistentStringsHandler extends PersistentTypeHandler<ICollection<String>> implements IPersistentValueTypeHandler<ICollection<String>> {
+public class PersistentStringsHandler extends PersistentTypeHandler<ICollection<String>>
+	implements IPersistentValueTypeHandler<ICollection<String>> {
 	private final String DELIMITER = "\u001f";
-	
 	private final ICollectionFactory COLLECTION_FACTORY;
 	
-	public PersistentStringsHandler(ICollectionFactory collectionFactory)
-	{
+	public PersistentStringsHandler(ICollectionFactory collectionFactory) {
 		COLLECTION_FACTORY = collectionFactory;
 	}
 	
@@ -24,10 +23,13 @@ public class PersistentStringsHandler extends PersistentTypeHandler<ICollection<
 	public String write(ICollection<String> value) {
 		String result = "";
 		boolean firstItem = true;
-		for (int i = 0; i < value.size(); i++)
-		{
-			if (firstItem) firstItem = false;
-			else result += DELIMITER;
+		for (int i = 0; i < value.size(); i++) {
+			if (firstItem) {
+				firstItem = false;
+			}
+			else {
+				result += DELIMITER;
+			}
 			result += value.get(i);
 		}
 		return result;

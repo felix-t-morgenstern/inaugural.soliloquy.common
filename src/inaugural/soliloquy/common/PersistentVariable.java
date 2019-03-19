@@ -10,8 +10,7 @@ public class PersistentVariable implements IPersistentVariable {
 	
 	private Object _value;
 	
-	public PersistentVariable(String name, Object value)
-	{
+	public PersistentVariable(String name, Object value) {
 		NAME = name;
 		_value = value;
 	}
@@ -41,14 +40,13 @@ public class PersistentVariable implements IPersistentVariable {
 		return new PersistentValueToWrite<T>(NAME, typeName, (T) _value);
 	}
 	
-	private class PersistentValueToWrite<T> extends HasOneGenericParam<T> implements IPersistentValueToWrite<T> 
+	private class PersistentValueToWrite<T> extends HasOneGenericParam<T> implements IPersistentValueToWrite<T>
 	{
 		private final String NAME;
 		private final String TYPE_NAME;
 		private final T VALUE;
 		
-		private PersistentValueToWrite(String name, String typeName, T value)
-		{
+		private PersistentValueToWrite(String name, String typeName, T value) {
 			NAME = name;
 			TYPE_NAME = typeName;
 			VALUE = value;

@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import inaugural.soliloquy.common.Coordinate;
 import soliloquy.common.specs.ICoordinate;
 
@@ -13,15 +12,13 @@ public class CoordinateTests {
 	private Coordinate coordinate;
 
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	Mockito.reset();
     	coordinate = new Coordinate(0,0);
     }
 
     @Test
-    public void testGetAndSetXAndY()
-    {
+    public void testGetAndSetXAndY() {
     	coordinate.setX(123);
     	assertTrue(coordinate.getX() == 123);
     	coordinate.setY(456);
@@ -29,8 +26,7 @@ public class CoordinateTests {
     }
 
     @Test
-    public void testCompareTo()
-    {
+    public void testCompareTo() {
     	coordinate.setX(0);
     	coordinate.setY(0);
     	
@@ -52,8 +48,7 @@ public class CoordinateTests {
     }
 
     @Test
-    public void testMakeClone()
-    {
+    public void testMakeClone() {
     	coordinate.setX(123);
     	coordinate.setY(456);
     	ICoordinate cloned = coordinate.makeClone();

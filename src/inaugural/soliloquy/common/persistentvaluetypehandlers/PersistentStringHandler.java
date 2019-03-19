@@ -2,7 +2,8 @@ package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 
-public class PersistentStringHandler extends PersistentTypeHandler<String> implements IPersistentValueTypeHandler<String> {
+public class PersistentStringHandler extends PersistentTypeHandler<String>
+	implements IPersistentValueTypeHandler<String> {
 
 	@Override
 	public String read(String valueString) throws IllegalArgumentException {

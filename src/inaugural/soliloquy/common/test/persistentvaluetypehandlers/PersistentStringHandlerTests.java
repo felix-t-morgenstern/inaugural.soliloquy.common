@@ -3,6 +3,7 @@ package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
@@ -10,7 +11,7 @@ import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHa
 public class PersistentStringHandlerTests {
 	private PersistentStringHandler persistentStringHandler;
     
-	@BeforeAll
+	@BeforeEach
     protected void setUp() throws Exception
     {
     	persistentStringHandler = new PersistentStringHandler();

@@ -1,13 +1,12 @@
 package inaugural.soliloquy.common;
 
 import java.util.UUID;
-
 import soliloquy.common.specs.IEntityUuid;
 
 public class EntityUuid implements IEntityUuid {
 	private UUID _uuid;
 
-	public EntityUuid(long mostSignificantBits, long leastSignificantBits){
+	public EntityUuid(long mostSignificantBits, long leastSignificantBits) {
 		_uuid = new UUID(mostSignificantBits, leastSignificantBits);
 	}
 

@@ -9,14 +9,12 @@ public class Collection<V> extends HasOneGenericParam<V> implements ICollection<
 	private ArrayList<V> _collection;
 	private V _archetype;
 	
-	public Collection(V archetype)
-	{
+	public Collection(V archetype) {
 		_collection = new ArrayList<V>();
 		_archetype = archetype;
 	}
 	
-	public Collection(V[] items, V archetype)
-	{
+	public Collection(V[] items, V archetype) {
 		_collection = new ArrayList<V>(Arrays.asList(items));
 		_archetype = archetype;
 	}

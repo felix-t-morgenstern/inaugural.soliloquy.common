@@ -1,9 +1,7 @@
 package inaugural.soliloquy.common;
 
-import java.util.HashMap;
-
 import com.google.gson.Gson;
-
+import java.util.HashMap;
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IPair;
@@ -22,12 +20,14 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	}
 	
 	@Override
-	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler) throws IllegalArgumentException {
+	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler)
+			throws IllegalArgumentException {
 		String persistentValueType = persistentValueTypeHandler.getArchetype() instanceof ISoliloquyClass ?
 				((ISoliloquyClass) persistentValueTypeHandler.getArchetype()).getInterfaceName() :
 					persistentValueTypeHandler.getArchetype().getClass().getCanonicalName();
-		if (_persistentValueTypeHandlers.containsKey(persistentValueType))
+		if (_persistentValueTypeHandlers.containsKey(persistentValueType)){
 			throw new IllegalArgumentException("PersistentValuesHandler already has handler for " + persistentValueType);
+		}
 		_persistentValueTypeHandlers.put(persistentValueType, persistentValueTypeHandler);
 	}
 
@@ -46,30 +46,38 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	@Override
 	public ICollection<String> persistentValueTypesHandled() {
 		Collection<String> persistentValueTypesHandled = new Collection<String>(null);
-		for (String type : _persistentValueTypeHandlers.keySet()) persistentValueTypesHandled.add(type);
+		for (String type : _persistentValueTypeHandlers.keySet()) {
+			persistentValueTypesHandled.add(type);
+		}
 		return persistentValueTypesHandled;
 	}
 
 	@Override
 	public void readValues(String valuesString, IAction<IPair<IPersistentValueToWrite<?>, Boolean>> valuesProcessing,
 			boolean overridePreviousData) {
-		PersistentValueToRead[] persistentValuesToRead = new Gson().fromJson(valuesString, PersistentValueToRead[].class);
+		PersistentValueToRead[] persistentValuesToRead =
+				new Gson().fromJson(valuesString, PersistentValueToRead[].class);
 		for (IPersistentValueToRead persistentValueToRead : persistentValuesToRead)
 		{
-			IPersistentValueTypeHandler<?> persistentValueTypeHandler = getPersistentValueTypeHandler(persistentValueToRead.typeName());
+			IPersistentValueTypeHandler<?> persistentValueTypeHandler =
+					getPersistentValueTypeHandler(persistentValueToRead.typeName());
 			IPersistentValueToWrite<?> persistentValueToWrite =
-					makePersistentValueToWrite(persistentValueToRead.name(), persistentValueTypeHandler.read(persistentValueToRead.value()));
-			valuesProcessing.run(new Pair<IPersistentValueToWrite<?>, Boolean>(persistentValueToWrite, overridePreviousData));
+					makePersistentValueToWrite(persistentValueToRead.name(),
+							persistentValueTypeHandler.read(persistentValueToRead.value()));
+			valuesProcessing.run(new Pair<IPersistentValueToWrite<?>, Boolean>(persistentValueToWrite,
+					overridePreviousData));
 		}
 	}
 
 	@Override
 	public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
-		PersistentValueToRead[] persistentValuesToRead = new PersistentValueToRead[persistentValuesToProcess.size()];
+		PersistentValueToRead[] persistentValuesToRead =
+				new PersistentValueToRead[persistentValuesToProcess.size()];
 		Integer i = 0;
 		for (IPersistentValueToWrite<?> persistentValueToProcess : persistentValuesToProcess)
 		{
-			PersistentValueToRead persistentValueToRead = convertPersistentValueToWriteToPersistentValueToRead(persistentValueToProcess);
+			PersistentValueToRead persistentValueToRead =
+					convertPersistentValueToWriteToPersistentValueToRead(persistentValueToProcess);
 			persistentValuesToRead[i++] = persistentValueToRead;
 		}
 		return new Gson().toJson(persistentValuesToRead, PersistentValueToRead[].class);
@@ -108,18 +116,15 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		public String name;
 		public String value;
 		
-		public PersistentValueToRead()
-		{
-			
-		}
-		
-		public PersistentValueToRead(String typeName, String name, String value)
-		{
+		public PersistentValueToRead(String typeName, String name, String value) {
 			this.typeName = typeName;
 			this.name = name;
 			this.value = value;
 		}
 		
+		public PersistentValueToRead() {
+		}
+
 		@Override
 		public String typeName() {
 			return this.typeName;
@@ -147,8 +152,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		public String name;
 		public T value;
 		
-		public PersistentValueToWrite(String name, T value)
-		{
+		public PersistentValueToWrite(String name, T value) {
 			this.typeName = value instanceof ISoliloquyClass ?
 					((ISoliloquyClass) value).getInterfaceName() :
 						value.getClass().getCanonicalName();

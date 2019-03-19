@@ -11,8 +11,7 @@ public class PersistentIntegerHandler extends PersistentTypeHandler<Integer> imp
 
 	@Override
 	public String write(Integer value) {
-		if (value == null)
-		{
+		if (value == null) {
 			return "";
 		}
 		return value.toString();
