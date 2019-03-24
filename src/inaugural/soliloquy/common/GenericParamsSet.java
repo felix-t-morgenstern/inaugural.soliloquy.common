@@ -27,7 +27,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 	
 	public <T> void addParam(String name, T value) throws IllegalArgumentException {
 		if (value == null) {
-			throw new IllegalArgumentException("value must not be null");
+			throw new IllegalArgumentException("GenericParamsSet.addParam: value must not be null");
 		}
 		addParam(name, value, value);
 	}
@@ -35,7 +35,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 	@SuppressWarnings("unchecked")
 	public <T> void addParam(String name, T value, T archetype) throws IllegalArgumentException {
 		if (archetype == null) {
-			throw new IllegalArgumentException("archetype must not be null");
+			throw new IllegalArgumentException("GenericParamsSet.addParam: archetype must not be null");
 		}
 		String paramTypeName = archetype instanceof ISoliloquyClass ?
 				((ISoliloquyClass) archetype).getInterfaceName() :
@@ -50,16 +50,16 @@ public class GenericParamsSet implements IGenericParamsSet {
 	public <T> void addParamsSet(IMap<String, T> paramsSet, T paramArchetype)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		if (paramsSet == null) {
-			throw new IllegalArgumentException("Cannot add null paramsSet");
+			throw new IllegalArgumentException("GenericParamsSet.addParamsSet: Cannot add null paramsSet");
 		}
 		if (paramArchetype == null) {
-			throw new IllegalArgumentException("paramArchetype cannot be null");
+			throw new IllegalArgumentException("GenericParamsSet.addParamsSet: paramArchetype cannot be null");
 		}
 		String paramTypeName = paramArchetype instanceof ISoliloquyClass ?
 				((ISoliloquyClass) paramArchetype).getInterfaceName() :
 					paramArchetype.getClass().getCanonicalName();
 		if (_paramsSetsRepository.containsKey(paramTypeName)) {
-			throw new UnsupportedOperationException("Params set of type "
+			throw new UnsupportedOperationException("GenericParamsSet.addParamsSet: Params set of type "
 					+ paramTypeName + " already exists in this params set");
 		}
 		_paramsSetsRepository.put(paramTypeName, paramsSet);
@@ -153,7 +153,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 
 		@Override
 		public String id() {
-			throw new UnsupportedOperationException("GenericParamsSet.ReadValue.id accessed illegally");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
@@ -162,7 +162,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 			String name = input.getItem1().name();
 			Object value = input.getItem1().value();
 			if (!input.getItem2() && _genericParamsSet.paramExists(typeName, name)) {
-				throw new IllegalArgumentException("Parameter "
+				throw new IllegalArgumentException("ProcessReadValue.run: Parameter "
 						+ name + ", type "
 						+ typeName + ", already exists");
 			}
@@ -171,28 +171,28 @@ public class GenericParamsSet implements IGenericParamsSet {
 
 		@Override
 		public String getInterfaceName() {
-			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getInterfaceName should never be called");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public IPair<IPersistentValueToWrite<?>, Boolean> getArchetype() {
-			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getArchetype should never be called");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public String getUnparameterizedInterfaceName() {
-			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.getUnparameterizedInterfaceName should never be called");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public IGame game() {
-			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.game should never be called");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public ILogger logger() {
 			// TODO: Verify whether this method should truly be unsupported
-			throw new UnsupportedOperationException("GenericParamsSet.ProcessReadValue.game should never be called");
+			throw new UnsupportedOperationException();
 		}
 		
 	}

@@ -7,7 +7,9 @@ public class PersistentStringHandler extends PersistentTypeHandler<String>
 
 	@Override
 	public String read(String valueString) throws IllegalArgumentException {
-		if (valueString == null) throw new IllegalArgumentException("valueString cannot be null");
+		if (valueString == null) {
+			throw new IllegalArgumentException("PersistentStringHandler.read: valueString cannot be null");
+		}
 		return valueString;
 	}
 

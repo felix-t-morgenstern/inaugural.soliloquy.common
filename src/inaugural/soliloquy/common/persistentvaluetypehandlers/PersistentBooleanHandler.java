@@ -6,7 +6,9 @@ public class PersistentBooleanHandler extends PersistentTypeHandler<Boolean> imp
 
 	@Override
 	public Boolean read(String valueString) throws IllegalArgumentException {
-		if (valueString == null) throw new IllegalArgumentException("valueString cannot be null");
+		if (valueString == null) {
+			throw new IllegalArgumentException("PersistentBooleanHandler.read: valueString cannot be null");
+		}
 		return Boolean.parseBoolean(valueString);
 	}
 

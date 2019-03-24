@@ -16,7 +16,7 @@ public class PersistentIntegersHandler extends PersistentTypeHandler<ICollection
 	public ICollection<Integer> read(String valueString) {
 		ICollection<Integer> readValues = COLLECTION_FACTORY.make(0);
 		if (valueString == null) {
-			throw new IllegalArgumentException("valueString cannot be null");
+			throw new IllegalArgumentException("PersistentIntegersHandler.read: valueString cannot be null");
 		}
 		if (valueString.equals("")) {
 			return readValues;
@@ -35,8 +35,7 @@ public class PersistentIntegersHandler extends PersistentTypeHandler<ICollection
 		for(Integer value : values) {
 			if (firstValue) {
 				firstValue = false;
-			}
-			else {
+			} else {
 				writtenValue += ",";
 			}
 			writtenValue += value.toString();

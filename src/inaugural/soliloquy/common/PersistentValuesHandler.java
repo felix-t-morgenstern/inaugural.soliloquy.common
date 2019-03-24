@@ -25,7 +25,9 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 				((ISoliloquyClass) persistentValueTypeHandler.getArchetype()).getInterfaceName() :
 					persistentValueTypeHandler.getArchetype().getClass().getCanonicalName();
 		if (_persistentValueTypeHandlers.containsKey(persistentValueType)) {
-			throw new IllegalArgumentException("PersistentValuesHandler already has handler for " + persistentValueType);
+			throw new IllegalArgumentException(
+					"PersistentValuesHandler.addPersistentValueTypeHandler: already has handler for " 
+							+ persistentValueType);
 		}
 		_persistentValueTypeHandlers.put(persistentValueType, persistentValueTypeHandler);
 	}
@@ -178,7 +180,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 
 		@Override
 		public T getArchetype() {
-			throw new UnsupportedOperationException("PersistentValueToWrite.getArchetype() is not supported");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override

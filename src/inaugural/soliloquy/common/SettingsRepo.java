@@ -44,7 +44,7 @@ public class SettingsRepo implements ISettingsRepo {
 	public SettingsRepo(String id, ICollectionFactory collectionFactory, IPairFactory pairFactory,
 			IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype) {
 		if (id == null || id.equals("")) {
-			throw new IllegalArgumentException("SettingsRepo(String, IPersistentValuesHandler, IGame, ILogger) called with null or empty id");
+			throw new IllegalArgumentException("SettingsRepo: called with null or empty id");
 		}
 		ID = id;
 		ITEMS = new HashMap<Integer,SettingsRepoItem>();
@@ -91,7 +91,7 @@ public class SettingsRepo implements ISettingsRepo {
 	public IEntityGroupItem<ISetting> getItemByOrder(int order) throws IllegalArgumentException {
 		IEntityGroupItem<ISetting> item = ITEMS.get(order);
 		if (item == null) {
-			throw new IllegalArgumentException("No item found at this order");
+			throw new IllegalArgumentException("SettingsRepo.getItemByOrder: No item found at this order");
 		}
 		return item;
 	}
@@ -159,14 +159,14 @@ public class SettingsRepo implements ISettingsRepo {
 	@Override
 	public void addEntity(ISetting setting, int order, String groupId) throws IllegalArgumentException {
 		if (getSettingRecursively(setting.id()) != null) {
-			throw new IllegalArgumentException("Setting with Id of " + setting.id()
+			throw new IllegalArgumentException("SettingsRepo.addEntity: Setting with Id of " + setting.id()
 					+ " already present in SettingsRepo");
 		}
 		SettingsRepo targetedGrouping = this;
 		if (groupId != null && !groupId.equals("")) {
 			targetedGrouping = (SettingsRepo) getSubgrouping(groupId);
 			if (targetedGrouping == null) {
-				throw new IllegalArgumentException("Group with id = " + groupId + " not found");
+				throw new IllegalArgumentException("SettingsRepo.addEntity: Group with id = " + groupId + " not found");
 			}
 		}
 		if (targetedGrouping.ITEMS.get(order) != null) {
@@ -174,7 +174,7 @@ public class SettingsRepo implements ISettingsRepo {
 			if (groupId == null || groupId.equals("")) {
 				group = "group " + groupId;
 			}
-			throw new IllegalArgumentException("Item with order of " + order
+			throw new IllegalArgumentException("SettingsRepo.addEntity: Item with order of " + order
 					+ " already present in " + group);
 		}
 		else {
@@ -215,7 +215,8 @@ public class SettingsRepo implements ISettingsRepo {
 		}
 		IPair<String,Integer> groupingIdAndOrderNumber = getGroupingIdRecursively(itemId, true);
 		if (groupingIdAndOrderNumber == null) {
-			throw new IllegalArgumentException("SettingsRepo.getGrouppingId: No item with itemId of " + itemId + " found");
+			throw new IllegalArgumentException("SettingsRepo.getGrouppingId: No item with itemId of " 
+					+ itemId + " found");
 		}
 		return groupingIdAndOrderNumber;
 	}
@@ -331,7 +332,8 @@ public class SettingsRepo implements ISettingsRepo {
 		@Override
 		public boolean isGroup() {
 			if (!(SETTING == null ^ SETTINGS_REPO == null)) {
-				throw new IllegalStateException("One and only one of SETTING and SETTINGS_REPO must be non-null in SettingsRepo.SettingsRepoItem");
+				throw new IllegalStateException(
+						"SettingsRepoItem.isGroup: One and only one of SETTING and SETTINGS_REPO must be non-null in SettingsRepo.SettingsRepoItem");
 			}
 			return SETTINGS_REPO != null;
 		}
@@ -339,7 +341,7 @@ public class SettingsRepo implements ISettingsRepo {
 		@Override
 		public void initializeGroup(IEntityGroup<ISetting> group)
 				throws IllegalArgumentException, UnsupportedOperationException {
-			throw new UnsupportedOperationException("SettingsRepo.SettingsRepoItem.initializeGroup is not supported");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
@@ -349,13 +351,13 @@ public class SettingsRepo implements ISettingsRepo {
 
 		@Override
 		public void initializeEntity(ISetting entity) throws IllegalArgumentException, UnsupportedOperationException {
-			throw new UnsupportedOperationException("SettingsRepo.SettingsRepoItem.initializeEntity is not supported");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public ISetting entity() throws UnsupportedOperationException {
 			if (SETTING == null) {
-				throw new UnsupportedOperationException("Cannot call SettingsRepo.SettingsRepoItem.entity when SETTING is null");
+				throw new UnsupportedOperationException();
 			}
 			return SETTING;
 		}

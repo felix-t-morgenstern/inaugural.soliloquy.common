@@ -7,7 +7,9 @@ public class CollectionFactory implements ICollectionFactory {
 
 	@Override
 	public <T> ICollection<T> make(T archetype) {
-		if (archetype == null) throw new IllegalArgumentException("archetype is null");
+		if (archetype == null) {
+			throw new IllegalArgumentException("CollectionFactory.make: archetype is null");
+		}
 		return new Collection<T>(archetype);
 	}
 

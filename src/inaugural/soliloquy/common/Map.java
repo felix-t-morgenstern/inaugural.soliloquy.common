@@ -52,7 +52,9 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public boolean equals(ICollection<V> items) throws IllegalArgumentException {
-		if (items == null) throw new IllegalArgumentException("comparator collection cannot be null");
+		if (items == null) {
+			throw new IllegalArgumentException("Map.equals(ICollection): comparator collection cannot be null");
+		}
 		if (items.size() != _map.size()) return false;
 		for(V item : items) {
 			if (!_map.containsValue(item)) return false;
@@ -63,7 +65,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	@Override
 	public boolean equals(IMap<K, V> map) throws IllegalArgumentException {
 		if (map == null) {
-			throw new IllegalArgumentException("comparator map cannot be null");
+			throw new IllegalArgumentException("Map.equals(IMap): comparator map cannot be null");
 		}
 		if (this.size() != map.size()) {
 			return false;
@@ -79,10 +81,10 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	@Override
 	public V get(K id) throws IllegalArgumentException, IllegalStateException {
 		if (id == null) {
-			throw new IllegalArgumentException("null is an illegal Id");
+			throw new IllegalArgumentException("Map.get: null is an illegal Id");
 		}
 		if (id instanceof String && (String)id == "") {
-			throw new IllegalArgumentException("Blank string is an illegal Id");
+			throw new IllegalArgumentException("Map.get: Blank string is an illegal Id");
 		}
 		return _map.get(id);
 	}
@@ -129,10 +131,10 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	@Override
 	public void put(K key, V value) throws IllegalArgumentException {
 		if (key == null) {
-			throw new IllegalArgumentException("Key to a Map cannot be null");
+			throw new IllegalArgumentException("Map.put: Key to a Map cannot be null");
 		}
 		if (key instanceof String && (String)key == "") {
-			throw new IllegalArgumentException("Blank string is an illegal key");
+			throw new IllegalArgumentException("Map.put: Blank string is an illegal key");
 		}
 		if(_validator != null) {
 			String validationMsg = _validator.run(new Pair<K,V>(key,value));

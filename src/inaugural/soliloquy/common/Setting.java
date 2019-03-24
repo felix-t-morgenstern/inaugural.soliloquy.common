@@ -13,7 +13,7 @@ public class Setting<T> implements ISetting<T> {
 	
 	public Setting(String id, String name, T defaultValue, T archetype, IGenericParamsSet controlParams) {
 		if (archetype == null) {
-			throw new IllegalArgumentException("archetype was null");
+			throw new IllegalArgumentException("Setting: archetype was null");
 		}
 		ID = id;
 		_name = name;
@@ -64,6 +64,6 @@ public class Setting<T> implements ISetting<T> {
 
 	@Override
 	public String getUnparameterizedInterfaceName() {
-		throw new UnsupportedOperationException("Setting.getUnparameterizedInterfaceName is to never be called");
+		throw new UnsupportedOperationException("Setting.getUnparameterizedInterfaceName: This is not to be called");
 	}
 }

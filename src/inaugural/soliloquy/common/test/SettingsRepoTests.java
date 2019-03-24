@@ -571,7 +571,7 @@ public class SettingsRepoTests {
 				}
 				String[] settingFields = settingString.split(",", -1);
 				if (settingFields.length != 5) {
-					throw new IllegalArgumentException("Invalid number of Setting fields (" + settingString + ")");
+					throw new IllegalArgumentException("PersistentValuesHandlerStub.readValues: Invalid number of Setting fields (" + settingString + ")");
 				}
 				
 				String settingId = settingFields[0];

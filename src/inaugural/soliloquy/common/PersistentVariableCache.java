@@ -60,7 +60,7 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 	@Override
 	public void put(IPersistentVariable persistentVariable) throws IllegalArgumentException {
 		if (persistentVariable == null) {
-			throw new IllegalArgumentException("PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot be null");
+			throw new IllegalArgumentException("PersistentVariableCache.put: persistent variable cannot be null");
 		}
 		put(persistentVariable.getName(), persistentVariable);
 	}
@@ -68,20 +68,16 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 	@Override
 	public void put(String key, IPersistentVariable value) throws IllegalArgumentException {
 		if (key == null || key.equals("")) {
-			throw new IllegalArgumentException(
-					"PersistentVariableCache.put(String,IPersistentVariable): key cannot be null or empty");
+			throw new IllegalArgumentException("PersistentVariableCache.put: key cannot be null or empty");
 		}
 		if (value == null) {
-			throw new IllegalArgumentException(
-					"PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot be null");
+			throw new IllegalArgumentException("PersistentVariableCache.put: persistent variable cannot be null");
 		}
 		if (!key.equals(value.getName())) {
-			throw new IllegalArgumentException(
-					"PersistentVariableCache.put(String,IPersistentVariable): key does not match PersistentValue name");
+			throw new IllegalArgumentException("PersistentVariableCache.put: key does not match PersistentValue name");
 		}
 		if (value.getValue() == null) {
-			throw new IllegalArgumentException(
-					"PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot have a null value");
+			throw new IllegalArgumentException("PersistentVariableCache.put: persistent variable cannot have a null value");
 		}
 		_map.put(key, value);
 	}
@@ -123,12 +119,12 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 
 		@Override
 		public T getArchetype() {
-			throw new UnsupportedOperationException("PersistentValueToWrite.getArchetype() is not supported");
+			throw new UnsupportedOperationException();
 		}
 
 		@Override
 		public String getUnparameterizedInterfaceName() {
-			throw new UnsupportedOperationException("PersistentValueToWrite.getUnparameterizedInterfaceName() is not supported");
+			throw new UnsupportedOperationException();
 		}
 		
 	}
