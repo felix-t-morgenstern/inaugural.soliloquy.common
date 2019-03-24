@@ -20,14 +20,12 @@ public class PersistentStringsHandlerTests {
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
     
 	@BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_persistentStringsHandler = new PersistentStringsHandler(COLLECTION_FACTORY);
     }
 
 	@Test
-	public void testRead()
-	{
+	public void testRead() {
 		String sourceData = STRING1 + "\u001f" + STRING2 + "\u001f" + STRING3;
 		ICollection<String> expectedResults = new Collection<String>("");
 		expectedResults.addAll(new String[] {STRING1, STRING2, STRING3});
@@ -38,8 +36,7 @@ public class PersistentStringsHandlerTests {
 	}
 
 	@Test
-	public void testWrite()
-	{
+	public void testWrite() {
 		ICollection<String> sourceData = new Collection<String>(new String[] {STRING1, STRING2, STRING3}, "");
 		String expectedResult = STRING1 + "\u001f" + STRING2 + "\u001f" + STRING3;
 		
@@ -49,8 +46,8 @@ public class PersistentStringsHandlerTests {
 	}
 
 	@Test
-	public void testGetInterfaceName()
-	{
-		assertTrue(_persistentStringsHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.String>>"));
+	public void testGetInterfaceName() {
+		assertTrue(_persistentStringsHandler.getInterfaceName()
+				.equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.String>>"));
 	}
 }

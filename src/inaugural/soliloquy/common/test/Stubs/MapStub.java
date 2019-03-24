@@ -8,8 +8,7 @@ import soliloquy.common.specs.IFunction;
 import soliloquy.common.specs.IMap;
 import soliloquy.common.specs.IPair;
 
-public class MapStub<K,V> implements IMap<K,V>
-{
+public class MapStub<K,V> implements IMap<K,V> {
 	private HashMap<K,V> _map = new HashMap<K,V>();
 
 	@Override

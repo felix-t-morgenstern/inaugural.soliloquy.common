@@ -2,13 +2,11 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.common.specs.IPair;
 
-public class PairStub<K,V> implements IPair<K,V>
-{
+public class PairStub<K,V> implements IPair<K,V> {
 	private K _item1;
 	private V _item2;
 	
-	public PairStub(K item1, V item2)
-	{
+	public PairStub(K item1, V item2) {
 		_item1 = item1;
 		_item2 = item2;
 	}

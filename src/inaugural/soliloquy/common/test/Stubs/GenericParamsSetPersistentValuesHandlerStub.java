@@ -14,7 +14,8 @@ import soliloquy.common.specs.IPersistentValuesHandler;
 
 public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentValuesHandler {
 	@Override
-	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler) throws IllegalArgumentException {
+	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler)
+			throws IllegalArgumentException {
 		// Not needed for test stub
 	}
 
@@ -39,8 +40,10 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void readValues(String valuesString, IAction<IPair<IPersistentValueToWrite<?>,Boolean>> valueProcessing, boolean overridePreviousData) {
-		IPersistentValueToWrite<String> persistentValueToWrite = (IPersistentValueToWrite<String>) mock(IPersistentValueToWrite.class);
+	public void readValues(String valuesString, IAction<IPair<IPersistentValueToWrite<?>,Boolean>> valueProcessing,
+			boolean overridePreviousData) {
+		IPersistentValueToWrite<String> persistentValueToWrite = 
+				(IPersistentValueToWrite<String>) mock(IPersistentValueToWrite.class);
 		when(persistentValueToWrite.typeName()).thenReturn(String.class.getCanonicalName());
 		when(persistentValueToWrite.name()).thenReturn("DummyValue");
 		when(persistentValueToWrite.value()).thenReturn(valuesString);
@@ -50,8 +53,7 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 	@Override
 	public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
 		String result = "";
-		for(IPersistentValueToWrite<?> persistentValueToProcess : persistentValuesToProcess)
-		{
+		for(IPersistentValueToWrite<?> persistentValueToProcess : persistentValuesToProcess) {
 			result += "Name:"+persistentValueToProcess.name()+",Value:"+persistentValueToProcess.value()+";";
 		}
 		return result;

@@ -11,10 +11,8 @@ public class Setting<T> implements ISetting<T> {
 	private String _name;
 	private T _value;
 	
-	public Setting(String id, String name, T defaultValue, T archetype, IGenericParamsSet controlParams)
-	{
-		if (archetype == null)
-		{
+	public Setting(String id, String name, T defaultValue, T archetype, IGenericParamsSet controlParams) {
+		if (archetype == null) {
 			throw new IllegalArgumentException("archetype was null");
 		}
 		ID = id;

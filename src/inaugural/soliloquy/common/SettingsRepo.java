@@ -56,8 +56,7 @@ public class SettingsRepo implements ISettingsRepo {
 	}
 
 	@Override
-	public String id() throws IllegalStateException
-	{
+	public String id() throws IllegalStateException {
 		return ID;
 	}
 	
@@ -91,8 +90,7 @@ public class SettingsRepo implements ISettingsRepo {
 	@Override
 	public IEntityGroupItem<ISetting> getItemByOrder(int order) throws IllegalArgumentException {
 		IEntityGroupItem<ISetting> item = ITEMS.get(order);
-		if (item == null)
-		{
+		if (item == null) {
 			throw new IllegalArgumentException("No item found at this order");
 		}
 		return item;
@@ -148,8 +146,7 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings({ "unchecked", })
 	@Override
-	public <V> void setSetting(String settingId, V value) throws IllegalArgumentException
-	{
+	public <V> void setSetting(String settingId, V value) throws IllegalArgumentException {
 		ISetting<V> setting = (ISetting<V>) getSetting(settingId);
 		if (setting == null) {
 			throw new IllegalArgumentException("SettingsRepo.setSetting: setting with id = "
@@ -174,8 +171,7 @@ public class SettingsRepo implements ISettingsRepo {
 		}
 		if (targetedGrouping.ITEMS.get(order) != null) {
 			String group = "top-level grouping";
-			if (groupId == null || groupId.equals(""))
-			{
+			if (groupId == null || groupId.equals("")) {
 				group = "group " + groupId;
 			}
 			throw new IllegalArgumentException("Item with order of " + order
@@ -190,70 +186,57 @@ public class SettingsRepo implements ISettingsRepo {
 	public void newSubgrouping(int order, String groupId, String parentGroupId)
 			throws IllegalArgumentException {
 		SettingsRepo targetParentGrouping;
-		if (parentGroupId == null || parentGroupId.equals(""))
-		{
+		if (parentGroupId == null || parentGroupId.equals("")) {
 			targetParentGrouping = this;
 		}
-		else
-		{
+		else {
 			targetParentGrouping = (SettingsRepo) getSubgrouping(parentGroupId);
 		}
-		targetParentGrouping.ITEMS.put(order, new SettingsRepoItem(new SettingsRepo(groupId, COLLECTION_FACTORY, PAIR_FACTORY, PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE), SETTING_ARCHETYPE));
+		targetParentGrouping.ITEMS.put(order,
+				new SettingsRepoItem(new SettingsRepo(groupId, COLLECTION_FACTORY, PAIR_FACTORY,
+						PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE), SETTING_ARCHETYPE));
 	}
 
 	@Override
-	public boolean removeItem(String itemId) throws IllegalArgumentException
-	{
-		if (itemId == null)
-		{
+	public boolean removeItem(String itemId) throws IllegalArgumentException {
+		if (itemId == null) {
 			throw new IllegalArgumentException("SettingsRepo.removeItem: itemId cannot be null");
 		}
-		if (itemId.equals(""))
-		{
+		if (itemId.equals("")) {
 			throw new IllegalArgumentException("SettingsRepo.removeItem: itemId cannot be blank");
 		}
 		return removeItemRecursively(itemId);
 	}
 
 	@Override
-	public IPair<String,Integer> getGroupingIdAndOrder(String itemId) throws IllegalArgumentException
-	{
-		if (itemId == null || itemId.equals(""))
-		{
+	public IPair<String,Integer> getGroupingIdAndOrder(String itemId) throws IllegalArgumentException {
+		if (itemId == null || itemId.equals("")) {
 			throw new IllegalArgumentException("SettingsRepo.getGroupingId: itemId cannot be null");
 		}
 		IPair<String,Integer> groupingIdAndOrderNumber = getGroupingIdRecursively(itemId, true);
-		if (groupingIdAndOrderNumber == null)
-		{
+		if (groupingIdAndOrderNumber == null) {
 			throw new IllegalArgumentException("SettingsRepo.getGrouppingId: No item with itemId of " + itemId + " found");
 		}
 		return groupingIdAndOrderNumber;
 	}
 
 	@Override
-	public String getInterfaceName()
-	{
+	public String getInterfaceName() {
 		return ISettingsRepo.class.getCanonicalName();
 	}
 
 	@SuppressWarnings("rawtypes")
-	private ISetting getSettingRecursively(String settingId)
-	{
-		for(SettingsRepoItem settingsRepoItem : ITEMS.values())
-		{
-			if (!settingsRepoItem.isGroup())
-			{
-				if (settingsRepoItem.entity().id().equals(settingId))
-				{
+	private ISetting getSettingRecursively(String settingId) {
+		for(SettingsRepoItem settingsRepoItem : ITEMS.values()) {
+			if (!settingsRepoItem.isGroup()) {
+				if (settingsRepoItem.entity().id().equals(settingId)) {
 					return settingsRepoItem.entity();
 				}
 			}
-			else
-			{
+			else {
 				SettingsRepo settingsRepo = (SettingsRepo) settingsRepoItem.group();
 				ISetting setting = settingsRepo.getSettingRecursively(settingId);
-				if (setting != null)
-				{
+				if (setting != null) {
 					return setting;
 				}
 			}
@@ -263,37 +246,28 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings("rawtypes")
 	private void addSettingsRecursively(ICollection<ISetting> allSettingsUngrouped) {
-		for(SettingsRepoItem settingsRepoItem : ITEMS.values())
-		{
-			if (!settingsRepoItem.isGroup())
-			{
+		for(SettingsRepoItem settingsRepoItem : ITEMS.values()) {
+			if (!settingsRepoItem.isGroup()) {
 				allSettingsUngrouped.add(settingsRepoItem.entity());
 			}
-			else
-			{
+			else {
 				((SettingsRepo)settingsRepoItem.group()).addSettingsRecursively(allSettingsUngrouped);
 			}
 		}
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private boolean removeItemRecursively(String settingId)
-	{
-		for(Integer order : ITEMS.keySet())
-		{
+	private boolean removeItemRecursively(String settingId) {
+		for(Integer order : ITEMS.keySet()) {
 			IEntityGroupItem<ISetting> item = ITEMS.get(order);
-			if (!item.isGroup())
-			{
-				if (item.entity().id().equals(settingId))
-				{
+			if (!item.isGroup()) {
+				if (item.entity().id().equals(settingId)) {
 					ITEMS.remove(order);
 					return true;
 				}
 			}
-			else
-			{
-				if (((SettingsRepo) item.group()).removeItemRecursively(settingId))
-				{
+			else {
+				if (((SettingsRepo) item.group()).removeItemRecursively(settingId)) {
 					return true;
 				}
 			}
@@ -302,25 +276,20 @@ public class SettingsRepo implements ISettingsRepo {
 	}
 
 	private IPair<String,Integer> getGroupingIdRecursively(String itemId, boolean isTopLevel) {
-		for(Integer order : ITEMS.keySet())
-		{
+		for(Integer order : ITEMS.keySet()) {
 			SettingsRepoItem settingsRepoItem = ITEMS.get(order);
-			if (!settingsRepoItem.isGroup())
-			{
-				if(settingsRepoItem.entity().id().equals(itemId))
-				{
+			if (!settingsRepoItem.isGroup()) {
+				if(settingsRepoItem.entity().id().equals(itemId)) {
 					return PAIR_FACTORY.make(isTopLevel ? "" : ID, order);
 				}
 			}
-			else
-			{
-				if(((SettingsRepo) settingsRepoItem.group()).ID.equals(itemId))
-				{
+			else {
+				if(((SettingsRepo) settingsRepoItem.group()).ID.equals(itemId)) {
 					return PAIR_FACTORY.make(isTopLevel ? "" : ID, order);
 				}
-				IPair<String,Integer> groupingIdFromRecursiveSearch = ((SettingsRepo) settingsRepoItem.group()).getGroupingIdRecursively(itemId, false);
-				if (groupingIdFromRecursiveSearch != null)
-				{
+				IPair<String,Integer> groupingIdFromRecursiveSearch = 
+						((SettingsRepo) settingsRepoItem.group()).getGroupingIdRecursively(itemId, false);
+				if (groupingIdFromRecursiveSearch != null) {
 					return groupingIdFromRecursiveSearch;
 				}
 			}
@@ -330,17 +299,14 @@ public class SettingsRepo implements ISettingsRepo {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void populatePersistentValuesToWriteRecursively(ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite, boolean isTopLevel) {
-		for(Integer order : ITEMS.keySet())
-		{
+		for(Integer order : ITEMS.keySet()) {
 			SettingsRepoItem settingsRepoItem = ITEMS.get(order);
-			if (!settingsRepoItem.isGroup())
-			{
+			if (!settingsRepoItem.isGroup()) {
 				ISetting setting = (ISetting) settingsRepoItem.entity();
 				SettingToProcess settingToProcess = new SettingToProcess(setting.id(), setting.getValue());
 				persistentValuesToWrite.add(settingToProcess);
 			}
-			else
-			{
+			else {
 				((SettingsRepo) settingsRepoItem.group()).populatePersistentValuesToWriteRecursively(persistentValuesToWrite, false);
 			}
 		}
@@ -352,22 +318,19 @@ public class SettingsRepo implements ISettingsRepo {
 		private final ISetting SETTING;
 		private final SettingsRepo SETTINGS_REPO;
 		
-		public SettingsRepoItem(ISetting setting, ISetting archetype)
-		{
+		public SettingsRepoItem(ISetting setting, ISetting archetype) {
 			SETTING = setting;
 			SETTINGS_REPO = null;
 		}
 		
-		public SettingsRepoItem(SettingsRepo settingsRepo, ISetting archetype)
-		{
+		public SettingsRepoItem(SettingsRepo settingsRepo, ISetting archetype) {
 			SETTING = null;
 			SETTINGS_REPO = settingsRepo;
 		}
 
 		@Override
 		public boolean isGroup() {
-			if (!(SETTING == null ^ SETTINGS_REPO == null))
-			{
+			if (!(SETTING == null ^ SETTINGS_REPO == null)) {
 				throw new IllegalStateException("One and only one of SETTING and SETTINGS_REPO must be non-null in SettingsRepo.SettingsRepoItem");
 			}
 			return SETTINGS_REPO != null;
@@ -391,8 +354,7 @@ public class SettingsRepo implements ISettingsRepo {
 
 		@Override
 		public ISetting entity() throws UnsupportedOperationException {
-			if (SETTING == null)
-			{
+			if (SETTING == null) {
 				throw new UnsupportedOperationException("Cannot call SettingsRepo.SettingsRepoItem.entity when SETTING is null");
 			}
 			return SETTING;
@@ -422,8 +384,7 @@ public class SettingsRepo implements ISettingsRepo {
 		private final String ID;
 		private final V VALUE;
 		
-		public SettingToProcess(String id, V value)
-		{
+		public SettingToProcess(String id, V value) {
 			ID = id;
 			VALUE = value;
 		}

@@ -11,50 +11,40 @@ public class PersistentBooleanHandlerTests {
 	private PersistentBooleanHandler persistentBooleanHandler;
 	
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
 		persistentBooleanHandler = new PersistentBooleanHandler();
     }
 	
     @Test
-	public void testRead()
-	{
+	public void testRead() {
 		assertTrue(persistentBooleanHandler.read("true") == true);
 	}
 
     @Test
-	public void testReadNull()
-	{
-		try
-		{
+	public void testReadNull() {
+		try {
 			persistentBooleanHandler.read(null);
 			assertTrue(false);
-		}
-		catch(IllegalArgumentException e)
-		{
+		} catch(IllegalArgumentException e) {
 			assertTrue(true);
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e) {
 			assertTrue(false);
 		}
 	}
 
     @Test
-	public void testWrite()
-	{
+	public void testWrite() {
 		assertTrue(persistentBooleanHandler.write(true).equals("true"));
 	}
 
     @Test
-	public void testGetArchetype()
-	{
+	public void testGetArchetype() {
 		assertTrue(persistentBooleanHandler.getArchetype() != null);
 	}
 
     @Test
-	public void testGetInterfaceName()
-	{
-		assertTrue(persistentBooleanHandler.getInterfaceName().equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Boolean>"));
+	public void testGetInterfaceName() {
+		assertTrue(persistentBooleanHandler.getInterfaceName()
+				.equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Boolean>"));
 	}
 }

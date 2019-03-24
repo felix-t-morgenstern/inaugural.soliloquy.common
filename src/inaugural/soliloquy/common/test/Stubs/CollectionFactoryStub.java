@@ -3,8 +3,7 @@ package inaugural.soliloquy.common.test.stubs;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 
-public class CollectionFactoryStub implements ICollectionFactory
-{
+public class CollectionFactoryStub implements ICollectionFactory {
 	@Override
 	public <T> ICollection<T> make(T archetype) throws IllegalArgumentException {
 		return new CollectionStub<T>(archetype);

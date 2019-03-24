@@ -15,14 +15,12 @@ public class CollectionFactoryTests {
 	private String _string3 = "STRING3";
 
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_collectionFactory = new CollectionFactory();
     }
 
     @Test
-    public void testMake()
-    {
+    public void testMake() {
     	ICollection<String> strings = _collectionFactory.make("Hello");
     	assertTrue(strings instanceof ICollection<?>);
     	
@@ -33,30 +31,24 @@ public class CollectionFactoryTests {
     
     @SuppressWarnings("unused")
     @Test
-	public void testMakeWithNullArchetype()
-    {
+	public void testMakeWithNullArchetype() {
     	try {
         	ICollection<String> strings = _collectionFactory.make(null);
         	assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testMakeFromArray()
-    {
+    public void testMakeFromArray() {
     	ICollection<String> newCollection = _collectionFactory.make(new String[] {_string1, _string2, _string3}, "");
     	
     	assertTrue(newCollection.size() == 3);
     	assertTrue(newCollection.get(0) == _string1);
     	assertTrue(newCollection.get(1) == _string2);
-    	assertTrue(newCollection.get(2) == _string2);
+    	assertTrue(newCollection.get(2) == _string3);
     }
 }

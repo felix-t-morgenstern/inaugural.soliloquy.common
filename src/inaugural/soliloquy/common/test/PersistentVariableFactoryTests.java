@@ -15,14 +15,12 @@ public class PersistentVariableFactoryTests {
 	private PersistentVariableFactory _persistentVariableFactory;
 	
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
 		_persistentVariableFactory = new PersistentVariableFactory();
     }
 	
     @Test
-	public void testMake()
-	{
+	public void testMake() {
 		IPersistentVariable persistentVariable = _persistentVariableFactory.make(PERSISTENT_VARIABLE_NAME, PERSISTENT_VARIABLE_VALUE);
 		
 		assertTrue(persistentVariable != null);

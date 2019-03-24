@@ -5,17 +5,13 @@ import java.util.Iterator;
 
 import soliloquy.common.specs.ICollection;
 
-public class CollectionStub<V> implements ICollection<V>
-{
+public class CollectionStub<V> implements ICollection<V> {
 	private V _archetype;
 	
-	public CollectionStub()
-	{
-		
+	public CollectionStub() {
 	}
 	
-	public CollectionStub(V archetype)
-	{
+	public CollectionStub(V archetype) {
 		_archetype = archetype;
 	}
 	

@@ -35,8 +35,7 @@ public class PersistentVariableCacheTests {
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 	
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	// PairFactory and archetype not necessary for test suite
     	_persistentVariableCache = new PersistentVariableCache(PAIR_FACTORY, "", null, COLLECTION_FACTORY,
     			PERSISTENT_VARIABLE_FACTORY, PERSISTENT_VALUES_HANDLER);
@@ -46,8 +45,7 @@ public class PersistentVariableCacheTests {
     }
     
     @Test
-    public void testPut()
-    {
+    public void testPut() {
     	IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
 
     	_persistentVariableCache.put(persistentVariable1);
@@ -57,89 +55,61 @@ public class PersistentVariableCacheTests {
     }
 
     @Test
-    public void testPutWithInvalidName()
-    {
-    	try
-    	{
+    public void testPutWithInvalidName() {
+    	try {
     		IPersistentVariable persistentVariable = PERSISTENT_VARIABLE_FACTORY.make("name", "value");
     		_persistentVariableCache.put("notTheName", persistentVariable);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);    		
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testPutWithNullOrEmptyParams()
-    {
-    	try
-    	{
+    public void testPutWithNullOrEmptyParams() {
+    	try {
     		IPersistentVariable persistentVariableWithNoName = PERSISTENT_VARIABLE_FACTORY.make("", "value");
     		_persistentVariableCache.put("", persistentVariableWithNoName);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);    		
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     	
-    	try
-    	{
+    	try {
     		_persistentVariableCache.put("name", null);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);    		
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     	
-    	try
-    	{
+    	try {
     		_persistentVariableCache.put(null);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);    		
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     	
-    	try
-    	{
+    	try {
     		IPersistentVariable persistentVariableWithNoValue = PERSISTENT_VARIABLE_FACTORY.make("name", null);
     		_persistentVariableCache.put("name", persistentVariableWithNoValue);
     		assertTrue(false);
-    	}
-    	catch (IllegalArgumentException e)
-    	{
+    	} catch (IllegalArgumentException e) {
     		assertTrue(true);    		
-    	}
-    	catch (Exception e)
-    	{
+    	} catch (Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testRead()
-    {
+    public void testRead() {
     	String jankyInput = "name1,value1;name2,value2;name3,value3";
     	
     	_persistentVariableCache.read(jankyInput, true);
@@ -184,8 +154,7 @@ public class PersistentVariableCacheTests {
     }
 
     @Test
-    public void testWrite()
-    {
+    public void testWrite() {
     	IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
     	IPersistentVariable persistentVariable2 = PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
     	IPersistentVariable persistentVariable3 = PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
@@ -209,8 +178,7 @@ public class PersistentVariableCacheTests {
     	assertTrue(writtenValue.equals("variable1,value1;variable3,value3;variable2,value2"));
     }
     
-    private class PersistentVariableFactoryStub implements IPersistentVariableFactory
-    {
+    private class PersistentVariableFactoryStub implements IPersistentVariableFactory {
 
 		@Override
 		public <T> IPersistentVariable make(String name, T value) {
@@ -225,13 +193,11 @@ public class PersistentVariableCacheTests {
 			throw new UnsupportedOperationException();
 		}
     	
-		private class PersistentVariableStub implements IPersistentVariable
-		{
+		private class PersistentVariableStub implements IPersistentVariable {
 			private final String NAME;
 			private final Object VALUE;
 			
-			private PersistentVariableStub(String name, Object value)
-			{
+			private PersistentVariableStub(String name, Object value) {
 				NAME = name;
 				VALUE = value;
 			}
@@ -268,8 +234,7 @@ public class PersistentVariableCacheTests {
 		}
     }
     
-    private class PersistentValuesHandlerStub implements IPersistentValuesHandler
-    {
+    private class PersistentValuesHandlerStub implements IPersistentValuesHandler {
     	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
 
 		@Override
@@ -306,8 +271,7 @@ public class PersistentVariableCacheTests {
 			_persistentValuesHandlerBooleanRead = overridePreviousData;
 			
 			String[] nameValuePairs = valuesString.split(";");
-			for(String nameValuePair : nameValuePairs)
-			{
+			for(String nameValuePair : nameValuePairs) {
 				String[] nameAndValue = nameValuePair.split(",");
 				IPersistentValueToWrite persistentValueToWrite = new PersistentValueToWrite(null, nameAndValue[0], nameAndValue[1]);
 				IPair<IPersistentValueToWrite<?>, Boolean> valueToProcess = PAIR_FACTORY.make(persistentValueToWrite, overridePreviousData);
@@ -319,11 +283,9 @@ public class PersistentVariableCacheTests {
 		@Override
 		public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
 			String result = "";
-			for (IPersistentValueToWrite persistentValueToWrite : persistentValuesToProcess)
-			{
+			for (IPersistentValueToWrite persistentValueToWrite : persistentValuesToProcess) {
 				_persistentVariableFactoryValuesWritten.put(persistentValueToWrite.name(), persistentValueToWrite.value());
-				if (!result.equals(""))
-				{
+				if (!result.equals("")) {
 					result += ";";
 				}
 				result += persistentValueToWrite.name() + "," + persistentValueToWrite.value();
@@ -378,8 +340,7 @@ public class PersistentVariableCacheTests {
 			private K _item1;
 			private V _item2;
 			
-			private PairStub(K item1, V item2)
-			{
+			private PairStub(K item1, V item2) {
 				_item1 = item1;
 				_item2 = item2;
 			}
@@ -437,8 +398,7 @@ public class PersistentVariableCacheTests {
     	private final String NAME;
     	private final T VALUE;
     	
-    	private PersistentValueToWrite(String typeName, String name, T value)
-    	{
+    	private PersistentValueToWrite(String typeName, String name, T value) {
     		TYPE_NAME = typeName;
     		NAME = name;
     		VALUE = value;

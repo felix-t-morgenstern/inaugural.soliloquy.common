@@ -5,7 +5,6 @@ import soliloquy.common.specs.ICoordinate;
 public class Coordinate implements ICoordinate {
 	
 	private int _x;
-	
 	private int _y;
 	
 	public Coordinate(int x, int y) {

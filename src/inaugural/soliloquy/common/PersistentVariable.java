@@ -81,8 +81,8 @@ public class PersistentVariable implements IPersistentVariable {
 
 	@Override
 	public String getInterfaceName() {
-		// TODO Auto-generated method stub
-		return null;
+		// Stub method
+		throw new UnsupportedOperationException();
 	}
 
 }

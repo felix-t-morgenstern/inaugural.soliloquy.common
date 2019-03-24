@@ -18,14 +18,12 @@ public class SettingFactoryTests {
 	private SettingFactory _settingFactory;
 	
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_settingFactory = new SettingFactory();
     }
     
     @Test
-    public void testMake()
-    {
+    public void testMake() {
     	ISetting<Integer> setting = _settingFactory.make(SETTING_ID, SETTING_NAME, SETTING_VALUE, SETTING_CONTROL_PARAMS);
     	assertTrue(setting.id().equals(SETTING_ID));
     	assertTrue(setting.getName().equals(SETTING_NAME));

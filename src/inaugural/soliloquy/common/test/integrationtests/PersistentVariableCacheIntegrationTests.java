@@ -52,8 +52,7 @@ public class PersistentVariableCacheIntegrationTests {
 	private final String VARIABLE_5_VALUE_3 = "Variable5Value3";
     
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_collectionFactory = new CollectionFactory();
     	_pairFactory = new PairFactory();
     	_persistentVariableFactory = new PersistentVariableFactory();
@@ -91,8 +90,7 @@ public class PersistentVariableCacheIntegrationTests {
     }
 
     @Test
-    public void testWrite()
-    {
+    public void testWrite() {
     	String expectedValue = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"123,456,789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"Variable5Value1\\u001fVariable5Value2\\u001fVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
     	
     	IPersistentVariable variable1 = _persistentVariableFactory.make(VARIABLE_1_NAME, VARIABLE_1_VALUE);
@@ -113,8 +111,7 @@ public class PersistentVariableCacheIntegrationTests {
     }
 
     @Test
-    public void testRead()
-    {
+    public void testRead() {
     	String valueToRead = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"123,456,789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"Variable5Value1\\u001fVariable5Value2\\u001fVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
     	
     	_persistentVariableCache.read(valueToRead, false);

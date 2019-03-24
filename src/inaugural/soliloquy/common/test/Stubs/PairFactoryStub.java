@@ -3,8 +3,7 @@ package inaugural.soliloquy.common.test.stubs;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPairFactory;
 
-public class PairFactoryStub implements IPairFactory
-{
+public class PairFactoryStub implements IPairFactory {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override

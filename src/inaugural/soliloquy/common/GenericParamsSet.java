@@ -34,15 +34,13 @@ public class GenericParamsSet implements IGenericParamsSet {
 	
 	@SuppressWarnings("unchecked")
 	public <T> void addParam(String name, T value, T archetype) throws IllegalArgumentException {
-		if (archetype == null)
-		{
+		if (archetype == null) {
 			throw new IllegalArgumentException("archetype must not be null");
 		}
 		String paramTypeName = archetype instanceof ISoliloquyClass ?
 				((ISoliloquyClass) archetype).getInterfaceName() :
 					archetype.getClass().getCanonicalName();
-		if (getParamsSet(paramTypeName) == null)
-		{
+		if (getParamsSet(paramTypeName) == null) {
 			addParamsSet(_mapFactory.make("", archetype), archetype);
 		}
 		((IMap<String,T>) _paramsSetsRepository.get(paramTypeName)).put(name, value);
@@ -122,11 +120,9 @@ public class GenericParamsSet implements IGenericParamsSet {
 		// NB: No archetype is required by PersistentValuesHandler.writeValues()
 		ICollection<IPersistentValueToWrite<?>> parameters =
 				new Collection<IPersistentValueToWrite<?>>(null);
-		for(String typeName : _paramsSetsRepository.keySet())
-		{
+		for(String typeName : _paramsSetsRepository.keySet()) {
 			IMap<String,?> paramsSet = _paramsSetsRepository.get(typeName);
-			for(String name : paramsSet.getKeys())
-			{
+			for(String name : paramsSet.getKeys()) {
 				parameters.add(_persistentValuesHandler
 						.makePersistentValueToWrite(name, paramsSet.get(name)));
 			}
@@ -137,8 +133,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 	@Override
 	public IGenericParamsSet makeClone() {
 		GenericParamsSet cloned = new GenericParamsSet(_persistentValuesHandler, _mapFactory);
-		for(IMap<String,?> map : _paramsSetsRepository.values())
-		{
+		for(IMap<String,?> map : _paramsSetsRepository.values()) {
 			for(String key : map.getKeys()) cloned.addParam(key, map.get(key));
 		}
 		return cloned;
@@ -149,12 +144,10 @@ public class GenericParamsSet implements IGenericParamsSet {
 		return IGenericParamsSet.class.getCanonicalName();
 	}
 	
-	private class ProcessReadValue implements IAction<IPair<IPersistentValueToWrite<?>,Boolean>>
-	{
+	private class ProcessReadValue implements IAction<IPair<IPersistentValueToWrite<?>,Boolean>> {
 		private GenericParamsSet _genericParamsSet;
 		
-		public ProcessReadValue(GenericParamsSet genericParamsSet)
-		{
+		public ProcessReadValue(GenericParamsSet genericParamsSet) {
 			_genericParamsSet = genericParamsSet;
 		}
 

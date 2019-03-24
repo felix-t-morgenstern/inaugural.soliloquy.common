@@ -116,8 +116,7 @@ public class SettingsRepoIntegrationTests {
 	private ISetting _setting5;
 	
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_collectionFactory = new CollectionFactory();
     	_pairFactory = new PairFactory();
     	_settingFactory = new SettingFactory();
@@ -187,8 +186,7 @@ public class SettingsRepoIntegrationTests {
     }
 
 	@Test
-    public void testWrite()
-    {
+    public void testWrite() {
     	String expectedValue = "[{\"typeName\":\"java.lang.Integer\",\"name\":\"Setting2Id\",\"value\":\"456\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Setting3Id\",\"value\":\"123,456,789\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Setting5Id\",\"value\":\"Value1\\u001fValue2\\u001fValue3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Setting4Id\",\"value\":\"Setting4Value\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Setting1Id\",\"value\":\"true\"}]";
     	
     	String writtenSettingsRepo = _settingsRepo.write();
@@ -198,8 +196,7 @@ public class SettingsRepoIntegrationTests {
 
 	@Test
     @SuppressWarnings("unchecked")
-	public void testRead()
-    {
+	public void testRead() {
     	String settingsToRead = "[{\"typeName\":\"java.lang.Integer\",\"name\":\"Setting2Id\",\"value\":\"-456\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Setting3Id\",\"value\":\"-123,-456,-789\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Setting5Id\",\"value\":\"Value1Alt\\u001fValue2Alt\\u001fValue3Alt\"},{\"typeName\":\"java.lang.String\",\"name\":\"Setting4Id\",\"value\":\"Setting4ValueAlt\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Setting1Id\",\"value\":\"false\"}]";
     	
     	_settingsRepo.read(settingsToRead, true);
@@ -240,14 +237,11 @@ public class SettingsRepoIntegrationTests {
     	assertTrue(setting5Value.contains(SETTING_5_VALUE_3 + "Alt"));
     }
     
-    private boolean groupNamesEqual(String groupName1, String groupName2)
-    {
-    	if ((groupName1 == null || groupName1.equals("")) && (groupName2 == null || groupName2.equals("")))
-    	{
+    private boolean groupNamesEqual(String groupName1, String groupName2) {
+    	if ((groupName1 == null || groupName1.equals("")) && (groupName2 == null || groupName2.equals(""))) {
     		return true;
     	}
-    	else
-    	{
+    	else {
     		return groupName1.equals(groupName2);
     	}
     }

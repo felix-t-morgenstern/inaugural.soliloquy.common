@@ -7,13 +7,11 @@ import soliloquy.common.specs.IPairFactory;
 public class MapFactory implements IMapFactory {
 	private IPairFactory _pairFactory;
 	
-	public MapFactory(IPairFactory pairFactory)
-	{
+	public MapFactory(IPairFactory pairFactory) {
 		_pairFactory = pairFactory;
 	}
 	
-	public <K, V> IMap<K,V> make(K archetype1, V archetype2)
-	{
+	public <K, V> IMap<K,V> make(K archetype1, V archetype2) {
 		if (archetype1 == null) {
 			throw new IllegalArgumentException("archetype1 is null");
 		}

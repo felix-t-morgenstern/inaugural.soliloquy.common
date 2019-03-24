@@ -10,77 +10,53 @@ import soliloquy.common.specs.IPair;
 
 public class PairFactoryTests {
 	private PairFactory _pairfactory;
-	
-	private IPair<String,Integer> newPair;
+	private IPair<String,Integer> _newPair;
 
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_pairfactory = new PairFactory();
     }
     
     @Test
-    public void testMake()
-    {
-    	newPair = _pairfactory.make("String", 123);
-    	assertTrue(newPair instanceof IPair<?,?>);
-    	assertTrue(newPair.getItem1() == "String");
-    	assertTrue(newPair.getItem2() == 123);
+    public void testMake() {
+    	_newPair = _pairfactory.make("String", 123);
+    	assertTrue(_newPair instanceof IPair<?,?>);
+    	assertTrue(_newPair.getItem1() == "String");
+    	assertTrue(_newPair.getItem2() == 123);
     }
 
     @Test
-    public void testMakeWithNullParams()
-    {
-    	try
-    	{
-        	newPair = _pairfactory.make("String", null);
+    public void testMakeWithNullParams() {
+    	try {
+        	_newPair = _pairfactory.make("String", null);
         	assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
-    	try
-    	{
-        	newPair = _pairfactory.make(null, 0);
+    	try {
+        	_newPair = _pairfactory.make(null, 0);
         	assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
-    	try
-    	{
-        	newPair = _pairfactory.make("String", 0, "String", null);
+    	try {
+        	_newPair = _pairfactory.make("String", 0, "String", null);
         	assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
-    	try
-    	{
-        	newPair = _pairfactory.make("String", 0, null, 0);
+    	try {
+        	_newPair = _pairfactory.make("String", 0, null, 0);
         	assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }

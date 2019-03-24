@@ -14,8 +14,7 @@ import soliloquy.common.specs.ISoliloquyClass;
 public class PersistentValuesHandler implements IPersistentValuesHandler {
 	private HashMap<String,IPersistentValueTypeHandler<?>> _persistentValueTypeHandlers;
 	
-	public PersistentValuesHandler()
-	{
+	public PersistentValuesHandler() {
 		_persistentValueTypeHandlers = new HashMap<String,IPersistentValueTypeHandler<?>>();
 	}
 	
@@ -25,7 +24,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		String persistentValueType = persistentValueTypeHandler.getArchetype() instanceof ISoliloquyClass ?
 				((ISoliloquyClass) persistentValueTypeHandler.getArchetype()).getInterfaceName() :
 					persistentValueTypeHandler.getArchetype().getClass().getCanonicalName();
-		if (_persistentValueTypeHandlers.containsKey(persistentValueType)){
+		if (_persistentValueTypeHandlers.containsKey(persistentValueType)) {
 			throw new IllegalArgumentException("PersistentValuesHandler already has handler for " + persistentValueType);
 		}
 		_persistentValueTypeHandlers.put(persistentValueType, persistentValueTypeHandler);
@@ -57,8 +56,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 			boolean overridePreviousData) {
 		PersistentValueToRead[] persistentValuesToRead =
 				new Gson().fromJson(valuesString, PersistentValueToRead[].class);
-		for (IPersistentValueToRead persistentValueToRead : persistentValuesToRead)
-		{
+		for (IPersistentValueToRead persistentValueToRead : persistentValuesToRead) {
 			IPersistentValueTypeHandler<?> persistentValueTypeHandler =
 					getPersistentValueTypeHandler(persistentValueToRead.typeName());
 			IPersistentValueToWrite<?> persistentValueToWrite =
@@ -73,9 +71,8 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
 		PersistentValueToRead[] persistentValuesToRead =
 				new PersistentValueToRead[persistentValuesToProcess.size()];
-		Integer i = 0;
-		for (IPersistentValueToWrite<?> persistentValueToProcess : persistentValuesToProcess)
-		{
+		int i = 0;
+		for (IPersistentValueToWrite<?> persistentValueToProcess : persistentValuesToProcess) {
 			PersistentValueToRead persistentValueToRead =
 					convertPersistentValueToWriteToPersistentValueToRead(persistentValueToProcess);
 			persistentValuesToRead[i++] = persistentValueToRead;
@@ -98,8 +95,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		return IPersistentValuesHandler.class.getCanonicalName();
 	}
 	
-	private <T> PersistentValueToRead convertPersistentValueToWriteToPersistentValueToRead(IPersistentValueToWrite<T> persistentValueToWrite)
-	{
+	private <T> PersistentValueToRead convertPersistentValueToWriteToPersistentValueToRead(IPersistentValueToWrite<T> persistentValueToWrite) {
 		PersistentValueToRead persistentValueToRead = new PersistentValueToRead();
 		persistentValueToRead.name = persistentValueToWrite.name();
 		persistentValueToRead.typeName = persistentValueToWrite.typeName();
@@ -146,33 +142,32 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		}
 	}
 	
-	protected class PersistentValueToWrite<T> implements IPersistentValueToWrite<T>
-	{
-		public String typeName;
-		public String name;
-		public T value;
+	protected class PersistentValueToWrite<T> implements IPersistentValueToWrite<T> {
+		public String _typeName;
+		public String _name;
+		public T _value;
 		
 		public PersistentValueToWrite(String name, T value) {
-			this.typeName = value instanceof ISoliloquyClass ?
-					((ISoliloquyClass) value).getInterfaceName() :
-						value.getClass().getCanonicalName();
-			this.name = name;
-			this.value = value;
+			_typeName = value instanceof ISoliloquyClass ?
+				((ISoliloquyClass) value).getInterfaceName() :
+					value.getClass().getCanonicalName();
+			_name = name;
+			_value = value;
 		}
 
 		@Override
 		public String typeName() {
-			return this.typeName;
+			return _typeName;
 		}
 
 		@Override
 		public String name() {
-			return this.name;
+			return _name;
 		}
 
 		@Override
 		public T value() {
-			return this.value;
+			return _value;
 		}
 
 		@Override

@@ -10,8 +10,12 @@ public class Pair<K,V> extends HasTwoGenericParams<K,V> implements IPair<K,V> {
 	private V _archetype2;
 	
 	public Pair(K item1, V item2) {
-		if (item1 == null) throw new IllegalArgumentException("item1 is null");
-		if (item2 == null) throw new IllegalArgumentException("item2 is null");
+		if (item1 == null) {
+			throw new IllegalArgumentException("item1 is null");
+		}
+		if (item2 == null) {
+			throw new IllegalArgumentException("item2 is null");
+		}
 		_item1 = item1;
 		_item2 = item2;
 		_archetype1 = item1;
@@ -19,8 +23,12 @@ public class Pair<K,V> extends HasTwoGenericParams<K,V> implements IPair<K,V> {
 	}
 	
 	public Pair(K item1, V item2, K archetype1, V archetype2) {
-		if (archetype1 == null) throw new IllegalArgumentException("archetype1 is null");
-		if (archetype2 == null) throw new IllegalArgumentException("archetype2 is null");
+		if (archetype1 == null) {
+			throw new IllegalArgumentException("archetype1 is null");
+		}
+		if (archetype2 == null) {
+			throw new IllegalArgumentException("archetype2 is null");
+		}
 		_item1 = item1;
 		_item2 = item2;
 		_archetype1 = archetype1;

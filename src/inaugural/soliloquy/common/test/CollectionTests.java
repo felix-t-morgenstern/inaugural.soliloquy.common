@@ -137,10 +137,13 @@ public class CollectionTests {
     @Test
     public void testGetParameterizedClassName() {
     	ICollection<String> strings = new Collection<String>("");
-    	assertTrue("soliloquy.common.specs.ICollection<java.lang.String>".equals(strings.getInterfaceName()));
+    	assertTrue("soliloquy.common.specs.ICollection<java.lang.String>"
+    			.equals(strings.getInterfaceName()));
     	
-    	ICollection<ICollection<ICollection<String>>> stringsCeption = new Collection<ICollection<ICollection<String>>>(new Collection<ICollection<String>>(new Collection<String>("")));
-    	assertTrue("soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>".equals(stringsCeption.getInterfaceName()));
+    	ICollection<ICollection<ICollection<String>>> stringsCeption = 
+    			new Collection<ICollection<ICollection<String>>>(new Collection<ICollection<String>>(new Collection<String>("")));
+    	assertTrue("soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>"
+    			.equals(stringsCeption.getInterfaceName()));
     }
 
     @Test

@@ -22,73 +22,61 @@ public class SettingTests {
 	private Setting<Integer> _setting;
 
     @BeforeEach
-    protected void setUp() throws Exception
-    {
-    	_setting = new Setting<Integer>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, SETTING_ARCHETYPE, _settingControlParams);
+    protected void setUp() throws Exception {
+    	_setting = new Setting<Integer>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, 
+    			SETTING_ARCHETYPE, _settingControlParams);
     }
     
     @Test
-    public void testId()
-    {
+    public void testId() {
     	assertTrue(_setting.id().equals(SETTING_ID));
     }
 
     @Test
-    public void testName()
-    {
+    public void testName() {
     	assertTrue(_setting.getName().equals(SETTING_NAME_1));
     	_setting.setName(SETTING_NAME_2);
     	assertTrue(_setting.getName().equals(SETTING_NAME_2));
     }
 
     @Test
-    public void testGetArchetype()
-    {
+    public void testGetArchetype() {
     	assertTrue(_setting.getArchetype() == SETTING_ARCHETYPE);
     }
 
     @Test
-    public void testConstructorWithNullArchetype()
-    {
-    	try
-    	{
+    public void testConstructorWithNullArchetype() {
+    	try {
     		@SuppressWarnings("unused")
-			ISetting<Integer> setting = new Setting<Integer>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, null, _settingControlParams);
+			ISetting<Integer> setting = new Setting<Integer>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, null, 
+					_settingControlParams);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @Test
-    public void testGetParameterizedClassName()
-    {
+    public void testGetParameterizedClassName() {
     	String parameterizedClassName = _setting.getInterfaceName();
     	assertTrue("soliloquy.common.specs.ISetting".equals(parameterizedClassName));
     }
 
     @Test
-    public void testGetValue()
-    {
+    public void testGetValue() {
     	assertTrue(_setting.getValue() == SETTING_VALUE_1);
     }
 
     @Test
-    public void testSetValue()
-    {
+    public void testSetValue() {
     	_setting.setValue(SETTING_VALUE_2);
     	assertTrue(_setting.getValue() == SETTING_VALUE_2);
     }
 
     @Test
-    public void testControlParams()
-    {
+    public void testControlParams() {
     	assertTrue(_setting.controlParams() == _settingControlParams);
     }
 }

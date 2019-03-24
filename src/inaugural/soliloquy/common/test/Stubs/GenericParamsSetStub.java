@@ -4,8 +4,7 @@ import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.IMap;
 
-public class GenericParamsSetStub implements IGenericParamsSet
-{
+public class GenericParamsSetStub implements IGenericParamsSet {
 
 	@Override
 	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException {

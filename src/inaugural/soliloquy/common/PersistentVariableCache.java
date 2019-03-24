@@ -25,8 +25,7 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 
 	public PersistentVariableCache(IPairFactory pairFactory, String archetype1, IPersistentVariable archetype2,
 			ICollectionFactory collectionFactory, IPersistentVariableFactory persistentVariableFactory,
-			IPersistentValuesHandler persistentValuesHandler)
-	{
+			IPersistentValuesHandler persistentValuesHandler) {
 		super(pairFactory, archetype1, archetype2);
 		COLLECTION_FACTORY = collectionFactory;
 		PERSISTENT_VARIABLE_FACTORY = persistentVariableFactory;
@@ -36,20 +35,17 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 	}
 
 	@Override
-	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException
-	{
+	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException {
 		PERSISTENT_VALUES_HANDLER.readValues(data, PROCESS_READ_VALUE_ACTION, overridePreviousData);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public String write() throws IllegalArgumentException
-	{
+	public String write() throws IllegalArgumentException {
 		IPersistentValueToWrite collectionArchetype = new PersistentValueToWrite("", "");
 		ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = COLLECTION_FACTORY
 				.make(collectionArchetype);
-		for (Entry<String, IPersistentVariable> entry : _map.entrySet())
-		{
+		for (Entry<String, IPersistentVariable> entry : _map.entrySet()) {
 			persistentValuesToWrite.add(new PersistentValueToWrite(entry.getValue().getName(),
 					entry.getValue().getValue()));
 		}
@@ -57,45 +53,40 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 	}
 	
 	@Override
-	public String getInterfaceName()
-	{
+	public String getInterfaceName() {
 		return IPersistentVariableCache.class.getCanonicalName();
 	}
 
 	@Override
-	public void put(IPersistentVariable persistentVariable) throws IllegalArgumentException
-	{
-		if (persistentVariable == null)
-		{
+	public void put(IPersistentVariable persistentVariable) throws IllegalArgumentException {
+		if (persistentVariable == null) {
 			throw new IllegalArgumentException("PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot be null");
 		}
 		put(persistentVariable.getName(), persistentVariable);
 	}
 	
 	@Override
-	public void put(String key, IPersistentVariable value) throws IllegalArgumentException
-	{
-		if (key == null || key.equals(""))
-		{
-			throw new IllegalArgumentException("PersistentVariableCache.put(String,IPersistentVariable): key cannot be null or empty");
+	public void put(String key, IPersistentVariable value) throws IllegalArgumentException {
+		if (key == null || key.equals("")) {
+			throw new IllegalArgumentException(
+					"PersistentVariableCache.put(String,IPersistentVariable): key cannot be null or empty");
 		}
-		if (value == null)
-		{
-			throw new IllegalArgumentException("PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot be null");
+		if (value == null) {
+			throw new IllegalArgumentException(
+					"PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot be null");
 		}
-		if (!key.equals(value.getName()))
-		{
-			throw new IllegalArgumentException("PersistentVariableCache.put(String,IPersistentVariable): key does not match PersistentValue name");
+		if (!key.equals(value.getName())) {
+			throw new IllegalArgumentException(
+					"PersistentVariableCache.put(String,IPersistentVariable): key does not match PersistentValue name");
 		}
-		if (value.getValue() == null)
-		{
-			throw new IllegalArgumentException("PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot have a null value");
+		if (value.getValue() == null) {
+			throw new IllegalArgumentException(
+					"PersistentVariableCache.put(String,IPersistentVariable): persistent variable cannot have a null value");
 		}
 		_map.put(key, value);
 	}
 	
-	protected class PersistentValueToWrite<T> implements IPersistentValueToWrite<T>
-	{
+	protected class PersistentValueToWrite<T> implements IPersistentValueToWrite<T> {
 		public String typeName;
 		public String name;
 		public T value;

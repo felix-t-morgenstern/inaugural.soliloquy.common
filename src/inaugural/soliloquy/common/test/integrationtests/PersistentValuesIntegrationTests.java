@@ -42,8 +42,7 @@ public class PersistentValuesIntegrationTests {
 	private static List<IPair<IPersistentValueToWrite<?>, Boolean>> _readValues;
 	
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_persistentValuesHandler = new PersistentValuesHandler();
     	
     	_collectionFactory = new CollectionFactory();
@@ -69,12 +68,12 @@ public class PersistentValuesIntegrationTests {
     
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void testWriteValues()
-    {
+	public void testWriteValues() {
     	String expectedOutput = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"1,2,3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"4,5,6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"string1-1\\u001fstring1-2\\u001fstring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"string2-1\\u001fstring2-2\\u001fstring2-3\"}]";
     	
     	IPersistentValueToWrite persistentValueToWriteArchetype = new PersistentValueToWrite(null, null);
-    	ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = _collectionFactory.make(persistentValueToWriteArchetype);
+    	ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = 
+    			_collectionFactory.make(persistentValueToWriteArchetype);
     	
     	// Adding boolean persistent values
     	Boolean bool1 = true;
@@ -138,8 +137,7 @@ public class PersistentValuesIntegrationTests {
 
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void testReadValues()
-    {
+	public void testReadValues() {
     	String valuesToRead = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"1,2,3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"4,5,6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"string1-1\\u001fstring1-2\\u001fstring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"string2-1\\u001fstring2-2\\u001fstring2-3\"}]";
     	
     	_persistentValuesHandler.readValues(valuesToRead, new ReadValuesAction(), true);
@@ -207,13 +205,11 @@ public class PersistentValuesIntegrationTests {
     	}
     }
     
-    private class PersistentValueToWrite<T> implements IPersistentValueToWrite<T>
-    {
+    private class PersistentValueToWrite<T> implements IPersistentValueToWrite<T> {
     	private final String NAME;
     	private final T VALUE;
     	
-    	private PersistentValueToWrite(String name, T value)
-    	{
+    	private PersistentValueToWrite(String name, T value) {
     		NAME = name;
     		VALUE = value;
     	}
@@ -255,8 +251,7 @@ public class PersistentValuesIntegrationTests {
     	
     }
     
-    private class ReadValuesAction implements IAction<IPair<IPersistentValueToWrite<?>, Boolean>>
-    {
+    private class ReadValuesAction implements IAction<IPair<IPersistentValueToWrite<?>, Boolean>> {
 		@Override
 		public String id() throws IllegalStateException {
 			// Stub method

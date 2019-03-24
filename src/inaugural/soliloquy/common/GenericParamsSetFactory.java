@@ -9,8 +9,7 @@ public class GenericParamsSetFactory implements IGenericParamsSetFactory {
 	private IPersistentValuesHandler _persistentValuesHandler;
 	private IMapFactory _mapFactory;
 	
-	public GenericParamsSetFactory(IPersistentValuesHandler persistentValuesHandler, IMapFactory mapFactory)
-	{
+	public GenericParamsSetFactory(IPersistentValuesHandler persistentValuesHandler, IMapFactory mapFactory) {
 		_persistentValuesHandler = persistentValuesHandler;
 		_mapFactory = mapFactory;
 	}

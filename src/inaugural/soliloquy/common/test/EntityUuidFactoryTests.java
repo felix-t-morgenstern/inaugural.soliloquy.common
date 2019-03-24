@@ -18,30 +18,27 @@ public class EntityUuidFactoryTests {
 	private final String BLANK_ENTITY_UUID_STRING = "00000000-0000-0000-0000-000000000000";
 
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	Mockito.reset();
     	_entityUuidFactory = new EntityUuidFactory();
     }
 
     @Test
-    public void testCreateFromLongs()
-    {
-    	IEntityUuid createdEntityUuid = _entityUuidFactory.createFromLongs(ENTITY_UUID_MOST_SIGNIFICANT_BITS, ENTITY_UUID_LEAST_SIGNIFICANT_BITS);
+    public void testCreateFromLongs() {
+    	IEntityUuid createdEntityUuid = 
+    			_entityUuidFactory.createFromLongs(ENTITY_UUID_MOST_SIGNIFICANT_BITS, ENTITY_UUID_LEAST_SIGNIFICANT_BITS);
     	assertTrue(ENTITY_UUID_MOST_SIGNIFICANT_BITS == createdEntityUuid.getMostSignificantBits());
     	assertTrue(ENTITY_UUID_LEAST_SIGNIFICANT_BITS == createdEntityUuid.getLeastSignificantBits());
     }
 
     @Test
-    public void testCreateFromString()
-    {
+    public void testCreateFromString() {
     	IEntityUuid createdEntityUuid = _entityUuidFactory.createFromString(ENTITY_UUID_STRING);
     	assertTrue(ENTITY_UUID_STRING.equals(createdEntityUuid.toString()));
     }
 
     @Test
-    public void testCreateRandomEntityUuid()
-    {
+    public void testCreateRandomEntityUuid() {
     	IEntityUuid createdEntityUuid = _entityUuidFactory.createRandomEntityUuid();
     	assertTrue(!BLANK_ENTITY_UUID_STRING.equals(createdEntityUuid.toString()));
     }

@@ -12,15 +12,13 @@ public class MapFactoryTests {
 	private MapFactory _mapFactory;
 
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	// (No need to test IPairFactory functionality in this suite)
     	_mapFactory = new MapFactory(null);
     }
 
     @Test
-    public void testMake()
-    {
+    public void testMake() {
     	IMap<String,Integer> newMap1 = _mapFactory.make("",0);
     	assertTrue(newMap1 instanceof IMap<?,?>);
     	
@@ -30,32 +28,21 @@ public class MapFactoryTests {
     
     @SuppressWarnings("unused")
     @Test
-	public void testMakeWithNullArchetypes()
-    {
-    	try
-    	{
+	public void testMakeWithNullArchetypes() {
+    	try {
     		IMap<String,Integer> newMap1 = _mapFactory.make("",null);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
-    	try
-    	{
+    	try {
     		IMap<String,Integer> newMap2 = _mapFactory.make(null,0);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }

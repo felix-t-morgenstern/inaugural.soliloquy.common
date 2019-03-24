@@ -52,15 +52,13 @@ public class SettingsRepoTests {
 	private final ISetting SETTING_ARCHETYPE = new SettingStub(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
 	
     @BeforeEach
-    protected void setUp() throws Exception
-    {
+    protected void setUp() throws Exception {
     	_settingsRepo = new SettingsRepo(COLLECTION_FACTORY, PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testAddItemToTopLevel()
-    {
+	public void testAddItemToTopLevel() {
     	ISetting setting = mock(ISetting.class);
     	when(setting.id()).thenReturn(SETTING_1_ID);
     	when(setting.getValue()).thenReturn(SETTING_1_VALUE);
@@ -72,8 +70,7 @@ public class SettingsRepoTests {
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testAddTwoItemsToTopLevelWithSameId()
-    {
+	public void testAddTwoItemsToTopLevelWithSameId() {
     	ISetting setting1 = mock(ISetting.class);
     	when(setting1.id()).thenReturn(SETTING_1_ID);
     	when(setting1.getValue()).thenReturn(SETTING_1_VALUE);
@@ -84,25 +81,19 @@ public class SettingsRepoTests {
     	
     	_settingsRepo.addEntity(setting1, 0, null);
     	
-    	try
-    	{
+    	try {
     		_settingsRepo.addEntity(setting2, 1, null);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testAddTwoItemsToTopLevelWithSameOrder()
-    {
+	public void testAddTwoItemsToTopLevelWithSameOrder() {
     	ISetting setting1 = mock(ISetting.class);
     	when(setting1.id()).thenReturn(SETTING_1_ID);
     	when(setting1.getValue()).thenReturn(SETTING_1_VALUE);
@@ -113,48 +104,36 @@ public class SettingsRepoTests {
     	
     	_settingsRepo.addEntity(setting1, 0, null);
     	
-    	try
-    	{
+    	try {
     		_settingsRepo.addEntity(setting2, 0, null);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testAddItemToNonexistentSubGrouping()
-    {
+	public void testAddItemToNonexistentSubGrouping() {
     	ISetting setting1 = mock(ISetting.class);
     	when(setting1.id()).thenReturn(SETTING_1_ID);
     	when(setting1.getValue()).thenReturn(SETTING_1_VALUE);
     	
-    	try
-    	{
+    	try {
     		_settingsRepo.addEntity(setting1, 0, SETTINGS_REPO_SUBGROUP_1_ID);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testAddItemToExistentSubGrouping()
-    {
+	public void testAddItemToExistentSubGrouping() {
     	_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
     	
     	ISetting setting1 = mock(ISetting.class);
@@ -169,63 +148,45 @@ public class SettingsRepoTests {
     }
 
     @org.junit.jupiter.api.Test
-    public void testSetNonexistentSetting()
-    {
-    	try
-    	{
+    public void testSetNonexistentSetting() {
+    	try {
     		_settingsRepo.setSetting(SETTING_1_ID, SETTING_1_VALUE);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
-    public void testGetSettingWithBlankId()
-    {
-    	try
-    	{
+    public void testGetSettingWithBlankId() {
+    	try {
     		_settingsRepo.getSetting("");
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
-    public void testSetSettingWithBlankId()
-    {
-    	try
-    	{
+    public void testSetSettingWithBlankId() {
+    	try {
     		_settingsRepo.setSetting("", SETTING_1_VALUE);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
-    public void testAddSetAndGetSetting()
-    {
-    	ISetting<Integer> setting = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
+    public void testAddSetAndGetSetting() {
+    	ISetting<Integer> setting =
+    			new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
     	
     	_settingsRepo.addEntity(setting, 0, null);
     	
@@ -235,9 +196,9 @@ public class SettingsRepoTests {
     }
 
     @org.junit.jupiter.api.Test
-    public void testAddSetAndGetSettingInSubgrouping()
-    {
-    	ISetting<Integer> setting = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
+    public void testAddSetAndGetSettingInSubgrouping() {
+    	ISetting<Integer> setting =
+    			new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
     	
     	_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, null);
     	
@@ -251,38 +212,34 @@ public class SettingsRepoTests {
     }
 
     @org.junit.jupiter.api.Test
-    public void testGetItemByOrder()
-    {
-    	ISetting<Integer> setting = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
+    public void testGetItemByOrder() {
+    	ISetting<Integer> setting =
+    			new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
     	_settingsRepo.addEntity(setting, 123, null);
     	assertTrue(_settingsRepo.getItemByOrder(123).entity().getValue().equals(SETTING_1_VALUE));
     }
 
     @org.junit.jupiter.api.Test
-    public void testGetNonexistentItemByOrder()
-    {
-    	try
-    	{
+    public void testGetNonexistentItemByOrder() {
+    	try {
         	_settingsRepo.getItemByOrder(123);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testGetAllGrouped()
-    {
-    	ISetting<Integer> setting1 = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
-    	ISetting<Double> setting2 = new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
-    	ISetting<String> setting3 = new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
+	public void testGetAllGrouped() {
+    	ISetting<Integer> setting1 = 
+    			new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
+    	ISetting<Double> setting2 = 
+    			new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
+    	ISetting<String> setting3 = 
+    			new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
 
     	_settingsRepo.addEntity(setting1, 0, null);
     	
@@ -312,11 +269,13 @@ public class SettingsRepoTests {
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testGetAllUngrouped()
-    {
-    	ISetting<Integer> setting1 = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
-    	ISetting<Double> setting2 = new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
-    	ISetting<String> setting3 = new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
+	public void testGetAllUngrouped() {
+    	ISetting<Integer> setting1 = 
+    			new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
+    	ISetting<Double> setting2 = 
+    			new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
+    	ISetting<String> setting3 = 
+    			new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
 
     	_settingsRepo.addEntity(setting1, 0, null);
     	
@@ -335,19 +294,21 @@ public class SettingsRepoTests {
     	boolean setting1Used = false;
     	boolean setting2Used = false;
     	boolean setting3Used = false;
-    	for(int i = 0; i < allSettingsUngrouped.size(); i++)
-    	{
+    	for(int i = 0; i < allSettingsUngrouped.size(); i++) {
     		ISetting setting = allSettingsUngrouped.get(i);
-    		if (setting.id().equals(setting1.id()) && setting.getName().equals(setting1.getName()) && setting.getValue().equals(setting1.getValue()))
-    		{
+    		if (setting.id().equals(setting1.id()) 
+    				&& setting.getName().equals(setting1.getName()) 
+    				&& setting.getValue().equals(setting1.getValue())) {
     			setting1Used = true;
     		}
-    		if (setting.id().equals(setting2.id()) && setting.getName().equals(setting2.getName()) && setting.getValue().equals(setting2.getValue()))
-    		{
+    		if (setting.id().equals(setting2.id()) 
+    				&& setting.getName().equals(setting2.getName()) 
+    				&& setting.getValue().equals(setting2.getValue())) {
     			setting2Used = true;
     		}
-    		if (setting.id().equals(setting3.id()) && setting.getName().equals(setting3.getName()) && setting.getValue().equals(setting3.getValue()))
-    		{
+    		if (setting.id().equals(setting3.id()) 
+    				&& setting.getName().equals(setting3.getName()) 
+    				&& setting.getValue().equals(setting3.getValue())) {
     			setting3Used = true;
     		}
     	}
@@ -357,11 +318,13 @@ public class SettingsRepoTests {
     }
 
     @org.junit.jupiter.api.Test
-    public void testRemoveItem()
-    {
-    	ISetting<Integer> setting1 = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
-    	ISetting<Double> setting2 = new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
-    	ISetting<String> setting3 = new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
+    public void testRemoveItem() {
+    	ISetting<Integer> setting1 = 
+    			new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
+    	ISetting<Double> setting2 = 
+    			new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
+    	ISetting<String> setting3 = 
+    			new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
 
     	_settingsRepo.addEntity(setting1, 0, null);
     	
@@ -381,43 +344,34 @@ public class SettingsRepoTests {
     }
 
     @org.junit.jupiter.api.Test
-    public void testRemoveItemWithNullOrBlankId()
-    {
-    	try
-    	{
+    public void testRemoveItemWithNullOrBlankId() {
+    	try {
         	_settingsRepo.removeItem(null);
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     	
-    	try
-    	{
+    	try {
         	_settingsRepo.removeItem("");
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
-    public void testGetGroupingIdAndOrder()
-    {
-    	ISetting<Integer> setting1 = new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
-    	ISetting<Double> setting2 = new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
-    	ISetting<String> setting3 = new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
+    public void testGetGroupingIdAndOrder() {
+    	ISetting<Integer> setting1 = 
+    			new SettingStub<Integer>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
+    	ISetting<Double> setting2 = 
+    			new SettingStub<Double>(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
+    	ISetting<String> setting3 = 
+    			new SettingStub<String>(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
 
     	_settingsRepo.addEntity(setting1, 123, null);
     	
@@ -441,39 +395,28 @@ public class SettingsRepoTests {
     	assertTrue(setting3GroupingIdAndOrder.getItem1().equals(SETTINGS_REPO_SUBGROUP_1_1_ID));
     	assertTrue(setting3GroupingIdAndOrder.getItem2() == 789);
     	
-    	try
-    	{
+    	try {
         	_settingsRepo.getGroupingIdAndOrder("ThisIsNotAnId");
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     	
-    	try
-    	{
+    	try {
         	_settingsRepo.getGroupingIdAndOrder("");
     		assertTrue(false);
-    	}
-    	catch(IllegalArgumentException e)
-    	{
+    	} catch(IllegalArgumentException e) {
     		assertTrue(true);
-    	}
-    	catch(Exception e)
-    	{
+    	} catch(Exception e) {
     		assertTrue(false);
     	}
     }
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void testRead()
-    {
+	public void testRead() {
     	_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, null);
     	_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_1_ID, SETTINGS_REPO_SUBGROUP_1_ID);
 
@@ -498,8 +441,7 @@ public class SettingsRepoTests {
 
     @org.junit.jupiter.api.Test
     @SuppressWarnings("rawtypes")
-	public void testWrite()
-    {
+	public void testWrite() {
     	_settingsRepo.newSubgrouping(1, SETTINGS_REPO_SUBGROUP_1_ID, null);
     	_settingsRepo.newSubgrouping(1, SETTINGS_REPO_SUBGROUP_1_1_ID, SETTINGS_REPO_SUBGROUP_1_ID);
     	
@@ -531,15 +473,13 @@ public class SettingsRepoTests {
 		assertTrue(settingsWrittenOut.equals(expectedValue));
     }
     
-    private class SettingStub<T> implements ISetting<T>
-    {
+    private class SettingStub<T> implements ISetting<T> {
     	private final String ID;
     	
     	private String _name;
     	private T _value;
     	
-    	public SettingStub(String id, String name, T defaultValue, T archetype, IGenericParamsSet controlParams)
-    	{
+    	public SettingStub(String id, String name, T defaultValue, T archetype, IGenericParamsSet controlParams) {
     		ID = id;
     		_name = name;
     		_value = defaultValue;
@@ -593,10 +533,10 @@ public class SettingsRepoTests {
     	
     }
     
-    private class PersistentValuesHandlerStub implements IPersistentValuesHandler
-    {
+    private class PersistentValuesHandlerStub implements IPersistentValuesHandler {
 		@Override
-		public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler) throws IllegalArgumentException {
+		public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler) 
+				throws IllegalArgumentException {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();
 		}
@@ -625,15 +565,12 @@ public class SettingsRepoTests {
 		public void readValues(String valuesString, IAction<IPair<IPersistentValueToWrite<?>, Boolean>> valueProcessing,
 				boolean overridePreviousData) {
 			String[] settingsStrings = valuesString.split(";", -1);
-			for(String settingString : settingsStrings)
-			{
-				if (settingString.equals(""))
-				{
+			for(String settingString : settingsStrings) {
+				if (settingString.equals("")) {
 					continue;
 				}
 				String[] settingFields = settingString.split(",", -1);
-				if (settingFields.length != 5)
-				{
+				if (settingFields.length != 5) {
 					throw new IllegalArgumentException("Invalid number of Setting fields (" + settingString + ")");
 				}
 				
@@ -646,7 +583,8 @@ public class SettingsRepoTests {
 				when(setting.getName()).thenReturn(settingName);
 				when(setting.getValue()).thenReturn(settingValue);
 				
-				SettingToProcess settingToProcess = _settingsRepo.new SettingToProcess(setting.id(), setting.getValue());
+				SettingToProcess settingToProcess = 
+						_settingsRepo.new SettingToProcess(setting.id(), setting.getValue());
 				
 				valueProcessing.run(PAIR_FACTORY.make(settingToProcess,true));
 			}
@@ -656,8 +594,7 @@ public class SettingsRepoTests {
 		@Override
 		public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
 			String writtenValues = "";
-			for (int i = 0; i < persistentValuesToProcess.size(); i++)
-			{
+			for (int i = 0; i < persistentValuesToProcess.size(); i++) {
 				IPersistentValueToWrite settingToProcess = persistentValuesToProcess.get(i);
 				writtenValues += settingToProcess.name() + "," + settingToProcess.value() + ";";
 			}
