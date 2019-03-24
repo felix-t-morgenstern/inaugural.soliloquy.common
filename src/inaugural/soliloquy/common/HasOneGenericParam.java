@@ -13,8 +13,7 @@ public abstract class HasOneGenericParam<T> extends HasGenericParams implements 
 						"HasOneGenericParam.getInterfaceName: Archetype of a generic type must not be null");
 			}
 			innerClassName = ((ISoliloquyClass) getArchetype()).getInterfaceName();
-		}
-		else {
+		} else {
 			innerClassName = getArchetype().getClass().getCanonicalName();
 		}
 		return getUnparameterizedInterfaceName() + "<" + innerClassName + ">";

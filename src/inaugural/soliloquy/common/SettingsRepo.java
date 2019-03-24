@@ -132,8 +132,7 @@ public class SettingsRepo implements ISettingsRepo {
 				SettingsRepo settingsRepo = (SettingsRepo) settingsRepoItem.group();
 				if (settingsRepo.id().equals(groupId)) {
 					return settingsRepo;
-				}
-				else {
+				} else {
 					ISettingsRepo childrenResult = settingsRepo.getSubgrouping(groupId);
 					if (childrenResult != null) {
 						return childrenResult;
@@ -176,8 +175,7 @@ public class SettingsRepo implements ISettingsRepo {
 			}
 			throw new IllegalArgumentException("SettingsRepo.addEntity: Item with order of " + order
 					+ " already present in " + group);
-		}
-		else {
+		} else {
 			targetedGrouping.ITEMS.put(order, new SettingsRepoItem(setting, setting));
 		}
 	}
@@ -188,8 +186,7 @@ public class SettingsRepo implements ISettingsRepo {
 		SettingsRepo targetParentGrouping;
 		if (parentGroupId == null || parentGroupId.equals("")) {
 			targetParentGrouping = this;
-		}
-		else {
+		} else {
 			targetParentGrouping = (SettingsRepo) getSubgrouping(parentGroupId);
 		}
 		targetParentGrouping.ITEMS.put(order,
@@ -233,8 +230,7 @@ public class SettingsRepo implements ISettingsRepo {
 				if (settingsRepoItem.entity().id().equals(settingId)) {
 					return settingsRepoItem.entity();
 				}
-			}
-			else {
+			} else {
 				SettingsRepo settingsRepo = (SettingsRepo) settingsRepoItem.group();
 				ISetting setting = settingsRepo.getSettingRecursively(settingId);
 				if (setting != null) {
@@ -250,8 +246,7 @@ public class SettingsRepo implements ISettingsRepo {
 		for(SettingsRepoItem settingsRepoItem : ITEMS.values()) {
 			if (!settingsRepoItem.isGroup()) {
 				allSettingsUngrouped.add(settingsRepoItem.entity());
-			}
-			else {
+			} else {
 				((SettingsRepo)settingsRepoItem.group()).addSettingsRecursively(allSettingsUngrouped);
 			}
 		}
@@ -266,8 +261,7 @@ public class SettingsRepo implements ISettingsRepo {
 					ITEMS.remove(order);
 					return true;
 				}
-			}
-			else {
+			} else {
 				if (((SettingsRepo) item.group()).removeItemRecursively(settingId)) {
 					return true;
 				}
@@ -283,8 +277,7 @@ public class SettingsRepo implements ISettingsRepo {
 				if(settingsRepoItem.entity().id().equals(itemId)) {
 					return PAIR_FACTORY.make(isTopLevel ? "" : ID, order);
 				}
-			}
-			else {
+			} else {
 				if(((SettingsRepo) settingsRepoItem.group()).ID.equals(itemId)) {
 					return PAIR_FACTORY.make(isTopLevel ? "" : ID, order);
 				}
@@ -306,8 +299,7 @@ public class SettingsRepo implements ISettingsRepo {
 				ISetting setting = (ISetting) settingsRepoItem.entity();
 				SettingToProcess settingToProcess = new SettingToProcess(setting.id(), setting.getValue());
 				persistentValuesToWrite.add(settingToProcess);
-			}
-			else {
+			} else {
 				((SettingsRepo) settingsRepoItem.group()).populatePersistentValuesToWriteRecursively(persistentValuesToWrite, false);
 			}
 		}

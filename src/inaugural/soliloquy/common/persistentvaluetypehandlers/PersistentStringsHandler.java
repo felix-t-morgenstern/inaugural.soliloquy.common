@@ -26,8 +26,7 @@ public class PersistentStringsHandler extends PersistentTypeHandler<ICollection<
 		for (int i = 0; i < value.size(); i++) {
 			if (firstItem) {
 				firstItem = false;
-			}
-			else {
+			} else {
 				result += DELIMITER;
 			}
 			result += value.get(i);

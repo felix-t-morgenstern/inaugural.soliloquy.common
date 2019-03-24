@@ -240,8 +240,7 @@ public class SettingsRepoIntegrationTests {
     private boolean groupNamesEqual(String groupName1, String groupName2) {
     	if ((groupName1 == null || groupName1.equals("")) && (groupName2 == null || groupName2.equals(""))) {
     		return true;
-    	}
-    	else {
+    	} else {
     		return groupName1.equals(groupName2);
     	}
     }
