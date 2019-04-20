@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +15,6 @@ import inaugural.soliloquy.common.MapFactory;
 import inaugural.soliloquy.common.PairFactory;
 import inaugural.soliloquy.common.PersistentValuesHandler;
 import inaugural.soliloquy.common.SettingFactory;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringsHandler;
 import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
@@ -43,9 +39,10 @@ public class PersistentValuesIntegrationTests {
 	
     @BeforeEach
     protected void setUp() throws Exception {
+		_collectionFactory = new CollectionFactory();
+
     	_persistentValuesHandler = new PersistentValuesHandler();
-    	
-    	_collectionFactory = new CollectionFactory();
+
     	_pairFactory = new PairFactory();
     	_mapFactory = new MapFactory(_pairFactory);
     	new GenericParamsSetFactory(_persistentValuesHandler, _mapFactory);
