@@ -195,3 +195,4 @@ target/mvn-repo/disorg/soliloquy/inaugural.soliloquy.common/maven-metadata.xml.s
 .idea/vcs.xml
 .idea/workspace.xml
 inaugural.soliloquy.common.iml
+.idea/uiDesigner.xml
