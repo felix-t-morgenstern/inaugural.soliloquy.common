@@ -196,3 +196,4 @@ target/mvn-repo/disorg/soliloquy/inaugural.soliloquy.common/maven-metadata.xml.s
 .idea/workspace.xml
 inaugural.soliloquy.common.iml
 .idea/uiDesigner.xml
+*.kotlin_module
