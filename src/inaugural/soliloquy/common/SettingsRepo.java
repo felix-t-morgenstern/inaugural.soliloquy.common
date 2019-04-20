@@ -14,11 +14,10 @@ import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingsRepo;
-import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
 
-public class SettingsRepo implements ISettingsRepo {
+public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	protected final HashMap<Integer,SettingsRepoItem> ITEMS;
 	
 	private final String ID;
@@ -391,9 +390,7 @@ public class SettingsRepo implements ISettingsRepo {
 
 		@Override
 		public String typeName() {
-			return VALUE instanceof ISoliloquyClass ?
-				((ISoliloquyClass) VALUE).getInterfaceName() :
-					VALUE.getClass().getCanonicalName();
+			return getProperTypeName(VALUE);
 		}
 
 		@Override

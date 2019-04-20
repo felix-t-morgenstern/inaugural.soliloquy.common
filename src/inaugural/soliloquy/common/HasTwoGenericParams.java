@@ -8,34 +8,12 @@ public abstract class HasTwoGenericParams<P1,P2> extends HasGenericParams implem
 	
 	@Override
 	public String getInterfaceName() {
-		if (_parameterizedClassName != null) {
-			return _parameterizedClassName;
+		if (_parameterizedClassName == null) {
+			_parameterizedClassName = getUnparameterizedInterfaceName() +
+					"<" + getProperTypeName(getFirstArchetype()) + "," +
+					getProperTypeName(getSecondArchetype()) + ">";
 		}
-		
-		String innerClassName_1;
-		String innerClassName_2;
-		
-		if (getFirstArchetype() instanceof ISoliloquyClass) {
-			if (getFirstArchetype() == null) {
-				throw new IllegalStateException(
-						"HasTwoGenericParams.getInterfaceName: Archetype of a generic type must not be null (first param)");
-			}
-			innerClassName_1 = ((ISoliloquyClass) getFirstArchetype()).getInterfaceName();
-		} else {
-			innerClassName_1 = getFirstArchetype().getClass().getCanonicalName();
-		}
-		if (getSecondArchetype() instanceof ISoliloquyClass) {
-			if (getSecondArchetype() == null) {
-				throw new IllegalStateException(
-						"HasTwoGenericParams.getInterfaceName: Archetype of a generic type must not be null (second param)");
-			}
-			innerClassName_2 = ((ISoliloquyClass) getSecondArchetype()).getInterfaceName();
-		} else {
-			innerClassName_2 = getSecondArchetype().getClass().getCanonicalName();
-		}
-		
-		return _parameterizedClassName = getUnparameterizedInterfaceName() +
-				"<" + innerClassName_1 + "," + innerClassName_2 + ">";
+		return _parameterizedClassName;
 	}
 
 }

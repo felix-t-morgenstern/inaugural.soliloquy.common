@@ -13,7 +13,7 @@ import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
 
-public class GenericParamsSet implements IGenericParamsSet {
+public class GenericParamsSet extends CanGetInterfaceName implements IGenericParamsSet {
 	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<String,IMap<String,?>>();
 	private IPersistentValuesHandler _persistentValuesHandler;
 	private IMapFactory _mapFactory;
@@ -37,9 +37,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 		if (archetype == null) {
 			throw new IllegalArgumentException("GenericParamsSet.addParam: archetype must not be null");
 		}
-		String paramTypeName = archetype instanceof ISoliloquyClass ?
-				((ISoliloquyClass) archetype).getInterfaceName() :
-					archetype.getClass().getCanonicalName();
+		String paramTypeName = getProperTypeName(archetype);
 		if (getParamsSet(paramTypeName) == null) {
 			addParamsSet(_mapFactory.make("", archetype), archetype);
 		}
@@ -55,9 +53,7 @@ public class GenericParamsSet implements IGenericParamsSet {
 		if (paramArchetype == null) {
 			throw new IllegalArgumentException("GenericParamsSet.addParamsSet: paramArchetype cannot be null");
 		}
-		String paramTypeName = paramArchetype instanceof ISoliloquyClass ?
-				((ISoliloquyClass) paramArchetype).getInterfaceName() :
-					paramArchetype.getClass().getCanonicalName();
+		String paramTypeName = getProperTypeName(paramArchetype);
 		if (_paramsSetsRepository.containsKey(paramTypeName)) {
 			throw new UnsupportedOperationException("GenericParamsSet.addParamsSet: Params set of type "
 					+ paramTypeName + " already exists in this params set");
