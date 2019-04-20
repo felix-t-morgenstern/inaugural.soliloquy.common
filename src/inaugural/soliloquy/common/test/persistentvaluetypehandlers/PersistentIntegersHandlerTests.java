@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -96,7 +97,7 @@ public class PersistentIntegersHandlerTests {
 
 	@Test
 	public void testGetParameterizedClassName() {
-		assertTrue(persistentIntegersHandler.getInterfaceName()
-				.equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.Integer>>"));
+		assertEquals("soliloquy.common.specs.IPersistentValueTypeHandler<soliloquy.common.specs.ICollection<java.lang.Integer>>",
+				persistentIntegersHandler.getInterfaceName());
 	}
 }

@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ public class PersistentBooleanHandlerTests {
 
     @Test
 	public void testGetInterfaceName() {
-		assertTrue(persistentBooleanHandler.getInterfaceName()
-				.equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Boolean>"));
+		assertEquals("soliloquy.common.specs.IPersistentValueTypeHandler<java.lang.Boolean>",
+				persistentBooleanHandler.getInterfaceName());
 	}
 }

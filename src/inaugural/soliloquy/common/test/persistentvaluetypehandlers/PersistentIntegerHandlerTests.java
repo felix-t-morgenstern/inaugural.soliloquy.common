@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,7 @@ public class PersistentIntegerHandlerTests {
 
 	@Test
 	public void testGetInterfaceName() {
-		assertTrue(persistentIntegerHandler.getInterfaceName()
-				.equals("soliloquy.common.persistentvaluetypehandlers.IPersistentValueTypeHandler<java.lang.Integer>"));
+		assertEquals("soliloquy.common.specs.IPersistentValueTypeHandler<java.lang.Integer>",
+				persistentIntegerHandler.getInterfaceName());
 	}
 }
