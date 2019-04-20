@@ -1,37 +1,25 @@
 package inaugural.soliloquy.common.test.integrationtests;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import inaugural.soliloquy.common.*;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import inaugural.soliloquy.common.CollectionFactory;
-import inaugural.soliloquy.common.GenericParamsSetFactory;
-import inaugural.soliloquy.common.MapFactory;
-import inaugural.soliloquy.common.PairFactory;
-import inaugural.soliloquy.common.PersistentValuesHandler;
-import inaugural.soliloquy.common.SettingFactory;
-import soliloquy.common.specs.IAction;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.IMapFactory;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
-import soliloquy.common.specs.IPersistentValueToWrite;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
-import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.common.specs.*;
 import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentValuesIntegrationTests {
 	private IPersistentValuesHandler _persistentValuesHandler;
+
+	private final String PERSISTENT_VALUES_STRING = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"java.lang.Integer\u00910\u00911\u00922\u00923\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"java.lang.Integer\u00910\u00914\u00925\u00926\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"java.lang.String\u0091strings1Archetype\u0091string1-1\u0092string1-2\u0092string1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"java.lang.String\u0091strings2Archetype\u0091string2-1\u0092string2-2\u0092string2-3\"},{\"typeName\":\"soliloquy.common.specs.IMap\\u003cjava.lang.String,java.lang.Integer\\u003e\",\"name\":\"map1\",\"value\":\"java.lang.String\\u001fjava.lang.Integer\\u001dmap1Archetype1\\u001f123123123\\u001dKey1-1\\u001f123\\u001eKey1-2\\u001f456\\u001eKey1-3\\u001f789\"},{\"typeName\":\"soliloquy.common.specs.IMap\\u003cjava.lang.String,soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\\u003e\",\"name\":\"map2\",\"value\":\"java.lang.String\\u001fsoliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\\u001dmap2Archetype1\\u001fjava.lang.Integer\u0091456456456\u0091\\u001dKey2-1\\u001fjava.lang.Integer\u0091123\u00911\u00922\u00923\\u001eKey2-2\\u001fjava.lang.Integer\u0091456\u00914\u00925\u00926\\u001eKey2-3\\u001fjava.lang.Integer\u0091789\u00917\u00928\u00929\"}]";
 	
 	private ICollectionFactory _collectionFactory;
+	private IMapFactory _mapFactory;
 
 	private static List<IPair<IPersistentValueToWrite<?>, Boolean>> _readValues;
 	
@@ -42,7 +30,7 @@ class PersistentValuesIntegrationTests {
     	_persistentValuesHandler = new PersistentValuesHandler();
 
 		IPairFactory _pairFactory = new PairFactory();
-		IMapFactory _mapFactory = new MapFactory(_pairFactory);
+		_mapFactory = new MapFactory(_pairFactory);
     	new GenericParamsSetFactory(_persistentValuesHandler, _mapFactory);
     	new SettingFactory();
     	
@@ -50,11 +38,13 @@ class PersistentValuesIntegrationTests {
     	IPersistentValueTypeHandler<Integer> persistentIntegerHandler = new PersistentIntegerHandler();
     	IPersistentValueTypeHandler<String> persistentStringHandler = new PersistentStringHandler();
 		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler = new PersistentCollectionHandler(_persistentValuesHandler, _collectionFactory);
+		IPersistentValueTypeHandler<IMap> persistentMapHandler = new PersistentMapHandler(_persistentValuesHandler, _mapFactory);
     	
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentBooleanHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentIntegerHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentStringHandler);
     	_persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
+    	_persistentValuesHandler.registerPersistentMapHandler(persistentMapHandler);
     	
     	_readValues = new ArrayList<>();
     }
@@ -62,8 +52,6 @@ class PersistentValuesIntegrationTests {
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	void testWriteValues() {
-    	String expectedOutput = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"java.lang.Integer\\u001d0\\u001d1\\u001e2\\u001e3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"java.lang.Integer\\u001d0\\u001d4\\u001e5\\u001e6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"java.lang.String\\u001d\\u001dstring1-1\\u001estring1-2\\u001estring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"java.lang.String\\u001d\\u001dstring2-1\\u001estring2-2\\u001estring2-3\"}]";
-    	
     	IPersistentValueToWrite persistentValueToWriteArchetype = new PersistentValueToWrite(null, null);
     	ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite =
     			_collectionFactory.make(persistentValueToWriteArchetype);
@@ -113,27 +101,42 @@ class PersistentValuesIntegrationTests {
     	persistentValuesToWrite.add(string2ToWrite);
     	
     	// Adding Strings persistent values
-    	ICollection<String> strings1 = _collectionFactory.make(new String[] {"string1-1", "string1-2", "string1-3"}, "");
+    	ICollection<String> strings1 = _collectionFactory.make(new String[] {"string1-1", "string1-2", "string1-3"}, "strings1Archetype");
     	IPersistentValueToWrite strings1ToWrite = new PersistentValueToWrite("strings1", strings1);
     	persistentValuesToWrite.add(strings1ToWrite);
 
-    	ICollection<String> strings2 = _collectionFactory.make(new String[] {"string2-1", "string2-2", "string2-3"}, "");
+    	ICollection<String> strings2 = _collectionFactory.make(new String[] {"string2-1", "string2-2", "string2-3"}, "strings2Archetype");
     	IPersistentValueToWrite strings2ToWrite = new PersistentValueToWrite("strings2", strings2);
     	persistentValuesToWrite.add(strings2ToWrite);
+
+    	// Adding a map of Strings and Integers
+		IMap<String,Integer> map1 = _mapFactory.make("map1Archetype1", 123123123);
+		map1.put("Key1-1", 123);
+		map1.put("Key1-2", 456);
+		map1.put("Key1-3", 789);
+		IPersistentValueToWrite map1ToWrite = new PersistentValueToWrite("map1", map1);
+		persistentValuesToWrite.add(map1ToWrite);
+
+		// Adding a map of Strings and collections of Integers
+		IMap<String,ICollection<Integer>> map2 =
+				_mapFactory.make("map2Archetype1", _collectionFactory.make(456456456));
+		map2.put("Key2-1", _collectionFactory.make(new Integer[] {1,2,3}, 123));
+		map2.put("Key2-2", _collectionFactory.make(new Integer[] {4,5,6}, 456));
+		map2.put("Key2-3", _collectionFactory.make(new Integer[] {7,8,9}, 789));
+		IPersistentValueToWrite map2ToWrite = new PersistentValueToWrite("map2", map2);
+		persistentValuesToWrite.add(map2ToWrite);
     	
     	String writtenValue = _persistentValuesHandler.writeValues(persistentValuesToWrite);
     	
-    	assertEquals(expectedOutput, writtenValue);
+    	assertEquals(PERSISTENT_VALUES_STRING, writtenValue);
     }
 
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	void testReadValues() throws Exception {
-    	String valuesToRead = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"java.lang.Integer\\u001d0\\u001d1\\u001e2\\u001e3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"java.lang.Integer\\u001d0\\u001d4\\u001e5\\u001e6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"java.lang.String\\u001d\\u001dstring1-1\\u001estring1-2\\u001estring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"java.lang.String\\u001d\\u001dstring2-1\\u001estring2-2\\u001estring2-3\"}]";
-    	
-    	_persistentValuesHandler.readValues(valuesToRead, new ReadValuesAction(), true);
+    	_persistentValuesHandler.readValues(PERSISTENT_VALUES_STRING, new ReadValuesAction(), true);
 
-		assertEquals(11, _readValues.size());
+		assertEquals(13, _readValues.size());
     	
     	for (IPair<IPersistentValueToWrite<?>, Boolean> readValuePair : _readValues)
     	{
@@ -184,7 +187,7 @@ class PersistentValuesIntegrationTests {
 				assertEquals("string1-1", strings1.get(0));
 				assertEquals("string1-2", strings1.get(1));
 				assertEquals("string1-3", strings1.get(2));
-    			assertNotNull(strings1.getArchetype());
+    			assertEquals("strings1Archetype", strings1.getArchetype());
     			break;
     		case "strings2":
     			ICollection<String> strings2 = (ICollection<String>) readValue.value();
@@ -192,15 +195,51 @@ class PersistentValuesIntegrationTests {
 				assertEquals("string2-1", strings2.get(0));
 				assertEquals("string2-2", strings2.get(1));
 				assertEquals("string2-3", strings2.get(2));
-				assertNotNull(strings2.getArchetype());
+				assertEquals("strings2Archetype", strings2.getArchetype());
     			break;
+			case "map1":
+				IMap<String,Integer> map1 = (IMap<String,Integer>) readValue.value();
+				assertEquals(3, map1.size());
+				assertEquals(123, (int) map1.get("Key1-1"));
+				assertEquals(456, (int) map1.get("Key1-2"));
+				assertEquals(789, (int) map1.get("Key1-3"));
+				break;
+			case "map2":
+				IMap<String,ICollection<Integer>> map2 =
+						(IMap<String,ICollection<Integer>>) readValue.value();
+				assertEquals(3, map2.size());
+				assertEquals("map2Archetype1", map2.getFirstArchetype());
+				assertEquals(456456456, (int) map2.getSecondArchetype().getArchetype());
+
+				ICollection<Integer> map2integers1 = map2.get("Key2-1");
+				assertEquals(3, map2integers1.size());
+				assertTrue(map2integers1.contains(1));
+				assertTrue(map2integers1.contains(2));
+				assertTrue(map2integers1.contains(3));
+				assertEquals(123, (int) map2integers1.getArchetype());
+
+				ICollection<Integer> map2integers2 = map2.get("Key2-2");
+				assertEquals(3, map2integers2.size());
+				assertTrue(map2integers2.contains(4));
+				assertTrue(map2integers2.contains(5));
+				assertTrue(map2integers2.contains(6));
+				assertEquals(456, (int) map2integers2.getArchetype());
+
+				ICollection<Integer> map2integers3 = map2.get("Key2-3");
+				assertEquals(3, map2integers3.size());
+				assertTrue(map2integers3.contains(7));
+				assertTrue(map2integers3.contains(8));
+				assertTrue(map2integers3.contains(9));
+				assertEquals(789, (int) map2integers3.getArchetype());
+				break;
     		default:
 				throw new Exception();
     		}
     	}
     }
     
-    private class PersistentValueToWrite<T> implements IPersistentValueToWrite<T> {
+    private class PersistentValueToWrite<T> extends CanGetInterfaceName
+			implements IPersistentValueToWrite<T> {
     	private final String NAME;
     	private final T VALUE;
     	
@@ -223,9 +262,7 @@ class PersistentValuesIntegrationTests {
 
 		@Override
 		public String typeName() {
-			return VALUE instanceof ISoliloquyClass ? 
-				((ISoliloquyClass) VALUE).getInterfaceName() 
-					: VALUE.getClass().getCanonicalName();
+			return getProperTypeName(VALUE);
 		}
 
 		@Override

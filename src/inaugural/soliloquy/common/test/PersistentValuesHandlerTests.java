@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import inaugural.soliloquy.common.test.stubs.PersistentCollectionHandlerStub;
+import inaugural.soliloquy.common.test.stubs.PersistentMapHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -155,7 +156,7 @@ public class PersistentValuesHandlerTests {
     	assertTrue(result.equals("[{\"typeName\":\"java.lang.String\",\"name\":\"String1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"String2\",\"value\":\"String2\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer2\",\"value\":\"456\"}]"));
     }
 
-    @Test
+	@Test
 	void testRegisterPersistentCollectionHandler() {
 		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler =
 				new PersistentCollectionHandlerStub();
@@ -164,5 +165,15 @@ public class PersistentValuesHandlerTests {
 		assertSame(persistentCollectionHandler,
 				_persistentValuesHandler.getPersistentValueTypeHandler(
 						ICollection.class.getCanonicalName()));
+	}
+
+	@Test
+	void testRegisterPersistentMapHandler() {
+		IPersistentValueTypeHandler<IMap> persistentMapHandler = new PersistentMapHandlerStub();
+		_persistentValuesHandler.registerPersistentMapHandler(persistentMapHandler);
+
+		assertSame(persistentMapHandler,
+				_persistentValuesHandler.getPersistentValueTypeHandler(
+						IMap.class.getCanonicalName()));
 	}
 }

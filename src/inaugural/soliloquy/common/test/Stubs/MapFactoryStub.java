@@ -8,7 +8,7 @@ public class MapFactoryStub implements IMapFactory {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public <K, V> IMap<K, V> make(K archetype1, V archetype2) {
-		return new MapStub();
+		return new MapStub(archetype1, archetype2);
 	}    	
 
 	@Override

@@ -22,6 +22,8 @@ import soliloquy.common.specs.IPersistentVariable;
 import soliloquy.common.specs.IPersistentVariableFactory;
 
 class PersistentVariableCacheIntegrationTests {
+	private final String PERSISTENT_VARIABLE_CACHE_STRING = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"java.lang.Integer\u00910\u0091123\u0092456\u0092789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"java.lang.String\u0091\u0091Variable5Value1\u0092Variable5Value2\u0092Variable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
+
 	private IPersistentVariableFactory _persistentVariableFactory;
 
 	private PersistentVariableCache _persistentVariableCache;
@@ -79,8 +81,6 @@ class PersistentVariableCacheIntegrationTests {
 
     @Test
 	void testWrite() {
-    	String expectedValue = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"java.lang.Integer\\u001d0\\u001d123\\u001e456\\u001e789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"java.lang.String\\u001d\\u001dVariable5Value1\\u001eVariable5Value2\\u001eVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
-    	
     	IPersistentVariable variable1 = _persistentVariableFactory.make(VARIABLE_1_NAME, VARIABLE_1_VALUE);
     	IPersistentVariable variable2 = _persistentVariableFactory.make(VARIABLE_2_NAME, VARIABLE_2_VALUE);
     	IPersistentVariable variable3 = _persistentVariableFactory.make(VARIABLE_3_NAME, _variable3Value);
@@ -95,14 +95,12 @@ class PersistentVariableCacheIntegrationTests {
     	
     	String writtenValue = _persistentVariableCache.write();
 
-		assertEquals(expectedValue, writtenValue);
+		assertEquals(PERSISTENT_VARIABLE_CACHE_STRING, writtenValue);
     }
 
     @Test
 	void testRead() {
-    	String valueToRead = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"java.lang.Integer\\u001d0\\u001d123\\u001e456\\u001e789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"java.lang.String\\u001d\\u001dVariable5Value1\\u001eVariable5Value2\\u001eVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
-    	
-    	_persistentVariableCache.read(valueToRead, false);
+    	_persistentVariableCache.read(PERSISTENT_VARIABLE_CACHE_STRING, false);
 
 		assertEquals(5, _persistentVariableCache.size());
 		assertEquals(_persistentVariableCache.get(VARIABLE_1_NAME).getValue(), VARIABLE_1_VALUE);

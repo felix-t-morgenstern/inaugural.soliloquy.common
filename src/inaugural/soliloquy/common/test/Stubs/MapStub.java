@@ -2,31 +2,39 @@ package inaugural.soliloquy.common.test.stubs;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IFunction;
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IPair;
+import soliloquy.common.specs.*;
 
 public class MapStub<K,V> implements IMap<K,V> {
+	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
+
 	private HashMap<K,V> _map = new HashMap<K,V>();
+	private K _archetype1;
+	private V _archetype2;
+
+	public MapStub() {
+
+	}
+
+	public MapStub(K archetype1, V archetype2) {
+		_archetype1 = archetype1;
+		_archetype2 = archetype2;
+	}
 
 	@Override
 	public Iterator<IPair<K, V>> iterator() {
-		// Stub method; unimplemented
-		throw new UnsupportedOperationException();
+		return new MapStubIterator(_map, PAIR_FACTORY);
 	}
 
 	@Override
 	public K getFirstArchetype() throws IllegalStateException {
-		// Stub method; unimplemented
-		throw new UnsupportedOperationException();
+		return _archetype1;
 	}
 
 	@Override
 	public V getSecondArchetype() throws IllegalStateException {
-		// Stub method; unimplemented
-		throw new UnsupportedOperationException();
+		return _archetype2;
 	}
 
 	@Override
@@ -152,5 +160,27 @@ public class MapStub<K,V> implements IMap<K,V> {
 	public String getUnparameterizedInterfaceName() {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
+	}
+
+	private class MapStubIterator implements Iterator<IPair<K,V>> {
+		private Iterator<Map.Entry<K,V>> _hashMapIterator;
+		private IPairFactory _pairFactory;
+
+		MapStubIterator(HashMap<K,V> hashMap, IPairFactory pairFactory) {
+			_hashMapIterator = hashMap.entrySet().iterator();
+			_pairFactory = pairFactory;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return _hashMapIterator.hasNext();
+		}
+
+		@Override
+		public IPair<K, V> next() {
+			Map.Entry<K,V> entry = _hashMapIterator.next();
+			return _pairFactory.make(entry.getKey(), entry.getValue());
+		}
+
 	}
 }

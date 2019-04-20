@@ -17,6 +17,8 @@ public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
     public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType) throws UnsupportedOperationException {
         if (persistentValueType.equals(Integer.class.getCanonicalName())) {
             return (IPersistentValueTypeHandler<T>) new PersistentIntegerHandlerStub();
+        } else if (persistentValueType.equals(String.class.getCanonicalName())) {
+            return (IPersistentValueTypeHandler<T>) new PersistentStringHandlerStub();
         } else {
             return null;
         }
@@ -45,6 +47,16 @@ public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
     @Override
     public <T> IPersistentValueToWrite<T> makePersistentValueToWrite(String s, T t) {
         return null;
+    }
+
+    @Override
+    public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> iPersistentValueTypeHandler) {
+
+    }
+
+    @Override
+    public void registerPersistentMapHandler(IPersistentValueTypeHandler<IMap> iPersistentValueTypeHandler) {
+
     }
 
     @Override

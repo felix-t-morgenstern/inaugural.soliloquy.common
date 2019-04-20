@@ -31,6 +31,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class SettingsRepoIntegrationTests {
 	private ISettingsRepo _settingsRepo;
 
+	private final String SETTINGS_REPO_STRING = "[{\"typeName\":\"java.lang.Integer\",\"name\":\"Setting2Id\",\"value\":\"456\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Setting3Id\",\"value\":\"java.lang.Integer\u00910\u0091123\u0092456\u0092789\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Setting5Id\",\"value\":\"java.lang.String\u0091\u0091Value1\u0092Value2\u0092Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Setting4Id\",\"value\":\"Setting4Value\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Setting1Id\",\"value\":\"true\"}]";
+
 	private final String SETTING_1_ID = "Setting1Id";
 	private final String SETTING_2_ID = "Setting2Id";
 	private final String SETTING_3_ID = "Setting3Id";
@@ -159,19 +161,15 @@ class SettingsRepoIntegrationTests {
 
 	@Test
 	void testWrite() {
-    	String expectedValue = "[{\"typeName\":\"java.lang.Integer\",\"name\":\"Setting2Id\",\"value\":\"456\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Setting3Id\",\"value\":\"java.lang.Integer\\u001d0\\u001d123\\u001e456\\u001e789\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Setting5Id\",\"value\":\"java.lang.String\\u001d\\u001dValue1\\u001eValue2\\u001eValue3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Setting4Id\",\"value\":\"Setting4Value\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Setting1Id\",\"value\":\"true\"}]";
-    	
     	String writtenSettingsRepo = _settingsRepo.write();
 
-		assertEquals(expectedValue, writtenSettingsRepo);
+		assertEquals(SETTINGS_REPO_STRING, writtenSettingsRepo);
     }
 
 	@Test
     @SuppressWarnings("unchecked")
 	void testRead() {
-    	String settingsToRead = "[{\"typeName\":\"java.lang.Integer\",\"name\":\"Setting2Id\",\"value\":\"456\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Setting3Id\",\"value\":\"java.lang.Integer\\u001d0\\u001d123\\u001e456\\u001e789\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Setting5Id\",\"value\":\"java.lang.String\\u001d\\u001dValue1\\u001eValue2\\u001eValue3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Setting4Id\",\"value\":\"Setting4Value\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Setting1Id\",\"value\":\"true\"}]";
-    	
-    	_settingsRepo.read(settingsToRead, true);
+    	_settingsRepo.read(SETTINGS_REPO_STRING, true);
 
 		assertEquals(5, _settingsRepo.getAllUngrouped().size());
     	

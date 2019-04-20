@@ -21,7 +21,7 @@ class PersistentCollectionHandlerTests {
     private final Integer INTEGER_2 = 456;
     private final Integer INTEGER_3 = 789;
     private final String VALUES_STRING =
-            String.format("%s\u001d%d\u001d%d\u001e%d\u001e%d", Integer.class.getCanonicalName(),
+            String.format("%s\u0091%d\u0091%d\u0092%d\u0092%d", Integer.class.getCanonicalName(),
                     ARCHETYPE, INTEGER_1, INTEGER_2, INTEGER_3);
 
     private IPersistentValueTypeHandler<ICollection> _persistentCollectionHandler;

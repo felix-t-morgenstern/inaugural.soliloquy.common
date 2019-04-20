@@ -2,32 +2,26 @@ package inaugural.soliloquy.common;
 
 import com.google.gson.Gson;
 import java.util.HashMap;
-import soliloquy.common.specs.IAction;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPersistentValueToRead;
-import soliloquy.common.specs.IPersistentValueToWrite;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
-import soliloquy.common.specs.ISoliloquyClass;
 
-public class PersistentValuesHandler implements IPersistentValuesHandler {
+import soliloquy.common.specs.*;
+
+public class PersistentValuesHandler extends CanGetInterfaceName
+		implements IPersistentValuesHandler {
 	private HashMap<String,IPersistentValueTypeHandler<?>> _persistentValueTypeHandlers;
 	private IPersistentValueTypeHandler<ICollection> _persistentCollectionHandler;
+	private IPersistentValueTypeHandler<IMap> _persistentMapHandler;
 
 	private final String COLLECTION_GENERIC_INTERFACE_NAME = ICollection.class.getCanonicalName();
+	private final String MAP_GENERIC_INTERFACE_NAME = IMap.class.getCanonicalName();
 	
 	public PersistentValuesHandler() {
-		_persistentValueTypeHandlers = new HashMap<String,IPersistentValueTypeHandler<?>>();
+		_persistentValueTypeHandlers = new HashMap<>();
 	}
-	
 
 	@Override
 	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler)
 			throws IllegalArgumentException {
-		String persistentValueType = persistentValueTypeHandler.getArchetype() instanceof ISoliloquyClass ?
-				((ISoliloquyClass) persistentValueTypeHandler.getArchetype()).getInterfaceName() :
-					persistentValueTypeHandler.getArchetype().getClass().getCanonicalName();
+		String persistentValueType = getProperTypeName(persistentValueTypeHandler.getArchetype());
 		if (_persistentValueTypeHandlers.containsKey(persistentValueType)) {
 			throw new IllegalArgumentException(
 					"PersistentValuesHandler.addPersistentValueTypeHandler: already has handler for " 
@@ -47,7 +41,9 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 			throws UnsupportedOperationException {
 		if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
 			return (IPersistentValueTypeHandler<T>) _persistentCollectionHandler;
-		} else {
+		} else if (interfaceIsOfGenericType(persistentValueType, MAP_GENERIC_INTERFACE_NAME)) {
+			return (IPersistentValueTypeHandler<T>) _persistentMapHandler;
+		}else {
 			return (IPersistentValueTypeHandler<T>) _persistentValueTypeHandlers.get(persistentValueType);
 		}
 	}
@@ -60,7 +56,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 
 	@Override
 	public ICollection<String> persistentValueTypesHandled() {
-		Collection<String> persistentValueTypesHandled = new Collection<String>(null);
+		Collection<String> persistentValueTypesHandled = new Collection<>(null);
 		for (String type : _persistentValueTypeHandlers.keySet()) {
 			persistentValueTypesHandled.add(type);
 		}
@@ -78,7 +74,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 			IPersistentValueToWrite<?> persistentValueToWrite =
 					makePersistentValueToWrite(persistentValueToRead.name(),
 							persistentValueTypeHandler.read(persistentValueToRead.value()));
-			valuesProcessing.run(new Pair<IPersistentValueToWrite<?>, Boolean>(persistentValueToWrite,
+			valuesProcessing.run(new Pair<>(persistentValueToWrite,
 					overridePreviousData));
 		}
 	}
@@ -103,7 +99,7 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 
 	@Override
 	public <T> IPersistentValueToWrite<T> makePersistentValueToWrite(String name, T value) {
-		return new PersistentValueToWrite<T>(name, value);
+		return new PersistentValueToWrite<>(name, value);
 	}
 
 	@Override
@@ -113,17 +109,21 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	}
 
 	@Override
+	public void registerPersistentMapHandler(IPersistentValueTypeHandler<IMap> persistentMapHandler) {
+		_persistentMapHandler = persistentMapHandler;
+	}
+
+	@Override
 	public String getInterfaceName() {
 		return IPersistentValuesHandler.class.getCanonicalName();
 	}
 	
-	private <T> PersistentValueToRead convertPersistentValueToWriteToPersistentValueToRead(IPersistentValueToWrite<T> persistentValueToWrite) {
+	private <T> PersistentValueToRead convertPersistentValueToWriteToPersistentValueToRead(
+			IPersistentValueToWrite<T> persistentValueToWrite) {
 		PersistentValueToRead persistentValueToRead = new PersistentValueToRead();
 		persistentValueToRead.name = persistentValueToWrite.name();
 		persistentValueToRead.typeName = persistentValueToWrite.typeName();
-		String typeName = persistentValueToWrite.value() instanceof ISoliloquyClass ?
-				((ISoliloquyClass) persistentValueToWrite.value()).getInterfaceName() :
-					persistentValueToWrite.value().getClass().getCanonicalName();
+		String typeName = getProperTypeName(persistentValueToWrite.value());
 		IPersistentValueTypeHandler<T> persistentValueTypeHandler = getPersistentValueTypeHandler(typeName);
 		persistentValueToRead.value = persistentValueTypeHandler.write(persistentValueToWrite.value());
 		return persistentValueToRead;
@@ -164,15 +164,14 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 		}
 	}
 	
-	protected class PersistentValueToWrite<T> implements IPersistentValueToWrite<T> {
-		public String _typeName;
-		public String _name;
-		public T _value;
+	protected class PersistentValueToWrite<T> extends CanGetInterfaceName
+			implements IPersistentValueToWrite<T> {
+		String _typeName;
+		String _name;
+		T _value;
 		
 		public PersistentValueToWrite(String name, T value) {
-			_typeName = value instanceof ISoliloquyClass ?
-				((ISoliloquyClass) value).getInterfaceName() :
-					value.getClass().getCanonicalName();
+			_typeName = getProperTypeName(value);
 			_name = name;
 			_value = value;
 		}
