@@ -191,7 +191,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	@Override
 	public IMap<K, V> makeClone() {
 		HashMap<K,V> clonedInternalMap = (HashMap<K,V>) _map.clone();
-		IMap<K,V> clonedMap = new Map<K,V>(null,_archetype1,_archetype2, clonedInternalMap);
+		IMap<K,V> clonedMap = new Map<K,V>(_pairFactory,_archetype1,_archetype2, clonedInternalMap);
 		return clonedMap;
 	}
 

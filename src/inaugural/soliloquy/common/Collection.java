@@ -18,6 +18,11 @@ public class Collection<V> extends HasOneGenericParam<V> implements ICollection<
 		_collection = new ArrayList<V>(Arrays.asList(items));
 		_archetype = archetype;
 	}
+
+	private Collection(ArrayList<V> collection, V archetype) {
+		_collection = collection;
+		_archetype = archetype;
+	}
 	
 	@Override
 	public Iterator<V> iterator() {
@@ -26,9 +31,7 @@ public class Collection<V> extends HasOneGenericParam<V> implements ICollection<
 
 	@Override
 	public ICollection<V> makeClone() {
-		Collection<V> clone = new Collection<V>(_archetype);
-		for(V item : _collection) clone.add(item);
-		return clone;
+		return new Collection<>((ArrayList<V>) _collection.clone(), _archetype);
 	}
 
 	@Override
