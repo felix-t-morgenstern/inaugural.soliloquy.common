@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -123,6 +124,7 @@ public class CollectionTests {
     	_collection.add(2);
     	ICollection<Integer> newCollection = _collection.makeClone();
     	assertTrue(_collection.equals(newCollection));
+    	assertNotNull(newCollection.getArchetype());
     }
 
     @Test

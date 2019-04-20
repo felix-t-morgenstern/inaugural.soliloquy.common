@@ -2,6 +2,7 @@ package inaugural.soliloquy.common.test;
 
 import java.util.Iterator;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -370,5 +371,9 @@ public class MapTests {
 			assertTrue(clonedMap.contains(item));
 		}
 		assertTrue(_map.size() == clonedMap.size());
+		assertNotNull(clonedMap.getFirstArchetype());
+		assertNotNull(clonedMap.getSecondArchetype());
 	}
+
+
 }
