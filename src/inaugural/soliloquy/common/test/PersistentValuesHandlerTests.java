@@ -1,18 +1,17 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import inaugural.soliloquy.common.test.stubs.PersistentCollectionHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.Collection;
 import inaugural.soliloquy.common.PersistentValuesHandler;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerTestsReadAction;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IPersistentValueToRead;
-import soliloquy.common.specs.IPersistentValueToWrite;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
+import soliloquy.common.specs.*;
 
 public class PersistentValuesHandlerTests {
 	private PersistentValuesHandler _persistentValuesHandler;
@@ -155,4 +154,15 @@ public class PersistentValuesHandlerTests {
     	String result = _persistentValuesHandler.writeValues(persistentValuesToProcess);
     	assertTrue(result.equals("[{\"typeName\":\"java.lang.String\",\"name\":\"String1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"String2\",\"value\":\"String2\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer2\",\"value\":\"456\"}]"));
     }
+
+    @Test
+	void testRegisterPersistentCollectionHandler() {
+		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler =
+				new PersistentCollectionHandlerStub();
+		_persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
+
+		assertSame(persistentCollectionHandler,
+				_persistentValuesHandler.getPersistentValueTypeHandler(
+						ICollection.class.getCanonicalName()));
+	}
 }

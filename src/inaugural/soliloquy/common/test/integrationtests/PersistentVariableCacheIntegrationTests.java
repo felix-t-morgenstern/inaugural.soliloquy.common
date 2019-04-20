@@ -1,7 +1,9 @@
 package inaugural.soliloquy.common.test.integrationtests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,11 +13,6 @@ import inaugural.soliloquy.common.PairFactory;
 import inaugural.soliloquy.common.PersistentValuesHandler;
 import inaugural.soliloquy.common.PersistentVariableCache;
 import inaugural.soliloquy.common.PersistentVariableFactory;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringsHandler;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 import soliloquy.common.specs.IPairFactory;
@@ -24,13 +21,9 @@ import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.IPersistentVariable;
 import soliloquy.common.specs.IPersistentVariableFactory;
 
-public class PersistentVariableCacheIntegrationTests {
-	private ICollectionFactory _collectionFactory;
-	private IPairFactory _pairFactory;
+class PersistentVariableCacheIntegrationTests {
 	private IPersistentVariableFactory _persistentVariableFactory;
-	
-	private IPersistentValuesHandler _persistentValuesHandler;
-	
+
 	private PersistentVariableCache _persistentVariableCache;
 
 	private final String VARIABLE_1_NAME = "Variable1";
@@ -47,36 +40,31 @@ public class PersistentVariableCacheIntegrationTests {
 	private final Integer VARIABLE_3_VALUE_3 = 789;
 	private final String VARIABLE_4_VALUE = "Variable4Value";
 	private ICollection<String> _variable5Value;
-	private final String VARIABLE_5_VALUE_1 = "Variable5Value1";
-	private final String VARIABLE_5_VALUE_2 = "Variable5Value2";
-	private final String VARIABLE_5_VALUE_3 = "Variable5Value3";
-    
-    @BeforeEach
-    protected void setUp() throws Exception {
-    	_collectionFactory = new CollectionFactory();
-    	_pairFactory = new PairFactory();
+
+	@BeforeEach
+	void setUp() {
+		ICollectionFactory _collectionFactory = new CollectionFactory();
+		IPairFactory _pairFactory = new PairFactory();
     	_persistentVariableFactory = new PersistentVariableFactory();
 
     	new MapFactory(_pairFactory);
-    	
-    	_persistentValuesHandler = new PersistentValuesHandler();
+
+		IPersistentValuesHandler _persistentValuesHandler = new PersistentValuesHandler();
     	
     	IPersistentValueTypeHandler<Boolean> persistentBooleanHandler = new PersistentBooleanHandler();
     	IPersistentValueTypeHandler<Integer> persistentIntegerHandler = new PersistentIntegerHandler();
-    	IPersistentValueTypeHandler<ICollection<Integer>> persistentIntegersHandler = new PersistentIntegersHandler(_collectionFactory);
     	IPersistentValueTypeHandler<String> persistentStringHandler = new PersistentStringHandler();
-    	IPersistentValueTypeHandler<ICollection<String>> persistentStringsHandler = new PersistentStringsHandler(_collectionFactory);
+		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler = new PersistentCollectionHandler(_persistentValuesHandler, _collectionFactory);
     	
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentBooleanHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentIntegerHandler);
-    	_persistentValuesHandler.addPersistentValueTypeHandler(persistentIntegersHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentStringHandler);
-    	_persistentValuesHandler.addPersistentValueTypeHandler(persistentStringsHandler);
+		_persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
     	
     	IPersistentVariable archetype = _persistentVariableFactory.make("name", "value");
     	
     	_persistentVariableCache = new PersistentVariableCache(_pairFactory, "", archetype,
-    			_collectionFactory, _persistentVariableFactory, _persistentValuesHandler);
+				_collectionFactory, _persistentVariableFactory, _persistentValuesHandler);
     	
     	_variable3Value = _collectionFactory.make(0);
     	_variable3Value.add(VARIABLE_3_VALUE_1);
@@ -90,8 +78,8 @@ public class PersistentVariableCacheIntegrationTests {
     }
 
     @Test
-    public void testWrite() {
-    	String expectedValue = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"123,456,789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"Variable5Value1\\u001fVariable5Value2\\u001fVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
+	void testWrite() {
+    	String expectedValue = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"java.lang.Integer\\u001d0\\u001d123\\u001e456\\u001e789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"java.lang.String\\u001d\\u001dVariable5Value1\\u001eVariable5Value2\\u001eVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
     	
     	IPersistentVariable variable1 = _persistentVariableFactory.make(VARIABLE_1_NAME, VARIABLE_1_VALUE);
     	IPersistentVariable variable2 = _persistentVariableFactory.make(VARIABLE_2_NAME, VARIABLE_2_VALUE);
@@ -106,29 +94,32 @@ public class PersistentVariableCacheIntegrationTests {
     	_persistentVariableCache.put(variable5);
     	
     	String writtenValue = _persistentVariableCache.write();
-    	
-    	assertTrue(expectedValue.equals(writtenValue));
+
+		assertEquals(expectedValue, writtenValue);
     }
 
     @Test
-    public void testRead() {
-    	String valueToRead = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"123,456,789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"Variable5Value1\\u001fVariable5Value2\\u001fVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
+	void testRead() {
+    	String valueToRead = "[{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"Variable3\",\"value\":\"java.lang.Integer\\u001d0\\u001d123\\u001e456\\u001e789\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Variable2\",\"value\":\"123\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"Variable1\",\"value\":\"true\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"Variable5\",\"value\":\"java.lang.String\\u001d\\u001dVariable5Value1\\u001eVariable5Value2\\u001eVariable5Value3\"},{\"typeName\":\"java.lang.String\",\"name\":\"Variable4\",\"value\":\"Variable4Value\"}]";
     	
     	_persistentVariableCache.read(valueToRead, false);
-    	
-    	assertTrue(_persistentVariableCache.size() == 5);
-    	assertTrue(_persistentVariableCache.get(VARIABLE_1_NAME).getValue().equals(VARIABLE_1_VALUE));
-    	assertTrue(_persistentVariableCache.get(VARIABLE_2_NAME).getValue().equals(VARIABLE_2_VALUE));
+
+		assertEquals(5, _persistentVariableCache.size());
+		assertEquals(_persistentVariableCache.get(VARIABLE_1_NAME).getValue(), VARIABLE_1_VALUE);
+		assertEquals(_persistentVariableCache.get(VARIABLE_2_NAME).getValue(), VARIABLE_2_VALUE);
     	ICollection<Integer> variable3Value = _persistentVariableCache.get(VARIABLE_3_NAME).getValue();
-    	assertTrue(variable3Value.size() == 3);
+		assertEquals(3, variable3Value.size());
     	assertTrue(variable3Value.contains(VARIABLE_3_VALUE_1));
     	assertTrue(variable3Value.contains(VARIABLE_3_VALUE_2));
     	assertTrue(variable3Value.contains(VARIABLE_3_VALUE_3));
-    	assertTrue(_persistentVariableCache.get(VARIABLE_4_NAME).getValue().equals(VARIABLE_4_VALUE));
+		assertEquals(_persistentVariableCache.get(VARIABLE_4_NAME).getValue(), VARIABLE_4_VALUE);
     	ICollection<String> variable5Value = _persistentVariableCache.get(VARIABLE_5_NAME).getValue();
-    	assertTrue(variable5Value.size() == 3);
-    	assertTrue(variable5Value.contains(VARIABLE_5_VALUE_1));
-    	assertTrue(variable5Value.contains(VARIABLE_5_VALUE_2));
-    	assertTrue(variable5Value.contains(VARIABLE_5_VALUE_3));
+		assertEquals(3, variable5Value.size());
+		String VARIABLE_5_VALUE_1 = "Variable5Value1";
+		assertTrue(variable5Value.contains(VARIABLE_5_VALUE_1));
+		String VARIABLE_5_VALUE_2 = "Variable5Value2";
+		assertTrue(variable5Value.contains(VARIABLE_5_VALUE_2));
+		String VARIABLE_5_VALUE_3 = "Variable5Value3";
+		assertTrue(variable5Value.contains(VARIABLE_5_VALUE_3));
     }
 }

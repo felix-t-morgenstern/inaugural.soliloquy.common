@@ -13,11 +13,15 @@ import soliloquy.common.specs.ISoliloquyClass;
 
 public class PersistentValuesHandler implements IPersistentValuesHandler {
 	private HashMap<String,IPersistentValueTypeHandler<?>> _persistentValueTypeHandlers;
+	private IPersistentValueTypeHandler<ICollection> _persistentCollectionHandler;
+
+	private final String COLLECTION_GENERIC_INTERFACE_NAME = ICollection.class.getCanonicalName();
 	
 	public PersistentValuesHandler() {
 		_persistentValueTypeHandlers = new HashMap<String,IPersistentValueTypeHandler<?>>();
 	}
 	
+
 	@Override
 	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler)
 			throws IllegalArgumentException {
@@ -41,7 +45,17 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	@Override
 	public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType)
 			throws UnsupportedOperationException {
-		return (IPersistentValueTypeHandler<T>) _persistentValueTypeHandlers.get(persistentValueType);
+		if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
+			return (IPersistentValueTypeHandler<T>) _persistentCollectionHandler;
+		} else {
+			return (IPersistentValueTypeHandler<T>) _persistentValueTypeHandlers.get(persistentValueType);
+		}
+	}
+
+	private boolean interfaceIsOfGenericType(String valueType, String genericInterfaceName) {
+		return valueType.length() >= genericInterfaceName.length()
+				&& valueType.substring(0, genericInterfaceName.length())
+				.equals(genericInterfaceName);
 	}
 
 	@Override
@@ -90,6 +104,12 @@ public class PersistentValuesHandler implements IPersistentValuesHandler {
 	@Override
 	public <T> IPersistentValueToWrite<T> makePersistentValueToWrite(String name, T value) {
 		return new PersistentValueToWrite<T>(name, value);
+	}
+
+	@Override
+	public void registerPersistentCollectionHandler(
+			IPersistentValueTypeHandler<ICollection> persistentCollectionHandler) {
+		_persistentCollectionHandler = persistentCollectionHandler;
 	}
 
 	@Override

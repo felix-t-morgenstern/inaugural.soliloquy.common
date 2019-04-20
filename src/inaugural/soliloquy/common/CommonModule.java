@@ -1,22 +1,8 @@
 package inaugural.soliloquy.common;
 
 import com.google.inject.AbstractModule;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegersHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringsHandler;
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.ICoordinateFactory;
-import soliloquy.common.specs.IEntityUuidFactory;
-import soliloquy.common.specs.IGenericParamsSetFactory;
-import soliloquy.common.specs.IMapFactory;
-import soliloquy.common.specs.IPairFactory;
-import soliloquy.common.specs.IPersistentValuesHandler;
-import soliloquy.common.specs.IPersistentVariableFactory;
-import soliloquy.common.specs.ISetting;
-import soliloquy.common.specs.ISettingFactory;
-import soliloquy.common.specs.ISettingsRepo;
+import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
+import soliloquy.common.specs.*;
 
 public class CommonModule extends AbstractModule {
 	private ICollectionFactory _collectionFactory;
@@ -49,9 +35,10 @@ public class CommonModule extends AbstractModule {
 
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentBooleanHandler());
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentIntegerHandler());
-		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentIntegersHandler(_collectionFactory));
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentStringHandler());
-		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentStringsHandler(_collectionFactory));
+
+		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler = new PersistentCollectionHandler(_persistentValuesHandler, _collectionFactory);
+		_persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
 	}
 	
 	@Override

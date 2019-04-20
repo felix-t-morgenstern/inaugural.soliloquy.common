@@ -1,7 +1,5 @@
 package inaugural.soliloquy.common.test.integrationtests;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,57 +26,53 @@ import soliloquy.common.specs.ISoliloquyClass;
 import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
 
-public class PersistentValuesIntegrationTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class PersistentValuesIntegrationTests {
 	private IPersistentValuesHandler _persistentValuesHandler;
 	
 	private ICollectionFactory _collectionFactory;
-	private IPairFactory _pairFactory;
-	private IMapFactory _mapFactory;
-	
+
 	private static List<IPair<IPersistentValueToWrite<?>, Boolean>> _readValues;
 	
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
 		_collectionFactory = new CollectionFactory();
 
     	_persistentValuesHandler = new PersistentValuesHandler();
 
-    	_pairFactory = new PairFactory();
-    	_mapFactory = new MapFactory(_pairFactory);
+		IPairFactory _pairFactory = new PairFactory();
+		IMapFactory _mapFactory = new MapFactory(_pairFactory);
     	new GenericParamsSetFactory(_persistentValuesHandler, _mapFactory);
     	new SettingFactory();
     	
     	IPersistentValueTypeHandler<Boolean> persistentBooleanHandler = new PersistentBooleanHandler();
     	IPersistentValueTypeHandler<Integer> persistentIntegerHandler = new PersistentIntegerHandler();
-    	IPersistentValueTypeHandler<ICollection<Integer>> persistentIntegersHandler = new PersistentIntegersHandler(_collectionFactory);
     	IPersistentValueTypeHandler<String> persistentStringHandler = new PersistentStringHandler();
-    	IPersistentValueTypeHandler<ICollection<String>> persistentStringsHandler = new PersistentStringsHandler(_collectionFactory);
+		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler = new PersistentCollectionHandler(_persistentValuesHandler, _collectionFactory);
     	
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentBooleanHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentIntegerHandler);
-    	_persistentValuesHandler.addPersistentValueTypeHandler(persistentIntegersHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(persistentStringHandler);
-    	_persistentValuesHandler.addPersistentValueTypeHandler(persistentStringsHandler);
+    	_persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
     	
-    	_readValues = new ArrayList<IPair<IPersistentValueToWrite<?>, Boolean>>();
+    	_readValues = new ArrayList<>();
     }
     
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void testWriteValues() {
-    	String expectedOutput = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"1,2,3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"4,5,6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"string1-1\\u001fstring1-2\\u001fstring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"string2-1\\u001fstring2-2\\u001fstring2-3\"}]";
+	void testWriteValues() {
+    	String expectedOutput = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"java.lang.Integer\\u001d0\\u001d1\\u001e2\\u001e3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"java.lang.Integer\\u001d0\\u001d4\\u001e5\\u001e6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"java.lang.String\\u001d\\u001dstring1-1\\u001estring1-2\\u001estring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"java.lang.String\\u001d\\u001dstring2-1\\u001estring2-2\\u001estring2-3\"}]";
     	
     	IPersistentValueToWrite persistentValueToWriteArchetype = new PersistentValueToWrite(null, null);
-    	ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite = 
+    	ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite =
     			_collectionFactory.make(persistentValueToWriteArchetype);
     	
     	// Adding boolean persistent values
-    	Boolean bool1 = true;
-    	IPersistentValueToWrite bool1ToWrite = new PersistentValueToWrite("bool1", bool1);
+    	IPersistentValueToWrite bool1ToWrite = new PersistentValueToWrite("bool1", true);
     	persistentValuesToWrite.add(bool1ToWrite);
-    	
-    	Boolean bool2 = false;
-    	IPersistentValueToWrite bool2ToWrite = new PersistentValueToWrite("bool2", bool2);
+
+    	IPersistentValueToWrite bool2ToWrite = new PersistentValueToWrite("bool2", false);
     	persistentValuesToWrite.add(bool2ToWrite);
     	
     	// Adding integers persistent values
@@ -129,17 +123,17 @@ public class PersistentValuesIntegrationTests {
     	
     	String writtenValue = _persistentValuesHandler.writeValues(persistentValuesToWrite);
     	
-    	assertTrue(expectedOutput.equals(writtenValue));
+    	assertEquals(expectedOutput, writtenValue);
     }
 
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void testReadValues() {
-    	String valuesToRead = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"1,2,3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"4,5,6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"string1-1\\u001fstring1-2\\u001fstring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"string2-1\\u001fstring2-2\\u001fstring2-3\"}]";
+	void testReadValues() throws Exception {
+    	String valuesToRead = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"java.lang.Integer\\u001d0\\u001d1\\u001e2\\u001e3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"java.lang.Integer\\u001d0\\u001d4\\u001e5\\u001e6\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"java.lang.String\\u001d\\u001dstring1-1\\u001estring1-2\\u001estring1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"java.lang.String\\u001d\\u001dstring2-1\\u001estring2-2\\u001estring2-3\"}]";
     	
     	_persistentValuesHandler.readValues(valuesToRead, new ReadValuesAction(), true);
-    	
-    	assertTrue(_readValues.size() == 11);
+
+		assertEquals(11, _readValues.size());
     	
     	for (IPair<IPersistentValueToWrite<?>, Boolean> readValuePair : _readValues)
     	{
@@ -148,56 +142,60 @@ public class PersistentValuesIntegrationTests {
     		switch(readValue.name())
     		{
     		case "bool1":
-    			assertTrue((Boolean)readValue.value() == true);
+				assertEquals(true, readValue.value());
     			break;
     		case "bool2":
-    			assertTrue((Boolean)readValue.value() == false);
+				assertEquals(false, readValue.value());
     			break;
     		case "integers1":
     			ICollection<Integer> integers1 = (ICollection<Integer>) readValue.value();
-    			assertTrue(integers1.size() == 3);
-    			assertTrue(integers1.get(0) == 1);
-    			assertTrue(integers1.get(1) == 2);
-    			assertTrue(integers1.get(2) == 3);
+				assertEquals(3, integers1.size());
+				assertEquals(1, (int) integers1.get(0));
+				assertEquals(2, (int) integers1.get(1));
+				assertEquals(3, (int) integers1.get(2));
+				assertNotNull(integers1.getArchetype());
     			break;
     		case "integers2":
     			ICollection<Integer> integers2 = (ICollection<Integer>) readValue.value();
-    			assertTrue(integers2.size() == 3);
-    			assertTrue(integers2.get(0) == 4);
-    			assertTrue(integers2.get(1) == 5);
-    			assertTrue(integers2.get(2) == 6);
+				assertEquals(3, integers2.size());
+				assertEquals(4, (int) integers2.get(0));
+				assertEquals(5, (int) integers2.get(1));
+				assertEquals(6, (int) integers2.get(2));
+				assertNotNull(integers2.getArchetype());
     			break;
     		case "int1":
-    			assertTrue((Integer)readValue.value() == 123);
+				assertEquals(123, (int) (Integer) readValue.value());
     			break;
     		case "int2":
-    			assertTrue((Integer)readValue.value() == 456);
+				assertEquals(456, (int) (Integer) readValue.value());
     			break;
     		case "int3":
-    			assertTrue((Integer)readValue.value() == 789);
+				assertEquals(789, (int) (Integer) readValue.value());
     			break;
     		case "string1":
-    			assertTrue(((String)readValue.value()).equals("String1"));
+				assertEquals("String1", readValue.value());
     			break;
     		case "string2":
-    			assertTrue(((String)readValue.value()).equals("String2"));
+				assertEquals("String2", readValue.value());
     			break;
     		case "strings1":
     			ICollection<String> strings1 = (ICollection<String>) readValue.value();
-    			assertTrue(strings1.size() == 3);
-    			assertTrue(strings1.get(0).equals("string1-1"));
-    			assertTrue(strings1.get(1).equals("string1-2"));
-    			assertTrue(strings1.get(2).equals("string1-3"));
+				assertEquals(3, strings1.size());
+				assertEquals("string1-1", strings1.get(0));
+				assertEquals("string1-2", strings1.get(1));
+				assertEquals("string1-3", strings1.get(2));
+    			assertNotNull(strings1.getArchetype());
     			break;
     		case "strings2":
     			ICollection<String> strings2 = (ICollection<String>) readValue.value();
-    			assertTrue(strings2.size() == 3);
-    			assertTrue(strings2.get(0).equals("string2-1"));
-    			assertTrue(strings2.get(1).equals("string2-2"));
-    			assertTrue(strings2.get(2).equals("string2-3"));
+				assertEquals(3, strings2.size());
+				assertEquals("string2-1", strings2.get(0));
+				assertEquals("string2-2", strings2.get(1));
+				assertEquals("string2-3", strings2.get(2));
+				assertNotNull(strings2.getArchetype());
     			break;
     		default:
-    			assertTrue(false);
+				throw new Exception();
     		}
     	}
     }
