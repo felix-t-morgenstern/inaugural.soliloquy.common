@@ -14,7 +14,7 @@ public class PairFactory implements IPairFactory {
 		if (item2 == null) {
 			throw new IllegalArgumentException("PairFactory.make: item2 is null");
 		}
-		return new Pair<T1,T2>(item1, item2, item1, item2);
+		return new Pair<>(item1, item2, item1, item2);
 	}
 	
 	@Override
@@ -26,7 +26,7 @@ public class PairFactory implements IPairFactory {
 		if (archetype2 == null) {
 			throw new IllegalArgumentException("PairFactory.make: archetype2 is null");
 		}
-		return new Pair<T1,T2>(item1, item2, archetype1, archetype2);
+		return new Pair<>(item1, item2, archetype1, archetype2);
 	}
 
 	@Override

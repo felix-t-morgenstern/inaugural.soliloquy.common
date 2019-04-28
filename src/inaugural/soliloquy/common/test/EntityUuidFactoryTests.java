@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -7,8 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import inaugural.soliloquy.common.EntityUuidFactory;
 import soliloquy.common.specs.IEntityUuid;
+import soliloquy.common.specs.IEntityUuidFactory;
 
-public class EntityUuidFactoryTests {
+class EntityUuidFactoryTests {
 	private EntityUuidFactory _entityUuidFactory;
 	
 	private final String ENTITY_UUID_STRING = "64a853a4-a156-42e1-b8c2-02ddb44f5e64";
@@ -18,28 +20,34 @@ public class EntityUuidFactoryTests {
 	private final String BLANK_ENTITY_UUID_STRING = "00000000-0000-0000-0000-000000000000";
 
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
     	Mockito.reset();
     	_entityUuidFactory = new EntityUuidFactory();
     }
 
     @Test
-    public void testCreateFromLongs() {
+	void testCreateFromLongs() {
     	IEntityUuid createdEntityUuid = 
     			_entityUuidFactory.createFromLongs(ENTITY_UUID_MOST_SIGNIFICANT_BITS, ENTITY_UUID_LEAST_SIGNIFICANT_BITS);
-    	assertTrue(ENTITY_UUID_MOST_SIGNIFICANT_BITS == createdEntityUuid.getMostSignificantBits());
-    	assertTrue(ENTITY_UUID_LEAST_SIGNIFICANT_BITS == createdEntityUuid.getLeastSignificantBits());
+		assertEquals(ENTITY_UUID_MOST_SIGNIFICANT_BITS, createdEntityUuid.getMostSignificantBits());
+		assertEquals(ENTITY_UUID_LEAST_SIGNIFICANT_BITS, createdEntityUuid.getLeastSignificantBits());
     }
 
     @Test
-    public void testCreateFromString() {
+	void testCreateFromString() {
     	IEntityUuid createdEntityUuid = _entityUuidFactory.createFromString(ENTITY_UUID_STRING);
-    	assertTrue(ENTITY_UUID_STRING.equals(createdEntityUuid.toString()));
+		assertEquals(ENTITY_UUID_STRING, createdEntityUuid.toString());
     }
 
     @Test
-    public void testCreateRandomEntityUuid() {
+	void testCreateRandomEntityUuid() {
     	IEntityUuid createdEntityUuid = _entityUuidFactory.createRandomEntityUuid();
     	assertTrue(!BLANK_ENTITY_UUID_STRING.equals(createdEntityUuid.toString()));
     }
+
+    @Test
+	void testGetInterfaceName() {
+    	assertEquals(IEntityUuidFactory.class.getCanonicalName(),
+				_entityUuidFactory.getInterfaceName());
+	}
 }

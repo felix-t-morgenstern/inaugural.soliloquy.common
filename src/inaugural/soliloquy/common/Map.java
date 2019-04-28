@@ -10,7 +10,7 @@ import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPairFactory;
 
 public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
-	protected HashMap<K,V> _map = new HashMap<K,V>();
+	HashMap<K,V> _map = new HashMap<>();
 	
 	private IFunction<IPair<K,V>,String> _validator;
 	private IPairFactory _pairFactory;
@@ -83,7 +83,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 		if (id == null) {
 			throw new IllegalArgumentException("Map.get: null is an illegal Id");
 		}
-		if (id instanceof String && (String)id == "") {
+		if (id == "") {
 			throw new IllegalArgumentException("Map.get: Blank string is an illegal Id");
 		}
 		return _map.get(id);
@@ -91,7 +91,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<K> getKeys() {
-		ICollection<K> idsCollection = new Collection<K>(_archetype1);
+		ICollection<K> idsCollection = new Collection<>(_archetype1);
 		for (K key : _map.keySet()) {
 			idsCollection.add(key);
 		}
@@ -100,7 +100,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<V> getValues() {
-		ICollection<V> valuesCollection = new Collection<V>(_archetype2);
+		ICollection<V> valuesCollection = new Collection<>(_archetype2);
 		for (V value : _map.values()) {
 			valuesCollection.add(value);
 		}
@@ -109,7 +109,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<K> indicesOf(V item) {
-		ICollection<K> keys = new Collection<K>(_archetype1);
+		ICollection<K> keys = new Collection<>(_archetype1);
 		for(K key : getKeys()) {
 			if (_map.get(key) == item) {
 				keys.add(key);
@@ -133,11 +133,11 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 		if (key == null) {
 			throw new IllegalArgumentException("Map.put: Key to a Map cannot be null");
 		}
-		if (key instanceof String && (String)key == "") {
+		if (key == "") {
 			throw new IllegalArgumentException("Map.put: Blank string is an illegal key");
 		}
 		if(_validator != null) {
-			String validationMsg = _validator.run(new Pair<K,V>(key,value));
+			String validationMsg = _validator.run(new Pair<>(key, value));
 			if (validationMsg != null) {
 				throw new IllegalArgumentException(validationMsg);
 			}
@@ -184,15 +184,14 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public String getUnparameterizedInterfaceName() {
-		return "soliloquy.common.specs.IMap";
+		return IMap.class.getCanonicalName();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public IMap<K, V> makeClone() {
 		HashMap<K,V> clonedInternalMap = (HashMap<K,V>) _map.clone();
-		IMap<K,V> clonedMap = new Map<K,V>(_pairFactory,_archetype1,_archetype2, clonedInternalMap);
-		return clonedMap;
+		return new Map<>(_pairFactory, _archetype1, _archetype2, clonedInternalMap);
 	}
 
 	@Override

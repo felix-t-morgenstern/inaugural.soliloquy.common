@@ -53,6 +53,7 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public String write(ICollection collection) {
         if (collection == null) {

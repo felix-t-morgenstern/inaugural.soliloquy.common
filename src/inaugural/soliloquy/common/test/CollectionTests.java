@@ -1,23 +1,22 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.Collection;
 import soliloquy.common.specs.ICollection;
 
-public class CollectionTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class CollectionTests {
 	private ICollection<Integer> _collection;
 	
     @BeforeEach
-    protected void setUp() throws Exception {
-    	_collection = new Collection<Integer>(123123);
+	void setUp() {
+    	_collection = new Collection<>(123123);
     }
 
     @Test
-    public void testAddAndContains() {
+	void testAddAndContains() {
     	_collection.add(null);
         assertTrue(_collection.contains(null));
         _collection.add(123);
@@ -25,35 +24,35 @@ public class CollectionTests {
     }
 
     @Test
-    public void testIsEmpty() {
+	void testIsEmpty() {
     	assertTrue(_collection.isEmpty());
     	_collection.add(0);
     	assertTrue(!_collection.isEmpty());
     }
 
     @Test
-    public void testClear() {
+	void testClear() {
     	_collection.add(0);
     	_collection.clear();
     	assertTrue(_collection.isEmpty());
     }
 
     @Test
-    public void testSize() {
-    	assertTrue(_collection.size() == 0);
+	void testSize() {
+		assertEquals(0, _collection.size());
     	_collection.add(0);
-    	assertTrue(_collection.size() == 1);
+		assertEquals(1, _collection.size());
     }
 
     @Test
-    public void testContains() {
+	void testContains() {
     	assertTrue(!_collection.contains(0));
     	_collection.add(0);
     	assertTrue(_collection.contains(0));
     }
 
     @Test
-    public void testAddAllArray() {
+	void testAddAllArray() {
     	Integer[] ints = {1, 2, 3};
     	_collection.addAll(ints);
     	assertTrue(_collection.contains(1));
@@ -62,8 +61,8 @@ public class CollectionTests {
     }
 
     @Test
-    public void testAddAllCollection() {
-    	Collection<Integer> toAdd = new Collection<Integer>(null);
+	void testAddAllCollection() {
+    	Collection<Integer> toAdd = new Collection<>(null);
     	toAdd.add(1);
     	toAdd.add(2);
     	toAdd.add(3);
@@ -74,40 +73,40 @@ public class CollectionTests {
     }
 
     @Test
-    public void testGet() {
+	void testGet() {
     	_collection.add(3);
-    	assertTrue(_collection.get(0) == 3);
+		assertEquals(3, (int) _collection.get(0));
     }
 
     @Test
-    public void testToArray() {
+	void testToArray() {
     	Integer[] ints = {1, 2, 3};
     	_collection.add(1);
     	_collection.add(2);
     	_collection.add(3);
     	Object[] toArray = _collection.toArray();
-    	assertTrue(ints.length == toArray.length);
+		assertEquals(ints.length, toArray.length);
     	for(int i = 0; i < ints.length; i++) {
-    		assertTrue(ints[i] == (Integer)toArray[i]);
+			assertSame(ints[i], toArray[i]);
     	}
     }
 
     @Test
-    public void testIterator() {
+	void testIterator() {
     	_collection.add(1);
     	_collection.add(2);
     	_collection.add(3);
     	int i = 0;
     	for(Integer item : _collection) {
-    		assertTrue(item == ++i);
+			assertEquals((int) item, ++i);
     	}
     }
 
     @Test
-    public void testEquals() {
+	void testEquals() {
     	Collection<Integer> newCollection = null;
     	assertTrue(!_collection.equals(newCollection));
-    	newCollection = new Collection<Integer>(null);
+    	newCollection = new Collection<>(null);
     	_collection.add(1);
     	assertTrue(!_collection.equals(newCollection));
     	newCollection.add(1);
@@ -119,7 +118,7 @@ public class CollectionTests {
     }
 
     @Test
-    public void testMakeClone() {
+	void testMakeClone() {
     	_collection.add(1);
     	_collection.add(2);
     	ICollection<Integer> newCollection = _collection.makeClone();
@@ -128,7 +127,7 @@ public class CollectionTests {
     }
 
     @Test
-    public void testRemoveItem() {
+	void testRemoveItem() {
     	assertTrue(!_collection.removeItem(1));
     	_collection.add(1);
     	assertTrue(_collection.contains(1));
@@ -137,19 +136,19 @@ public class CollectionTests {
     }
 
     @Test
-    public void testGetParameterizedClassName() {
-    	ICollection<String> strings = new Collection<String>("");
-    	assertTrue("soliloquy.common.specs.ICollection<java.lang.String>"
-    			.equals(strings.getInterfaceName()));
+	void testGetParameterizedClassName() {
+    	ICollection<String> strings = new Collection<>("");
+		assertEquals("soliloquy.common.specs.ICollection<java.lang.String>", strings.getInterfaceName());
     	
-    	ICollection<ICollection<ICollection<String>>> stringsCeption = 
-    			new Collection<ICollection<ICollection<String>>>(new Collection<ICollection<String>>(new Collection<String>("")));
-    	assertTrue("soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>"
-    			.equals(stringsCeption.getInterfaceName()));
+    	ICollection<ICollection<ICollection<String>>> stringsCeption =
+				new Collection<>(new Collection<>(new Collection<>("")));
+		assertEquals(ICollection.class.getCanonicalName() +
+				"<soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>",
+				stringsCeption.getInterfaceName());
     }
 
     @Test
-    public void testGetArchetype() {
-    	assertTrue(_collection.getArchetype() == 123123);
+	void testGetArchetype() {
+		assertEquals(123123, (int) _collection.getArchetype());
     }
 }

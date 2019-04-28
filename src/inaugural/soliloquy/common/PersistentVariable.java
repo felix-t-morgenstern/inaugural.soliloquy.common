@@ -74,15 +74,14 @@ public class PersistentVariable implements IPersistentVariable {
 
 		@Override
 		public String getUnparameterizedInterfaceName() {
-			return "soliloquy.common.specs.IPersistentValueToWrite";
+			return IPersistentValueToWrite.class.getCanonicalName();
 		}
 		
 	}
 
 	@Override
 	public String getInterfaceName() {
-		// Stub method
-		throw new UnsupportedOperationException();
+		return IPersistentVariable.class.getCanonicalName();
 	}
 
 }

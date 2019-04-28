@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -12,32 +13,30 @@ import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.IMapFactory;
 import soliloquy.common.specs.IPersistentValuesHandler;
 
-public class GenericParamsSetFactoryTests {
+class GenericParamsSetFactoryTests {
 	private GenericParamsSetFactory _genericParamsSetFactory;
-	
-	private IPersistentValuesHandler _persistentValuesHandlerMock;
-	
+
 	private final IMapFactory MAP_FACTORY = new MapFactoryStub();
 	
 	private static final String PERSISTENT_VARIABLE_WRITE_VALUE = "GenericString";
 
     @BeforeEach
-    protected void setUp() throws Exception {
-    	_persistentValuesHandlerMock = mock(IPersistentValuesHandler.class);
-    	when(_persistentValuesHandlerMock.writeValues(any())).thenReturn(PERSISTENT_VARIABLE_WRITE_VALUE);
-    	when(_persistentValuesHandlerMock.makePersistentValueToWrite(any(),any())).thenReturn(null);
+	void setUp() {
+		IPersistentValuesHandler persistentValuesHandlerMock = mock(IPersistentValuesHandler.class);
+    	when(persistentValuesHandlerMock.writeValues(any())).thenReturn(PERSISTENT_VARIABLE_WRITE_VALUE);
+    	when(persistentValuesHandlerMock.makePersistentValueToWrite(any(),any())).thenReturn(null);
 
-    	_genericParamsSetFactory = new GenericParamsSetFactory(_persistentValuesHandlerMock, MAP_FACTORY);
+    	_genericParamsSetFactory = new GenericParamsSetFactory(persistentValuesHandlerMock, MAP_FACTORY);
     	
     }
 
     @Test
-    public void testMake() {
+	void testMake() {
     	IGenericParamsSet genericParamsSet = _genericParamsSetFactory.make();
     	assertTrue(genericParamsSet instanceof GenericParamsSet);
     	
     	genericParamsSet.addParam("Blah", 123);
-    	assertTrue((Integer) genericParamsSet.getParam(Integer.class.getCanonicalName(), "Blah") == 123);
-    	assertTrue(genericParamsSet.write().equals(PERSISTENT_VARIABLE_WRITE_VALUE));
+		assertEquals(123, (int) (Integer) genericParamsSet.getParam(Integer.class.getCanonicalName(), "Blah"));
+		assertEquals(genericParamsSet.write(), PERSISTENT_VARIABLE_WRITE_VALUE);
     }
 }

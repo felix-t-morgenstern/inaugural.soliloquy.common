@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import inaugural.soliloquy.common.test.stubs.PersistentCollectionHandlerStub;
@@ -14,7 +13,7 @@ import inaugural.soliloquy.common.PersistentValuesHandler;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerTestsReadAction;
 import soliloquy.common.specs.*;
 
-public class PersistentValuesHandlerTests {
+class PersistentValuesHandlerTests {
 	private PersistentValuesHandler _persistentValuesHandler;
 
 	private IPersistentValueTypeHandler<Integer> _persistentIntegerHandler;
@@ -33,7 +32,7 @@ public class PersistentValuesHandlerTests {
     
     @SuppressWarnings("unchecked")
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() throws Exception {
     	_persistentValuesHandler = new PersistentValuesHandler();
     	
     	_persistentIntegerHandler = (IPersistentValueTypeHandler<Integer>) mock(IPersistentValueTypeHandler.class);
@@ -56,64 +55,58 @@ public class PersistentValuesHandlerTests {
     }
     
     @Test
-    public void testMakePersistentValueToRead() {
+	void testMakePersistentValueToRead() {
     	IPersistentValueToRead persistentValueToRead =
     			_persistentValuesHandler.makePersistentValueToRead(Integer.class.getCanonicalName(), "Int_Param_1", "123");
-    	assertTrue(persistentValueToRead.typeName() == Integer.class.getCanonicalName());
-    	assertTrue(persistentValueToRead.name() == "Int_Param_1");
-    	assertTrue(persistentValueToRead.value() == "123");
+		assertSame(persistentValueToRead.typeName(), Integer.class.getCanonicalName());
+		assertSame("Int_Param_1", persistentValueToRead.name());
+		assertSame("123", persistentValueToRead.value());
     }
 
     @Test
-    public void testMakePersistentValueToWrite() {
+	void testMakePersistentValueToWrite() {
     	IPersistentValueToWrite<Integer> persistentValueToWrite =
     			_persistentValuesHandler.makePersistentValueToWrite("Int_Param_1", 123);
-    	assertTrue(persistentValueToWrite.value().getClass() == Integer.class);
-    	assertTrue(persistentValueToWrite.typeName() == Integer.class.getCanonicalName());
-    	assertTrue(persistentValueToWrite.name() == "Int_Param_1");
-    	assertTrue(persistentValueToWrite.value() == 123);
+		assertSame(persistentValueToWrite.value().getClass(), Integer.class);
+		assertSame(persistentValueToWrite.typeName(), Integer.class.getCanonicalName());
+		assertSame("Int_Param_1", persistentValueToWrite.name());
+		assertEquals(123, (int) persistentValueToWrite.value());
     }
 
     @Test
-    public void testAddAndGetPersistentValueTypeHandler() {
+	void testAddAndGetPersistentValueTypeHandler() {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
-    	assertTrue(_persistentValuesHandler.<Integer>getPersistentValueTypeHandler(Integer.class.getCanonicalName())
-    			== _persistentIntegerHandler);
+		assertSame(_persistentValuesHandler.<Integer>getPersistentValueTypeHandler(Integer.class.getCanonicalName()), _persistentIntegerHandler);
     }
 
     @Test
-    public void testAddPersistentValueTypeHandlerTwiceException() {
-    	try {
-	    	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
-	    	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
-    		assertTrue(false);
-    	} catch (IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch (Exception e) {
-    		assertTrue(false);
-    	}
+	void testAddPersistentValueTypeHandlerTwiceException() {
+    	assertThrows(IllegalArgumentException.class, () -> {
+			_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
+			_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
+		});
     }
 
     @Test
-    public void testRemovePersistentValueTypeHandler() {
+	void testRemovePersistentValueTypeHandler() {
     	assertTrue(!_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
-    	assertTrue(_persistentValuesHandler.<Integer>getPersistentValueTypeHandler(Integer.class.getCanonicalName()) == _persistentIntegerHandler);
+		assertSame(_persistentValuesHandler.<Integer>getPersistentValueTypeHandler(Integer.class.getCanonicalName()), _persistentIntegerHandler);
     	assertTrue(_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
     }
 
     @Test
-    public void testPersistentValueTypesHandled() {
+	void testPersistentValueTypesHandled() {
     	assertTrue(_persistentValuesHandler.persistentValueTypesHandled().isEmpty());
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentStringHandler);
-    	assertTrue(_persistentValuesHandler.persistentValueTypesHandled().size() == 2);
+		assertEquals(2, _persistentValuesHandler.persistentValueTypesHandled().size());
     	assertTrue(_persistentValuesHandler.persistentValueTypesHandled().contains(Integer.class.getCanonicalName()));
     	assertTrue(_persistentValuesHandler.persistentValueTypesHandled().contains(String.class.getCanonicalName()));
     }
 
     @Test
-    public void testReadValues() {
+	void testReadValues() {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentStringHandler);
     	
@@ -125,25 +118,25 @@ public class PersistentValuesHandlerTests {
     	
     	persistentValuesJson = "[{\"typeName\": \"java.lang.Integer\", \"name\": \"Integer1\", \"value\": \"123\"},{\"typeName\": \"java.lang.Integer\", \"name\": \"Integer2\", \"value\": \"456\"},{\"typeName\": \"java.lang.String\", \"name\": \"String1\", \"value\": \"String1\"},{\"typeName\": \"java.lang.String\", \"name\": \"String2\", \"value\": \"String2\"}]";
     	_persistentValuesHandler.readValues(persistentValuesJson, new PersistentValuesHandlerTestsReadAction(), true);
-    	assertTrue(PersistentValuesHandlerTestsReadAction._results.size() == 4);
+		assertEquals(4, PersistentValuesHandlerTestsReadAction._results.size());
     	for (IPersistentValueToWrite<?> persistentValueToWrite : PersistentValuesHandlerTestsReadAction._results) {
     		if (persistentValueToWrite.name().equals("Integer1")) {
-    			assertTrue((Integer) persistentValueToWrite.value() == INT_PARAM_1_INT_VALUE);
+				assertSame((Integer) persistentValueToWrite.value(), INT_PARAM_1_INT_VALUE);
     		}
     		if (persistentValueToWrite.name().equals("Integer2")) {
-    			assertTrue((Integer) persistentValueToWrite.value() == INT_PARAM_2_INT_VALUE);
+				assertSame((Integer) persistentValueToWrite.value(), INT_PARAM_2_INT_VALUE);
     		}
     		if (persistentValueToWrite.name().equals("String1")) {
-    			assertTrue(persistentValueToWrite.value().equals(STR_PARAM_1_VALUE));
+				assertEquals(persistentValueToWrite.value(), STR_PARAM_1_VALUE);
     		}
     		if (persistentValueToWrite.name().equals("String2")) {
-    			assertTrue(persistentValueToWrite.value().equals(STR_PARAM_2_VALUE));
+				assertEquals(persistentValueToWrite.value(), STR_PARAM_2_VALUE);
     		}
     	}
     }
 
     @Test
-    public void testWriteValues() {
+	void testWriteValues() {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentStringHandler);
     	
@@ -153,7 +146,7 @@ public class PersistentValuesHandlerTests {
     	persistentValuesToProcess.add(_persistentValuesHandler.makePersistentValueToWrite("Integer1",INT_PARAM_1_INT_VALUE));
     	persistentValuesToProcess.add(_persistentValuesHandler.makePersistentValueToWrite("Integer2",INT_PARAM_2_INT_VALUE));
     	String result = _persistentValuesHandler.writeValues(persistentValuesToProcess);
-    	assertTrue(result.equals("[{\"typeName\":\"java.lang.String\",\"name\":\"String1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"String2\",\"value\":\"String2\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer2\",\"value\":\"456\"}]"));
+		assertEquals("[{\"typeName\":\"java.lang.String\",\"name\":\"String1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"String2\",\"value\":\"String2\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"Integer2\",\"value\":\"456\"}]", result);
     }
 
 	@Test

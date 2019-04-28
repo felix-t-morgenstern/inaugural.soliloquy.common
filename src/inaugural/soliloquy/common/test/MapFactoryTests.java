@@ -1,49 +1,35 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.MapFactory;
 import soliloquy.common.specs.IMap;
 
-public class MapFactoryTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class MapFactoryTests {
 	private MapFactory _mapFactory;
 
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() throws Exception {
     	// (No need to test IPairFactory functionality in this suite)
     	_mapFactory = new MapFactory(null);
     }
 
     @Test
-    public void testMake() {
+	void testMake() {
     	IMap<String,Integer> newMap1 = _mapFactory.make("",0);
-    	assertTrue(newMap1 instanceof IMap<?,?>);
+		assertNotNull(newMap1);
     	
     	newMap1.put("String1", 123);
-    	assertTrue(newMap1.get("String1") == 123);
+		assertEquals(123, (int) newMap1.get("String1"));
     }
     
     @SuppressWarnings("unused")
     @Test
-	public void testMakeWithNullArchetypes() {
-    	try {
-    		IMap<String,Integer> newMap1 = _mapFactory.make("",null);
-    		assertTrue(false);
-    	} catch(IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch(Exception e) {
-    		assertTrue(false);
-    	}
-    	try {
-    		IMap<String,Integer> newMap2 = _mapFactory.make(null,0);
-    		assertTrue(false);
-    	} catch(IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch(Exception e) {
-    		assertTrue(false);
-    	}
+	void testMakeWithNullArchetypes() {
+		assertThrows(IllegalArgumentException.class, () -> _mapFactory.make("",null));
+		assertThrows(IllegalArgumentException.class, () -> _mapFactory.make(null,0));
     }
 }

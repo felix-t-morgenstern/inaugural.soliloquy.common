@@ -2,8 +2,7 @@ package inaugural.soliloquy.common.test;
 
 import java.util.Iterator;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +18,7 @@ import soliloquy.common.specs.IMap;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPairFactory;
 
-public class MapTests {
+class MapTests {
 	private Map<String,String> _map;
 	private IPair<String,String> _pairMock;
 	private IPair<String,String> _pairMock2;
@@ -38,9 +37,9 @@ public class MapTests {
 	
     @SuppressWarnings("unchecked")
 	@BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
     	Mockito.reset();
-    	_map = new Map<String,String>(PAIR_FACTORY,FIRST_ARCHETYPE,SECOND_ARCHETYPE);
+    	_map = new Map<>(PAIR_FACTORY, FIRST_ARCHETYPE, SECOND_ARCHETYPE);
     	
 		_pairMock = mock(IPair.class);
     	when(_pairMock.getItem1()).thenReturn(PAIR_1_KEY);
@@ -61,96 +60,67 @@ public class MapTests {
     }
 
     @Test
-    public void testPutNullOrBlankKey() {
-    	try {
-    		_map.put(null, "String");
-    		assertTrue(false);
-    	} catch(IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch(Exception e) {
-    		assertTrue(false);
-    	}
-    	try {
-    		_map.put("", "String");
-    		assertTrue(false);
-    	} catch(IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch(Exception e) {
-    		assertTrue(false);
-    	}
+	void testPutNullOrBlankKey() {
+		assertThrows(IllegalArgumentException.class, () -> _map.put(null, "String"));
+		assertThrows(IllegalArgumentException.class, () -> _map.put("", "String"));
     }
 
     @Test
-    public void testPutAndContainsKeyAndValue() {
+	void testPutAndContainsKeyAndValue() {
     	_map.put("Key1", "Value1");
     	assertTrue(_map.containsKey("Key1"));
     	assertTrue(_map.containsValue("Value1"));
     }
 
     @Test
-    public void testGet() {
+	void testGet() {
     	_map.put("Key1", "Value1");
-    	assertTrue(_map.get("Key1") == "Value1");
+		assertSame("Value1", _map.get("Key1"));
     }
 
     @Test
-    public void testGetExceptions() {
-    	try {
-    		_map.get("");
-    		assertTrue(false);
-    	} catch(IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch(Exception e) {
-    		assertTrue(false);
-    	}
-    	
-    	try {
-    		_map.get(null);
-    		assertTrue(false);
-    	} catch(IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch(Exception e) {
-    		assertTrue(false);
-    	}
+	void testGetExceptions() {
+		assertThrows(IllegalArgumentException.class, () -> _map.get(""));
+		assertThrows(IllegalArgumentException.class, () -> _map.get(null));
     }
 
     @Test
-	public void testPutAll() {
+	void testPutAll() {
     	_map.putAll(_pairCollectionMock);
     	assertTrue(_map.containsKey(PAIR_1_KEY));
     	assertTrue(_map.containsKey(PAIR_2_KEY));
     }
 
     @Test
-    public void testClear() {
+	void testClear() {
     	_map.put("String1", "String2");
     	_map.clear();
     	assertTrue(_map.isEmpty());
     }
 
     @Test
-	public void testContains() {
+	void testContains() {
     	assertTrue(!_map.contains(_pairMock));
     	_map.put(PAIR_1_KEY, PAIR_1_VALUE);
     	assertTrue(_map.contains(_pairMock));
     }
 
     @Test
-	public void testSize() {
-		assertTrue(_map.size() == 0);
+	void testSize() {
+		assertEquals(0, _map.size());
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
-		assertTrue(_map.size() == 1);
+		assertEquals(1, _map.size());
 		_map.clear();
-		assertTrue(_map.size() == 0);
+		assertEquals(0, _map.size());
 		_map.put("String 1", "String 1");
 		_map.put("String 2", "String 2");
 		_map.put("String 1", "String 2");
-		assertTrue(_map.size() == 2);
+		assertEquals(2, _map.size());
 	}
 	
 	@SuppressWarnings("unchecked")
     @Test
-	public void testEqualsCollection() {
+	void testEqualsCollection() {
 		Iterator<String> stringsIteratorMock = mock(Iterator.class);
 		when(stringsIteratorMock.hasNext()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
 		when(stringsIteratorMock.next()).thenReturn("String1").thenReturn("String2").thenReturn("String3");
@@ -184,28 +154,16 @@ public class MapTests {
 		assertTrue(!_map.equals(stringsMock_2));
 	}
 
-    @Test
-	public void testEqualsException() {
-		try {
-			_map.equals((IMap<String,String>)null);
-			assertTrue(false);
-		} catch(IllegalArgumentException e) {
-			assertTrue(true);
-		} catch(Exception e) {
-			assertTrue(false);
-		}
-		try {
-			_map.equals((ICollection<String>)null);
-			assertTrue(false);
-		} catch(IllegalArgumentException e) {
-			assertTrue(true);
-		} catch(Exception e) {
-			assertTrue(false);
-		}
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+	@Test
+	void testEqualsException() {
+		assertThrows(IllegalArgumentException.class, () -> _map.equals((IMap<String,String>)null));
+		assertThrows(IllegalArgumentException.class, () -> _map.equals((ICollection<String>)null));
 	}
 
-    @Test
-	public void testGetKeys() {
+    @SuppressWarnings("StringEquality")
+	@Test
+	void testGetKeys() {
 		_map.put("Key1", "Value1");
 		_map.put("Key2", "Value2");
 		_map.put("Key3", "Value3");
@@ -214,20 +172,20 @@ public class MapTests {
 		String[] expectedIds = new String[] {"Key1", "Key2", "Key3"};
 		Boolean[] expectedIdsFound = new Boolean[expectedIds.length];
 		for(String id : ids) {
-			for(Integer i = 0; i < expectedIds.length; i++) {
+			for(int i = 0; i < expectedIds.length; i++) {
 				if (id == expectedIds[i]) {
 					expectedIdsFound[i] = true;
 				}
-				continue;
 			}
 		}
-		for(Integer i = 0; i < expectedIdsFound.length; i++) {
-			assertTrue(expectedIdsFound[i]);
+		for (Boolean aBoolean : expectedIdsFound) {
+			assertTrue(aBoolean);
 		}
 	}
 
-    @Test
-	public void testGetValues() {
+    @SuppressWarnings("StringEquality")
+	@Test
+	void testGetValues() {
 		_map.put("Key1", "Value1");
 		_map.put("Key2", "Value2");
 		_map.put("Key3", "Value3");
@@ -236,44 +194,28 @@ public class MapTests {
 		String[] expectedValues = new String[] {"Value1", "Value2", "Value3"};
 		Boolean[] expectedValuesFound = new Boolean[expectedValues.length];
 		for(String value : values) {
-			for(Integer i = 0; i < expectedValues.length; i++) {
+			for(int i = 0; i < expectedValues.length; i++) {
 				if (value == expectedValues[i]) {
 					expectedValuesFound[i] = true;
 				}
-				continue;
 			}
 		}
-		for(Integer i = 0; i < expectedValuesFound.length; i++) {
-			assertTrue(expectedValuesFound[i]);
+		for (Boolean aBoolean : expectedValuesFound) {
+			assertTrue(aBoolean);
 		}
 	}
 
     @Test
-	public void testValidator() {
+	void testValidator() {
 		_map.setValidator(_validatorStub);
-		
-		try {
-			_map.put(PAIR_2_KEY, PAIR_2_VALUE);
-			assertTrue(false);
-		} catch(IllegalArgumentException e) {
-			assertTrue(true);
-		} catch(Exception e) {
-			assertTrue(false);
-		}
-		
-		try {
-			_map.putAll(_pairCollectionMock);
-			assertTrue(false);
-		} catch(IllegalArgumentException e) {
-			assertTrue(e.toString().contains("Input key (Key2) not equal to Key1"));
-		} catch(Exception e) {
-			assertTrue(false);
-		}
+
+		assertThrows(IllegalArgumentException.class, () -> _map.put(PAIR_2_KEY, PAIR_2_VALUE));
+		assertThrows(IllegalArgumentException.class, () -> _map.putAll(_pairCollectionMock));
 	}
 
     @Test
-	public void testEqualsMap() {
-		Map<String,String> secondMap = new Map<String,String>(null,"","");
+	void testEqualsMap() {
+		Map<String,String> secondMap = new Map<>(null, "", "");
 		_map.put("Key1", "Value1");
 		assertTrue(!_map.equals(secondMap));
 		secondMap.put("Key2", "Value2");
@@ -284,31 +226,31 @@ public class MapTests {
 	}
 
     @Test
-	public void testRemoveByKey() {
+	void testRemoveByKey() {
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
 		_map.put(PAIR_2_KEY, PAIR_2_VALUE);
-		assertTrue(_map.size() == 2);
-		
-		assertTrue(_map.removeByKey("not-a-key") == null);
-		assertTrue(_map.size() == 2);
-		assertTrue(_map.removeByKey(PAIR_1_KEY) == PAIR_1_VALUE);
-		assertTrue(_map.size() == 1);
+		assertEquals(2, _map.size());
+
+		assertNull(_map.removeByKey("not-a-key"));
+		assertEquals(2, _map.size());
+		assertSame(_map.removeByKey(PAIR_1_KEY), PAIR_1_VALUE);
+		assertEquals(1, _map.size());
 	}
 
     @Test
-	public void testRemoveByKeyAndValue() {
+	void testRemoveByKeyAndValue() {
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
 		_map.put(PAIR_2_KEY, PAIR_2_VALUE);
-		assertTrue(_map.size() == 2);
+		assertEquals(2, _map.size());
 		
 		assertTrue(!_map.removeByKeyAndValue("not-a-key", "not-a-value"));
-		assertTrue(_map.size() == 2);
+		assertEquals(2, _map.size());
 		assertTrue(_map.removeByKeyAndValue(PAIR_1_KEY, PAIR_1_VALUE));
-		assertTrue(_map.size() == 1);
+		assertEquals(1, _map.size());
 	}
 
     @Test
-	public void testItemExists() {
+	void testItemExists() {
 		assertTrue(!_map.itemExists(PAIR_1_KEY));
 		
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
@@ -316,61 +258,62 @@ public class MapTests {
 	}
 
     @Test
-	public void testIndicesOf() {
-		assertTrue(_map.indicesOf(PAIR_1_VALUE).size() == 0);
+	void testIndicesOf() {
+		assertEquals(0, _map.indicesOf(PAIR_1_VALUE).size());
 		
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
-		
-		assertTrue(_map.indicesOf(PAIR_1_VALUE).size() == 1);
+
+		assertEquals(1, _map.indicesOf(PAIR_1_VALUE).size());
 		assertTrue(_map.indicesOf(PAIR_1_VALUE).contains(PAIR_1_KEY));
 	}
 
     @Test
-	public void testIterator() {
+	void testIterator() {
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
 		_map.put(PAIR_2_KEY, PAIR_2_VALUE);
 		int counter = 0;
 		for (IPair<String,String> pair : _map) {
 			if (counter == 0) {
-				assertTrue(pair.getItem1().equals(PAIR_2_KEY));
-				assertTrue(pair.getItem2().equals(PAIR_2_VALUE));
+				assertEquals(pair.getItem1(), PAIR_2_KEY);
+				assertEquals(pair.getItem2(), PAIR_2_VALUE);
 			}
 			if (counter == 1) {
-				assertTrue(pair.getItem1().equals(PAIR_1_KEY));
-				assertTrue(pair.getItem2().equals(PAIR_1_VALUE));
+				assertEquals(pair.getItem1(), PAIR_1_KEY);
+				assertEquals(pair.getItem2(), PAIR_1_VALUE);
 			}
 			counter++;
 		}
 	}
 
     @Test
-	public void testGetFirstArchetype() {
-		assertTrue(FIRST_ARCHETYPE.equals(_map.getFirstArchetype()));
+	void testGetFirstArchetype() {
+		assertEquals(FIRST_ARCHETYPE, _map.getFirstArchetype());
 	}
 
     @Test
-	public void testGetSecondArchetype() {
-		assertTrue(SECOND_ARCHETYPE.equals(_map.getSecondArchetype()));
+	void testGetSecondArchetype() {
+		assertEquals(SECOND_ARCHETYPE, _map.getSecondArchetype());
 	}
 
     @Test
-	public void testGetInterfaceName() {
-		assertTrue("soliloquy.common.specs.IMap<java.lang.String,java.lang.String>".equals(_map.getInterfaceName()));
+	void testGetInterfaceName() {
+		assertEquals(IMap.class.getCanonicalName() + "<java.lang.String,java.lang.String>",
+				_map.getInterfaceName());
 	}
 
     @Test
-	public void testMakeClone() {
+	void testMakeClone() {
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
 		_map.put(PAIR_2_KEY, PAIR_2_VALUE);
 		
 		IMap<String,String> clonedMap = _map.makeClone();
-		assertTrue(clonedMap != null);
-		assertTrue(clonedMap.getFirstArchetype() == _map.getFirstArchetype());
-		assertTrue(clonedMap.getSecondArchetype() == _map.getSecondArchetype());
+		assertNotNull(clonedMap);
+		assertSame(clonedMap.getFirstArchetype(), _map.getFirstArchetype());
+		assertSame(clonedMap.getSecondArchetype(), _map.getSecondArchetype());
 		for(IPair<String,String> item : _map) {
 			assertTrue(clonedMap.contains(item));
 		}
-		assertTrue(_map.size() == clonedMap.size());
+		assertEquals(_map.size(), clonedMap.size());
 		assertNotNull(clonedMap.getFirstArchetype());
 		assertNotNull(clonedMap.getSecondArchetype());
 	}

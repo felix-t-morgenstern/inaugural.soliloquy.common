@@ -1,7 +1,5 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +8,9 @@ import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
 import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.ISetting;
 
-public class SettingTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class SettingTests {
 	private final String SETTING_ID = "SettingId";
 	private final String SETTING_NAME_1 = "SettingName1";
 	private final String SETTING_NAME_2 = "SettingName2";
@@ -22,61 +22,59 @@ public class SettingTests {
 	private Setting<Integer> _setting;
 
     @BeforeEach
-    protected void setUp() throws Exception {
-    	_setting = new Setting<Integer>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, 
-    			SETTING_ARCHETYPE, _settingControlParams);
+	void setUp() {
+    	_setting = new Setting<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
+				SETTING_ARCHETYPE, _settingControlParams);
     }
     
     @Test
-    public void testId() {
-    	assertTrue(_setting.id().equals(SETTING_ID));
+	void testId() {
+		assertEquals(_setting.id(), SETTING_ID);
     }
 
     @Test
-    public void testName() {
-    	assertTrue(_setting.getName().equals(SETTING_NAME_1));
+	void testName() {
+		assertEquals(_setting.getName(), SETTING_NAME_1);
     	_setting.setName(SETTING_NAME_2);
-    	assertTrue(_setting.getName().equals(SETTING_NAME_2));
+		assertEquals(_setting.getName(), SETTING_NAME_2);
     }
 
     @Test
-    public void testGetArchetype() {
-    	assertTrue(_setting.getArchetype() == SETTING_ARCHETYPE);
+	void testGetArchetype() {
+		assertSame(_setting.getArchetype(), SETTING_ARCHETYPE);
     }
 
     @Test
-    public void testConstructorWithNullArchetype() {
-    	try {
-    		@SuppressWarnings("unused")
-			ISetting<Integer> setting = new Setting<Integer>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, null, 
-					_settingControlParams);
-    		assertTrue(false);
-    	} catch(IllegalArgumentException e) {
-    		assertTrue(true);
-    	} catch(Exception e) {
-    		assertTrue(false);
-    	}
+	void testConstructorWithNullArchetype() {
+    	assertThrows(IllegalArgumentException.class,
+				() -> new Setting<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, null,
+						_settingControlParams));
     }
 
     @Test
-    public void testGetParameterizedClassName() {
-    	String parameterizedClassName = _setting.getInterfaceName();
-    	assertTrue("soliloquy.common.specs.ISetting".equals(parameterizedClassName));
+	void testGetInterfaceName() {
+		assertEquals(ISetting.class.getCanonicalName(), _setting.getInterfaceName());
     }
 
     @Test
-    public void testGetValue() {
-    	assertTrue(_setting.getValue() == SETTING_VALUE_1);
+	void testGetUnparameterizedInterfaceName() {
+    	assertThrows(UnsupportedOperationException.class,
+				() -> _setting.getUnparameterizedInterfaceName());
+	}
+
+    @Test
+	void testGetValue() {
+		assertSame(_setting.getValue(), SETTING_VALUE_1);
     }
 
     @Test
-    public void testSetValue() {
+	void testSetValue() {
     	_setting.setValue(SETTING_VALUE_2);
-    	assertTrue(_setting.getValue() == SETTING_VALUE_2);
+		assertSame(_setting.getValue(), SETTING_VALUE_2);
     }
 
     @Test
-    public void testControlParams() {
-    	assertTrue(_setting.controlParams() == _settingControlParams);
+	void testControlParams() {
+		assertSame(_setting.controlParams(), _settingControlParams);
     }
 }

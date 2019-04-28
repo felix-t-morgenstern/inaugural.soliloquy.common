@@ -1,7 +1,5 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -9,19 +7,11 @@ import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PersistentVariableCache;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import soliloquy.common.specs.IAction;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
-import soliloquy.common.specs.IPersistentValueToRead;
-import soliloquy.common.specs.IPersistentValueToWrite;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
-import soliloquy.common.specs.IPersistentVariable;
-import soliloquy.common.specs.IPersistentVariableFactory;
+import soliloquy.common.specs.*;
 
-public class PersistentVariableCacheTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class PersistentVariableCacheTests {
 	private PersistentVariableCache _persistentVariableCache;
 	
 	private static String _persistentValuesHandlerDataRead;
@@ -35,126 +25,94 @@ public class PersistentVariableCacheTests {
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 	
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
     	// PairFactory and archetype not necessary for test suite
     	_persistentVariableCache = new PersistentVariableCache(PAIR_FACTORY, "", null, COLLECTION_FACTORY,
     			PERSISTENT_VARIABLE_FACTORY, PERSISTENT_VALUES_HANDLER);
     	
-    	_persistentVariableFactoryValuesRead = new HashMap<String,Object>();
-    	_persistentVariableFactoryValuesWritten = new HashMap<String,Object>();
+    	_persistentVariableFactoryValuesRead = new HashMap<>();
+    	_persistentVariableFactoryValuesWritten = new HashMap<>();
     }
     
     @Test
-    public void testPut() {
+	void testPut() {
     	IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
 
     	_persistentVariableCache.put(persistentVariable1);
-    	
-    	assertTrue(_persistentVariableCache.size() == 1);
-    	assertTrue(_persistentVariableCache.get("variable1").getValue().equals("value1"));
+
+		assertEquals(1, _persistentVariableCache.size());
+		assertEquals("value1", _persistentVariableCache.get("variable1").getValue());
     }
 
     @Test
-    public void testPutWithInvalidName() {
-    	try {
-    		IPersistentVariable persistentVariable = PERSISTENT_VARIABLE_FACTORY.make("name", "value");
-    		_persistentVariableCache.put("notTheName", persistentVariable);
-    		assertTrue(false);
-    	} catch (IllegalArgumentException e) {
-    		assertTrue(true);    		
-    	} catch (Exception e) {
-    		assertTrue(false);
-    	}
+	void testPutWithInvalidName() {
+    	assertThrows(IllegalArgumentException.class, () -> {
+			IPersistentVariable persistentVariable = PERSISTENT_VARIABLE_FACTORY.make("name", "value");
+			_persistentVariableCache.put("notTheName", persistentVariable);
+		});
     }
 
     @Test
-    public void testPutWithNullOrEmptyParams() {
-    	try {
-    		IPersistentVariable persistentVariableWithNoName = PERSISTENT_VARIABLE_FACTORY.make("", "value");
-    		_persistentVariableCache.put("", persistentVariableWithNoName);
-    		assertTrue(false);
-    	} catch (IllegalArgumentException e) {
-    		assertTrue(true);    		
-    	} catch (Exception e) {
-    		assertTrue(false);
-    	}
-    	
-    	try {
-    		_persistentVariableCache.put("name", null);
-    		assertTrue(false);
-    	} catch (IllegalArgumentException e) {
-    		assertTrue(true);    		
-    	} catch (Exception e) {
-    		assertTrue(false);
-    	}
-    	
-    	try {
-    		_persistentVariableCache.put(null);
-    		assertTrue(false);
-    	} catch (IllegalArgumentException e) {
-    		assertTrue(true);    		
-    	} catch (Exception e) {
-    		assertTrue(false);
-    	}
-    	
-    	try {
-    		IPersistentVariable persistentVariableWithNoValue = PERSISTENT_VARIABLE_FACTORY.make("name", null);
-    		_persistentVariableCache.put("name", persistentVariableWithNoValue);
-    		assertTrue(false);
-    	} catch (IllegalArgumentException e) {
-    		assertTrue(true);    		
-    	} catch (Exception e) {
-    		assertTrue(false);
-    	}
+	void testPutWithNullOrEmptyParams() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			IPersistentVariable persistentVariableWithNoName = PERSISTENT_VARIABLE_FACTORY.make("", "value");
+			_persistentVariableCache.put("", persistentVariableWithNoName);
+		});
+		assertThrows(IllegalArgumentException.class, () -> _persistentVariableCache.put("name", null));
+		assertThrows(IllegalArgumentException.class, () -> _persistentVariableCache.put(null));
+		assertThrows(IllegalArgumentException.class, () -> {
+			IPersistentVariable persistentVariableWithNoValue = PERSISTENT_VARIABLE_FACTORY.make("name", null);
+			_persistentVariableCache.put("name", persistentVariableWithNoValue);
+		});
     }
 
     @Test
-    public void testRead() {
+	void testRead() {
     	String jankyInput = "name1,value1;name2,value2;name3,value3";
     	
     	_persistentVariableCache.read(jankyInput, true);
     	
     	// Test whether data and overridePreviousData are passed through to the PersistentValuesHandler
-    	assertTrue(_persistentValuesHandlerDataRead.equals(jankyInput));
-    	assertTrue(_persistentValuesHandlerBooleanRead == true);
+		assertEquals(_persistentValuesHandlerDataRead, jankyInput);
+		assertTrue(_persistentValuesHandlerBooleanRead);
     	
     	// Test whether the output of the PersistentValuesHandler is passed through to the PersistentVariableFactory
-    	assertTrue(_persistentVariableFactoryValuesRead.size() == 3);
-    	assertTrue(_persistentVariableFactoryValuesRead.get("name1").equals("value1"));
-    	assertTrue(_persistentVariableFactoryValuesRead.get("name2").equals("value2"));
-    	assertTrue(_persistentVariableFactoryValuesRead.get("name3").equals("value3"));
+		assertEquals(3, _persistentVariableFactoryValuesRead.size());
+		assertEquals("value1", _persistentVariableFactoryValuesRead.get("name1"));
+		assertEquals("value2", _persistentVariableFactoryValuesRead.get("name2"));
+		assertEquals("value3", _persistentVariableFactoryValuesRead.get("name3"));
     	
     	// Test whether the PersistentVariableCache contains the output of the PersistentVariableFactory
-    	assertTrue(_persistentVariableCache.size() == 3);
-    	assertTrue(_persistentVariableCache.get("name1").getValue().equals("value1"));
-    	assertTrue(_persistentVariableCache.get("name2").getValue().equals("value2"));
-    	assertTrue(_persistentVariableCache.get("name3").getValue().equals("value3"));
+		assertEquals(3, _persistentVariableCache.size());
+		assertEquals("value1", _persistentVariableCache.get("name1").getValue());
+		assertEquals("value2", _persistentVariableCache.get("name2").getValue());
+		assertEquals("value3", _persistentVariableCache.get("name3").getValue());
     	
     	// Test whether overridePreviousData works
     	
     	String jankyInput2 = "name3,badValue;name4,value4";
     	
     	_persistentVariableCache.read(jankyInput2, false);
-    	
-    	assertTrue(_persistentVariableCache.size() == 4);
-    	assertTrue(_persistentVariableCache.get("name1").getValue().equals("value1"));
-    	assertTrue(_persistentVariableCache.get("name2").getValue().equals("value2"));
-    	assertTrue(_persistentVariableCache.get("name3").getValue().equals("value3"));
-    	assertTrue(_persistentVariableCache.get("name4").getValue().equals("value4"));
+
+		assertEquals(4, _persistentVariableCache.size());
+		assertEquals("value1", _persistentVariableCache.get("name1").getValue());
+		assertEquals("value2", _persistentVariableCache.get("name2").getValue());
+		assertEquals("value3", _persistentVariableCache.get("name3").getValue());
+		assertEquals("value4", _persistentVariableCache.get("name4").getValue());
     	
     	String jankyInput3 = "name1,newValue1;name4,newValue4";
     	
     	_persistentVariableCache.read(jankyInput3, true);
-    	
-    	assertTrue(_persistentVariableCache.size() == 4);
-    	assertTrue(_persistentVariableCache.get("name1").getValue().equals("newValue1"));
-    	assertTrue(_persistentVariableCache.get("name2").getValue().equals("value2"));
-    	assertTrue(_persistentVariableCache.get("name3").getValue().equals("value3"));
-    	assertTrue(_persistentVariableCache.get("name4").getValue().equals("newValue4"));
+
+		assertEquals(4, _persistentVariableCache.size());
+		assertEquals("newValue1", _persistentVariableCache.get("name1").getValue());
+		assertEquals("value2", _persistentVariableCache.get("name2").getValue());
+		assertEquals("value3", _persistentVariableCache.get("name3").getValue());
+		assertEquals("newValue4", _persistentVariableCache.get("name4").getValue());
     }
 
     @Test
-    public void testWrite() {
+	void testWrite() {
     	IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
     	IPersistentVariable persistentVariable2 = PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
     	IPersistentVariable persistentVariable3 = PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
@@ -166,16 +124,16 @@ public class PersistentVariableCacheTests {
     	String writtenValue = _persistentVariableCache.write();
 
     	// Test whether the contents of the PersistentVariableCache are passed to the PersistentValuesHandler
-    	
-    	assertTrue(_persistentVariableFactoryValuesWritten.size() == 3);
-    	assertTrue(_persistentVariableFactoryValuesWritten.get("variable1").equals("value1"));
-    	assertTrue(_persistentVariableFactoryValuesWritten.get("variable2").equals("value2"));
-    	assertTrue(_persistentVariableFactoryValuesWritten.get("variable3").equals("value3"));
+
+		assertEquals(3, _persistentVariableFactoryValuesWritten.size());
+		assertEquals("value1", _persistentVariableFactoryValuesWritten.get("variable1"));
+		assertEquals("value2", _persistentVariableFactoryValuesWritten.get("variable2"));
+		assertEquals("value3", _persistentVariableFactoryValuesWritten.get("variable3"));
     	
     	// Test whether the output of the PersistentValuesHandler is returned as a string
     	// NB: Not sure why Collection returns results out-of-order at the moment; this test is brittle because of that behavior, but that is arguably a benefit
-    	
-    	assertTrue(writtenValue.equals("variable1,value1;variable3,value3;variable2,value2"));
+
+		assertEquals("variable1,value1;variable3,value3;variable2,value2", writtenValue);
     }
     
     private class PersistentVariableFactoryStub implements IPersistentVariableFactory {
@@ -282,15 +240,15 @@ public class PersistentVariableCacheTests {
 		@SuppressWarnings("rawtypes")
 		@Override
 		public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
-			String result = "";
+			StringBuilder result = new StringBuilder();
 			for (IPersistentValueToWrite persistentValueToWrite : persistentValuesToProcess) {
 				_persistentVariableFactoryValuesWritten.put(persistentValueToWrite.name(), persistentValueToWrite.value());
-				if (!result.equals("")) {
-					result += ";";
+				if (!result.toString().equals("")) {
+					result.append(";");
 				}
-				result += persistentValueToWrite.name() + "," + persistentValueToWrite.value();
+				result.append(persistentValueToWrite.name()).append(",").append(persistentValueToWrite.value());
 			}
-			return result;
+			return result.toString();
 		}
 
 		@Override
@@ -301,6 +259,18 @@ public class PersistentVariableCacheTests {
 
 		@Override
 		public <T> IPersistentValueToWrite<T> makePersistentValueToWrite(String name, T value) {
+			// Stub method; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> iPersistentValueTypeHandler) {
+			// Stub method; not implemented
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public void registerPersistentMapHandler(IPersistentValueTypeHandler<IMap> iPersistentValueTypeHandler) {
 			// Stub method; not implemented
 			throw new UnsupportedOperationException();
 		}

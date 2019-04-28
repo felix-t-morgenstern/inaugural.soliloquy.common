@@ -1,33 +1,39 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.SettingFactory;
 import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.ISetting;
+import soliloquy.common.specs.ISettingFactory;
 
-public class SettingFactoryTests {
-	private final String SETTING_ID = "SettingId";
-	private final String SETTING_NAME = "SettingName";
-	private final Integer SETTING_VALUE = 123;
-	private final IGenericParamsSet SETTING_CONTROL_PARAMS = null;
-	
+import static org.junit.jupiter.api.Assertions.*;
+
+class SettingFactoryTests {
 	private SettingFactory _settingFactory;
 	
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
     	_settingFactory = new SettingFactory();
     }
     
     @Test
-    public void testMake() {
-    	ISetting<Integer> setting = _settingFactory.make(SETTING_ID, SETTING_NAME, SETTING_VALUE, SETTING_CONTROL_PARAMS);
-    	assertTrue(setting.id().equals(SETTING_ID));
-    	assertTrue(setting.getName().equals(SETTING_NAME));
-    	assertTrue(setting.getValue() == SETTING_VALUE);
-    	assertTrue(setting.controlParams() == SETTING_CONTROL_PARAMS);
+	void testMake() {
+		IGenericParamsSet settingControlParams = new GenericParamsSetStub();
+		Integer settingValue = 123;
+		String settingName = "SettingName";
+		String settingId = "SettingId";
+		ISetting<Integer> setting = _settingFactory.make(settingId, settingName, settingValue, settingControlParams);
+		assertEquals(setting.id(), settingId);
+		assertEquals(setting.getName(), settingName);
+		assertSame(setting.getValue(), settingValue);
+		assertSame(setting.controlParams(), settingControlParams);
     }
+
+    @Test
+	void testGetInterfaceName() {
+    	assertEquals(ISettingFactory.class.getCanonicalName(), _settingFactory.getInterfaceName());
+	}
 }

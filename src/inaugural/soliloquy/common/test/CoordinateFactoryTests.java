@@ -1,26 +1,33 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.CoordinateFactory;
 import soliloquy.common.specs.ICoordinate;
+import soliloquy.common.specs.ICoordinateFactory;
 
-public class CoordinateFactoryTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class CoordinateFactoryTests {
 	private CoordinateFactory _coordinateFactory;
 
     @BeforeEach
-    protected void setUp() throws Exception {
+    void setUp() {
     	_coordinateFactory = new CoordinateFactory();
     }
 
     @Test
-    public void testMake() {
+    void testMake() {
     	ICoordinate coordinate = _coordinateFactory.make(0,0);
-    	assertTrue(coordinate instanceof ICoordinate);
+        assertNotNull(coordinate);
     	
     	coordinate.setX(10);
-    	assertTrue(coordinate.getX() == 10);
+        assertEquals(10, coordinate.getX());
+    }
+
+    @Test
+    void testGetInterfaceName() {
+        assertEquals(ICoordinateFactory.class.getCanonicalName(),
+                _coordinateFactory.getInterfaceName());
     }
 }

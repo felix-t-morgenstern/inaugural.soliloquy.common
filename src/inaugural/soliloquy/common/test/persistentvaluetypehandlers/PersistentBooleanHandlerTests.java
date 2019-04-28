@@ -1,50 +1,42 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
 
-public class PersistentBooleanHandlerTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class PersistentBooleanHandlerTests {
 	private PersistentBooleanHandler persistentBooleanHandler;
 	
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
 		persistentBooleanHandler = new PersistentBooleanHandler();
     }
 	
     @Test
-	public void testRead() {
-		assertTrue(persistentBooleanHandler.read("true") == true);
+	void testRead() {
+		assertEquals(true, persistentBooleanHandler.read("true"));
 	}
 
     @Test
-	public void testReadNull() {
-		try {
-			persistentBooleanHandler.read(null);
-			assertTrue(false);
-		} catch(IllegalArgumentException e) {
-			assertTrue(true);
-		} catch(Exception e) {
-			assertTrue(false);
-		}
+	void testReadNull() {
+    	assertThrows(IllegalArgumentException.class, () -> persistentBooleanHandler.read(null));
 	}
 
     @Test
-	public void testWrite() {
-		assertTrue(persistentBooleanHandler.write(true).equals("true"));
+	void testWrite() {
+		assertEquals("true", persistentBooleanHandler.write(true));
 	}
 
     @Test
-	public void testGetArchetype() {
-		assertTrue(persistentBooleanHandler.getArchetype() != null);
+	void testGetArchetype() {
+		assertNotNull(persistentBooleanHandler.getArchetype());
 	}
 
     @Test
-	public void testGetInterfaceName() {
+	void testGetInterfaceName() {
 		assertEquals("soliloquy.common.specs.IPersistentValueTypeHandler<java.lang.Boolean>",
 				persistentBooleanHandler.getInterfaceName());
 	}

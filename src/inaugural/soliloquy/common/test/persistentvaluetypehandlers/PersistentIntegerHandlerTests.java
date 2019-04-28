@@ -1,56 +1,49 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentIntegerHandler;
+import soliloquy.common.specs.IPersistentValueTypeHandler;
 
-public class PersistentIntegerHandlerTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class PersistentIntegerHandlerTests {
 	private PersistentIntegerHandler persistentIntegerHandler;
     
 	@BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
     	persistentIntegerHandler = new PersistentIntegerHandler();
     }
 
 	@Test
-	public void testRead() {
-		assertTrue(persistentIntegerHandler.read("123") == 123);
+	void testRead() {
+		assertEquals(123, (int) persistentIntegerHandler.read("123"));
 	}
 
 	@Test
-	public void testReadNull() {
-		try {
-			persistentIntegerHandler.read(null);
-			assertTrue(false);
-		} catch(IllegalArgumentException e) {
-			assertTrue(true);
-		} catch(Exception e) {
-			assertTrue(false);
-		}
+	void testReadNull() {
+		assertThrows(IllegalArgumentException.class, () -> persistentIntegerHandler.read(null));
 	}
 	
 	@Test
-	public void testWrite() {
-		assertTrue(persistentIntegerHandler.write(123).equals("123"));
+	void testWrite() {
+		assertEquals("123", persistentIntegerHandler.write(123));
 	}
 
 	@Test
-	public void testWriteWhenNull() {
-		assertTrue(persistentIntegerHandler.write(null).equals(""));
+	void testWriteWhenNull() {
+		assertEquals("", persistentIntegerHandler.write(null));
 	}
 
 	@Test
-	public void testGetArchetype() {
-		assertTrue(persistentIntegerHandler.getArchetype() != null);
+	void testGetArchetype() {
+		assertNotNull(persistentIntegerHandler.getArchetype());
 	}
 
 	@Test
-	public void testGetInterfaceName() {
-		assertEquals("soliloquy.common.specs.IPersistentValueTypeHandler<java.lang.Integer>",
+	void testGetInterfaceName() {
+		assertEquals(IPersistentValueTypeHandler.class.getCanonicalName() + "<java.lang.Integer>",
 				persistentIntegerHandler.getInterfaceName());
 	}
 }

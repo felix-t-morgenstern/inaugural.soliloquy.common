@@ -1,61 +1,66 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import inaugural.soliloquy.common.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import inaugural.soliloquy.common.Coordinate;
 import soliloquy.common.specs.ICoordinate;
 
-public class CoordinateTests {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class CoordinateTests {
 	private Coordinate coordinate;
 
     @BeforeEach
-    protected void setUp() throws Exception {
+	void setUp() {
     	Mockito.reset();
     	coordinate = new Coordinate(0,0);
     }
 
     @Test
-    public void testGetAndSetXAndY() {
+	void testGetAndSetXAndY() {
     	coordinate.setX(123);
-    	assertTrue(coordinate.getX() == 123);
+		assertEquals(123, coordinate.getX());
     	coordinate.setY(456);
-    	assertTrue(coordinate.getY() == 456);
+		assertEquals(456, coordinate.getY());
     }
 
     @Test
-    public void testCompareTo() {
+	void testCompareTo() {
     	coordinate.setX(0);
     	coordinate.setY(0);
     	
     	Coordinate otherCoordinate = new Coordinate(0,0);
-    	
-    	assertTrue(coordinate.compareTo(otherCoordinate) == 0);
+
+		assertEquals(0, coordinate.compareTo(otherCoordinate));
     	
     	otherCoordinate.setY(1);
-    	assertTrue(coordinate.compareTo(otherCoordinate) == -1);
+		assertEquals(coordinate.compareTo(otherCoordinate), -1);
     	
     	otherCoordinate.setY(2);
-    	assertTrue(coordinate.compareTo(otherCoordinate) == -3);
+		assertEquals(coordinate.compareTo(otherCoordinate), -3);
     	
     	coordinate.setX(2);
-    	assertTrue(coordinate.compareTo(otherCoordinate) == 2);
+		assertEquals(2, coordinate.compareTo(otherCoordinate));
     	
     	coordinate.setX(3);
-    	assertTrue(coordinate.compareTo(otherCoordinate) == 6);
+		assertEquals(6, coordinate.compareTo(otherCoordinate));
     }
 
     @Test
-    public void testMakeClone() {
+	void testMakeClone() {
     	coordinate.setX(123);
     	coordinate.setY(456);
     	ICoordinate cloned = coordinate.makeClone();
     	coordinate.setX(-123);
     	coordinate.setY(-456);
-    	
-    	assertTrue(cloned.getX() == 123);
-    	assertTrue(cloned.getY() == 456);
+
+		assertEquals(123, cloned.getX());
+		assertEquals(456, cloned.getY());
     }
+
+    @Test
+	void testGetInterfaceName() {
+    	assertEquals(ICoordinate.class.getCanonicalName(), new Coordinate(0,0).getInterfaceName());
+	}
 }

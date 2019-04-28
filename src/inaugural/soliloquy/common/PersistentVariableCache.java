@@ -19,7 +19,6 @@ import soliloquy.logger.specs.ILogger;
 
 public class PersistentVariableCache extends Map<String,IPersistentVariable> implements IPersistentVariableCache {
 	private final ICollectionFactory COLLECTION_FACTORY;
-	private final IPersistentVariableFactory PERSISTENT_VARIABLE_FACTORY;
 	private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
 	private final ProcessReadValueAction PROCESS_READ_VALUE_ACTION;
 
@@ -28,10 +27,9 @@ public class PersistentVariableCache extends Map<String,IPersistentVariable> imp
 			IPersistentValuesHandler persistentValuesHandler) {
 		super(pairFactory, archetype1, archetype2);
 		COLLECTION_FACTORY = collectionFactory;
-		PERSISTENT_VARIABLE_FACTORY = persistentVariableFactory;
 		PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
 		
-		PROCESS_READ_VALUE_ACTION = new ProcessReadValueAction(_map, PERSISTENT_VARIABLE_FACTORY);
+		PROCESS_READ_VALUE_ACTION = new ProcessReadValueAction(_map, persistentVariableFactory);
 	}
 
 	@Override

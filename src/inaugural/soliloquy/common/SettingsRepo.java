@@ -18,8 +18,7 @@ import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
 
 public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
-	protected final HashMap<Integer,SettingsRepoItem> ITEMS;
-	
+	private final HashMap<Integer,SettingsRepoItem> ITEMS;
 	private final String ID;
 	private final ICollectionFactory COLLECTION_FACTORY;
 	private final IPairFactory PAIR_FACTORY;
@@ -31,7 +30,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	public SettingsRepo(ICollectionFactory collectionFactory, IPairFactory pairFactory,
 			IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype) {
 		ID = null;
-		ITEMS = new HashMap<Integer,SettingsRepoItem>();
+		ITEMS = new HashMap<>();
 		
 		COLLECTION_FACTORY = collectionFactory;
 		PAIR_FACTORY = pairFactory;
@@ -46,7 +45,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 			throw new IllegalArgumentException("SettingsRepo: called with null or empty id");
 		}
 		ID = id;
-		ITEMS = new HashMap<Integer,SettingsRepoItem>();
+		ITEMS = new HashMap<>();
 
 		COLLECTION_FACTORY = collectionFactory;
 		PAIR_FACTORY = pairFactory;
@@ -120,8 +119,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		if (settingId.equals("")) {
 			throw new IllegalArgumentException("SettingsRepo.getSetting: settingId cannot be blank");
 		}
-		ISetting setting = getSettingRecursively(settingId);
-		return setting;
+		return getSettingRecursively(settingId);
 	}
 	
 	@Override
@@ -142,10 +140,9 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		return null;
 	}
 
-	@SuppressWarnings({ "unchecked", })
 	@Override
 	public <V> void setSetting(String settingId, V value) throws IllegalArgumentException {
-		ISetting<V> setting = (ISetting<V>) getSetting(settingId);
+		ISetting<V> setting = getSetting(settingId);
 		if (setting == null) {
 			throw new IllegalArgumentException("SettingsRepo.setSetting: setting with id = "
 					+ settingId + " not found");
@@ -295,7 +292,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		for(Integer order : ITEMS.keySet()) {
 			SettingsRepoItem settingsRepoItem = ITEMS.get(order);
 			if (!settingsRepoItem.isGroup()) {
-				ISetting setting = (ISetting) settingsRepoItem.entity();
+				ISetting setting = settingsRepoItem.entity();
 				SettingToProcess settingToProcess = new SettingToProcess(setting.id(), setting.getValue());
 				persistentValuesToWrite.add(settingToProcess);
 			} else {
@@ -310,19 +307,19 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		private final ISetting SETTING;
 		private final SettingsRepo SETTINGS_REPO;
 		
-		public SettingsRepoItem(ISetting setting, ISetting archetype) {
+		SettingsRepoItem(ISetting setting, ISetting archetype) {
 			SETTING = setting;
 			SETTINGS_REPO = null;
 		}
 		
-		public SettingsRepoItem(SettingsRepo settingsRepo, ISetting archetype) {
+		SettingsRepoItem(SettingsRepo settingsRepo, ISetting archetype) {
 			SETTING = null;
 			SETTINGS_REPO = settingsRepo;
 		}
 
 		@Override
 		public boolean isGroup() {
-			if (!(SETTING == null ^ SETTINGS_REPO == null)) {
+			if ((SETTING == null) == (SETTINGS_REPO == null)) {
 				throw new IllegalStateException(
 						"SettingsRepoItem.isGroup: One and only one of SETTING and SETTINGS_REPO must be non-null in SettingsRepo.SettingsRepoItem");
 			}

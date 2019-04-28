@@ -20,7 +20,7 @@ public class PersistentStringHandler extends PersistentTypeHandler<String>
 
 	@Override
 	public String getArchetype() {
-		return new String();
+		return "";
 	}
 
 }

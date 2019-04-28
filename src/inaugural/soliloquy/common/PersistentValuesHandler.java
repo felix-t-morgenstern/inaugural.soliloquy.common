@@ -160,7 +160,7 @@ public class PersistentValuesHandler extends CanGetInterfaceName
 
 		@Override
 		public String getInterfaceName() {
-			return "soliloquy.common.specs.IPersistentValueToRead";
+			return IPersistentValueToRead.class.getCanonicalName();
 		}
 	}
 	

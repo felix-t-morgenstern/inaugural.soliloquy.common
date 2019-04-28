@@ -67,6 +67,6 @@ public class Pair<K,V> extends HasTwoGenericParams<K,V> implements IPair<K,V> {
 
 	@Override
 	public String getUnparameterizedInterfaceName() {
-		return "soliloquy.common.specs.IPair";
+		return IPair.class.getCanonicalName();
 	}
 }
