@@ -4,13 +4,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import inaugural.soliloquy.common.Pair;
-import soliloquy.common.specs.IAction;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPersistentValueToRead;
-import soliloquy.common.specs.IPersistentValueToWrite;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.common.specs.*;
 
 public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentValuesHandler {
 	@Override
@@ -73,6 +67,16 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 		when(resultMock.name()).thenReturn(name);
 		when(resultMock.value()).thenReturn(value);
 		return resultMock;
+	}
+
+	@Override
+	public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> persistentValueTypeHandler) {
+		// Not needed for test stub
+	}
+
+	@Override
+	public void registerPersistentMapHandler(IPersistentValueTypeHandler<IMap> persistentValueTypeHandler) {
+		// Not needed for test stub
 	}
 
 	@Override
