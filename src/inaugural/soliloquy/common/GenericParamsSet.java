@@ -1,20 +1,13 @@
 package inaugural.soliloquy.common;
 
-import java.util.HashMap;
-import soliloquy.common.specs.IAction;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IMapFactory;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPersistentValueToWrite;
-import soliloquy.common.specs.IPersistentValuesHandler;
-import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.common.specs.*;
 import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
 
+import java.util.HashMap;
+
 public class GenericParamsSet extends CanGetInterfaceName implements IGenericParamsSet {
-	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<String,IMap<String,?>>();
+	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<>();
 	private IPersistentValuesHandler _persistentValuesHandler;
 	private IMapFactory _mapFactory;
 	private ProcessReadValue _processReadValue;
@@ -91,7 +84,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	@Override
 	public ICollection<String> paramTypes() {
 		// Class isn't parameterized, thus no archetype is needed by Collection
-		ICollection<String> paramTypeNames = new Collection<String>("");
+		ICollection<String> paramTypeNames = new Collection<>("");
 		for(String paramTypeName : _paramsSetsRepository.keySet()) {
 			paramTypeNames.add(paramTypeName);
 		}
@@ -115,7 +108,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	public String write() throws IllegalArgumentException {
 		// NB: No archetype is required by PersistentValuesHandler.writeValues()
 		ICollection<IPersistentValueToWrite<?>> parameters =
-				new Collection<IPersistentValueToWrite<?>>(null);
+				new Collection<>(null);
 		for(String typeName : _paramsSetsRepository.keySet()) {
 			IMap<String,?> paramsSet = _paramsSetsRepository.get(typeName);
 			for(String name : paramsSet.getKeys()) {
@@ -143,7 +136,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	private class ProcessReadValue implements IAction<IPair<IPersistentValueToWrite<?>,Boolean>> {
 		private GenericParamsSet _genericParamsSet;
 		
-		public ProcessReadValue(GenericParamsSet genericParamsSet) {
+		ProcessReadValue(GenericParamsSet genericParamsSet) {
 			_genericParamsSet = genericParamsSet;
 		}
 

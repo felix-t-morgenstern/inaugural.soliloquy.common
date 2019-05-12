@@ -4,7 +4,8 @@ import soliloquy.common.specs.ICoordinate;
 import soliloquy.common.specs.ICoordinateFactory;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 
-public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordinate> implements IPersistentValueTypeHandler<ICoordinate> {
+public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordinate>
+        implements IPersistentValueTypeHandler<ICoordinate> {
     private final ICoordinate ARCHETYPE;
     private final ICoordinateFactory COORDINATE_FACTORY;
 
