@@ -197,3 +197,4 @@ target/mvn-repo/disorg/soliloquy/inaugural.soliloquy.common/maven-metadata.xml.s
 inaugural.soliloquy.common.iml
 .idea/uiDesigner.xml
 *.kotlin_module
+.idea/dictionaries/*
