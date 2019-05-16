@@ -16,6 +16,11 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
     }
 
     @Override
+    public String getInterfaceName() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public ICollection getArchetype() {
         // NB: PersistentCollectionHandler should be selected by the PersistentValuesHandler
         // through specific, manually-defined String pattern recognition, rather than via

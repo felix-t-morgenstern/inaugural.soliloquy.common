@@ -17,6 +17,11 @@ public class PersistentMapHandler extends PersistentTypeHandler<IMap>
     }
 
     @Override
+    public String getInterfaceName() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public IMap getArchetype() {
         // NB: PersistentMapHandler should be selected by the PersistentValuesHandler through
         // specific, manually-defined String pattern recognition, rather than via getArchetype.
