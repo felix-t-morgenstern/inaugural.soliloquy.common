@@ -68,4 +68,12 @@ class PersistentMapHandlerTests {
         assertEquals(KEY_ARCHETYPE, map.getFirstArchetype());
         assertEquals(VALUE_ARCHETYPE, map.getSecondArchetype());
     }
+
+    // TODO: Add tests for invalid valueString fed into read()
+
+    @Test
+    void testGetInterfaceName() {
+        assertThrows(UnsupportedOperationException.class,
+                () -> _persistentMapHandler.getInterfaceName());
+    }
 }

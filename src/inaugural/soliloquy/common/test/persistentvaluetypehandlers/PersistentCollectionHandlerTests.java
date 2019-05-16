@@ -72,4 +72,10 @@ class PersistentCollectionHandlerTests {
                         "%s\u001d%d\u001d%s\u001e%d\u001e%d", Integer.class.getCanonicalName(),
                         ARCHETYPE, "INVALID", INTEGER_2, INTEGER_3)));
     }
+
+    @Test
+    void testGetInterfaceName() {
+        assertThrows(UnsupportedOperationException.class,
+                () -> _persistentCollectionHandler.getInterfaceName());
+    }
 }
