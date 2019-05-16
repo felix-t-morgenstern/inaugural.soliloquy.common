@@ -96,17 +96,17 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException {
-		PERSISTENT_VALUES_HANDLER.readValues(data, new InsertSettingAction(this), true);
+	public void read(String data) throws IllegalArgumentException {
+		PERSISTENT_VALUES_HANDLER.readValues(data, new InsertSettingAction(this));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public String write() throws IllegalArgumentException {
 		IPersistentValueToWrite collectionArchetype = new SettingToProcess("", "");
-		ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite =
+		ICollection<IPersistentValueToWrite> persistentValuesToWrite =
 				COLLECTION_FACTORY.make(collectionArchetype);
-		populatePersistentValuesToWriteRecursively(persistentValuesToWrite, true);
+		populatePersistentValuesToWriteRecursively(persistentValuesToWrite);
 		return PERSISTENT_VALUES_HANDLER.writeValues(persistentValuesToWrite);
 	}
 
@@ -288,7 +288,8 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void populatePersistentValuesToWriteRecursively(ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite, boolean isTopLevel) {
+	private void populatePersistentValuesToWriteRecursively(
+			ICollection<IPersistentValueToWrite> persistentValuesToWrite) {
 		for(Integer order : ITEMS.keySet()) {
 			SettingsRepoItem settingsRepoItem = ITEMS.get(order);
 			if (!settingsRepoItem.isGroup()) {
@@ -296,7 +297,8 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 				SettingToProcess settingToProcess = new SettingToProcess(setting.id(), setting.getValue());
 				persistentValuesToWrite.add(settingToProcess);
 			} else {
-				((SettingsRepo) settingsRepoItem.group()).populatePersistentValuesToWriteRecursively(persistentValuesToWrite, false);
+				((SettingsRepo) settingsRepoItem.group())
+						.populatePersistentValuesToWriteRecursively(persistentValuesToWrite);
 			}
 		}
 	}
@@ -413,7 +415,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		}
 	}
 	
-	private class InsertSettingAction<V> implements IAction<IPair<IPersistentValueToWrite<V>,Boolean>> {
+	private class InsertSettingAction<V> implements IAction<IPersistentValueToWrite> {
 		private final SettingsRepo SETTINGS_REPO;
 		
 		private InsertSettingAction(SettingsRepo settingsRepo) {
@@ -427,14 +429,14 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		}
 
 		@Override
-		public IPair<IPersistentValueToWrite<V>, Boolean> getArchetype() {
+		public IPersistentValueToWrite getArchetype() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public void run(IPair<IPersistentValueToWrite<V>, Boolean> input) throws IllegalArgumentException {
-			SETTINGS_REPO.setSetting(input.getItem1().name(), input.getItem1().value());
+		public void run(IPersistentValueToWrite input) throws IllegalArgumentException {
+			SETTINGS_REPO.setSetting(input.name(), input.value());
 		}
 
 		@Override

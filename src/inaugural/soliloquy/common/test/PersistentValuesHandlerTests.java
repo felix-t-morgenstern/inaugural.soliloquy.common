@@ -111,13 +111,13 @@ class PersistentValuesHandlerTests {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentStringHandler);
     	
     	String persistentValuesJson = "[]";
-    	_persistentValuesHandler.readValues(persistentValuesJson, new PersistentValuesHandlerTestsReadAction(), true);
+    	_persistentValuesHandler.readValues(persistentValuesJson, new PersistentValuesHandlerTestsReadAction());
     	
     	assertTrue(PersistentValuesHandlerTestsReadAction._results.isEmpty());
     	PersistentValuesHandlerTestsReadAction._results.clear();
     	
     	persistentValuesJson = "[{\"typeName\": \"java.lang.Integer\", \"name\": \"Integer1\", \"value\": \"123\"},{\"typeName\": \"java.lang.Integer\", \"name\": \"Integer2\", \"value\": \"456\"},{\"typeName\": \"java.lang.String\", \"name\": \"String1\", \"value\": \"String1\"},{\"typeName\": \"java.lang.String\", \"name\": \"String2\", \"value\": \"String2\"}]";
-    	_persistentValuesHandler.readValues(persistentValuesJson, new PersistentValuesHandlerTestsReadAction(), true);
+    	_persistentValuesHandler.readValues(persistentValuesJson, new PersistentValuesHandlerTestsReadAction());
 		assertEquals(4, PersistentValuesHandlerTestsReadAction._results.size());
     	for (IPersistentValueToWrite<?> persistentValueToWrite : PersistentValuesHandlerTestsReadAction._results) {
     		if (persistentValueToWrite.name().equals("Integer1")) {
@@ -139,8 +139,9 @@ class PersistentValuesHandlerTests {
 	void testWriteValues() {
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
     	_persistentValuesHandler.addPersistentValueTypeHandler(_persistentStringHandler);
-    	
-    	ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess = new Collection<IPersistentValueToWrite<?>>(null);
+
+    	// TODO: Remove this dependency on Collection
+    	ICollection<IPersistentValueToWrite> persistentValuesToProcess = new Collection<IPersistentValueToWrite>(null);
     	persistentValuesToProcess.add(_persistentValuesHandler.makePersistentValueToWrite("String1",STR_PARAM_1_VALUE));
     	persistentValuesToProcess.add(_persistentValuesHandler.makePersistentValueToWrite("String2",STR_PARAM_2_VALUE));
     	persistentValuesToProcess.add(_persistentValuesHandler.makePersistentValueToWrite("Integer1",INT_PARAM_1_INT_VALUE));

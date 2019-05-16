@@ -422,7 +422,7 @@ class SettingsRepoTests {
     	String adHocFormattedSettingsString = SETTING_1_ID+","+SETTING_1_NAME+","+""+","+1+","+"Hello1"+";"
     			+SETTING_2_ID+","+SETTING_2_NAME+","+SETTINGS_REPO_SUBGROUP_1_ID+","+2+","+"Hello2"+";"
     			+SETTING_3_ID+","+SETTING_3_NAME+","+SETTINGS_REPO_SUBGROUP_1_1_ID+","+3+","+"Hello3"+";";
-    	_settingsRepo.read(adHocFormattedSettingsString, true);
+    	_settingsRepo.read(adHocFormattedSettingsString);
     	
     	IPair<String,Integer> setting1GroupingIdAndOrder = _settingsRepo.getGroupingIdAndOrder(SETTING_1_ID);
     	assertTrue(setting1GroupingIdAndOrder.getItem1() == null || setting1GroupingIdAndOrder.getItem1().equals(""));
@@ -558,8 +558,8 @@ class SettingsRepoTests {
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
-		public void readValues(String valuesString, IAction<IPair<IPersistentValueToWrite<?>, Boolean>> valueProcessing,
-				boolean overridePreviousData) {
+		public void readValues(String valuesString,
+							   IAction<IPersistentValueToWrite> valueProcessing) {
 			String[] settingsStrings = valuesString.split(";", -1);
 			for(String settingString : settingsStrings) {
 				if (settingString.equals("")) {
@@ -582,13 +582,13 @@ class SettingsRepoTests {
 				SettingToProcess settingToProcess = 
 						_settingsRepo.new SettingToProcess(setting.id(), setting.getValue());
 				
-				valueProcessing.run(PAIR_FACTORY.make(settingToProcess,true));
+				valueProcessing.run(settingToProcess);
 			}
 		}
 
 		@SuppressWarnings("rawtypes")
 		@Override
-		public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
+		public String writeValues(ICollection<IPersistentValueToWrite> persistentValuesToProcess) {
 			String writtenValues = "";
 			for (int i = 0; i < persistentValuesToProcess.size(); i++) {
 				IPersistentValueToWrite settingToProcess = persistentValuesToProcess.get(i);

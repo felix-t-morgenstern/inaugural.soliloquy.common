@@ -16,12 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersistentValuesIntegrationTests {
 	private IPersistentValuesHandler _persistentValuesHandler;
 
+	// TODO: Add EntityUuid handling to this test suite
 	private final String PERSISTENT_VALUES_STRING = "[{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool1\",\"value\":\"true\"},{\"typeName\":\"java.lang.Boolean\",\"name\":\"bool2\",\"value\":\"false\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers1\",\"value\":\"java.lang.Integer\u00910\u00911\u00922\u00923\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\",\"name\":\"integers2\",\"value\":\"java.lang.Integer\u00910\u00914\u00925\u00926\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int1\",\"value\":\"123\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int2\",\"value\":\"456\"},{\"typeName\":\"java.lang.Integer\",\"name\":\"int3\",\"value\":\"789\"},{\"typeName\":\"java.lang.String\",\"name\":\"string1\",\"value\":\"String1\"},{\"typeName\":\"java.lang.String\",\"name\":\"string2\",\"value\":\"String2\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings1\",\"value\":\"java.lang.String\u0091strings1Archetype\u0091string1-1\u0092string1-2\u0092string1-3\"},{\"typeName\":\"soliloquy.common.specs.ICollection\\u003cjava.lang.String\\u003e\",\"name\":\"strings2\",\"value\":\"java.lang.String\u0091strings2Archetype\u0091string2-1\u0092string2-2\u0092string2-3\"},{\"typeName\":\"soliloquy.common.specs.IMap\\u003cjava.lang.String,java.lang.Integer\\u003e\",\"name\":\"map1\",\"value\":\"java.lang.String\\u001fjava.lang.Integer\\u001dmap1Archetype1\\u001f123123123\\u001dKey1-1\\u001f123\\u001eKey1-2\\u001f456\\u001eKey1-3\\u001f789\"},{\"typeName\":\"soliloquy.common.specs.IMap\\u003cjava.lang.String,soliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\\u003e\",\"name\":\"map2\",\"value\":\"java.lang.String\\u001fsoliloquy.common.specs.ICollection\\u003cjava.lang.Integer\\u003e\\u001dmap2Archetype1\\u001fjava.lang.Integer\u0091456456456\u0091\\u001dKey2-1\\u001fjava.lang.Integer\u0091123\u00911\u00922\u00923\\u001eKey2-2\\u001fjava.lang.Integer\u0091456\u00914\u00925\u00926\\u001eKey2-3\\u001fjava.lang.Integer\u0091789\u00917\u00928\u00929\"}]";
 	
 	private ICollectionFactory _collectionFactory;
 	private IMapFactory _mapFactory;
 
-	private static List<IPair<IPersistentValueToWrite<?>, Boolean>> _readValues;
+	private static List<IPersistentValueToWrite> _readValues;
 	
     @BeforeEach
 	void setUp() {
@@ -53,7 +54,7 @@ class PersistentValuesIntegrationTests {
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	void testWriteValues() {
     	IPersistentValueToWrite persistentValueToWriteArchetype = new PersistentValueToWrite(null, null);
-    	ICollection<IPersistentValueToWrite<?>> persistentValuesToWrite =
+    	ICollection<IPersistentValueToWrite> persistentValuesToWrite =
     			_collectionFactory.make(persistentValueToWriteArchetype);
     	
     	// Adding boolean persistent values
@@ -134,14 +135,12 @@ class PersistentValuesIntegrationTests {
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	void testReadValues() throws Exception {
-    	_persistentValuesHandler.readValues(PERSISTENT_VALUES_STRING, new ReadValuesAction(), true);
+    	_persistentValuesHandler.readValues(PERSISTENT_VALUES_STRING, new ReadValuesAction());
 
 		assertEquals(13, _readValues.size());
     	
-    	for (IPair<IPersistentValueToWrite<?>, Boolean> readValuePair : _readValues)
+    	for (IPersistentValueToWrite readValue : _readValues)
     	{
-    		assertTrue(readValuePair.getItem2());
-    		IPersistentValueToWrite readValue = readValuePair.getItem1();
     		switch(readValue.name())
     		{
     		case "bool1":
@@ -283,7 +282,7 @@ class PersistentValuesIntegrationTests {
     	
     }
     
-    private class ReadValuesAction implements IAction<IPair<IPersistentValueToWrite<?>, Boolean>> {
+    private class ReadValuesAction implements IAction<IPersistentValueToWrite> {
 		@Override
 		public String id() throws IllegalStateException {
 			// Stub method
@@ -291,7 +290,7 @@ class PersistentValuesIntegrationTests {
 		}
 
 		@Override
-		public IPair<IPersistentValueToWrite<?>, Boolean> getArchetype() {
+		public IPersistentValueToWrite getArchetype() {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}
@@ -303,7 +302,7 @@ class PersistentValuesIntegrationTests {
 		}
 
 		@Override
-		public void run(IPair<IPersistentValueToWrite<?>, Boolean> input) throws IllegalArgumentException {
+		public void run(IPersistentValueToWrite input) throws IllegalArgumentException {
 			_readValues.add(input);
 		}
 

@@ -169,7 +169,7 @@ class SettingsRepoIntegrationTests {
 	@Test
     @SuppressWarnings("unchecked")
 	void testRead() {
-    	_settingsRepo.read(SETTINGS_REPO_STRING, true);
+    	_settingsRepo.read(SETTINGS_REPO_STRING);
 
 		assertEquals(5, _settingsRepo.getAllUngrouped().size());
     	

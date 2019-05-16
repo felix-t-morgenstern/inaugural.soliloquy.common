@@ -159,11 +159,9 @@ class GenericParamsSetTests {
     @Test
 	void testRead() {
 		assertNotSame("This is just some data", _genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue"));
-    	_genericParamsSet.read("This is just some data", false);
-		assertThrows(IllegalArgumentException.class,
-				() -> _genericParamsSet.read("This is just some data", false));
+    	_genericParamsSet.read("This is just some data");
 		assertSame("This is just some data", _genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue"));
-    	_genericParamsSet.read("This is just some more data", true);
+    	_genericParamsSet.read("This is just some more data");
 		assertSame("This is just some more data", _genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue"));
     }
 

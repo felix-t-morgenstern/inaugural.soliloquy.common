@@ -30,12 +30,12 @@ public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
     }
 
     @Override
-    public void readValues(String s, IAction<IPair<IPersistentValueToWrite<?>, Boolean>> iAction, boolean b) {
+    public void readValues(String s, IAction<IPersistentValueToWrite> iAction) {
 
     }
 
     @Override
-    public String writeValues(ICollection<IPersistentValueToWrite<?>> iCollection) {
+    public String writeValues(ICollection<IPersistentValueToWrite> iCollection) {
         return null;
     }
 

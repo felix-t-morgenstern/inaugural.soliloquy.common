@@ -3,7 +3,6 @@ package inaugural.soliloquy.common.test.stubs;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import inaugural.soliloquy.common.Pair;
 import soliloquy.common.specs.*;
 
 public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentValuesHandler {
@@ -34,18 +33,17 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void readValues(String valuesString, IAction<IPair<IPersistentValueToWrite<?>,Boolean>> valueProcessing,
-			boolean overridePreviousData) {
+	public void readValues(String valuesString, IAction<IPersistentValueToWrite> valueProcessing) {
 		IPersistentValueToWrite<String> persistentValueToWrite = 
 				(IPersistentValueToWrite<String>) mock(IPersistentValueToWrite.class);
 		when(persistentValueToWrite.typeName()).thenReturn(String.class.getCanonicalName());
 		when(persistentValueToWrite.name()).thenReturn("DummyValue");
 		when(persistentValueToWrite.value()).thenReturn(valuesString);
-		valueProcessing.run(new Pair<IPersistentValueToWrite<?>,Boolean>(persistentValueToWrite,overridePreviousData));
+		valueProcessing.run(persistentValueToWrite);
 	}
 
 	@Override
-	public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
+	public String writeValues(ICollection<IPersistentValueToWrite> persistentValuesToProcess) {
 		String result = "";
 		for(IPersistentValueToWrite<?> persistentValueToProcess : persistentValuesToProcess) {
 			result += "Name:"+persistentValueToProcess.name()+",Value:"+persistentValueToProcess.value()+";";

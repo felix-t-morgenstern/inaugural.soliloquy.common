@@ -64,8 +64,7 @@ public class PersistentValuesHandler extends CanGetInterfaceName
 	}
 
 	@Override
-	public void readValues(String valuesString, IAction<IPair<IPersistentValueToWrite<?>, Boolean>> valuesProcessing,
-			boolean overridePreviousData) {
+	public void readValues(String valuesString, IAction<IPersistentValueToWrite> valuesProcessing) {
 		PersistentValueToRead[] persistentValuesToRead =
 				new Gson().fromJson(valuesString, PersistentValueToRead[].class);
 		for (IPersistentValueToRead persistentValueToRead : persistentValuesToRead) {
@@ -74,13 +73,12 @@ public class PersistentValuesHandler extends CanGetInterfaceName
 			IPersistentValueToWrite<?> persistentValueToWrite =
 					makePersistentValueToWrite(persistentValueToRead.name(),
 							persistentValueTypeHandler.read(persistentValueToRead.value()));
-			valuesProcessing.run(new Pair<>(persistentValueToWrite,
-					overridePreviousData));
+			valuesProcessing.run(persistentValueToWrite);
 		}
 	}
 
 	@Override
-	public String writeValues(ICollection<IPersistentValueToWrite<?>> persistentValuesToProcess) {
+	public String writeValues(ICollection<IPersistentValueToWrite> persistentValuesToProcess) {
 		PersistentValueToRead[] persistentValuesToRead =
 				new PersistentValueToRead[persistentValuesToProcess.size()];
 		int i = 0;

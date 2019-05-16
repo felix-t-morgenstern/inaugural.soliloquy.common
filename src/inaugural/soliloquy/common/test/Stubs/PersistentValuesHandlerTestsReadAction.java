@@ -9,9 +9,8 @@ import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.game.primary.specs.IGame;
 import soliloquy.logger.specs.ILogger;
 
-public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPersistentValueToWrite<?>, Boolean>> {
+public class PersistentValuesHandlerTestsReadAction implements IAction<IPersistentValueToWrite> {
 	public static Collection<IPersistentValueToWrite<?>> _results = new ArrayList<IPersistentValueToWrite<?>>();
-	public static Boolean _overrideData;
 
 	@Override
 	public String id() {
@@ -20,9 +19,8 @@ public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPe
 	}
 
 	@Override
-	public void run(IPair<IPersistentValueToWrite<?>, Boolean> input) throws IllegalArgumentException {
-		_overrideData = input.getItem2();
-		_results.add(input.getItem1());
+	public void run(IPersistentValueToWrite input) throws IllegalArgumentException {
+		_results.add(input);
 	}
 
 	@Override
@@ -32,7 +30,7 @@ public class PersistentValuesHandlerTestsReadAction implements IAction<IPair<IPe
 	}
 
 	@Override
-	public IPair<IPersistentValueToWrite<?>, Boolean> getArchetype() {
+	public IPersistentValueToWrite getArchetype() {
 		// Not needed for test stub
 		return null;
 	}

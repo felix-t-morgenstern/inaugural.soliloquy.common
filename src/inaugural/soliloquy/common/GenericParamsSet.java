@@ -100,14 +100,15 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	}
 
 	@Override
-	public void read(String data, boolean overridePreviousData) throws IllegalArgumentException {
-		_persistentValuesHandler.readValues(data, _processReadValue, overridePreviousData);
+	public void read(String data) throws IllegalArgumentException {
+		_persistentValuesHandler.readValues(data, _processReadValue);
 	}
 
 	@Override
 	public String write() throws IllegalArgumentException {
 		// NB: No archetype is required by PersistentValuesHandler.writeValues()
-		ICollection<IPersistentValueToWrite<?>> parameters =
+		// TODO: Remove direct dependency on Collection
+		ICollection<IPersistentValueToWrite> parameters =
 				new Collection<>(null);
 		for(String typeName : _paramsSetsRepository.keySet()) {
 			IMap<String,?> paramsSet = _paramsSetsRepository.get(typeName);
@@ -133,7 +134,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		return IGenericParamsSet.class.getCanonicalName();
 	}
 	
-	private class ProcessReadValue implements IAction<IPair<IPersistentValueToWrite<?>,Boolean>> {
+	private class ProcessReadValue implements IAction<IPersistentValueToWrite> {
 		private GenericParamsSet _genericParamsSet;
 		
 		ProcessReadValue(GenericParamsSet genericParamsSet) {
@@ -146,15 +147,10 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		}
 
 		@Override
-		public void run(IPair<IPersistentValueToWrite<?>,Boolean> input) throws IllegalArgumentException {
-			String typeName = input.getItem1().typeName();
-			String name = input.getItem1().name();
-			Object value = input.getItem1().value();
-			if (!input.getItem2() && _genericParamsSet.paramExists(typeName, name)) {
-				throw new IllegalArgumentException("ProcessReadValue.run: Parameter "
-						+ name + ", type "
-						+ typeName + ", already exists");
-			}
+		public void run(IPersistentValueToWrite input) throws IllegalArgumentException {
+			String typeName = input.typeName();
+			String name = input.name();
+			Object value = input.value();
 			_genericParamsSet.addParam(name, value);
 		}
 
@@ -164,7 +160,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		}
 
 		@Override
-		public IPair<IPersistentValueToWrite<?>, Boolean> getArchetype() {
+		public IPersistentValueToWrite getArchetype() {
 			throw new UnsupportedOperationException();
 		}
 
