@@ -8,6 +8,7 @@ import soliloquy.common.specs.*;
 public class PersistentValuesHandler extends CanGetInterfaceName
 		implements IPersistentValuesHandler {
 	private HashMap<String,IPersistentValueTypeHandler<?>> _persistentValueTypeHandlers;
+	private IPersistentValueTypeHandler<IPair> _persistentPairHandler;
 	private IPersistentValueTypeHandler<ICollection> _persistentCollectionHandler;
 	private IPersistentValueTypeHandler<IMap> _persistentMapHandler;
 
@@ -98,6 +99,12 @@ public class PersistentValuesHandler extends CanGetInterfaceName
 	@Override
 	public <T> IPersistentValueToWrite<T> makePersistentValueToWrite(String name, T value) {
 		return new PersistentValueToWrite<>(name, value);
+	}
+
+	@Override
+	public void registerPersistentPairHandler(
+			IPersistentValueTypeHandler<IPair> persistentPairHandler) {
+		_persistentPairHandler = persistentPairHandler;
 	}
 
 	@Override

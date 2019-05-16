@@ -43,6 +43,7 @@ class PersistentVariableCacheIntegrationTests {
 	private final String VARIABLE_4_VALUE = "Variable4Value";
 	private ICollection<String> _variable5Value;
 
+	// TODO: Add Pair handling to this test
 	@BeforeEach
 	void setUp() {
 		ICollectionFactory _collectionFactory = new CollectionFactory();

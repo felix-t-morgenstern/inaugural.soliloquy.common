@@ -50,6 +50,11 @@ public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
     }
 
     @Override
+    public void registerPersistentPairHandler(IPersistentValueTypeHandler<IPair> iPersistentValueTypeHandler) {
+
+    }
+
+    @Override
     public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> iPersistentValueTypeHandler) {
 
     }

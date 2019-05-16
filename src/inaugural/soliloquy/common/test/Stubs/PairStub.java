@@ -13,14 +13,12 @@ public class PairStub<K,V> implements IPair<K,V> {
 
 	@Override
 	public K getFirstArchetype() throws IllegalStateException {
-		// Stub method, unimplemented
-		throw new UnsupportedOperationException();
+		return _item1;
 	}
 
 	@Override
 	public V getSecondArchetype() throws IllegalStateException {
-		// Stub method, unimplemented
-		throw new UnsupportedOperationException();
+		return _item2;
 	}
 
 	@Override

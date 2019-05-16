@@ -610,6 +610,12 @@ class SettingsRepoTests {
 		}
 
 		@Override
+		public void registerPersistentPairHandler(IPersistentValueTypeHandler<IPair> iPersistentValueTypeHandler) {
+			// Stub class; no implementation needed
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
 		public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> iPersistentValueTypeHandler) {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();

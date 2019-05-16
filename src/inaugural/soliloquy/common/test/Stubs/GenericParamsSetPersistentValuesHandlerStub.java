@@ -68,6 +68,11 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 	}
 
 	@Override
+	public void registerPersistentPairHandler(IPersistentValueTypeHandler<IPair> persistentPairHandler) {
+		// Not needed for test stub
+	}
+
+	@Override
 	public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> persistentValueTypeHandler) {
 		// Not needed for test stub
 	}
