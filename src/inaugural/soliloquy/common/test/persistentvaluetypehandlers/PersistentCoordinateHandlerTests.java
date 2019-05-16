@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.common.specs.ICoordinate;
 import soliloquy.common.specs.ICoordinateFactory;
+import soliloquy.common.specs.IPersistentValueTypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +26,8 @@ class PersistentCoordinateHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(
-                "soliloquy.common.specs.IPersistentValueTypeHandler<soliloquy.common.specs.ICoordinate>",
+                IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        ICoordinate.class.getCanonicalName() + ">",
                 _persistentCoordinateHandler.getInterfaceName());
     }
 
