@@ -3,19 +3,15 @@ package inaugural.soliloquy.common;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
-import soliloquy.common.specs.IAction;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 import soliloquy.common.specs.IEntityGroup;
 import soliloquy.common.specs.IEntityGroupItem;
 import soliloquy.common.specs.IPair;
 import soliloquy.common.specs.IPairFactory;
-import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentValuesHandler;
 import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingsRepo;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
 
 public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	private final HashMap<Integer,SettingsRepoItem> ITEMS;
@@ -97,17 +93,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void read(String data) throws IllegalArgumentException {
-		PERSISTENT_VALUES_HANDLER.readValues(data, new InsertSettingAction(this));
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public String write() throws IllegalArgumentException {
-		IPersistentValueToWrite collectionArchetype = new SettingToProcess("", "");
-		ICollection<IPersistentValueToWrite> persistentValuesToWrite =
-				COLLECTION_FACTORY.make(collectionArchetype);
-		populatePersistentValuesToWriteRecursively(persistentValuesToWrite);
-		return PERSISTENT_VALUES_HANDLER.writeValues(persistentValuesToWrite);
+		// TODO: REDO THIS WITH PERSISTENT_VALUES_HANDLER!
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -286,22 +272,6 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		}
 		return null;
 	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void populatePersistentValuesToWriteRecursively(
-			ICollection<IPersistentValueToWrite> persistentValuesToWrite) {
-		for(Integer order : ITEMS.keySet()) {
-			SettingsRepoItem settingsRepoItem = ITEMS.get(order);
-			if (!settingsRepoItem.isGroup()) {
-				ISetting setting = settingsRepoItem.entity();
-				SettingToProcess settingToProcess = new SettingToProcess(setting.id(), setting.getValue());
-				persistentValuesToWrite.add(settingToProcess);
-			} else {
-				((SettingsRepo) settingsRepoItem.group())
-						.populatePersistentValuesToWriteRecursively(persistentValuesToWrite);
-			}
-		}
-	}
 	
 	@SuppressWarnings("rawtypes")
 	private class SettingsRepoItem implements IEntityGroupItem<ISetting>
@@ -369,99 +339,5 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 			// Stub method
 			throw new UnsupportedOperationException();
 		}
-	}
-	
-	public class SettingToProcess<V> implements IPersistentValueToWrite<V>
-	{
-		private final String ID;
-		private final V VALUE;
-		
-		public SettingToProcess(String id, V value) {
-			ID = id;
-			VALUE = value;
-		}
-
-		@Override
-		public V getArchetype() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public String typeName() {
-			return getProperTypeName(VALUE);
-		}
-
-		@Override
-		public String name() {
-			return ID;
-		}
-
-		@Override
-		public V value() {
-			return VALUE;
-		}
-
-		@Override
-		public String getUnparameterizedInterfaceName() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public String getInterfaceName() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-	}
-	
-	private class InsertSettingAction<V> implements IAction<IPersistentValueToWrite> {
-		private final SettingsRepo SETTINGS_REPO;
-		
-		private InsertSettingAction(SettingsRepo settingsRepo) {
-			SETTINGS_REPO = settingsRepo;
-		}
-
-		@Override
-		public String id() throws IllegalStateException {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public IPersistentValueToWrite getArchetype() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void run(IPersistentValueToWrite input) throws IllegalArgumentException {
-			SETTINGS_REPO.setSetting(input.name(), input.value());
-		}
-
-		@Override
-		public String getInterfaceName() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public String getUnparameterizedInterfaceName() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public IGame game() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public ILogger logger() {
-			// Stub method
-			throw new UnsupportedOperationException();
-		}
-		
 	}
 }

@@ -1,8 +1,6 @@
 package inaugural.soliloquy.common;
 
 import soliloquy.common.specs.*;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
 
 import java.util.HashMap;
 
@@ -10,12 +8,10 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<>();
 	private IPersistentValuesHandler _persistentValuesHandler;
 	private IMapFactory _mapFactory;
-	private ProcessReadValue _processReadValue;
 	
 	public GenericParamsSet(IPersistentValuesHandler persistentValuesHandler, IMapFactory mapFactory) {
 		_persistentValuesHandler = persistentValuesHandler;
 		_mapFactory = mapFactory;
-		_processReadValue = new ProcessReadValue(this);
 	}
 	
 	public <T> void addParam(String name, T value) throws IllegalArgumentException {
@@ -100,27 +96,6 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	}
 
 	@Override
-	public void read(String data) throws IllegalArgumentException {
-		_persistentValuesHandler.readValues(data, _processReadValue);
-	}
-
-	@Override
-	public String write() throws IllegalArgumentException {
-		// NB: No archetype is required by PersistentValuesHandler.writeValues()
-		// TODO: Remove direct dependency on Collection
-		ICollection<IPersistentValueToWrite> parameters =
-				new Collection<>(null);
-		for(String typeName : _paramsSetsRepository.keySet()) {
-			IMap<String,?> paramsSet = _paramsSetsRepository.get(typeName);
-			for(String name : paramsSet.getKeys()) {
-				parameters.add(_persistentValuesHandler
-						.makePersistentValueToWrite(name, paramsSet.get(name)));
-			}
-		}
-		return _persistentValuesHandler.writeValues(parameters);
-	}
-
-	@Override
 	public IGenericParamsSet makeClone() {
 		GenericParamsSet cloned = new GenericParamsSet(_persistentValuesHandler, _mapFactory);
 		for(IMap<String,?> map : _paramsSetsRepository.values()) {
@@ -132,53 +107,5 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	@Override
 	public String getInterfaceName() {
 		return IGenericParamsSet.class.getCanonicalName();
-	}
-	
-	private class ProcessReadValue implements IAction<IPersistentValueToWrite> {
-		private GenericParamsSet _genericParamsSet;
-		
-		ProcessReadValue(GenericParamsSet genericParamsSet) {
-			_genericParamsSet = genericParamsSet;
-		}
-
-		@Override
-		public String id() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void run(IPersistentValueToWrite input) throws IllegalArgumentException {
-			String typeName = input.typeName();
-			String name = input.name();
-			Object value = input.value();
-			_genericParamsSet.addParam(name, value);
-		}
-
-		@Override
-		public String getInterfaceName() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public IPersistentValueToWrite getArchetype() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public String getUnparameterizedInterfaceName() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public IGame game() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public ILogger logger() {
-			// TODO: Verify whether this method should truly be unsupported
-			throw new UnsupportedOperationException();
-		}
-		
 	}
 }

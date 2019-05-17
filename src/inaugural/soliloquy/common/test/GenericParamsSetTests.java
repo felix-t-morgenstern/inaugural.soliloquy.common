@@ -155,29 +155,4 @@ class GenericParamsSetTests {
 		assertEquals(true, boolParams.get("Bool_Param_1"));
 		assertEquals(false, boolParams.get("Bool_Param_2"));
     }
-
-    @Test
-	void testRead() {
-		assertNotSame("This is just some data", _genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue"));
-    	_genericParamsSet.read("This is just some data");
-		assertSame("This is just some data", _genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue"));
-    	_genericParamsSet.read("This is just some more data");
-		assertSame("This is just some more data", _genericParamsSet.getParam(String.class.getCanonicalName(), "DummyValue"));
-    }
-
-    @Test
-	void testWrite() {
-		assertSame("", _genericParamsSet.write());
-
-    	_genericParamsSet.addParam(INT_PARAM_1_NAME, INT_PARAM_1_VALUE);
-    	_genericParamsSet.addParam(INT_PARAM_2_NAME, INT_PARAM_2_VALUE);
-    	_genericParamsSet.addParam(STR_PARAM_1_NAME, STR_PARAM_1_VALUE);
-    	_genericParamsSet.addParam(STR_PARAM_2_NAME, STR_PARAM_2_VALUE);
-
-    	// No idea why strings are reversed and ints are not.
-		assertEquals(_genericParamsSet.write(), "Name:" + STR_PARAM_2_NAME + ",Value:" + STR_PARAM_2_VALUE + ";" +
-				"Name:" + STR_PARAM_1_NAME + ",Value:" + STR_PARAM_1_VALUE + ";" +
-				"Name:" + INT_PARAM_1_NAME + ",Value:" + INT_PARAM_1_VALUE + ";" +
-				"Name:" + INT_PARAM_2_NAME + ",Value:" + INT_PARAM_2_VALUE + ";");
-    }
 }

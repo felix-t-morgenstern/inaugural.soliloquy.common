@@ -4,9 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PersistentVariable;
-import soliloquy.common.specs.IPersistentValueToWrite;
 import soliloquy.common.specs.IPersistentVariable;
-import soliloquy.common.specs.IPersistentVariableCache;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,19 +35,6 @@ class PersistentVariableTests {
 		_persistentVariable.setValue(persistentVariableAltValue);
 
 		assertSame(_persistentVariable.getValue(), persistentVariableAltValue);
-	}
-
-    @Test
-	void testToWriteRepresentation() {
-		IPersistentValueToWrite<Integer> persistentValueToWrite = _persistentVariable.toWriteRepresentation();
-
-		assertEquals(PERSISTENT_VARIABLE_NAME, persistentValueToWrite.name());
-		assertSame(PERSISTENT_VARIABLE_DEFAULT_VALUE, persistentValueToWrite.value());
-		assertEquals(PERSISTENT_VARIABLE_DEFAULT_VALUE.getClass().getCanonicalName(),
-				persistentValueToWrite.typeName());
-		assertEquals(IPersistentValueToWrite.class.getCanonicalName() + "<"
-				+ PERSISTENT_VARIABLE_DEFAULT_VALUE.getClass().getCanonicalName() + ">",
-				persistentValueToWrite.getInterfaceName());
 	}
 
 	@Test
