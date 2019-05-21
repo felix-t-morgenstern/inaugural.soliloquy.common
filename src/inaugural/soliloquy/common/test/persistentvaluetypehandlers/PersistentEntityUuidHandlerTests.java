@@ -9,8 +9,7 @@ import soliloquy.common.specs.IEntityUuid;
 import soliloquy.common.specs.IEntityUuidFactory;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentEntityUuidHandlerTests {
     private final IEntityUuidFactory ENTITY_UUID_FACTORY = new EntityUuidFactoryStub();
@@ -22,6 +21,11 @@ class PersistentEntityUuidHandlerTests {
     @BeforeEach
     void setUp() {
         _persistentEntityUuidHandler = new PersistentEntityUuidHandler(ENTITY_UUID_FACTORY);
+    }
+
+    @Test
+    void testGetArchetype() {
+        assertNotNull(_persistentEntityUuidHandler.getArchetype());
     }
 
     @Test
