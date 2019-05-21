@@ -404,66 +404,6 @@ class SettingsRepoTests {
     	}
     }
 
-    @org.junit.jupiter.api.Test
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	void testRead() {
-    	_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, null);
-    	_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_1_ID, SETTINGS_REPO_SUBGROUP_1_ID);
-
-    	ISetting setting1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE, SETTING_1_VALUE, null);
-    	ISetting setting2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE, SETTING_2_VALUE, null);
-    	ISetting setting3 = new SettingStub(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE, SETTING_3_VALUE, null);
-
-    	_settingsRepo.addEntity(setting1, 1, "");
-    	_settingsRepo.addEntity(setting2, 2, SETTINGS_REPO_SUBGROUP_1_ID);
-    	_settingsRepo.addEntity(setting3, 3, SETTINGS_REPO_SUBGROUP_1_1_ID);
-    	
-    	String adHocFormattedSettingsString = SETTING_1_ID+","+SETTING_1_NAME+","+""+","+1+","+"Hello1"+";"
-    			+SETTING_2_ID+","+SETTING_2_NAME+","+SETTINGS_REPO_SUBGROUP_1_ID+","+2+","+"Hello2"+";"
-    			+SETTING_3_ID+","+SETTING_3_NAME+","+SETTINGS_REPO_SUBGROUP_1_1_ID+","+3+","+"Hello3"+";";
-    	_settingsRepo.read(adHocFormattedSettingsString);
-    	
-    	IPair<String,Integer> setting1GroupingIdAndOrder = _settingsRepo.getGroupingIdAndOrder(SETTING_1_ID);
-    	assertTrue(setting1GroupingIdAndOrder.getItem1() == null || setting1GroupingIdAndOrder.getItem1().equals(""));
-    	assertTrue(setting1GroupingIdAndOrder.getItem2() == 1);
-    	assertTrue(_settingsRepo.getSetting(SETTING_1_ID).getValue().equals("Hello1"));
-    }
-
-    @org.junit.jupiter.api.Test
-    @SuppressWarnings("rawtypes")
-	void testWrite() {
-    	_settingsRepo.newSubgrouping(1, SETTINGS_REPO_SUBGROUP_1_ID, null);
-    	_settingsRepo.newSubgrouping(1, SETTINGS_REPO_SUBGROUP_1_1_ID, SETTINGS_REPO_SUBGROUP_1_ID);
-    	
-		ISetting setting1 = mock(ISetting.class);
-		when(setting1.id()).thenReturn(SETTING_1_ID);
-		when(setting1.getName()).thenReturn(SETTING_1_NAME);
-		when(setting1.getValue()).thenReturn("Hello1");
-    	
-		ISetting setting2 = mock(ISetting.class);
-		when(setting2.id()).thenReturn(SETTING_2_ID);
-		when(setting2.getName()).thenReturn(SETTING_2_NAME);
-		when(setting2.getValue()).thenReturn("Hello2");
-    	
-		ISetting setting3 = mock(ISetting.class);
-		when(setting3.id()).thenReturn(SETTING_3_ID);
-		when(setting3.getName()).thenReturn(SETTING_3_NAME);
-		when(setting3.getValue()).thenReturn("Hello3");
-
-		_settingsRepo.addEntity(setting1, 0, null);
-		_settingsRepo.addEntity(setting2, 0, SETTINGS_REPO_SUBGROUP_1_ID);
-		_settingsRepo.addEntity(setting3, 0, SETTINGS_REPO_SUBGROUP_1_1_ID);
-		
-		String expectedValue = SETTING_1_ID+",Hello1"+";"
-    			+SETTING_2_ID+",Hello2"+";"
-    			+SETTING_3_ID+",Hello3"+";";
-
-		// TODO: Handle moving this over to PersistentSettingsRepoHandler
-		//String settingsWrittenOut = _settingsRepo.write();
-		
-		//assertTrue(settingsWrittenOut.equals(expectedValue));
-    }
-
     @Test
 	void testGetInterfaceName() {
     	assertEquals(ISettingsRepo.class.getCanonicalName(), _settingsRepo.getInterfaceName());
@@ -551,25 +491,31 @@ class SettingsRepoTests {
 		}
 
 		@Override
+		public Object generateArchetype(String s) throws IllegalArgumentException {
+			// Stub class; no implementation needed
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
 		public ICollection<String> persistentValueTypesHandled() {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public void registerPersistentPairHandler(IPersistentValueTypeHandler<IPair> iPersistentValueTypeHandler) {
+		public void registerPersistentPairHandler(IPersistentPairHandler iPersistentPairHandler) {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> iPersistentValueTypeHandler) {
+		public void registerPersistentCollectionHandler(IPersistentCollectionHandler iPersistentCollectionHandler) {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public void registerPersistentMapHandler(IPersistentValueTypeHandler<IMap> iPersistentValueTypeHandler) {
+		public void registerPersistentMapHandler(IPersistentMapHandler iPersistentMapHandler) {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();
 		}
