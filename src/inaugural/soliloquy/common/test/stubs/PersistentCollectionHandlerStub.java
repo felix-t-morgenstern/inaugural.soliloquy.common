@@ -40,7 +40,6 @@ public class PersistentCollectionHandlerStub implements IPersistentCollectionHan
         }
         String innerType = valueType.substring(openingCaret + 1, closingCaret);
 
-        // TODO: Test and implement
         return new CollectionFactoryStub().make(new PersistentValuesHandlerStub()
                 .generateArchetype(innerType));
     }

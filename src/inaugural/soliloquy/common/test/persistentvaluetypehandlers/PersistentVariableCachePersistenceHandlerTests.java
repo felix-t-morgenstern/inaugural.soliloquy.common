@@ -22,7 +22,6 @@ public class PersistentVariableCachePersistenceHandlerTests {
 
     @BeforeEach
     void setUp() {
-        // TODO: Set this up properly!
         _persistentVariablePersistentCachePersistenceHandler =
                 new PersistentVariableCachePersistenceHandler(
                         PERSISTENT_VALUES_HANDLER,

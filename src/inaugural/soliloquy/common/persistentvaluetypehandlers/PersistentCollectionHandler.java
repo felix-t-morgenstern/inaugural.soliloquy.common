@@ -104,7 +104,6 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
         }
         String innerType = valueType.substring(openingCaret + 1, closingCaret);
 
-        // TODO: Test and implement
         return COLLECTION_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(innerType));
     }
 }
