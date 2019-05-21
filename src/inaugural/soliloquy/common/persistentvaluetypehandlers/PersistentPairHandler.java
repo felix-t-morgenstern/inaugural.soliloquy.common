@@ -1,22 +1,18 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.common.specs.*;
 
-public class PersistentPairHandler extends PersistentTypeHandler<IPair>
-        implements IPersistentValueTypeHandler<IPair> {
+public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPair>
+        implements IPersistentPairHandler {
     private final String DELIMITER_OUTER = "\u008b";
     private final String DELIMITER_INNER = "\u008c";
 
     private final IPairFactory PAIR_FACTORY;
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
 
     public PersistentPairHandler(IPairFactory pairFactory,
                                  IPersistentValuesHandler persistentValuesHandler) {
+        super(persistentValuesHandler);
         PAIR_FACTORY = pairFactory;
-        PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
     }
 
     @Override
@@ -98,5 +94,19 @@ public class PersistentPairHandler extends PersistentTypeHandler<IPair>
     @Override
     public String getInterfaceName() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public IPair generateArchetype(String valueType) throws IllegalArgumentException {
+        int openingCaret = valueType.indexOf("<");
+        int closingCaret = valueType.lastIndexOf(">");
+
+        return (IPair) generateTypeFromGenericParameterNames(valueType
+                .substring(openingCaret + 1, closingCaret + 1));
+    }
+
+    @Override
+    protected Object generateTypeFromFactory(Object archetype1, Object archetype2) {
+        return PAIR_FACTORY.make(null, null, archetype1, archetype2);
     }
 }

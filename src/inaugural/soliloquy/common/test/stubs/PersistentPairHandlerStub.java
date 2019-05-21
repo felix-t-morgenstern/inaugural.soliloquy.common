@@ -1,21 +1,21 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IPersistentMapHandler;
+import soliloquy.common.specs.IPair;
+import soliloquy.common.specs.IPersistentPairHandler;
 
-public class PersistentMapHandlerStub implements IPersistentMapHandler {
+public class PersistentPairHandlerStub implements IPersistentPairHandler {
     @Override
-    public IMap read(String s) throws IllegalArgumentException {
+    public IPair read(String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public String write(IMap iMap) {
+    public String write(IPair iPair) {
         return null;
     }
 
     @Override
-    public IMap getArchetype() {
+    public IPair getArchetype() {
         return null;
     }
 
@@ -30,7 +30,7 @@ public class PersistentMapHandlerStub implements IPersistentMapHandler {
     }
 
     @Override
-    public IMap generateArchetype(String s) throws IllegalArgumentException {
+    public IPair generateArchetype(String s) throws IllegalArgumentException {
         return null;
     }
 }

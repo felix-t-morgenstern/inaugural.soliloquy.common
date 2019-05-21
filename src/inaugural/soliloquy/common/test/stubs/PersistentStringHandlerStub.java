@@ -3,6 +3,8 @@ package inaugural.soliloquy.common.test.stubs;
 import soliloquy.common.specs.IPersistentValueTypeHandler;
 
 public class PersistentStringHandlerStub implements IPersistentValueTypeHandler<String> {
+    public final static String ARCHETYPE = "This is the archetype!";
+
     @Override
     public String read(String s) throws IllegalArgumentException {
         return s;
@@ -15,7 +17,7 @@ public class PersistentStringHandlerStub implements IPersistentValueTypeHandler<
 
     @Override
     public String getArchetype() {
-        return null;
+        return ARCHETYPE;
     }
 
     @Override

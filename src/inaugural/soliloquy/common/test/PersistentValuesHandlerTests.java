@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import inaugural.soliloquy.common.test.stubs.PersistentCollectionHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentMapHandlerStub;
+import inaugural.soliloquy.common.test.stubs.PersistentPairHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -85,8 +86,14 @@ class PersistentValuesHandlerTests {
     }
 
 	@Test
+	void testGenerateArchetype() {
+		_persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
+		assertNotNull(_persistentValuesHandler.generateArchetype(Integer.class.getCanonicalName()));
+	}
+
+	@Test
 	void testRegisterPersistentCollectionHandler() {
-		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler =
+		IPersistentCollectionHandler persistentCollectionHandler =
 				new PersistentCollectionHandlerStub();
 		_persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
 
@@ -97,11 +104,21 @@ class PersistentValuesHandlerTests {
 
 	@Test
 	void testRegisterPersistentMapHandler() {
-		IPersistentValueTypeHandler<IMap> persistentMapHandler = new PersistentMapHandlerStub();
+		IPersistentMapHandler persistentMapHandler = new PersistentMapHandlerStub();
 		_persistentValuesHandler.registerPersistentMapHandler(persistentMapHandler);
 
 		assertSame(persistentMapHandler,
 				_persistentValuesHandler.getPersistentValueTypeHandler(
 						IMap.class.getCanonicalName()));
+	}
+
+	@Test
+	void testRegisterPersistentPairHandler() {
+		IPersistentPairHandler persistentPairHandler = new PersistentPairHandlerStub();
+		_persistentValuesHandler.registerPersistentPairHandler(persistentPairHandler);
+
+		assertSame(persistentPairHandler,
+				_persistentValuesHandler.getPersistentValueTypeHandler(
+						IPair.class.getCanonicalName()));
 	}
 }

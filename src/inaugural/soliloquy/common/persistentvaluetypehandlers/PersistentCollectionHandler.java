@@ -3,7 +3,7 @@ package inaugural.soliloquy.common.persistentvaluetypehandlers;
 import soliloquy.common.specs.*;
 
 public class PersistentCollectionHandler extends PersistentTypeHandler<ICollection>
-        implements IPersistentValueTypeHandler<ICollection> {
+        implements IPersistentCollectionHandler {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final ICollectionFactory COLLECTION_FACTORY;
     private final String DELIMITER_OUTER = "\u0091";
@@ -83,5 +83,28 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
             writtenValue.append(persistentValueTypeHandler.write(item));
         }
         return writtenValue.toString();
+    }
+
+    @Override
+    public ICollection generateArchetype(String valueType) throws IllegalArgumentException {
+        if(valueType == null) {
+            throw new IllegalArgumentException(
+                    "PersistentCollectionHandler.generateArchetype: valueType must be non-null");
+        }
+        if(valueType.equals("")) {
+            throw new IllegalArgumentException(
+                    "PersistentCollectionHandler.generateArchetype: valueType must be non-empty");
+        }
+
+        int openingCaret = valueType.indexOf("<");
+        int closingCaret = valueType.lastIndexOf(">");
+        if (!valueType.substring(0, openingCaret).equals(ICollection.class.getCanonicalName())) {
+            throw new IllegalArgumentException(
+                    "PersistentCollectionHandler.generateArchetype: valueType is not a String representation of a Collection");
+        }
+        String innerType = valueType.substring(openingCaret + 1, closingCaret);
+
+        // TODO: Test and implement
+        return COLLECTION_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(innerType));
     }
 }

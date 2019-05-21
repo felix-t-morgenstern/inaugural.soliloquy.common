@@ -9,12 +9,6 @@ public class PersistentVariableFactoryStub implements IPersistentVariableFactory
 
     @Override
     public <T> IPersistentVariable make(String name, T value) {
-        if (PersistentVariableCachePersistenceHandlerTests
-                ._persistentVariableFactoryValuesRead != null) {
-            PersistentVariableCachePersistenceHandlerTests
-                    ._persistentVariableFactoryValuesRead.put(name, value);
-        }
-
         return new PersistentVariableStub(name, value);
     }
 

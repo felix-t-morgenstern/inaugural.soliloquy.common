@@ -18,7 +18,7 @@ public class PersistentIntegerHandlerStub implements IPersistentValueTypeHandler
 
     @Override
     public Integer getArchetype() {
-        return null;
+        return 0;
     }
 
     @Override

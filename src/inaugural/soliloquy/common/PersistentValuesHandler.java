@@ -7,19 +7,21 @@ import soliloquy.common.specs.*;
 public class PersistentValuesHandler extends CanGetInterfaceName
 		implements IPersistentValuesHandler {
 	private HashMap<String,IPersistentValueTypeHandler<?>> _persistentValueTypeHandlers;
-	private IPersistentValueTypeHandler<ICollection> _persistentCollectionHandler;
-	private IPersistentValueTypeHandler<IMap> _persistentMapHandler;
-	private IPersistentValueTypeHandler<IPair> _persistentPairHandler;
+	private IPersistentCollectionHandler _persistentCollectionHandler;
+	private IPersistentMapHandler _persistentMapHandler;
+	private IPersistentPairHandler _persistentPairHandler;
 
 	private final String COLLECTION_GENERIC_INTERFACE_NAME = ICollection.class.getCanonicalName();
 	private final String MAP_GENERIC_INTERFACE_NAME = IMap.class.getCanonicalName();
+	private final String PAIR_GENERIC_INTERFACE_NAME = IPair.class.getCanonicalName();
 	
 	public PersistentValuesHandler() {
 		_persistentValueTypeHandlers = new HashMap<>();
 	}
 
 	@Override
-	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler)
+	public void addPersistentValueTypeHandler(
+			IPersistentValueTypeHandler persistentValueTypeHandler)
 			throws IllegalArgumentException {
 		String persistentValueType = getProperTypeName(persistentValueTypeHandler.getArchetype());
 		if (_persistentValueTypeHandlers.containsKey(persistentValueType)) {
@@ -37,15 +39,33 @@ public class PersistentValuesHandler extends CanGetInterfaceName
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType)
+	public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(
+			String persistentValueType)
 			throws UnsupportedOperationException {
-		// TODO: Make sure that pair handling is included here!
 		if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
 			return (IPersistentValueTypeHandler<T>) _persistentCollectionHandler;
 		} else if (interfaceIsOfGenericType(persistentValueType, MAP_GENERIC_INTERFACE_NAME)) {
 			return (IPersistentValueTypeHandler<T>) _persistentMapHandler;
-		}else {
-			return (IPersistentValueTypeHandler<T>) _persistentValueTypeHandlers.get(persistentValueType);
+		} else if (interfaceIsOfGenericType(persistentValueType, PAIR_GENERIC_INTERFACE_NAME)) {
+			return (IPersistentValueTypeHandler<T>) _persistentPairHandler;
+		} else {
+			return (IPersistentValueTypeHandler<T>)
+					_persistentValueTypeHandlers.get(persistentValueType);
+		}
+	}
+
+	@Override
+	public Object generateArchetype(String valueType) throws IllegalArgumentException {
+		if (interfaceIsOfGenericType(valueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
+			return _persistentCollectionHandler.generateArchetype(valueType);
+		} else if (interfaceIsOfGenericType(valueType, MAP_GENERIC_INTERFACE_NAME)) {
+			return _persistentMapHandler.generateArchetype(valueType);
+		} else if (interfaceIsOfGenericType(valueType, PAIR_GENERIC_INTERFACE_NAME)) {
+			return _persistentPairHandler.generateArchetype(valueType);
+		} else {
+			IPersistentValueTypeHandler persistentValueTypeHandler =
+					getPersistentValueTypeHandler(valueType);
+			return persistentValueTypeHandler.getArchetype();
 		}
 	}
 
@@ -65,19 +85,18 @@ public class PersistentValuesHandler extends CanGetInterfaceName
 	}
 
 	@Override
-	public void registerPersistentPairHandler(
-			IPersistentValueTypeHandler<IPair> persistentPairHandler) {
+	public void registerPersistentPairHandler(IPersistentPairHandler persistentPairHandler) {
 		_persistentPairHandler = persistentPairHandler;
 	}
 
 	@Override
 	public void registerPersistentCollectionHandler(
-			IPersistentValueTypeHandler<ICollection> persistentCollectionHandler) {
+			IPersistentCollectionHandler persistentCollectionHandler) {
 		_persistentCollectionHandler = persistentCollectionHandler;
 	}
 
 	@Override
-	public void registerPersistentMapHandler(IPersistentValueTypeHandler<IMap> persistentMapHandler) {
+	public void registerPersistentMapHandler(IPersistentMapHandler persistentMapHandler) {
 		_persistentMapHandler = persistentMapHandler;
 	}
 

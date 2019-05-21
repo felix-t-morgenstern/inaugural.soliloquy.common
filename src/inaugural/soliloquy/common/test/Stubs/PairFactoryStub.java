@@ -14,8 +14,7 @@ public class PairFactoryStub implements IPairFactory {
 	@Override
 	public <T1, T2> IPair<T1, T2> make(T1 item1, T2 item2, T1 archetype1, T2 archetype2)
 			throws IllegalArgumentException {
-		// Stub class; not implemented
-		throw new UnsupportedOperationException();
+		return new PairStub(item1, item2, archetype1, archetype2);
 	}
 
 	@Override

@@ -23,24 +23,29 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 	}
 
 	@Override
+	public Object generateArchetype(String s) throws IllegalArgumentException {
+		return null;
+	}
+
+	@Override
 	public ICollection<String> persistentValueTypesHandled() {
 		// Not needed for test stub
 		return null;
 	}
 
 	@Override
-	public void registerPersistentPairHandler(IPersistentValueTypeHandler<IPair> persistentPairHandler) {
-		// Not needed for test stub
+	public void registerPersistentPairHandler(IPersistentPairHandler iPersistentPairHandler) {
+
 	}
 
 	@Override
-	public void registerPersistentCollectionHandler(IPersistentValueTypeHandler<ICollection> persistentValueTypeHandler) {
-		// Not needed for test stub
+	public void registerPersistentCollectionHandler(IPersistentCollectionHandler iPersistentCollectionHandler) {
+
 	}
 
 	@Override
-	public void registerPersistentMapHandler(IPersistentValueTypeHandler<IMap> persistentValueTypeHandler) {
-		// Not needed for test stub
+	public void registerPersistentMapHandler(IPersistentMapHandler iPersistentMapHandler) {
+
 	}
 
 	@Override

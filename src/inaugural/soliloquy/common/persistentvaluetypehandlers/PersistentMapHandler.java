@@ -2,9 +2,8 @@ package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import soliloquy.common.specs.*;
 
-public class PersistentMapHandler extends PersistentTypeHandler<IMap>
-        implements IPersistentValueTypeHandler<IMap> {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
+public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
+        implements IPersistentMapHandler {
     private final IMapFactory MAP_FACTORY;
     private final String DELIMITER_OUTER = "\u001d";
     private final String DELIMITER_PAIR = "\u001e";
@@ -12,7 +11,7 @@ public class PersistentMapHandler extends PersistentTypeHandler<IMap>
 
     public PersistentMapHandler(IPersistentValuesHandler persistentValuesHandler,
                                 IMapFactory mapFactory) {
-        PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
+        super(persistentValuesHandler);
         MAP_FACTORY = mapFactory;
     }
 
@@ -39,13 +38,12 @@ public class PersistentMapHandler extends PersistentTypeHandler<IMap>
         IPersistentValueTypeHandler valuePersistentValueTypeHandler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(types[1]);
 
-        String[] archetypeValueStrings = components[1].split(DELIMITER_ITEM);
-        Object keyArchetype = keyPersistentValueTypeHandler.read(archetypeValueStrings[0]);
-        Object valueArchetype = valuePersistentValueTypeHandler.read(archetypeValueStrings[1]);
+        Object keyArchetype = PERSISTENT_VALUES_HANDLER.generateArchetype(types[0]);
+        Object valueArchetype = PERSISTENT_VALUES_HANDLER.generateArchetype(types[1]);
 
         IMap map = MAP_FACTORY.make(keyArchetype, valueArchetype);
 
-        String[] pairsValueStrings = components[2].split(DELIMITER_PAIR);
+        String[] pairsValueStrings = components[1].split(DELIMITER_PAIR);
         for (String pairValueString : pairsValueStrings) {
             String[] keyAndValueStrings = pairValueString.split(DELIMITER_ITEM);
             String keyValueString = keyAndValueStrings[0];
@@ -77,10 +75,6 @@ public class PersistentMapHandler extends PersistentTypeHandler<IMap>
         writtenValue.append(DELIMITER_ITEM);
         writtenValue.append(valueInternalType);
         writtenValue.append(DELIMITER_OUTER);
-        writtenValue.append(keyPersistentValueHandler.write(map.getFirstArchetype()));
-        writtenValue.append(DELIMITER_ITEM);
-        writtenValue.append(valuePersistentValueHandler.write(map.getSecondArchetype()));
-        writtenValue.append(DELIMITER_OUTER);
 
         boolean firstValue = true;
         for(Object uncastEntry : map){
@@ -97,5 +91,19 @@ public class PersistentMapHandler extends PersistentTypeHandler<IMap>
         }
 
         return writtenValue.toString();
+    }
+
+    @Override
+    public IMap generateArchetype(String valueType) throws IllegalArgumentException {
+        int openingCaret = valueType.indexOf("<");
+        int closingCaret = valueType.lastIndexOf(">");
+
+        return (IMap) generateTypeFromGenericParameterNames(valueType
+                .substring(openingCaret + 1, closingCaret + 1));
+    }
+
+    @Override
+    protected Object generateTypeFromFactory(Object archetype1, Object archetype2) {
+        return MAP_FACTORY.make(archetype1,archetype2);
     }
 }

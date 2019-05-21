@@ -3,13 +3,11 @@ package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentCollectionHandler;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import inaugural.soliloquy.common.test.stubs.CollectionStub;
+import inaugural.soliloquy.common.test.stubs.PersistentStringHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.common.specs.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +22,7 @@ class PersistentCollectionHandlerTests {
             String.format("%s\u0091%d\u0091%d\u0092%d\u0092%d", Integer.class.getCanonicalName(),
                     ARCHETYPE, INTEGER_1, INTEGER_2, INTEGER_3);
 
-    private IPersistentValueTypeHandler<ICollection> _persistentCollectionHandler;
+    private IPersistentCollectionHandler _persistentCollectionHandler;
 
     @BeforeEach
     void setUp() {
@@ -77,5 +75,24 @@ class PersistentCollectionHandlerTests {
     void testGetInterfaceName() {
         assertThrows(UnsupportedOperationException.class,
                 () -> _persistentCollectionHandler.getInterfaceName());
+    }
+
+    @Test
+    void testGenerateArchetype() {
+        assertEquals(PersistentStringHandlerStub.ARCHETYPE,
+                _persistentCollectionHandler.generateArchetype(
+                        ICollection.class.getCanonicalName() + "<" +
+                                String.class.getCanonicalName() + ">").getArchetype());
+    }
+
+    @Test
+    void testGenerateArchetypeWithInvalidInputs() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentCollectionHandler.generateArchetype(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentCollectionHandler.generateArchetype(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentCollectionHandler.generateArchetype("IMap<java.lang.String>"));
+
     }
 }

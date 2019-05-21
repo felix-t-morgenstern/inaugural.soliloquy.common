@@ -5,20 +5,17 @@ import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.common.specs.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PersistentPairHandlerTests {
     private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
     private final String VALUES_STRING = "java.lang.String\u008CString\u008Bjava.lang.Integer\u008C123";
 
-    private IPersistentValueTypeHandler<IPair> _persistentPairHandler;
+    private IPersistentPairHandler _persistentPairHandler;
 
     @BeforeEach
     void setUp() {
@@ -74,5 +71,20 @@ class PersistentPairHandlerTests {
                 "java.lang.String\u008CString\u008Bjava.lang.Integer\u008C123\u008C456"));
         assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(
                 "java.lang.String\u008CString\u008Bjava.lang.Integer"));
+    }
+
+    @Test
+    void testGenerateArchetype() {
+        final String valueType = IPair.class.getCanonicalName() + "<" +
+                String.class.getCanonicalName() + "," + ICollection.class.getCanonicalName() +
+                "<" + Integer.class.getCanonicalName() + ">";
+
+        IPair<String,ICollection<Integer>> archetype =
+                _persistentPairHandler.generateArchetype(valueType);
+
+        assertNotNull(archetype);
+        assertNotNull(archetype.getFirstArchetype());
+        assertNotNull(archetype.getSecondArchetype());
+        assertNotNull(((ICollection)archetype.getSecondArchetype()).getArchetype());
     }
 }

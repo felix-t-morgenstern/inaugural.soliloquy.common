@@ -37,7 +37,7 @@ public class CommonModule extends AbstractModule {
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentIntegerHandler());
 		_persistentValuesHandler.addPersistentValueTypeHandler(new PersistentStringHandler());
 
-		IPersistentValueTypeHandler<ICollection> persistentCollectionHandler = new PersistentCollectionHandler(_persistentValuesHandler, _collectionFactory);
+		IPersistentCollectionHandler persistentCollectionHandler = new PersistentCollectionHandler(_persistentValuesHandler, _collectionFactory);
 		_persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
 	}
 	
