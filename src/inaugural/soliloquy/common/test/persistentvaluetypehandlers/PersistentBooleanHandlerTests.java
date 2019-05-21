@@ -8,36 +8,36 @@ import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanH
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentBooleanHandlerTests {
-	private PersistentBooleanHandler persistentBooleanHandler;
+	private PersistentBooleanHandler _persistentBooleanHandler;
 	
     @BeforeEach
 	void setUp() {
-		persistentBooleanHandler = new PersistentBooleanHandler();
+		_persistentBooleanHandler = new PersistentBooleanHandler();
     }
 	
     @Test
 	void testRead() {
-		assertEquals(true, persistentBooleanHandler.read("true"));
+		assertEquals(true, _persistentBooleanHandler.read("true"));
 	}
 
     @Test
 	void testReadNull() {
-    	assertThrows(IllegalArgumentException.class, () -> persistentBooleanHandler.read(null));
+    	assertThrows(IllegalArgumentException.class, () -> _persistentBooleanHandler.read(null));
 	}
 
     @Test
 	void testWrite() {
-		assertEquals("true", persistentBooleanHandler.write(true));
+		assertEquals("true", _persistentBooleanHandler.write(true));
 	}
 
     @Test
 	void testGetArchetype() {
-		assertNotNull(persistentBooleanHandler.getArchetype());
+		assertNotNull(_persistentBooleanHandler.getArchetype());
 	}
 
     @Test
 	void testGetInterfaceName() {
 		assertEquals("soliloquy.common.specs.IPersistentValueTypeHandler<java.lang.Boolean>",
-				persistentBooleanHandler.getInterfaceName());
+				_persistentBooleanHandler.getInterfaceName());
 	}
 }
