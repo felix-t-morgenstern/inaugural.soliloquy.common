@@ -90,12 +90,6 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		return item;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void read(String data) throws IllegalArgumentException {
-		// TODO: REDO THIS WITH PERSISTENT_VALUES_HANDLER!
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public <V> ISetting<V> getSetting(String settingId) throws IllegalArgumentException	{
