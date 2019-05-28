@@ -49,11 +49,14 @@ public class PersistentVariableCache implements IPersistentVariableCache {
 	}
 
 	@Override
-	public ICollection<String> persistentVariableNamesRepresentation() {
+	public ICollection<IPersistentVariable> getVariablesRepresentation() {
+		return null;
+	}
+
+	@Override
+	public ICollection<String> getNamesRepresentation() {
 		ICollection<String> persistentVariableNamesRepresentation = COLLECTION_FACTORY.make("");
-		for(String name : PERSISTENT_VARIABLES.keySet()) {
-			persistentVariableNamesRepresentation.add(name);
-		}
+		PERSISTENT_VARIABLES.keySet().forEach(persistentVariableNamesRepresentation::add);
 		return persistentVariableNamesRepresentation;
 	}
 
@@ -63,7 +66,7 @@ public class PersistentVariableCache implements IPersistentVariableCache {
 	}
 
 	@Override
-	public IPersistentVariable get(String name) {
+	public IPersistentVariable getVariable(String name) {
 		return PERSISTENT_VARIABLES.get(name);
 	}
 

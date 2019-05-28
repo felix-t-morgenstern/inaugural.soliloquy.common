@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersistentVariableCacheTests {
 	private IPersistentVariableCache _persistentVariableCache;
 
-	private final IPersistentVariableFactory PERSISTENT_VARIABLE_FACTORY = new PersistentVariableFactoryStub();
+	private final IPersistentVariableFactory PERSISTENT_VARIABLE_FACTORY =
+			new PersistentVariableFactoryStub();
 	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 	
     @BeforeEach
@@ -28,9 +29,12 @@ class PersistentVariableCacheTests {
     
     @Test
 	void testPutAndSize() {
-		IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
-		IPersistentVariable persistentVariable2 = PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
-		IPersistentVariable persistentVariable3 = PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
+		IPersistentVariable persistentVariable1 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
+		IPersistentVariable persistentVariable2 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
+		IPersistentVariable persistentVariable3 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
 
 		_persistentVariableCache.put(persistentVariable1);
 		_persistentVariableCache.put(persistentVariable2);
@@ -41,35 +45,40 @@ class PersistentVariableCacheTests {
 
 	@Test
 	void testPutAndGet() {
-		assertNull(_persistentVariableCache.get("variable1"));
-		IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
+		assertNull(_persistentVariableCache.getVariable("variable1"));
+		IPersistentVariable persistentVariable1 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
 
 		_persistentVariableCache.put(persistentVariable1);
 
-		assertEquals("value1", _persistentVariableCache.get("variable1").getValue());
+		assertEquals("value1", _persistentVariableCache.getVariable("variable1").getValue());
 	}
 
     @Test
 	void testPutWithNullOrEmptyParams() {
 		assertThrows(IllegalArgumentException.class, () -> _persistentVariableCache.put(null));
 		assertThrows(IllegalArgumentException.class, () -> {
-			IPersistentVariable persistentVariableWithNoValue = PERSISTENT_VARIABLE_FACTORY.make("name", null);
+			IPersistentVariable persistentVariableWithNoValue =
+					PERSISTENT_VARIABLE_FACTORY.make("name", null);
 			_persistentVariableCache.put(persistentVariableWithNoValue);
 		});
     }
 
     @Test
 	void testPersistentVariableNamesRepresentation() {
-		IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
-		IPersistentVariable persistentVariable2 = PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
-		IPersistentVariable persistentVariable3 = PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
+		IPersistentVariable persistentVariable1 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
+		IPersistentVariable persistentVariable2 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
+		IPersistentVariable persistentVariable3 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
 
 		_persistentVariableCache.put(persistentVariable1);
 		_persistentVariableCache.put(persistentVariable2);
 		_persistentVariableCache.put(persistentVariable3);
 
 		ICollection<String> persistentVariableNamesRepresentation =
-				_persistentVariableCache.persistentVariableNamesRepresentation();
+				_persistentVariableCache.getNamesRepresentation();
 
 		assertNotNull(persistentVariableNamesRepresentation);
 		assertEquals(3, persistentVariableNamesRepresentation.size());
@@ -82,7 +91,8 @@ class PersistentVariableCacheTests {
 	void testRemove() {
     	assertFalse(_persistentVariableCache.remove("variable1"));
 
-		IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
+		IPersistentVariable persistentVariable1 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
 		_persistentVariableCache.put(persistentVariable1);
 
 		assertTrue(_persistentVariableCache.remove("variable1"));
@@ -94,9 +104,12 @@ class PersistentVariableCacheTests {
 	void testClear() {
     	assertEquals(0, _persistentVariableCache.size());
 
-		IPersistentVariable persistentVariable1 = PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
-		IPersistentVariable persistentVariable2 = PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
-		IPersistentVariable persistentVariable3 = PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
+		IPersistentVariable persistentVariable1 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable1", "value1");
+		IPersistentVariable persistentVariable2 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable2", "value2");
+		IPersistentVariable persistentVariable3 =
+				PERSISTENT_VARIABLE_FACTORY.make("variable3", "value3");
 
 		_persistentVariableCache.put(persistentVariable1);
 		_persistentVariableCache.put(persistentVariable2);

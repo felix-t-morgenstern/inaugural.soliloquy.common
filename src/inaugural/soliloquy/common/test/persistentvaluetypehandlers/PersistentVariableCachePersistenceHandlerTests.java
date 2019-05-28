@@ -1,21 +1,27 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentVariableCachePersistenceHandler;
+import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheFactoryStub;
+import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheStub;
 import inaugural.soliloquy.common.test.stubs.PersistentVariableFactoryStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.common.specs.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class PersistentVariableCachePersistenceHandlerTests {
+class PersistentVariableCachePersistenceHandlerTests {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
     private final IPersistentVariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY =
             new PersistentVariableCacheFactoryStub();
     private final IPersistentVariableFactory PERSISTENT_VARIABLE_FACTORY =
             new PersistentVariableFactoryStub();
+    private final IPersistentVariableCache PERSISTENT_VARIABLE_CACHE =
+            new PersistentVariableCacheStub();
+
+    private final String VALUES_STRING = "variable1\u000Fjava.lang.Integer\u000F456456\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value";
 
     private IPersistentValueTypeHandler<IPersistentVariableCache>
             _persistentVariablePersistentCachePersistenceHandler;
@@ -37,64 +43,47 @@ public class PersistentVariableCachePersistenceHandlerTests {
     }
 
     @Test
-    void testRead() {
-        // TODO: Test and implement!
+    void testWrite() {
+        assertEquals(VALUES_STRING,
+                _persistentVariablePersistentCachePersistenceHandler
+                        .write(PERSISTENT_VARIABLE_CACHE));
     }
 
-    private class PersistentValuesHandlerStub implements IPersistentValuesHandler {
+    @Test
+    void testWriteWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentVariablePersistentCachePersistenceHandler.write(null));
+    }
 
-        @Override
-        public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler)
-                throws IllegalArgumentException {
-            // Stub method; not implemented
-            throw new UnsupportedOperationException();
-        }
+    @Test
+    void testRead() {
+        IPersistentVariableCache pVarCache =
+                _persistentVariablePersistentCachePersistenceHandler.read(VALUES_STRING);
 
-        @Override
-        public boolean removePersistentValueTypeHandler(String persistentValueType) {
-            // Stub method; not implemented
-            throw new UnsupportedOperationException();
-        }
+        assertNotNull(pVarCache);
+        assertEquals(2, pVarCache.size());
+        ICollection<IPersistentVariable> representation = pVarCache.getVariablesRepresentation();
+        assertEquals(PersistentVariableCacheStub.VARIABLE_1_NAME, representation.get(0).getName());
+        assertEquals(PersistentVariableCacheStub.VARIABLE_1_VALUE,
+                representation.get(0).getValue());
+        assertEquals(PersistentVariableCacheStub.VARIABLE_2_NAME, representation.get(1).getName());
+        assertEquals(PersistentVariableCacheStub.VARIABLE_2_VALUE,
+                representation.get(1).getValue());
+    }
 
-        @Override
-        public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType)
-                throws UnsupportedOperationException {
-            // Stub method; not implemented
-            throw new UnsupportedOperationException();
-        }
+    @Test
+    void testReadEmptyCache() {
+        IPersistentVariableCache pVarCache =
+                _persistentVariablePersistentCachePersistenceHandler.read("");
 
-        @Override
-        public Object generateArchetype(String s) throws IllegalArgumentException {
-            // Stub method; not implemented
-            throw new UnsupportedOperationException();
-        }
+        assertNotNull(pVarCache);
+        assertEquals(0, pVarCache.size());
+    }
 
-        @Override
-        public ICollection<String> persistentValueTypesHandled() {
-            // Stub method; not implemented
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void registerPersistentPairHandler(IPersistentPairHandler iPersistentPairHandler) {
-
-        }
-
-        @Override
-        public void registerPersistentCollectionHandler(IPersistentCollectionHandler iPersistentCollectionHandler) {
-
-        }
-
-        @Override
-        public void registerPersistentMapHandler(IPersistentMapHandler iPersistentMapHandler) {
-
-        }
-
-        @Override
-        public String getInterfaceName() {
-            // Stub; not implemented
-            throw new UnsupportedOperationException();
-        }
-
+    @Test
+    void testReadWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentVariablePersistentCachePersistenceHandler
+                        .read("variable1\u000Fjava.lang.Integer\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value"));
     }
 }

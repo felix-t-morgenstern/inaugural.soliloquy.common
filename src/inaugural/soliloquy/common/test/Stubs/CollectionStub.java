@@ -15,7 +15,7 @@ public class CollectionStub<V> implements ICollection<V> {
 		_archetype = archetype;
 	}
 	
-	private ArrayList<V> _collection = new ArrayList<V>();
+	private ArrayList<V> _collection = new ArrayList<>();
 
 	@Override
 	public Iterator<V> iterator() {
@@ -79,8 +79,7 @@ public class CollectionStub<V> implements ICollection<V> {
 
 	@Override
 	public boolean isEmpty() {
-		// Stub method; unimplemented
-		throw new UnsupportedOperationException();
+		return _collection.isEmpty();
 	}
 
 	@Override

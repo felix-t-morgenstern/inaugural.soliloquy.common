@@ -6,7 +6,7 @@ import soliloquy.common.specs.IPersistentVariableCacheFactory;
 public class PersistentVariableCacheFactoryStub implements IPersistentVariableCacheFactory {
     @Override
     public IPersistentVariableCache make() {
-        return null;
+        return new PersistentVariableCacheStub();
     }
 
     @Override
