@@ -84,6 +84,12 @@ class PersistentVariableCachePersistenceHandlerTests {
     void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentVariablePersistentCachePersistenceHandler
-                        .read("variable1\u000Fjava.lang.Integer\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value"));
+                        .read("variable1\u000Fjava.lang.Integer" +
+                                "\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value"));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentVariablePersistentCachePersistenceHandler
+                        .read("variable1\u000Fjava.lang.Integer" +
+                                "\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value" +
+                                "\u000FsomeOtherField"));
     }
 }

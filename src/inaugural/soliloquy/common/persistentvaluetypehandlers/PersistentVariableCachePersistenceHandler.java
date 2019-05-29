@@ -30,7 +30,8 @@ public class PersistentVariableCachePersistenceHandler
 
     @Override
     public IPersistentVariableCache read(String data) throws IllegalArgumentException {
-        IPersistentVariableCache persistentVariableCache = PERSISTENT_VARIABLE_CACHE_FACTORY.make();
+        IPersistentVariableCache persistentVariableCache =
+                PERSISTENT_VARIABLE_CACHE_FACTORY.make();
         String[] pVarValueStrings = data.split(DELIMITER_OUTER);
         for(String pVarValueString : pVarValueStrings) {
             if (pVarValueString.equals("")) {
@@ -59,7 +60,8 @@ public class PersistentVariableCachePersistenceHandler
     public String write(IPersistentVariableCache persistentVariableCache) {
         if (persistentVariableCache == null) {
             throw new IllegalArgumentException(
-                    "PersistentVariableCachePersistenceHandler.write: persistentVariableCache must be non-null");
+                    "PersistentVariableCachePersistenceHandler.write: persistentVariableCache " +
+                            "must be non-null");
         }
         ICollection<IPersistentVariable> pVars =
                 persistentVariableCache.getVariablesRepresentation();
