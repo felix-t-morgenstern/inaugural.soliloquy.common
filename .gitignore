@@ -173,6 +173,7 @@ target/mvn-repo/disorg/soliloquy/inaugural.soliloquy.common/maven-metadata.xml.m
 target/mvn-repo/disorg/soliloquy/inaugural.soliloquy.common/maven-metadata.xml.sha1
 .idea/compiler.xml
 .idea/encodings.xml
+.idea/inspectionProfiles
 .idea/libraries/Maven__aopalliance_aopalliance_1_0.xml
 .idea/libraries/Maven__com_google_code_gson_gson_2_8_5.xml
 .idea/libraries/Maven__com_google_guava_guava_16_0_1.xml
