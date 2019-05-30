@@ -10,6 +10,7 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordina
     private final ICoordinateFactory COORDINATE_FACTORY;
 
     private static final String NULL = "NULL";
+    private static final String DELIMITER = "\u0080";
 
     public PersistentCoordinateHandler(ICoordinateFactory coordinateFactory) {
         ARCHETYPE = coordinateFactory.make(0,0);
@@ -27,7 +28,7 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordina
             return null;
         } else {
             try {
-                String[] components = valueString.split(",");
+                String[] components = valueString.split(DELIMITER);
                 if (components.length > 2) {
                     throw new Exception();
                 }
@@ -49,7 +50,7 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordina
         if (coordinate == null) {
             return NULL;
         } else {
-            return String.format("%d,%d", coordinate.getX(), coordinate.getY());
+            return String.format("%d%s%d", coordinate.getX(), DELIMITER, coordinate.getY());
         }
     }
 }

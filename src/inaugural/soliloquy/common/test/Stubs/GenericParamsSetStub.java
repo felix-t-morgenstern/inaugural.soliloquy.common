@@ -1,10 +1,14 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.IMap;
+import soliloquy.common.specs.*;
+
+import java.util.HashMap;
 
 public class GenericParamsSetStub implements IGenericParamsSet {
+	public HashMap<String,HashMap<String,Object>> GENERIC_PARAMS = new HashMap<>();
+
+	private IMapFactory MAP_FACTORY = new MapFactoryStub();
+	private ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 
 	@Override
 	public IGenericParamsSet makeClone() {
@@ -14,33 +18,32 @@ public class GenericParamsSetStub implements IGenericParamsSet {
 
 	@Override
 	public <T> void addParam(String name, T value) throws IllegalArgumentException {
-		// Stub class; no implementation needed
-		throw new UnsupportedOperationException();
+		String typeName = value.getClass().getCanonicalName();
+		if (!GENERIC_PARAMS.containsKey(typeName)) {
+			GENERIC_PARAMS.put(typeName, new HashMap<>());
+		}
+		GENERIC_PARAMS.get(typeName).put(name, value);
 	}
 
 	@Override
-	public <T> void addParam(String name, T value, T archetype) throws IllegalArgumentException {
-		// Stub class; no implementation needed
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public <T> void addParamsSet(IMap<String, T> paramsSet, T paramArchetype)
+	public <T> void addParamsSet(IMap<String, T> map)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		// Stub class; no implementation needed
 		throw new UnsupportedOperationException();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getParam(String paramTypeName, String paramName) {
-		// Stub class; no implementation needed
-		throw new UnsupportedOperationException();
+		return (T) GENERIC_PARAMS.get(paramTypeName).get(paramName);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> IMap<String, T> getParamsSet(String paramTypeName) throws IllegalArgumentException {
-		// Stub class; no implementation needed
-		throw new UnsupportedOperationException();
+		IMap<String, T> paramsSet = MAP_FACTORY.make("", null);
+		GENERIC_PARAMS.get(paramTypeName).forEach(((IMap<String, Object>)paramsSet)::put);
+		return paramsSet;
 	}
 
 	@Override
@@ -51,8 +54,9 @@ public class GenericParamsSetStub implements IGenericParamsSet {
 
 	@Override
 	public ICollection<String> paramTypes() {
-		// Stub class; no implementation needed
-		throw new UnsupportedOperationException();
+		ICollection<String> paramTypes = COLLECTION_FACTORY.make("");
+		GENERIC_PARAMS.keySet().forEach(paramTypes::add);
+		return paramTypes;
 	}
 
 	@Override
@@ -63,7 +67,6 @@ public class GenericParamsSetStub implements IGenericParamsSet {
 
 	@Override
 	public String getInterfaceName() {
-		// Stub method, unimplemented
-		throw new UnsupportedOperationException();
+		return IGenericParamsSet.class.getCanonicalName();
 	}
 }

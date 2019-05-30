@@ -14,35 +14,26 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		_mapFactory = mapFactory;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T> void addParam(String name, T value) throws IllegalArgumentException {
 		if (value == null) {
 			throw new IllegalArgumentException("GenericParamsSet.addParam: value must not be null");
 		}
-		addParam(name, value, value);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <T> void addParam(String name, T value, T archetype) throws IllegalArgumentException {
-		if (archetype == null) {
-			throw new IllegalArgumentException("GenericParamsSet.addParam: archetype must not be null");
-		}
-		String paramTypeName = getProperTypeName(archetype);
+		String paramTypeName = getProperTypeName(value);
 		if (getParamsSet(paramTypeName) == null) {
-			addParamsSet(_mapFactory.make("", archetype), archetype);
+			addParamsSet(_mapFactory.make("", value));
 		}
 		((IMap<String,T>) _paramsSetsRepository.get(paramTypeName)).put(name, value);
 	}
 
 	@Override
-	public <T> void addParamsSet(IMap<String, T> paramsSet, T paramArchetype)
+	public <T> void addParamsSet(IMap<String, T> paramsSet)
 			throws IllegalArgumentException, UnsupportedOperationException {
+		// TODO: Add a test to ensure that paramsSet archetypes cannot be null
 		if (paramsSet == null) {
 			throw new IllegalArgumentException("GenericParamsSet.addParamsSet: Cannot add null paramsSet");
 		}
-		if (paramArchetype == null) {
-			throw new IllegalArgumentException("GenericParamsSet.addParamsSet: paramArchetype cannot be null");
-		}
-		String paramTypeName = getProperTypeName(paramArchetype);
+		String paramTypeName = getProperTypeName(paramsSet.getSecondArchetype());
 		if (_paramsSetsRepository.containsKey(paramTypeName)) {
 			throw new UnsupportedOperationException("GenericParamsSet.addParamsSet: Params set of type "
 					+ paramTypeName + " already exists in this params set");

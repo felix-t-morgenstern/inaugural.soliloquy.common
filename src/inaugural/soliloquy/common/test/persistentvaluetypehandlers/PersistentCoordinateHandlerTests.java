@@ -42,7 +42,8 @@ class PersistentCoordinateHandlerTests {
         coordinate.setX(X);
         coordinate.setY(Y);
 
-        assertEquals(String.format("%d,%d", X, Y), _persistentCoordinateHandler.write(coordinate));
+        assertEquals(String.format("%d\u0080%d", X, Y),
+                _persistentCoordinateHandler.write(coordinate));
     }
 
     @Test
@@ -52,7 +53,8 @@ class PersistentCoordinateHandlerTests {
 
     @Test
     void testRead() {
-        ICoordinate coordinate = _persistentCoordinateHandler.read(String.format("%d,%d", X, Y));
+        ICoordinate coordinate =
+                _persistentCoordinateHandler.read(String.format("%d\u0080%d", X, Y));
 
         assertEquals(X, coordinate.getX());
         assertEquals(Y, coordinate.getY());
@@ -66,10 +68,10 @@ class PersistentCoordinateHandlerTests {
     @Test
     void testReadInvalidStrings() {
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentCoordinateHandler.read("qwe,rty"));
+                () -> _persistentCoordinateHandler.read("qwe\u0080rty"));
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentCoordinateHandler.read("123"));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentCoordinateHandler.read("123,456,789"));
+                () -> _persistentCoordinateHandler.read("123\u0080456\u0080789"));
     }
 }

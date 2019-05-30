@@ -36,10 +36,13 @@ class GenericParamsSetTests {
 	void setUp() {
     	_mapIntMock = (IMap<String,Integer>) mock(IMap.class);
     	when(_mapIntMock.get("String")).thenReturn(123);
+    	when(_mapIntMock.getSecondArchetype()).thenReturn(0);
     	_mapIntMock2 = (IMap<String,Integer>) mock(IMap.class);
     	when(_mapIntMock2.get("String")).thenReturn(456);
+		when(_mapIntMock2.getSecondArchetype()).thenReturn(0);
     	_mapBoolMock = (IMap<String,Boolean>) mock(IMap.class);
     	when(_mapBoolMock.get("String")).thenReturn(true);
+		when(_mapBoolMock.getSecondArchetype()).thenReturn(false);
     	
     	_genericParamsSet = new GenericParamsSet(new GenericParamsSetPersistentValuesHandlerStub(),
     			MAP_FACTORY);
@@ -63,12 +66,6 @@ class GenericParamsSetTests {
     }
 
     @Test
-	void testAddParamWithNullArchetype() {
-		assertThrows(IllegalArgumentException.class,
-				() -> _genericParamsSet.addParam(INT_PARAM_1_NAME, INT_PARAM_1_VALUE, null));
-    }
-
-    @Test
 	void testRemoveParam() {
     	assertTrue(!_genericParamsSet.removeParam(Integer.class.getCanonicalName(), INT_PARAM_1_NAME));
     	_genericParamsSet.addParam(INT_PARAM_1_NAME, INT_PARAM_1_VALUE);
@@ -81,19 +78,13 @@ class GenericParamsSetTests {
     @Test
 	void testAddParamsSet() {
 		assertNull(_genericParamsSet.getParamsSet(Integer.class.getCanonicalName()));
-    	_genericParamsSet.addParamsSet(_mapIntMock, 0);
+    	_genericParamsSet.addParamsSet(_mapIntMock);
 		assertSame(_genericParamsSet.<Integer>getParamsSet(Integer.class.getCanonicalName()), _mapIntMock);
     }
 
     @Test
 	void testAddNullParamsSet() {
-		assertThrows(IllegalArgumentException.class, () -> _genericParamsSet.addParamsSet(null, 0));
-    }
-
-    @Test
-	void testAddParamsSetWithNullArchetype() {
-		assertThrows(IllegalArgumentException.class,
-				() -> _genericParamsSet.addParamsSet(_mapIntMock, null));
+		assertThrows(IllegalArgumentException.class, () -> _genericParamsSet.addParamsSet(null));
     }
 
     @Test
@@ -105,7 +96,7 @@ class GenericParamsSetTests {
     @Test
 	void testAddThenGetParamsSet() {
 		assertNull(_genericParamsSet.getParamsSet(Integer.class.getCanonicalName()));
-    	_genericParamsSet.addParamsSet(_mapIntMock, 0);
+    	_genericParamsSet.addParamsSet(_mapIntMock);
     	IMap<String,Integer> paramsSet = _genericParamsSet.getParamsSet(Integer.class.getCanonicalName());
 		assertNotNull(paramsSet);
 		assertEquals(123, (int) paramsSet.get("String"));
@@ -114,8 +105,8 @@ class GenericParamsSetTests {
     @Test
 	void testAddParamsSetTwice() {
     	assertThrows(UnsupportedOperationException.class, () -> {
-			_genericParamsSet.addParamsSet(_mapIntMock, 0);
-			_genericParamsSet.addParamsSet(_mapIntMock2, 0);
+			_genericParamsSet.addParamsSet(_mapIntMock);
+			_genericParamsSet.addParamsSet(_mapIntMock2);
 		});
     }
 
@@ -124,8 +115,8 @@ class GenericParamsSetTests {
     	ICollection<String> paramTypes = _genericParamsSet.paramTypes();
     	assertTrue(paramTypes.isEmpty());
     	
-    	_genericParamsSet.addParamsSet(_mapIntMock, 0);
-    	_genericParamsSet.addParamsSet(_mapBoolMock, false);
+    	_genericParamsSet.addParamsSet(_mapIntMock);
+    	_genericParamsSet.addParamsSet(_mapBoolMock);
     	
     	paramTypes = _genericParamsSet.paramTypes();
     	assertTrue(!paramTypes.isEmpty());
