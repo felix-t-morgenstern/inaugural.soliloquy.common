@@ -4,7 +4,7 @@ import soliloquy.common.specs.IMap;
 import soliloquy.common.specs.IMapFactory;
 import soliloquy.common.specs.IPairFactory;
 
-public class MapFactory implements IMapFactory {
+public class MapFactory extends CanCheckArchetypeAndArchetypesOfArchetype implements IMapFactory {
 	private IPairFactory _pairFactory;
 	
 	public MapFactory(IPairFactory pairFactory) {
@@ -12,17 +12,18 @@ public class MapFactory implements IMapFactory {
 	}
 	
 	public <K, V> IMap<K,V> make(K archetype1, V archetype2) {
-		if (archetype1 == null) {
-			throw new IllegalArgumentException("MapFactory.make: archetype1 is null");
-		}
-		if (archetype2 == null) {
-			throw new IllegalArgumentException("MapFactory.make: archetype2 is null");
-		}
+		checkArchetypeAndArchetypesOfArchetype("make", archetype1);
+		checkArchetypeAndArchetypesOfArchetype("make", archetype2);
 		return new Map<K,V>(_pairFactory, archetype1, archetype2);
 	}
 
 	@Override
 	public String getInterfaceName() {
 		return IMapFactory.class.getCanonicalName();
+	}
+
+	@Override
+	protected String className() {
+		return "MapFactory";
 	}
 }

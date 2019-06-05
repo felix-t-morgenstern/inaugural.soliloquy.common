@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.test.stubs.CollectionStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.CollectionFactory;
@@ -42,4 +43,12 @@ class CollectionFactoryTests {
 		assertSame(newCollection.get(1), string2);
 		assertSame(newCollection.get(2), string3);
     }
+
+    @SuppressWarnings("unchecked")
+	@Test
+	void testArchetypeWithNullArchetype() {
+		ICollection archetype = new CollectionStub(null);
+
+		assertThrows(IllegalArgumentException.class, () -> _collectionFactory.make(archetype));
+	}
 }

@@ -3,13 +3,12 @@ package inaugural.soliloquy.common;
 import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.ICollectionFactory;
 
-public class CollectionFactory implements ICollectionFactory {
+public class CollectionFactory extends CanCheckArchetypeAndArchetypesOfArchetype
+		implements ICollectionFactory {
 
 	@Override
 	public <T> ICollection<T> make(T archetype) {
-		if (archetype == null) {
-			throw new IllegalArgumentException("CollectionFactory.make: archetype is null");
-		}
+		checkArchetypeAndArchetypesOfArchetype("make", archetype);
 		return new Collection<T>(archetype);
 	}
 
@@ -23,4 +22,8 @@ public class CollectionFactory implements ICollectionFactory {
 		return ICollectionFactory.class.getCanonicalName();
 	}
 
+	@Override
+	protected String className() {
+		return "CollectionFactory";
+	}
 }

@@ -1,9 +1,11 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.test.stubs.MapStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PairFactory;
+import soliloquy.common.specs.IMap;
 import soliloquy.common.specs.IPair;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,4 +35,18 @@ class PairFactoryTests {
 		assertThrows(IllegalArgumentException.class,
 				() -> _pairfactory.make("String", 0, null, 0));
     }
+
+	@SuppressWarnings("unchecked")
+	@Test
+	void testArchetypeWithNullArchetype() {
+		IMap archetype1 = new MapStub(123, null);
+		IMap archetype2 = new MapStub(null, 123);
+
+		assertThrows(IllegalArgumentException.class, () -> _pairfactory.make(123, archetype1));
+		assertThrows(IllegalArgumentException.class, () -> _pairfactory.make(archetype2, 123));
+		assertThrows(IllegalArgumentException.class,
+				() -> _pairfactory.make(123, null,123, archetype1));
+		assertThrows(IllegalArgumentException.class,
+				() -> _pairfactory.make(null, 123, archetype2, 123));
+	}
 }

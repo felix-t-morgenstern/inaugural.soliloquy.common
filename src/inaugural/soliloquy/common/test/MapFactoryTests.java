@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.test.stubs.MapStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,4 +33,15 @@ class MapFactoryTests {
 		assertThrows(IllegalArgumentException.class, () -> _mapFactory.make("",null));
 		assertThrows(IllegalArgumentException.class, () -> _mapFactory.make(null,0));
     }
+
+	@SuppressWarnings("unchecked")
+	@Test
+	void testArchetypeWithNullArchetype() {
+		IMap archetype = new MapStub(null, null);
+
+		assertThrows(IllegalArgumentException.class,
+				() -> _mapFactory.make(archetype, 123));
+		assertThrows(IllegalArgumentException.class,
+				() -> _mapFactory.make(123, archetype));
+	}
 }
