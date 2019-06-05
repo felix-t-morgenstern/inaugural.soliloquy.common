@@ -8,8 +8,8 @@ public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPai
 
     private final IPairFactory PAIR_FACTORY;
 
-    public PersistentPairHandler(IPairFactory pairFactory,
-                                 IPersistentValuesHandler persistentValuesHandler) {
+    public PersistentPairHandler(IPersistentValuesHandler persistentValuesHandler,
+                                 IPairFactory pairFactory) {
         super(persistentValuesHandler);
         PAIR_FACTORY = pairFactory;
     }

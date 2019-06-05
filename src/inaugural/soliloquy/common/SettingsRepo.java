@@ -35,7 +35,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public SettingsRepo(String id, ICollectionFactory collectionFactory, IPairFactory pairFactory,
+	private SettingsRepo(String id, ICollectionFactory collectionFactory, IPairFactory pairFactory,
 			IPersistentValuesHandler persistentValuesHandler, ISetting settingArchetype) {
 		if (id == null || id.equals("")) {
 			throw new IllegalArgumentException("SettingsRepo: called with null or empty id");
@@ -132,10 +132,11 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void addEntity(ISetting setting, int order, String groupId) throws IllegalArgumentException {
+	public void addEntity(ISetting setting, int order, String groupId)
+			throws IllegalArgumentException {
 		if (getSettingRecursively(setting.id()) != null) {
-			throw new IllegalArgumentException("SettingsRepo.addEntity: Setting with Id of " + setting.id()
-					+ " already present in SettingsRepo");
+			throw new IllegalArgumentException("SettingsRepo.addEntity: Setting with Id of "
+					+ setting.id() + " already present in SettingsRepo");
 		}
 		SettingsRepo targetedGrouping = this;
 		if (groupId != null && !groupId.equals("")) {

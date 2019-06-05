@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PersistentPairHandlerTests {
     private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
+    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+            new PersistentValuesHandlerStub();
     private final String VALUES_STRING =
             "{\"valueType1\":\"java.lang.String\",\"valueString1\":\"String\"," +
                     "\"valueType2\":\"java.lang.Integer\",\"valueString2\":\"123\"}";
@@ -21,7 +22,8 @@ class PersistentPairHandlerTests {
 
     @BeforeEach
     void setUp() {
-        _persistentPairHandler = new PersistentPairHandler(PAIR_FACTORY, PERSISTENT_VALUES_HANDLER);
+        _persistentPairHandler =
+                new PersistentPairHandler(PERSISTENT_VALUES_HANDLER, PAIR_FACTORY);
     }
 
     @Test

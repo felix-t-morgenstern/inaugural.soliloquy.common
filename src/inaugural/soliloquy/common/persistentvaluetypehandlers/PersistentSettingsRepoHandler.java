@@ -6,18 +6,15 @@ import soliloquy.common.specs.*;
 
 public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettingsRepo>
         implements IPersistentValueTypeHandler<ISettingsRepo> {
-    private final String DELIMITER_OUTER = "\u009b";
-    private final String DELIMITER_INNER = "\u0098";
-
     private final static ISettingsRepo ARCHETYPE = new SettingsRepoArchetype();
 
     private final ISettingsRepo SETTINGS_REPO;
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
 
-    public PersistentSettingsRepoHandler(ISettingsRepo settingsRepo,
-                                         IPersistentValuesHandler persistentValuesHandler) {
-        SETTINGS_REPO = settingsRepo;
+    public PersistentSettingsRepoHandler(IPersistentValuesHandler persistentValuesHandler,
+                                         ISettingsRepo settingsRepo) {
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
+        SETTINGS_REPO = settingsRepo;
     }
 
     @Override
@@ -52,6 +49,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
         return SETTINGS_REPO;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public String write(ISettingsRepo settingsRepo) {
         if (settingsRepo == null) {
