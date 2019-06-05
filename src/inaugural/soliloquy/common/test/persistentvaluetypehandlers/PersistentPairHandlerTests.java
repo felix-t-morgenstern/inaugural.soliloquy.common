@@ -13,7 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class PersistentPairHandlerTests {
     private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
-    private final String VALUES_STRING = "java.lang.String\u008CString\u008Bjava.lang.Integer\u008C123";
+    private final String VALUES_STRING =
+            "{\"valueType1\":\"java.lang.String\",\"valueString1\":\"String\"," +
+                    "\"valueType2\":\"java.lang.Integer\",\"valueString2\":\"123\"}";
 
     private IPersistentPairHandler _persistentPairHandler;
 
@@ -63,16 +65,9 @@ class PersistentPairHandlerTests {
     void testReadWithInvalidParameters() {
         assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(null));
         assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(""));
-        assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(
-                "java.lang.String\u008CString"));
-        assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(
-                "java.lang.String\u008CString\u008Bjava.lang.Integer\u008C123\u008Bjava.lang.String\u008CString"));
-        assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(
-                "java.lang.String\u008CString\u008Bjava.lang.Integer\u008C123\u008C456"));
-        assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(
-                "java.lang.String\u008CString\u008Bjava.lang.Integer"));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGenerateArchetype() {
         final String valueType = IPair.class.getCanonicalName() + "<" +

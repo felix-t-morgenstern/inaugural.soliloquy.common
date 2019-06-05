@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
+import com.google.gson.Gson;
 import inaugural.soliloquy.common.archetypes.SettingsRepoArchetype;
 import soliloquy.common.specs.*;
 
@@ -24,28 +25,29 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
         return ARCHETYPE;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public ISettingsRepo read(String valueString) throws IllegalArgumentException {
-        String[] settingStrings = valueString.split(DELIMITER_OUTER);
-        for(String settingString : settingStrings) {
-            String[] settingStringComponents = settingString.split(DELIMITER_INNER);
-            if (settingStringComponents.length != 2) {
-                throw new IllegalArgumentException(
-                        "PersistentSettingsRepoHandler.read: setting with illegal number of " +
-                                "delimiters (" + settingString + ")");
-            }
-            String name = settingStringComponents[0];
-            String valueRepresentation = settingStringComponents[1];
-            ISetting setting = SETTINGS_REPO.getSetting(name);
+        if (valueString == null) {
+            throw new IllegalArgumentException(
+                    "PersistentSettingsRepoHandler.read: valueString must be non-null");
+        }
+        if (valueString.equals("")) {
+            throw new IllegalArgumentException(
+                    "PersistentSettingsRepoHandler.read: valueString must be non-empty");
+        }
+        SettingDTO[] dto = new Gson().fromJson(valueString, SettingDTO[].class);
+        for(SettingDTO settingDTO : dto) {
+            ISetting setting = SETTINGS_REPO.getSetting(settingDTO.name);
             if (setting == null) {
                 throw new IllegalArgumentException(
                         "PersistentSettingsRepoHandler.read: attempted to read setting with " +
-                                "invalid name (" + name + ")");
+                                "invalid name (" + settingDTO.name + ")");
             }
             String typeName = getProperTypeName(setting.getArchetype());
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
-            SETTINGS_REPO.setSetting(name, handler.read(valueRepresentation));
+            setting.setValue(handler.read(settingDTO.valueString));
         }
         return SETTINGS_REPO;
     }
@@ -57,22 +59,23 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
                     "PersistentSettingsRepoHandler.write: settingsRepo must be non-null");
         }
         ICollection<ISetting> settings = settingsRepo.getAllUngrouped();
-        StringBuilder stringBuilder = new StringBuilder();
-        boolean isFirst = true;
+        SettingDTO[] dto = new SettingDTO[settings.size()];
+        int i = 0;
         for(ISetting setting : settings) {
-            if (isFirst) {
-                isFirst = false;
-            } else {
-                stringBuilder.append(DELIMITER_OUTER);
-            }
             String typeName = getProperTypeName(setting.getArchetype());
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
-            String valueString = handler.write(setting.getValue());
-            stringBuilder.append(setting.getName());
-            stringBuilder.append(DELIMITER_INNER);
-            stringBuilder.append(valueString);
+            SettingDTO settingDTO = new SettingDTO();
+            settingDTO.name = setting.getName();
+            settingDTO.valueString = handler.write(setting.getValue());
+            dto[i] = settingDTO;
+            i++;
         }
-        return stringBuilder.toString();
+        return new Gson().toJson(dto);
+    }
+
+    private class SettingDTO {
+        String name;
+        String valueString;
     }
 }

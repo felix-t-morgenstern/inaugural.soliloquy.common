@@ -5,9 +5,7 @@ import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import inaugural.soliloquy.common.test.stubs.SettingsRepoStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
-import soliloquy.common.specs.IPersistentValuesHandler;
-import soliloquy.common.specs.ISettingsRepo;
+import soliloquy.common.specs.*;
 
 import java.util.HashMap;
 
@@ -18,8 +16,9 @@ class PersistentSettingsRepoHandlerTests {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
 
-    private final String VALUES_STRING = "setting1Name\u0098setting1Value\u009B" +
-            "setting2Name\u0098123123";
+    private final String VALUES_STRING =
+            "[{\"name\":\"setting1Name\",\"valueString\":\"setting1Value\"}," +
+                    "{\"name\":\"setting2Name\",\"valueString\":\"123123\"}]";
 
     private IPersistentValueTypeHandler<ISettingsRepo> _persistentSettingsRepoHandler;
 
@@ -53,28 +52,35 @@ class PersistentSettingsRepoHandlerTests {
 
         assertSame(SETTINGS_REPO, settingsRepo);
 
-        HashMap<String,Object> settings = SettingsRepoStub.SETTINGS;
+        ICollection<ISetting> settings = SETTINGS_REPO.getAllUngrouped();
         assertEquals(2, settings.size());
-        assertEquals(SettingsRepoStub.SETTING_1_VALUE,
-                settings.get(SettingsRepoStub.SETTING_1_NAME));
-        assertEquals(SettingsRepoStub.SETTING_2_VALUE,
-                settings.get(SettingsRepoStub.SETTING_2_NAME));
+        for(ISetting setting : settings) {
+            switch(setting.getName()) {
+                case SettingsRepoStub.SETTING_1_NAME:
+                    assertEquals(SettingsRepoStub.SETTING_1_VALUE, setting.getValue());
+                    break;
+                case SettingsRepoStub.SETTING_2_NAME:
+                    assertEquals(SettingsRepoStub.SETTING_2_VALUE, setting.getValue());
+                    break;
+                default:
+                    fail("Invalid setting name");
+            }
+        }
     }
 
     @Test
     void testReadForNonexistentSetting() {
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentSettingsRepoHandler.read("setting1Name\u0098setting1Value" +
-                        "\u009BINVALID_NAME\u0098123123"));
+                () -> _persistentSettingsRepoHandler.read(
+                        "[{\"name\":\"InvalidName\",\"valueString\":\"setting1Value\"}," +
+                        "{\"name\":\"setting2Name\",\"valueString\":\"123123\"}]"));
     }
 
     @Test
     void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentSettingsRepoHandler.read("setting1Name\u0098setting1Value" +
-                        "\u009Bsetting2Name\u0098123123\u0098invalid_field"));
+                () -> _persistentSettingsRepoHandler.read(null));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentSettingsRepoHandler.read("setting1Name\u0098setting1Value" +
-                        "\u009Bsetting2Name"));
+                () -> _persistentSettingsRepoHandler.read(""));
     }
 }

@@ -30,10 +30,13 @@ class PersistentGenericParamsSetHandlerTests {
     private final String INT_PARAM_3_NAME = "integerParam3";
     private final Integer INT_PARAM_3_VALUE = 789;
 
-    private final String VALUES_STRING = "java.lang.String\u0093" +
-            "stringParam3\u0097value3\u0096stringParam2\u0097value2\u0096stringParam1\u0097value1" +
-            "\u0095java.lang.Integer" +
-            "\u0093integerParam2\u0097456\u0096integerParam1\u0097123\u0096integerParam3\u0097789";
+    private final String VALUES_STRING =
+            "[{\"typeName\":\"java.lang.String\"," +
+                    "\"paramNames\":[\"stringParam3\",\"stringParam2\",\"stringParam1\"]," +
+                    "\"paramValues\":[\"value3\",\"value2\",\"value1\"]}," +
+                    "{\"typeName\":\"java.lang.Integer\"," +
+                    "\"paramNames\":[\"integerParam2\",\"integerParam1\",\"integerParam3\"]," +
+                    "\"paramValues\":[\"456\",\"123\",\"789\"]}]";
 
     private IPersistentValueTypeHandler<IGenericParamsSet> _persistentGenericParamsSetHandler;
 
@@ -93,25 +96,8 @@ class PersistentGenericParamsSetHandlerTests {
     @Test
     void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentGenericParamsSetHandler.read("java.lang.String\u0093" +
-                        "stringParam3\u0097value3\u0097InvalidField\u0096" +
-                        "stringParam2\u0097value2\u0096" +
-                        "stringParam1\u0097value1" +
-                        "\u0095" +
-                        "java.lang.Integer" +
-                        "\u0093integerParam2\u0097456\u0096" +
-                        "integerParam1\u0097123\u0096" +
-                        "integerParam3\u0097789"));
+                () -> _persistentGenericParamsSetHandler.read(null));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentGenericParamsSetHandler.read("java.lang.String\u0093" +
-                        "stringParam3\u0097value3\u0096" +
-                        "stringParam2\u0097value2\u0096" +
-                        "stringParam1\u0097value1" +
-                        "\u0093InvalidField" +
-                        "\u0095" +
-                        "java.lang.Integer" +
-                        "\u0093integerParam2\u0097456\u0096" +
-                        "integerParam1\u0097123\u0096" +
-                        "integerParam3\u0097789"));
+                () -> _persistentGenericParamsSetHandler.read(""));
     }
 }

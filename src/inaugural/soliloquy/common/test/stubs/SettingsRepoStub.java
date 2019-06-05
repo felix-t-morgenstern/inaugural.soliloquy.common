@@ -13,13 +13,16 @@ public class SettingsRepoStub implements ISettingsRepo {
     public static final String SETTING_2_NAME = "setting2Name";
     public static final Integer SETTING_2_VALUE = 123123;
 
+    public static final ISetting SETTING_1 = new SettingStub(SETTING_1_NAME, SETTING_1_VALUE);
+    public static final ISetting SETTING_2 = new SettingStub(SETTING_2_NAME, SETTING_2_VALUE);
+
     @Override
     public <V> ISetting<V> getSetting(String name) throws IllegalArgumentException {
         switch (name) {
             case SETTING_1_NAME:
-                return new SettingStub(SETTING_1_NAME, SETTING_1_VALUE);
+                return SETTING_1;
             case SETTING_2_NAME:
-                return new SettingStub(SETTING_2_NAME, SETTING_2_VALUE);
+                return SETTING_2;
             default:
                 return null;
         }
@@ -44,8 +47,8 @@ public class SettingsRepoStub implements ISettingsRepo {
     @Override
     public ICollection<ISetting> getAllUngrouped() {
         ICollection<ISetting> settings = new CollectionStub<>();
-        settings.add(new SettingStub(SETTING_1_NAME, SETTING_1_VALUE));
-        settings.add(new SettingStub(SETTING_2_NAME, SETTING_2_VALUE));
+        settings.add(SETTING_1);
+        settings.add(SETTING_2);
         return settings;
     }
 

@@ -21,7 +21,9 @@ class PersistentVariableCachePersistenceHandlerTests {
     private final IPersistentVariableCache PERSISTENT_VARIABLE_CACHE =
             new PersistentVariableCacheStub();
 
-    private final String VALUES_STRING = "variable1\u000Fjava.lang.Integer\u000F456456\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value";
+    private final String VALUES_STRING =
+            "[{\"name\":\"variable1\",\"typeName\":\"java.lang.Integer\",\"valueString\":\"456456\"}," +
+                    "{\"name\":\"variable2\",\"typeName\":\"java.lang.String\",\"valueString\":\"variable2value\"}]";
 
     private IPersistentValueTypeHandler<IPersistentVariableCache>
             _persistentVariablePersistentCachePersistenceHandler;
@@ -74,7 +76,7 @@ class PersistentVariableCachePersistenceHandlerTests {
     @Test
     void testReadEmptyCache() {
         IPersistentVariableCache pVarCache =
-                _persistentVariablePersistentCachePersistenceHandler.read("");
+                _persistentVariablePersistentCachePersistenceHandler.read("[]");
 
         assertNotNull(pVarCache);
         assertEquals(0, pVarCache.size());
@@ -83,13 +85,8 @@ class PersistentVariableCachePersistenceHandlerTests {
     @Test
     void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentVariablePersistentCachePersistenceHandler
-                        .read("variable1\u000Fjava.lang.Integer" +
-                                "\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value"));
+                () -> _persistentVariablePersistentCachePersistenceHandler.read(null));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentVariablePersistentCachePersistenceHandler
-                        .read("variable1\u000Fjava.lang.Integer" +
-                                "\u000Evariable2\u000Fjava.lang.String\u000Fvariable2value" +
-                                "\u000FsomeOtherField"));
+                () -> _persistentVariablePersistentCachePersistenceHandler.read(""));
     }
 }

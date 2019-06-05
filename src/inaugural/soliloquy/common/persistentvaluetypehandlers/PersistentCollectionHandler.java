@@ -1,13 +1,12 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
+import com.google.gson.Gson;
 import soliloquy.common.specs.*;
 
 public class PersistentCollectionHandler extends PersistentTypeHandler<ICollection>
         implements IPersistentCollectionHandler {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final ICollectionFactory COLLECTION_FACTORY;
-    private final String DELIMITER_OUTER = "\u0091";
-    private final String DELIMITER_INNER = "\u0092";
 
     public PersistentCollectionHandler(IPersistentValuesHandler persistentValuesHandler,
                                        ICollectionFactory collectionFactory) {
@@ -31,31 +30,23 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
     @SuppressWarnings("unchecked")
     @Override
     public ICollection read(String valuesString) throws IllegalArgumentException {
-        String[] components = valuesString.split(DELIMITER_OUTER);
-        // NB: A length of 2 implies that the Collection is empty; this is valid.
-        if (components.length < 2 || components.length >= 4) {
+        if (valuesString == null) {
             throw new IllegalArgumentException(
-                    String.format("PersistentCollectionHandler.read: Invalid string (%s)",
-                            valuesString));
+                    "PersistentCollectionHandler.read: valuesString must be non-null");
         }
-        try {
-            IPersistentValueTypeHandler persistentValueTypeHandler =
-                    PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(components[0]);
-            Object archetype = persistentValueTypeHandler.read(components[1]);
-            ICollection collection = COLLECTION_FACTORY.make(archetype);
-            // NB: A length of 2 implies that the Collection is empty; this is valid.
-            if (components.length > 2) {
-                String[] values = components[2].split(DELIMITER_INNER);
-                for (String value : values) {
-                    collection.add(persistentValueTypeHandler.read(value));
-                }
-            }
-            return collection;
-        } catch (Exception e) {
+        if (valuesString.equals("")) {
             throw new IllegalArgumentException(
-                    String.format("PersistentCollectionHandler.read: Invalid string (%s)",
-                            valuesString));
+                    "PersistentCollectionHandler.read: valuesString must be non-null");
         }
+        CollectionDTO dto = new Gson().fromJson(valuesString, CollectionDTO.class);
+        IPersistentValueTypeHandler handler =
+                PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.typeName);
+        ICollection collection =
+                COLLECTION_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
+        for (int i = 0; i < dto.valueStrings.length; i++) {
+            collection.add(handler.read(dto.valueStrings[i]));
+        }
+        return collection;
     }
 
     @SuppressWarnings("unchecked")
@@ -66,23 +57,16 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
                     "PersistentCollectionHandler.write: collection is null");
         }
         String internalType = getProperTypeName(collection.getArchetype());
-        IPersistentValueTypeHandler persistentValueTypeHandler =
+        IPersistentValueTypeHandler handler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(internalType);
-        StringBuilder writtenValue = new StringBuilder();
-        writtenValue.append(internalType);
-        writtenValue.append(DELIMITER_OUTER);
-        writtenValue.append(persistentValueTypeHandler.write(collection.getArchetype()));
-        writtenValue.append(DELIMITER_OUTER);
-        boolean firstValue = true;
-        for (Object item : collection) {
-            if (firstValue) {
-                firstValue = false;
-            } else {
-                writtenValue.append(DELIMITER_INNER);
-            }
-            writtenValue.append(persistentValueTypeHandler.write(item));
+        CollectionDTO dto = new CollectionDTO();
+        dto.typeName = internalType;
+        String[] valueStrings = new String[collection.size()];
+        for (int i = 0; i < collection.size(); i++) {
+            valueStrings[i] = handler.write(collection.get(i));
         }
-        return writtenValue.toString();
+        dto.valueStrings = valueStrings;
+        return new Gson().toJson(dto);
     }
 
     @Override
@@ -105,5 +89,10 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
         String innerType = valueType.substring(openingCaret + 1, closingCaret);
 
         return COLLECTION_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(innerType));
+    }
+
+    private class CollectionDTO {
+        String typeName;
+        String[] valueStrings;
     }
 }

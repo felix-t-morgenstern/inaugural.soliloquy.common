@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
+import com.google.gson.Gson;
 import soliloquy.common.specs.*;
 
 public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGenericParamsSet>
@@ -27,29 +28,22 @@ public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGe
 
     @Override
     public IGenericParamsSet read(String valueString) throws IllegalArgumentException {
+        if(valueString == null) {
+            throw new IllegalArgumentException(
+                    "PersistentGenericParamsSetHandler.read: valueString must be non-null");
+        }
+        if(valueString.equals("")) {
+            throw new IllegalArgumentException(
+                    "PersistentGenericParamsSetHandler.read: valueString must be non-empty");
+        }
+        TypedParamsSetDTO[] dto = new Gson().fromJson(valueString, TypedParamsSetDTO[].class);
         IGenericParamsSet genericParamsSet = GENERIC_PARAMS_SET_FACTORY.make();
-        String[] paramSetStrings = valueString.split(DELIMITER_OUTER);
-        for(String paramSetString : paramSetStrings) {
-            String[] paramSetStringComponents = paramSetString.split(DELIMITER_TYPE);
-            if (paramSetStringComponents.length != 2) {
-                throw new IllegalArgumentException(
-                        "PersistentGenericParamsSetHandler.read: paramString has invalid number of " +
-                                "fields");
-            }
+        for(TypedParamsSetDTO typedDTO : dto) {
             IPersistentValueTypeHandler handler =
-                    PERSISTENT_VALUES_HANDLER
-                            .getPersistentValueTypeHandler(paramSetStringComponents[0]);
-            String[] paramStrings = paramSetStringComponents[1].split(DELIMITER_ITEM);
-            for(String paramString : paramStrings) {
-                String[] paramStringComponents = paramString.split(DELIMITER_INNER);
-                if (paramStringComponents.length != 2) {
-                    throw new IllegalArgumentException(
-                            "PersistentGenericParamsSetHandler.read: paramString has invalid number" +
-                                    "of fields");
-                }
-                String paramName = paramStringComponents[0];
-                String paramValueString = paramStringComponents[1];
-                genericParamsSet.addParam(paramName, handler.read(paramValueString));
+                    PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typedDTO.typeName);
+            for(int i = 0; i < typedDTO.paramNames.length; i++) {
+                genericParamsSet.addParam(typedDTO.paramNames[i],
+                        handler.read(typedDTO.paramValues[i]));
             }
         }
         return genericParamsSet;
@@ -62,32 +56,31 @@ public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGe
             throw new IllegalArgumentException(
                     "PersistentGenericParamsSetHandler.write: genericParamsSet must be non-null");
         }
-        StringBuilder stringBuilder = new StringBuilder();
-        ICollection<String> paramTypes = genericParamsSet.paramTypes();
-        boolean isFirstParamType = true;
-        for(String paramType : paramTypes) {
-            if (isFirstParamType) {
-                isFirstParamType = false;
-            } else {
-                stringBuilder.append(DELIMITER_OUTER);
-            }
-            stringBuilder.append(paramType);
-            stringBuilder.append(DELIMITER_TYPE);
-            IMap<String,Object> params = genericParamsSet.getParamsSet(paramType);
+        TypedParamsSetDTO[] dto = new TypedParamsSetDTO[genericParamsSet.paramTypes().size()];
+        int paramCount = 0;
+        for(String paramType : genericParamsSet.paramTypes()) {
+            dto[paramCount] = new TypedParamsSetDTO();
+            dto[paramCount].typeName = paramType;
+            IMap params = genericParamsSet.getParamsSet(paramType);
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(paramType);
-            boolean isFirstParam = true;
-            for(IPair<String,Object> param : params) {
-                if (isFirstParam) {
-                    isFirstParam = false;
-                } else {
-                    stringBuilder.append(DELIMITER_ITEM);
-                }
-                stringBuilder.append(param.getItem1());
-                stringBuilder.append(DELIMITER_INNER);
-                stringBuilder.append(handler.write(param.getItem2()));
+            dto[paramCount].paramNames = new String[params.size()];
+            dto[paramCount].paramValues = new String[params.size()];
+            int indexCount = 0;
+            for(Object param : params) {
+                IPair<String,Object> pair = (IPair) param;
+                dto[paramCount].paramNames[indexCount] = pair.getItem1();
+                dto[paramCount].paramValues[indexCount] = handler.write(pair.getItem2());
+                indexCount++;
             }
+            paramCount++;
         }
-        return stringBuilder.toString();
+        return new Gson().toJson(dto);
+    }
+
+    private class TypedParamsSetDTO {
+        String typeName;
+        String[] paramNames;
+        String[] paramValues;
     }
 }

@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PersistentMapHandlerTests {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
+    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+            new PersistentValuesHandlerStub();
     private final IMapFactory MAP_FACTORY = new MapFactoryStub();
     private final String KEY_1 = "key1";
     private final String KEY_2 = "key2";
@@ -21,11 +22,11 @@ class PersistentMapHandlerTests {
     private final Integer VALUE_2 = 456;
     private final Integer VALUE_3 = 789;
     private final String VALUES_STRING = String.format(
-            "%s\u001f%s\u001d%s\u001f%d\u001e%s\u001f%d\u001e%s\u001f%d",
+            "{\"keyValueType\":\"%s\",\"valueValueType\":\"%s\"," +
+                    "\"keyValueStrings\":[\"%s\",\"%s\",\"%s\"]," +
+                    "\"valueValueStrings\":[\"%d\",\"%d\",\"%d\"]}",
             String.class.getCanonicalName(), Integer.class.getCanonicalName(),
-            KEY_1, VALUE_1,
-            KEY_2, VALUE_2,
-            KEY_3, VALUE_3);
+            KEY_1, KEY_2, KEY_3, VALUE_1, VALUE_2, VALUE_3);
 
     private IPersistentMapHandler _persistentMapHandler;
 
@@ -62,8 +63,6 @@ class PersistentMapHandlerTests {
         assertNotNull(map.getFirstArchetype());
         assertNotNull(map.getSecondArchetype());
     }
-
-    // TODO: Add tests for invalid valueString fed into read()
 
     @Test
     void testGetInterfaceName() {

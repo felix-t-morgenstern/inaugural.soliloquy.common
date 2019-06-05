@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
+import com.google.gson.Gson;
 import soliloquy.common.specs.*;
 
 public class PersistentVariableCachePersistenceHandler
@@ -29,28 +30,24 @@ public class PersistentVariableCachePersistenceHandler
     }
 
     @Override
-    public IPersistentVariableCache read(String data) throws IllegalArgumentException {
+    public IPersistentVariableCache read(String valueString) throws IllegalArgumentException {
+        if (valueString == null) {
+            throw new IllegalArgumentException(
+                    "PersistentVariableCachePersistenceHandler.read: valueString must be non-null");
+        }
+        if (valueString.equals("")) {
+            throw new IllegalArgumentException(
+                    "PersistentVariableCachePersistenceHandler.read: valueString must be non-empty");
+        }
         IPersistentVariableCache persistentVariableCache =
                 PERSISTENT_VARIABLE_CACHE_FACTORY.make();
-        String[] pVarValueStrings = data.split(DELIMITER_OUTER);
-        for(String pVarValueString : pVarValueStrings) {
-            if (pVarValueString.equals("")) {
-                continue;
-            }
-            String[] pVarComponents = pVarValueString.split(DELIMITER_INNER);
-            if (pVarComponents.length != 3) {
-                throw new IllegalArgumentException(
-                        "PersistentVariableCachePersistenceHandler.read: Value string (" +
-                                pVarValueString + ") has invalid number of delimiters");
-            }
-            String name = pVarComponents[0];
-            String typeName = pVarComponents[1];
-            String valueString = pVarComponents[2];
+        PersistentVariableDTO[] dto = new Gson().fromJson(valueString,
+                PersistentVariableDTO[].class);
+        for(PersistentVariableDTO pVarDTO : dto) {
             IPersistentValueTypeHandler handler =
-                    PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
-            Object value = handler.read(valueString);
-            IPersistentVariable pVar = PERSISTENT_VARIABLE_FACTORY.make(name, value);
-            persistentVariableCache.put(pVar);
+                    PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
+            persistentVariableCache.put(PERSISTENT_VARIABLE_FACTORY.make(pVarDTO.name,
+                    handler.read(pVarDTO.valueString)));
         }
         return persistentVariableCache;
     }
@@ -65,24 +62,23 @@ public class PersistentVariableCachePersistenceHandler
         }
         ICollection<IPersistentVariable> pVars =
                 persistentVariableCache.getVariablesRepresentation();
-        StringBuilder writer = new StringBuilder();
-        boolean isFirstPVar = true;
-        for(IPersistentVariable pVar : pVars) {
-            if (!isFirstPVar) {
-                writer.append(DELIMITER_OUTER);
-            } else {
-                isFirstPVar = false;
-            }
-            String typeName = getProperTypeName(pVar.getValue());
+        PersistentVariableDTO[] dto = new PersistentVariableDTO[pVars.size()];
+        for(int i = 0; i < pVars.size(); i++) {
+            IPersistentVariable pVar = pVars.get(i);
+            PersistentVariableDTO pVarDTO = new PersistentVariableDTO();
+            pVarDTO.name = pVar.getName();
+            pVarDTO.typeName = getProperTypeName(pVar.getValue());
             IPersistentValueTypeHandler handler =
-                    PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
-            String valueString = handler.write(pVar.getValue());
-            writer.append(pVar.getName());
-            writer.append(DELIMITER_INNER);
-            writer.append(typeName);
-            writer.append(DELIMITER_INNER);
-            writer.append(valueString);
+                    PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
+            pVarDTO.valueString = handler.write(pVar.getValue());
+            dto[i] = pVarDTO;
         }
-        return writer.toString();
+        return new Gson().toJson(dto);
+    }
+
+    private class PersistentVariableDTO {
+        String name;
+        String typeName;
+        String valueString;
     }
 }
