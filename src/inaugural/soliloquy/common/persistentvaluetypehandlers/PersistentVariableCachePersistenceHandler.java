@@ -8,19 +8,13 @@ public class PersistentVariableCachePersistenceHandler
         implements IPersistentValueTypeHandler<IPersistentVariableCache> {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final IPersistentVariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY;
-    private final IPersistentVariableFactory PERSISTENT_VARIABLE_FACTORY;
     private final IPersistentVariableCache ARCHETYPE;
-
-    private final String DELIMITER_OUTER = "\u000e";
-    private final String DELIMITER_INNER = "\u000f";
 
     public PersistentVariableCachePersistenceHandler(
             IPersistentValuesHandler persistentValuesHandler,
-            IPersistentVariableCacheFactory persistentVariableCacheFactory,
-            IPersistentVariableFactory persistentVariableFactory) {
+            IPersistentVariableCacheFactory persistentVariableCacheFactory) {
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         PERSISTENT_VARIABLE_CACHE_FACTORY = persistentVariableCacheFactory;
-        PERSISTENT_VARIABLE_FACTORY = persistentVariableFactory;
         ARCHETYPE = PERSISTENT_VARIABLE_CACHE_FACTORY.make();
     }
 
@@ -46,8 +40,7 @@ public class PersistentVariableCachePersistenceHandler
         for(PersistentVariableDTO pVarDTO : dto) {
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
-            persistentVariableCache.put(PERSISTENT_VARIABLE_FACTORY.make(pVarDTO.name,
-                    handler.read(pVarDTO.valueString)));
+            persistentVariableCache.setVariable(pVarDTO.name, handler.read(pVarDTO.valueString));
         }
         return persistentVariableCache;
     }
@@ -60,17 +53,17 @@ public class PersistentVariableCachePersistenceHandler
                     "PersistentVariableCachePersistenceHandler.write: persistentVariableCache " +
                             "must be non-null");
         }
-        ICollection<IPersistentVariable> pVars =
-                persistentVariableCache.getVariablesRepresentation();
-        PersistentVariableDTO[] dto = new PersistentVariableDTO[pVars.size()];
-        for(int i = 0; i < pVars.size(); i++) {
-            IPersistentVariable pVar = pVars.get(i);
+        ICollection<String> pVarNames = persistentVariableCache.getNamesRepresentation();
+        PersistentVariableDTO[] dto = new PersistentVariableDTO[pVarNames.size()];
+        for(int i = 0; i < pVarNames.size(); i++) {
+            String pVarName = pVarNames.get(i);
             PersistentVariableDTO pVarDTO = new PersistentVariableDTO();
-            pVarDTO.name = pVar.getName();
-            pVarDTO.typeName = getProperTypeName(pVar.getValue());
+            pVarDTO.name = pVarName;
+            Object pVarValue = persistentVariableCache.getVariable(pVarName);
+            pVarDTO.typeName = getProperTypeName(pVarValue);
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
-            pVarDTO.valueString = handler.write(pVar.getValue());
+            pVarDTO.valueString = handler.write(pVarValue);
             dto[i] = pVarDTO;
         }
         return new Gson().toJson(dto);

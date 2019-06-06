@@ -9,7 +9,7 @@ import soliloquy.logger.specs.ILogger;
 
 public class PersistentVariableCache implements IPersistentVariableCache {
 	private final ICollectionFactory COLLECTION_FACTORY;
-	private final HashMap<String,IPersistentVariable> PERSISTENT_VARIABLES;
+	private final HashMap<String,Object> PERSISTENT_VARIABLES;
 
 	public PersistentVariableCache(ICollectionFactory collectionFactory) {
 		PERSISTENT_VARIABLES = new HashMap<>();
@@ -22,20 +22,16 @@ public class PersistentVariableCache implements IPersistentVariableCache {
 	}
 
 	@Override
-	public void put(IPersistentVariable persistentVariable) throws IllegalArgumentException {
-		if (persistentVariable == null) {
+	public <T> void setVariable(String name, T value) throws IllegalArgumentException {
+		if (value == null) {
 			throw new IllegalArgumentException(
-					"PersistentVariableCache.put: persistent variable cannot be null");
+					"PersistentVariableCache.put: value cannot be null");
 		}
-		if (persistentVariable.getName() == null || persistentVariable.getName().equals("")) {
+		if (name == null || name.equals("")) {
 			throw new IllegalArgumentException(
 					"PersistentVariableCache.put: key cannot be null or empty");
 		}
-		if (persistentVariable.getValue() == null) {
-			throw new IllegalArgumentException(
-					"PersistentVariableCache.put: persistent variable cannot have a null value");
-		}
-		PERSISTENT_VARIABLES.put(persistentVariable.getName(), persistentVariable);
+		PERSISTENT_VARIABLES.put(name, value);
 	}
 
 	@Override
@@ -49,7 +45,8 @@ public class PersistentVariableCache implements IPersistentVariableCache {
 	}
 
 	@Override
-	public ICollection<IPersistentVariable> getVariablesRepresentation() {
+	public IMap<String,Object> getVariablesRepresentation() {
+		// TODO: Test and implement!!!
 		return null;
 	}
 
@@ -65,9 +62,10 @@ public class PersistentVariableCache implements IPersistentVariableCache {
 		PERSISTENT_VARIABLES.clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IPersistentVariable getVariable(String name) {
-		return PERSISTENT_VARIABLES.get(name);
+	public <T> T getVariable(String name) {
+		return (T) PERSISTENT_VARIABLES.get(name);
 	}
 
 }

@@ -4,7 +4,6 @@ import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentVariable
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheStub;
-import inaugural.soliloquy.common.test.stubs.PersistentVariableFactoryStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.common.specs.*;
@@ -16,8 +15,6 @@ class PersistentVariableCachePersistenceHandlerTests {
             new PersistentValuesHandlerStub();
     private final IPersistentVariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY =
             new PersistentVariableCacheFactoryStub();
-    private final IPersistentVariableFactory PERSISTENT_VARIABLE_FACTORY =
-            new PersistentVariableFactoryStub();
     private final IPersistentVariableCache PERSISTENT_VARIABLE_CACHE =
             new PersistentVariableCacheStub();
 
@@ -33,8 +30,7 @@ class PersistentVariableCachePersistenceHandlerTests {
         _persistentVariablePersistentCachePersistenceHandler =
                 new PersistentVariableCachePersistenceHandler(
                         PERSISTENT_VALUES_HANDLER,
-                        PERSISTENT_VARIABLE_CACHE_FACTORY,
-                        PERSISTENT_VARIABLE_FACTORY);
+                        PERSISTENT_VARIABLE_CACHE_FACTORY);
     }
 
     @Test
@@ -64,13 +60,11 @@ class PersistentVariableCachePersistenceHandlerTests {
 
         assertNotNull(pVarCache);
         assertEquals(2, pVarCache.size());
-        ICollection<IPersistentVariable> representation = pVarCache.getVariablesRepresentation();
-        assertEquals(PersistentVariableCacheStub.VARIABLE_1_NAME, representation.get(0).getName());
+        IMap<String,Object> representation = pVarCache.getVariablesRepresentation();
         assertEquals(PersistentVariableCacheStub.VARIABLE_1_VALUE,
-                representation.get(0).getValue());
-        assertEquals(PersistentVariableCacheStub.VARIABLE_2_NAME, representation.get(1).getName());
+                representation.get(PersistentVariableCacheStub.VARIABLE_1_NAME));
         assertEquals(PersistentVariableCacheStub.VARIABLE_2_VALUE,
-                representation.get(1).getValue());
+                representation.get(PersistentVariableCacheStub.VARIABLE_2_NAME));
     }
 
     @Test

@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.integrationtests;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import inaugural.soliloquy.common.*;
-import inaugural.soliloquy.common.archetypes.SettingArchetype;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.common.specs.*;
@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SettingsRepoIntegrationTests {
     private ISettingsRepo _settingsRepo;
-    private ISetting _settingArchetype;
 
     private ICollectionFactory _collectionFactory;
     private ICoordinateFactory _coordinateFactory;
@@ -21,17 +20,7 @@ class SettingsRepoIntegrationTests {
     private IPairFactory _pairFactory;
     private ISettingFactory _settingFactory;
 
-    private IPersistentValuesHandler _persistentValuesHandler;
-
-    private IPersistentValueTypeHandler<Boolean> _booleanHandler;
-    private IPersistentCollectionHandler _collectionHandler;
-    private IPersistentValueTypeHandler<ICoordinate> _coordinateHandler;
-    private IPersistentValueTypeHandler<IEntityUuid> _entityUuidHandler;
-    private IPersistentValueTypeHandler<Integer> _integerHandler;
-    private IPersistentMapHandler _mapHandler;
-    private IPersistentPairHandler _pairHandler;
     private IPersistentValueTypeHandler<ISettingsRepo> _settingsRepoHandler;
-    private IPersistentValueTypeHandler<String> _stringHandler;
 
     private final String SUBGROUPING_1 = "subgrouping1";
     private final String SUBGROUPING_1_1 = "subgrouping1-1";
@@ -48,47 +37,21 @@ class SettingsRepoIntegrationTests {
 
     private final String VALUES_STRING = "[{\"id\":\"booleanSetting\",\"valueString\":\"true\"},{\"id\":\"collectionOfIntsSetting\",\"valueString\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"valueStrings\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"collectionOfMapsSetting\",\"valueString\":\"{\\\"typeName\\\":\\\"soliloquy.common.specs.IMap\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"valueStrings\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"id\":\"coordinateSetting\",\"valueString\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"id\":\"entityUuidSetting\",\"valueString\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"id\":\"integerSetting\",\"valueString\":\"123456789\"},{\"id\":\"mapOfStringsToIntsSetting\",\"valueString\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keyValueStrings\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueValueStrings\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"mapOfIntsToMapsOfIntsToBooleansSetting\",\"valueString\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.common.specs.IMap\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keyValueStrings\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueValueStrings\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"id\":\"pairOfStringsSetting\",\"valueString\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"valueString1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"valueString2\\\":\\\"pairString2\\\"}\"},{\"id\":\"pairOfStringAndCollectionOfInts\",\"valueString\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"valueString1\\\":\\\"stringValue\\\",\\\"valueType2\\\":\\\"soliloquy.common.specs.ICollection\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"valueString2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueStrings\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\",\"valueString\":\"stringSettingValue\"}]";
 
-    @SuppressWarnings("unchecked")
     @BeforeEach
     void setUp() {
-        _collectionFactory = new CollectionFactory();
-        _coordinateFactory = new CoordinateFactory();
-        _entityUuidFactory = new EntityUuidFactory();
-        _pairFactory = new PairFactory();
-        _settingFactory = new SettingFactory();
+        Injector commonInjector = Guice.createInjector(new CommonModule());
 
-        _mapFactory = new MapFactory(_pairFactory);
+        _settingsRepo = commonInjector.getInstance(ISettingsRepo.class);
+        _collectionFactory = commonInjector.getInstance(ICollectionFactory.class);
+        _coordinateFactory = commonInjector.getInstance(ICoordinateFactory.class);
+        _entityUuidFactory = commonInjector.getInstance(IEntityUuidFactory.class);
+        _genericParamsSetFactory = commonInjector.getInstance(IGenericParamsSetFactory.class);
+        _mapFactory = commonInjector.getInstance(IMapFactory.class);
+        _pairFactory = commonInjector.getInstance(IPairFactory.class);
+        _settingFactory = commonInjector.getInstance(ISettingFactory.class);
 
-        _persistentValuesHandler = new PersistentValuesHandler();
-
-        _settingArchetype = new SettingArchetype();
-        _settingsRepo = new SettingsRepo(_collectionFactory, _pairFactory,
-                _persistentValuesHandler, _settingArchetype);
-
-        _genericParamsSetFactory = new GenericParamsSetFactory(_persistentValuesHandler,
-                _mapFactory);
-
-        _booleanHandler = new PersistentBooleanHandler();
-        _collectionHandler = new PersistentCollectionHandler(_persistentValuesHandler,
-                _collectionFactory);
-        _coordinateHandler = new PersistentCoordinateHandler(_coordinateFactory);
-        _entityUuidHandler = new PersistentEntityUuidHandler(_entityUuidFactory);
-        _integerHandler = new PersistentIntegerHandler();
-        _mapHandler = new PersistentMapHandler(_persistentValuesHandler, _mapFactory);
-        _pairHandler = new PersistentPairHandler(_persistentValuesHandler, _pairFactory);
-        _settingsRepoHandler = new PersistentSettingsRepoHandler(_persistentValuesHandler,
-                _settingsRepo);
-        _stringHandler = new PersistentStringHandler();
-
-        _persistentValuesHandler.addPersistentValueTypeHandler(_booleanHandler);
-        _persistentValuesHandler.registerPersistentCollectionHandler(_collectionHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(_coordinateHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(_entityUuidHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(_integerHandler);
-        _persistentValuesHandler.registerPersistentMapHandler(_mapHandler);
-        _persistentValuesHandler.registerPersistentPairHandler(_pairHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(_settingsRepoHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(_stringHandler);
+        _settingsRepoHandler = commonInjector.getInstance(IPersistentValuesHandler.class)
+                .getPersistentValueTypeHandler(ISettingsRepo.class.getCanonicalName());
 
         _settingsRepo.newSubgrouping(100, SUBGROUPING_1, null);
         _settingsRepo.newSubgrouping(101, SUBGROUPING_1_1, SUBGROUPING_1);

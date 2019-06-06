@@ -113,8 +113,7 @@ public class MapStub<K,V> implements IMap<K,V> {
 
 	@Override
 	public boolean isEmpty() {
-		// Stub method; unimplemented
-		throw new UnsupportedOperationException();
+		return _map.isEmpty();
 	}
 
 	@Override
