@@ -74,7 +74,7 @@ class PersistentMapHandlerTests {
     void testGenerateArchetype() {
         final String valueType = IMap.class.getCanonicalName() + "<" +
                 String.class.getCanonicalName() + "," + ICollection.class.getCanonicalName() +
-                "<" + Integer.class.getCanonicalName() + ">";
+                "<" + Integer.class.getCanonicalName() + ">>";
 
         IMap<String,ICollection<Integer>> archetype =
                 _persistentMapHandler.generateArchetype(valueType);

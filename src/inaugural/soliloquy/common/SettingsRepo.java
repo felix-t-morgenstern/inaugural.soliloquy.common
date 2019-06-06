@@ -58,7 +58,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	@Override
 	public ICollection<IEntityGroupItem<ISetting>> getAllGrouped() {
 		ICollection<IEntityGroupItem<ISetting>> allGrouped = COLLECTION_FACTORY
-				.make(new SettingsRepoItem(SETTING_ARCHETYPE, SETTING_ARCHETYPE));
+				.make(new SettingsRepoItem(SETTING_ARCHETYPE));
 		Set<Integer> keysSet = ITEMS.keySet();
 		int[] keysArray = new int[keysSet.size()];
 		int cursor = 0;
@@ -153,7 +153,7 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 			throw new IllegalArgumentException("SettingsRepo.addEntity: Item with order of " + order
 					+ " already present in " + group);
 		} else {
-			targetedGrouping.ITEMS.put(order, new SettingsRepoItem(setting, setting));
+			targetedGrouping.ITEMS.put(order, new SettingsRepoItem(setting));
 		}
 	}
 
@@ -168,9 +168,10 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		}
 		targetParentGrouping.ITEMS.put(order,
 				new SettingsRepoItem(new SettingsRepo(groupId, COLLECTION_FACTORY, PAIR_FACTORY,
-						PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE), SETTING_ARCHETYPE));
+						PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE)));
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public boolean removeItem(String itemId) throws IllegalArgumentException {
 		if (itemId == null) {
@@ -274,12 +275,12 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 		private final ISetting SETTING;
 		private final SettingsRepo SETTINGS_REPO;
 		
-		SettingsRepoItem(ISetting setting, ISetting archetype) {
+		SettingsRepoItem(ISetting setting) {
 			SETTING = setting;
 			SETTINGS_REPO = null;
 		}
 		
-		SettingsRepoItem(SettingsRepo settingsRepo, ISetting archetype) {
+		SettingsRepoItem(SettingsRepo settingsRepo) {
 			SETTING = null;
 			SETTINGS_REPO = settingsRepo;
 		}

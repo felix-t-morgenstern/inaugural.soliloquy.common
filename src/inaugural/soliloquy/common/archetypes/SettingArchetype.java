@@ -41,7 +41,7 @@ public class SettingArchetype implements ISetting {
 
     @Override
     public Object getArchetype() {
-        return null;
+        return false;
     }
 
     @Override

@@ -74,7 +74,7 @@ class PersistentPairHandlerTests {
     void testGenerateArchetype() {
         final String valueType = IPair.class.getCanonicalName() + "<" +
                 String.class.getCanonicalName() + "," + ICollection.class.getCanonicalName() +
-                "<" + Integer.class.getCanonicalName() + ">";
+                "<" + Integer.class.getCanonicalName() + ">>";
 
         IPair<String,ICollection<Integer>> archetype =
                 _persistentPairHandler.generateArchetype(valueType);

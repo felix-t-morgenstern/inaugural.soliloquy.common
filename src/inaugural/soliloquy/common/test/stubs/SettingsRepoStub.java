@@ -7,21 +7,25 @@ import java.util.HashMap;
 public class SettingsRepoStub implements ISettingsRepo {
     public static final HashMap<String,Object> SETTINGS = new HashMap<>();
 
+    public static final String SETTING_1_ID = "setting1Id";
     public static final String SETTING_1_NAME = "setting1Name";
     public static final String SETTING_1_VALUE = "setting1Value";
 
+    public static final String SETTING_2_ID = "setting2Id";
     public static final String SETTING_2_NAME = "setting2Name";
     public static final Integer SETTING_2_VALUE = 123123;
 
-    public static final ISetting SETTING_1 = new SettingStub(SETTING_1_NAME, SETTING_1_VALUE);
-    public static final ISetting SETTING_2 = new SettingStub(SETTING_2_NAME, SETTING_2_VALUE);
+    public static final ISetting SETTING_1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
+            SETTING_1_VALUE);
+    public static final ISetting SETTING_2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME,
+            SETTING_2_VALUE);
 
     @Override
     public <V> ISetting<V> getSetting(String name) throws IllegalArgumentException {
         switch (name) {
-            case SETTING_1_NAME:
+            case SETTING_1_ID:
                 return SETTING_1;
-            case SETTING_2_NAME:
+            case SETTING_2_ID:
                 return SETTING_2;
             default:
                 return null;
@@ -34,8 +38,8 @@ public class SettingsRepoStub implements ISettingsRepo {
     }
 
     @Override
-    public <V> void setSetting(String name, V value) throws IllegalArgumentException {
-        SETTINGS.put(name, value);
+    public <V> void setSetting(String id, V value) throws IllegalArgumentException {
+        SETTINGS.put(id, value);
     }
 
     @Override

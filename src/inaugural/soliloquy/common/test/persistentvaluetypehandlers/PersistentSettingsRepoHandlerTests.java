@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.common.specs.*;
 
-import java.util.HashMap;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentSettingsRepoHandlerTests {
@@ -17,15 +15,15 @@ class PersistentSettingsRepoHandlerTests {
             new PersistentValuesHandlerStub();
 
     private final String VALUES_STRING =
-            "[{\"name\":\"setting1Name\",\"valueString\":\"setting1Value\"}," +
-                    "{\"name\":\"setting2Name\",\"valueString\":\"123123\"}]";
+            "[{\"id\":\"setting1Id\",\"valueString\":\"setting1Value\"}," +
+                    "{\"id\":\"setting2Id\",\"valueString\":\"123123\"}]";
 
     private IPersistentValueTypeHandler<ISettingsRepo> _persistentSettingsRepoHandler;
 
     @BeforeEach
     void setUp() {
-        _persistentSettingsRepoHandler = new PersistentSettingsRepoHandler(SETTINGS_REPO,
-                PERSISTENT_VALUES_HANDLER);
+        _persistentSettingsRepoHandler =
+                new PersistentSettingsRepoHandler(PERSISTENT_VALUES_HANDLER, SETTINGS_REPO);
     }
 
     @Test
@@ -72,8 +70,8 @@ class PersistentSettingsRepoHandlerTests {
     void testReadForNonexistentSetting() {
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentSettingsRepoHandler.read(
-                        "[{\"name\":\"InvalidName\",\"valueString\":\"setting1Value\"}," +
-                        "{\"name\":\"setting2Name\",\"valueString\":\"123123\"}]"));
+                        "[{\"id\":\"InvalidName\",\"valueString\":\"setting1Value\"}," +
+                        "{\"id\":\"setting2Name\",\"valueString\":\"123123\"}]"));
     }
 
     @Test

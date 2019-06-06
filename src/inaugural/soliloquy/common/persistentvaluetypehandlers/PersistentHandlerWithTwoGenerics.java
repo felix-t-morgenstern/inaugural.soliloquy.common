@@ -26,7 +26,8 @@ public abstract class PersistentHandlerWithTwoGenerics<T> extends PersistentType
             }
         }
         String genericParameter1 = genericParameters.substring(0,substringSeparator);
-        String genericParameter2 = genericParameters.substring(substringSeparator + 1);
+        String genericParameter2 = genericParameters.substring(substringSeparator + 1,
+                genericParameters.length() - 1);
 
         return generateTypeFromFactory(
                 PERSISTENT_VALUES_HANDLER.generateArchetype(genericParameter1),

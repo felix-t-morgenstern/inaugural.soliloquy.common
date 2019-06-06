@@ -35,11 +35,11 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
         }
         SettingDTO[] dto = new Gson().fromJson(valueString, SettingDTO[].class);
         for(SettingDTO settingDTO : dto) {
-            ISetting setting = SETTINGS_REPO.getSetting(settingDTO.name);
+            ISetting setting = SETTINGS_REPO.getSetting(settingDTO.id);
             if (setting == null) {
                 throw new IllegalArgumentException(
                         "PersistentSettingsRepoHandler.read: attempted to read setting with " +
-                                "invalid name (" + settingDTO.name + ")");
+                                "invalid id (" + settingDTO.id + ")");
             }
             String typeName = getProperTypeName(setting.getArchetype());
             IPersistentValueTypeHandler handler =
@@ -64,7 +64,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
             SettingDTO settingDTO = new SettingDTO();
-            settingDTO.name = setting.getName();
+            settingDTO.id = setting.id();
             settingDTO.valueString = handler.write(setting.getValue());
             dto[i] = settingDTO;
             i++;
@@ -73,7 +73,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
     }
 
     private class SettingDTO {
-        String name;
+        String id;
         String valueString;
     }
 }

@@ -4,10 +4,12 @@ import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.ISetting;
 
 public class SettingStub<T> implements ISetting<T> {
+    private String _id;
     private String _name;
     private T _value;
 
-    public SettingStub(String name, T value) {
+    public SettingStub(String id, String name, T value) {
+        _id = id;
         _name = name;
         _value = value;
     }
@@ -34,7 +36,7 @@ public class SettingStub<T> implements ISetting<T> {
 
     @Override
     public String id() throws IllegalStateException {
-        return null;
+        return _id;
     }
 
     @Override

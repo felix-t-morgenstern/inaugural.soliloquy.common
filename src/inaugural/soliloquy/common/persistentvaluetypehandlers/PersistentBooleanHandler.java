@@ -19,7 +19,7 @@ public class PersistentBooleanHandler extends PersistentTypeHandler<Boolean> imp
 
 	@Override
 	public Boolean getArchetype() {
-		return false;
+		return Boolean.FALSE;
 	}
 
 }

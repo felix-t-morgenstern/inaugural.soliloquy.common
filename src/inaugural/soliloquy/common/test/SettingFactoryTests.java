@@ -1,10 +1,12 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.test.stubs.CollectionStub;
 import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.SettingFactory;
+import soliloquy.common.specs.ICollection;
 import soliloquy.common.specs.IGenericParamsSet;
 import soliloquy.common.specs.ISetting;
 import soliloquy.common.specs.ISettingFactory;
@@ -35,5 +37,14 @@ class SettingFactoryTests {
     @Test
 	void testGetInterfaceName() {
     	assertEquals(ISettingFactory.class.getCanonicalName(), _settingFactory.getInterfaceName());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	void testArchetypeWithNullArchetype() {
+		ICollection archetype = new CollectionStub(null);
+
+		assertThrows(IllegalArgumentException.class, () -> _settingFactory.make("settingId",
+				"settingName", archetype, new GenericParamsSetStub()));
 	}
 }
