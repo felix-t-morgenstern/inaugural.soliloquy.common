@@ -70,15 +70,6 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
     }
 
     @Override
-    public IMap generateArchetype(String valueType) throws IllegalArgumentException {
-        int openingCaret = valueType.indexOf("<");
-        int closingCaret = valueType.lastIndexOf(">");
-
-        return (IMap) generateTypeFromGenericParameterNames(valueType
-                .substring(openingCaret + 1, closingCaret + 1));
-    }
-
-    @Override
     protected Object generateTypeFromFactory(Object archetype1, Object archetype2) {
         return MAP_FACTORY.make(archetype1,archetype2);
     }

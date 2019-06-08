@@ -71,15 +71,6 @@ public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPai
     }
 
     @Override
-    public IPair generateArchetype(String valueType) throws IllegalArgumentException {
-        int openingCaret = valueType.indexOf("<");
-        int closingCaret = valueType.lastIndexOf(">");
-
-        return (IPair) generateTypeFromGenericParameterNames(valueType
-                .substring(openingCaret + 1, closingCaret + 1));
-    }
-
-    @Override
     protected Object generateTypeFromFactory(Object archetype1, Object archetype2) {
         return PAIR_FACTORY.make(null, null, archetype1, archetype2);
     }

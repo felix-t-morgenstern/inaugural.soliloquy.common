@@ -84,4 +84,20 @@ class PersistentPairHandlerTests {
         assertNotNull(archetype.getSecondArchetype());
         assertNotNull(((ICollection)archetype.getSecondArchetype()).getArchetype());
     }
+
+    @Test
+    void testGenerateArchetypeWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentPairHandler.generateArchetype(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentPairHandler.generateArchetype(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentPairHandler.generateArchetype(IPair.class.getCanonicalName()));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentPairHandler.generateArchetype(IPair.class.getCanonicalName() +
+                        "<"));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentPairHandler.generateArchetype(IPair.class.getCanonicalName() +
+                        "<>"));
+    }
 }

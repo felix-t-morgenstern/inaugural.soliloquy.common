@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import soliloquy.common.specs.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PersistentMapHandlerTests {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
@@ -70,6 +69,7 @@ class PersistentMapHandlerTests {
                 () -> _persistentMapHandler.getInterfaceName());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGenerateArchetype() {
         final String valueType = IMap.class.getCanonicalName() + "<" +
@@ -85,5 +85,19 @@ class PersistentMapHandlerTests {
         assertNotNull(((ICollection)archetype.getSecondArchetype()).getArchetype());
     }
 
-    // TODO: Add tests of invalid inputs
+    @Test
+    void testGenerateArchetypeWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentMapHandler.generateArchetype(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentMapHandler.generateArchetype(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentMapHandler.generateArchetype(IPair.class.getCanonicalName()));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentMapHandler.generateArchetype(IPair.class.getCanonicalName() +
+                        "<"));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentMapHandler.generateArchetype(IPair.class.getCanonicalName() +
+                        "<>"));
+    }
 }
