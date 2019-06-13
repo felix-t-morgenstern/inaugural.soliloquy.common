@@ -9,7 +9,7 @@ import soliloquy.common.specs.*;
 public class MapStub<K,V> implements IMap<K,V> {
 	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
 
-	private HashMap<K,V> _map = new HashMap<K,V>();
+	private HashMap<K,V> _map = new HashMap<>();
 	private K _archetype1;
 	private V _archetype2;
 
@@ -91,7 +91,7 @@ public class MapStub<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<K> getKeys() {
-		ICollection<K> keys = new CollectionStub<K>();
+		ICollection<K> keys = new CollectionStub<>();
 		for (K key : _map.keySet())
 		{
 			keys.add(key);
@@ -145,7 +145,7 @@ public class MapStub<K,V> implements IMap<K,V> {
 	}
 
 	@Override
-	public void setValidator(IFunction<IPair<K, V>, String> validator) {
+	public ICollection<IFunction<IPair<K, V>, String>> validators() {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
 	}

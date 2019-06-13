@@ -5,6 +5,7 @@ import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -12,11 +13,7 @@ import org.mockito.Mockito;
 import inaugural.soliloquy.common.Map;
 import inaugural.soliloquy.common.test.stubs.MapValidatorStub;
 import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IFunction;
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
+import soliloquy.common.specs.*;
 
 class MapTests {
 	private Map<String,String> _map;
@@ -34,12 +31,13 @@ class MapTests {
 	private final String SECOND_ARCHETYPE = "SECOND_ARCHETYPE";
 	
 	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
+	private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
 	
     @SuppressWarnings("unchecked")
 	@BeforeEach
 	void setUp() {
     	Mockito.reset();
-    	_map = new Map<>(PAIR_FACTORY, FIRST_ARCHETYPE, SECOND_ARCHETYPE);
+    	_map = new Map<>(PAIR_FACTORY, FIRST_ARCHETYPE, SECOND_ARCHETYPE, COLLECTION_FACTORY);
     	
 		_pairMock = mock(IPair.class);
     	when(_pairMock.getItem1()).thenReturn(PAIR_1_KEY);
@@ -206,8 +204,8 @@ class MapTests {
 	}
 
     @Test
-	void testValidator() {
-		_map.setValidator(_validatorStub);
+	void testValidators() {
+		_map.validators().add(_validatorStub);
 
 		assertThrows(IllegalArgumentException.class, () -> _map.put(PAIR_2_KEY, PAIR_2_VALUE));
 		assertThrows(IllegalArgumentException.class, () -> _map.putAll(_pairCollectionMock));
@@ -215,7 +213,7 @@ class MapTests {
 
     @Test
 	void testEqualsMap() {
-		Map<String,String> secondMap = new Map<>(null, "", "");
+		Map<String,String> secondMap = new Map<>(PAIR_FACTORY, "", "", COLLECTION_FACTORY);
 		_map.put("Key1", "Value1");
 		assertTrue(!_map.equals(secondMap));
 		secondMap.put("Key2", "Value2");

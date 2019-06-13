@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.test.stubs.CollectionValidatorStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.Collection;
@@ -136,14 +137,26 @@ class CollectionTests {
     }
 
     @Test
+	void testValidators() {
+    	assertThrows(IllegalArgumentException.class, () -> _collection.validators().add(null));
+		_collection.validators().add(new CollectionValidatorStub<>());
+		assertThrows(IllegalArgumentException.class,
+				() -> _collection.add(CollectionValidatorStub.ILLEGAL_VALUE));
+		assertThrows(IllegalArgumentException.class,
+				() -> _collection.addAll(new Integer[]{1,2,3,123}));
+	}
+
+    @Test
 	void testGetParameterizedClassName() {
     	ICollection<String> strings = new Collection<>("");
-		assertEquals("soliloquy.common.specs.ICollection<java.lang.String>", strings.getInterfaceName());
+		assertEquals("soliloquy.common.specs.ICollection<java.lang.String>",
+				strings.getInterfaceName());
     	
     	ICollection<ICollection<ICollection<String>>> stringsCeption =
 				new Collection<>(new Collection<>(new Collection<>("")));
 		assertEquals(ICollection.class.getCanonicalName() +
-				"<soliloquy.common.specs.ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>",
+				"<soliloquy.common.specs" +
+						".ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>",
 				stringsCeption.getInterfaceName());
     }
 

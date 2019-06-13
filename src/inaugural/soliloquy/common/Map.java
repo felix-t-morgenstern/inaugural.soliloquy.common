@@ -3,30 +3,34 @@ package inaugural.soliloquy.common;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IFunction;
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
+
+import inaugural.soliloquy.common.archetypes.MapValidatorFunctionArchetype;
+import soliloquy.common.specs.*;
 
 public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
-	HashMap<K,V> _map = new HashMap<>();
+	private HashMap<K,V> _map = new HashMap<>();
+
+	private final IPairFactory PAIR_FACTORY;
+	private final K ARCHETYPE_1;
+	private final V ARCHETYPE_2;
+	private final ICollection<IFunction<IPair<K,V>,String>> VALIDATORS;
 	
-	private IFunction<IPair<K,V>,String> _validator;
-	private IPairFactory _pairFactory;
-	private K _archetype1;
-	private V _archetype2;
-	
-	public Map(IPairFactory pairFactory, K archetype1, V archetype2) {
-		_pairFactory = pairFactory;
-		_archetype1 = archetype1;
-		_archetype2 = archetype2;
+	@SuppressWarnings("unchecked")
+	public Map(IPairFactory pairFactory, K archetype1, V archetype2,
+			   ICollectionFactory collectionFactory) {
+		PAIR_FACTORY = pairFactory;
+		ARCHETYPE_1 = archetype1;
+		ARCHETYPE_2 = archetype2;
+		VALIDATORS = collectionFactory.make(
+				new MapValidatorFunctionArchetype(ARCHETYPE_1, ARCHETYPE_2));
 	}
 	
-	private Map(IPairFactory pairFactory, K archetype1, V archetype2, HashMap<K,V> internalMap) {
-		_pairFactory = pairFactory;
-		_archetype1 = archetype1;
-		_archetype2 = archetype2;
+	private Map(IPairFactory pairFactory, K archetype1, V archetype2,
+				ICollection<IFunction<IPair<K,V>,String>> validators, HashMap<K,V> internalMap) {
+		PAIR_FACTORY = pairFactory;
+		ARCHETYPE_1 = archetype1;
+		ARCHETYPE_2 = archetype2;
+		VALIDATORS = validators.makeClone();
 		_map = internalMap;
 	}
 
@@ -78,6 +82,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 		return true;
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public V get(K id) throws IllegalArgumentException, IllegalStateException {
 		if (id == null) {
@@ -91,7 +96,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<K> getKeys() {
-		ICollection<K> idsCollection = new Collection<>(_archetype1);
+		ICollection<K> idsCollection = new Collection<>(ARCHETYPE_1);
 		for (K key : _map.keySet()) {
 			idsCollection.add(key);
 		}
@@ -100,7 +105,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<V> getValues() {
-		ICollection<V> valuesCollection = new Collection<>(_archetype2);
+		ICollection<V> valuesCollection = new Collection<>(ARCHETYPE_2);
 		for (V value : _map.values()) {
 			valuesCollection.add(value);
 		}
@@ -109,7 +114,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<K> indicesOf(V item) {
-		ICollection<K> keys = new Collection<>(_archetype1);
+		ICollection<K> keys = new Collection<>(ARCHETYPE_1);
 		for(K key : getKeys()) {
 			if (_map.get(key) == item) {
 				keys.add(key);
@@ -128,6 +133,7 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 		return _map.containsKey(key);
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void put(K key, V value) throws IllegalArgumentException {
 		if (key == null) {
@@ -136,10 +142,12 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 		if (key == "") {
 			throw new IllegalArgumentException("Map.put: Blank string is an illegal key");
 		}
-		if(_validator != null) {
-			String validationMsg = _validator.run(new Pair<>(key, value));
-			if (validationMsg != null) {
-				throw new IllegalArgumentException(validationMsg);
+		IPair<K,V> toInsert = PAIR_FACTORY.make(key, value, ARCHETYPE_1, ARCHETYPE_2);
+		for(IFunction<IPair<K,V>, String> validator : VALIDATORS) {
+			String exceptionMessage = validator.run(toInsert);
+			if (exceptionMessage != null) {
+				throw new IllegalArgumentException("Map.put: Input failed validation; " +
+						exceptionMessage);
 			}
 		}
 		_map.put(key, value);
@@ -163,8 +171,8 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	}
 
 	@Override
-	public void setValidator(IFunction<IPair<K, V>, String> validator) {
-		_validator = validator;
+	public ICollection<IFunction<IPair<K, V>, String>> validators() {
+		return VALIDATORS;
 	}
 
 	@Override
@@ -174,12 +182,12 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 
 	@Override
 	public K getFirstArchetype() {
-		return _archetype1;
+		return ARCHETYPE_1;
 	}
 
 	@Override
 	public V getSecondArchetype() {
-		return _archetype2;
+		return ARCHETYPE_2;
 	}
 
 	@Override
@@ -191,12 +199,12 @@ public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	@Override
 	public IMap<K, V> makeClone() {
 		HashMap<K,V> clonedInternalMap = (HashMap<K,V>) _map.clone();
-		return new Map<>(_pairFactory, _archetype1, _archetype2, clonedInternalMap);
+		return new Map<>(PAIR_FACTORY, ARCHETYPE_1, ARCHETYPE_2, VALIDATORS, clonedInternalMap);
 	}
 
 	@Override
 	public Iterator<IPair<K,V>> iterator() {
-		return new MapIterator(_map,_pairFactory);
+		return new MapIterator(_map, PAIR_FACTORY);
 	}
 	
 	private class MapIterator implements Iterator<IPair<K,V>> {

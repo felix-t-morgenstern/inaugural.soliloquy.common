@@ -1,6 +1,8 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import inaugural.soliloquy.common.test.stubs.MapStub;
+import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +17,7 @@ class MapFactoryTests {
     @BeforeEach
 	void setUp() throws Exception {
     	// (No need to test IPairFactory functionality in this suite)
-    	_mapFactory = new MapFactory(null);
+    	_mapFactory = new MapFactory(new PairFactoryStub(), new CollectionFactoryStub());
     }
 
     @Test
