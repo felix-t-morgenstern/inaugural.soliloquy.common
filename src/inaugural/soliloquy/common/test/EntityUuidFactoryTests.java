@@ -7,8 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import inaugural.soliloquy.common.EntityUuidFactory;
-import soliloquy.common.specs.IEntityUuid;
-import soliloquy.common.specs.IEntityUuidFactory;
+import soliloquy.specs.common.factories.IEntityUuidFactory;
+import soliloquy.specs.common.valueobjects.IEntityUuid;
 
 class EntityUuidFactoryTests {
 	private EntityUuidFactory _entityUuidFactory;
@@ -27,10 +27,13 @@ class EntityUuidFactoryTests {
 
     @Test
 	void testCreateFromLongs() {
-    	IEntityUuid createdEntityUuid = 
-    			_entityUuidFactory.createFromLongs(ENTITY_UUID_MOST_SIGNIFICANT_BITS, ENTITY_UUID_LEAST_SIGNIFICANT_BITS);
-		assertEquals(ENTITY_UUID_MOST_SIGNIFICANT_BITS, createdEntityUuid.getMostSignificantBits());
-		assertEquals(ENTITY_UUID_LEAST_SIGNIFICANT_BITS, createdEntityUuid.getLeastSignificantBits());
+    	IEntityUuid createdEntityUuid =
+    			_entityUuidFactory.createFromLongs(ENTITY_UUID_MOST_SIGNIFICANT_BITS,
+						ENTITY_UUID_LEAST_SIGNIFICANT_BITS);
+		assertEquals(ENTITY_UUID_MOST_SIGNIFICANT_BITS,
+				createdEntityUuid.getMostSignificantBits());
+		assertEquals(ENTITY_UUID_LEAST_SIGNIFICANT_BITS,
+				createdEntityUuid.getLeastSignificantBits());
     }
 
     @Test

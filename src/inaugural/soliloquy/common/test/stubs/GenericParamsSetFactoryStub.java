@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.IGenericParamsSetFactory;
+import soliloquy.specs.common.factories.IGenericParamsSetFactory;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
 
 public class GenericParamsSetFactoryStub implements IGenericParamsSetFactory {
     @Override

@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IFunction;
-import soliloquy.common.specs.IPair;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.game.IGame;
+import soliloquy.specs.logger.ILogger;
 
 public class MapValidatorStub implements IFunction<IPair<String,String>,String> {
 	@Override
@@ -14,7 +14,7 @@ public class MapValidatorStub implements IFunction<IPair<String,String>,String> 
 
 	@Override
 	public String run(IPair<String, String> input) throws IllegalArgumentException {
-		if (input.getItem1() == "Key1") return null;
+		if (input.getItem1().equals("Key1")) return null;
 		return "Input key (" + input.getItem1() + ") not equal to Key1";
 	}
 

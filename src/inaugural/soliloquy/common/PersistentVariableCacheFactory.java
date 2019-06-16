@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.IPersistentVariableCache;
-import soliloquy.common.specs.IPersistentVariableCacheFactory;
+import soliloquy.specs.common.entities.IPersistentVariableCache;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
 
 public class PersistentVariableCacheFactory implements IPersistentVariableCacheFactory {
     private final ICollectionFactory COLLECTION_FACTORY;

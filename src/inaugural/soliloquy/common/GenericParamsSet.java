@@ -1,11 +1,15 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.valueobjects.IMap;
 
 import java.util.HashMap;
 
 public class GenericParamsSet extends CanGetInterfaceName implements IGenericParamsSet {
-	private HashMap<String,IMap<String,?>> _paramsSetsRepository = new HashMap<>();
+	private HashMap<String, IMap<String,?>> _paramsSetsRepository = new HashMap<>();
 	private IPersistentValuesHandler _persistentValuesHandler;
 	private IMapFactory _mapFactory;
 	
@@ -14,7 +18,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		_mapFactory = mapFactory;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "ConstantConditions"})
 	public <T> void addParam(String name, T value) throws IllegalArgumentException {
 		if (value == null) {
 			throw new IllegalArgumentException("GenericParamsSet.addParam: value must not be null");
@@ -26,6 +30,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		((IMap<String,T>) _paramsSetsRepository.get(paramTypeName)).put(name, value);
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public <T> void addParamsSet(IMap<String, T> paramsSet)
 			throws IllegalArgumentException, UnsupportedOperationException {

@@ -5,7 +5,11 @@ import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentPairHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IPair;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -76,7 +80,7 @@ class PersistentPairHandlerTests {
                 String.class.getCanonicalName() + "," + ICollection.class.getCanonicalName() +
                 "<" + Integer.class.getCanonicalName() + ">>";
 
-        IPair<String,ICollection<Integer>> archetype =
+        IPair<String, ICollection<Integer>> archetype =
                 _persistentPairHandler.generateArchetype(valueType);
 
         assertNotNull(archetype);

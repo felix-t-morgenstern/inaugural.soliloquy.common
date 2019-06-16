@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.specs.common.shared.ISoliloquyClass;
 
 public abstract class CanGetInterfaceName {
     protected String getProperTypeName(Object object) {

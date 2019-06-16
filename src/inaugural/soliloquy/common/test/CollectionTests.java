@@ -4,7 +4,7 @@ import inaugural.soliloquy.common.test.stubs.CollectionValidatorStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.Collection;
-import soliloquy.common.specs.ICollection;
+import soliloquy.specs.common.valueobjects.ICollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -149,14 +149,16 @@ class CollectionTests {
     @Test
 	void testGetParameterizedClassName() {
     	ICollection<String> strings = new Collection<>("");
-		assertEquals("soliloquy.common.specs.ICollection<java.lang.String>",
+		assertEquals(ICollection.class.getCanonicalName() + "<" +
+						String.class.getCanonicalName() + ">",
 				strings.getInterfaceName());
     	
     	ICollection<ICollection<ICollection<String>>> stringsCeption =
 				new Collection<>(new Collection<>(new Collection<>("")));
-		assertEquals(ICollection.class.getCanonicalName() +
-				"<soliloquy.common.specs" +
-						".ICollection<soliloquy.common.specs.ICollection<java.lang.String>>>",
+		assertEquals(ICollection.class.getCanonicalName() + "<" +
+						ICollection.class.getCanonicalName() + "<" +
+						ICollection.class.getCanonicalName() + "<" +
+						String.class.getCanonicalName() + ">>>",
 				stringsCeption.getInterfaceName());
     }
 

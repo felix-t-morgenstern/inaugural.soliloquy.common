@@ -6,7 +6,11 @@ import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.entities.IPersistentVariableCache;
+import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
+import soliloquy.specs.common.valueobjects.IMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 

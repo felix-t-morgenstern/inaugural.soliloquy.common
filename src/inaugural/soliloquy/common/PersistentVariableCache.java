@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
+import soliloquy.specs.common.entities.IPersistentVariableCache;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
 
-import soliloquy.common.specs.*;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
+import java.util.HashMap;
 
 public class PersistentVariableCache implements IPersistentVariableCache {
 	private final ICollectionFactory COLLECTION_FACTORY;

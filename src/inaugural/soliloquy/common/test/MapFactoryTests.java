@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.MapFactory;
-import soliloquy.common.specs.IMap;
+import soliloquy.specs.common.valueobjects.IMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +15,7 @@ class MapFactoryTests {
 	private MapFactory _mapFactory;
 
     @BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
     	// (No need to test IPairFactory functionality in this suite)
     	_mapFactory = new MapFactory(new PairFactoryStub(), new CollectionFactoryStub());
     }

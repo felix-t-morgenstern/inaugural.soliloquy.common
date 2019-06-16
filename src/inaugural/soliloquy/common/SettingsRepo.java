@@ -1,17 +1,18 @@
 package inaugural.soliloquy.common;
 
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.entities.ISetting;
+import soliloquy.specs.common.entities.ISettingsRepo;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.shared.IEntityGroup;
+import soliloquy.specs.common.shared.IEntityGroupItem;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IPair;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.IEntityGroup;
-import soliloquy.common.specs.IEntityGroupItem;
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
-import soliloquy.common.specs.IPersistentValuesHandler;
-import soliloquy.common.specs.ISetting;
-import soliloquy.common.specs.ISettingsRepo;
 
 public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	private final HashMap<Integer,SettingsRepoItem> ITEMS;

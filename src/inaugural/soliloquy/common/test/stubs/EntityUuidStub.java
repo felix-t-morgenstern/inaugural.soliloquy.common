@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IEntityUuid;
+import soliloquy.specs.common.valueobjects.IEntityUuid;
 
 public class EntityUuidStub implements IEntityUuid {
     private final String GUID_STRING;
 
-    public EntityUuidStub() {
+    EntityUuidStub() {
         GUID_STRING = null;
     }
 

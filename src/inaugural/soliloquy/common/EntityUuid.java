@@ -1,7 +1,8 @@
 package inaugural.soliloquy.common;
 
+import soliloquy.specs.common.valueobjects.IEntityUuid;
+
 import java.util.UUID;
-import soliloquy.common.specs.IEntityUuid;
 
 public class EntityUuid implements IEntityUuid {
 	private UUID _uuid;

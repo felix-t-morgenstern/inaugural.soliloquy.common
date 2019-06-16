@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.Setting;
 import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.ISetting;
+import soliloquy.specs.common.entities.ISetting;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,7 +44,8 @@ class SettingTests {
 		assertSame(_setting.getArchetype(), SETTING_ARCHETYPE);
     }
 
-    @Test
+    @SuppressWarnings("ConstantConditions")
+	@Test
 	void testConstructorWithNullArchetype() {
     	assertThrows(IllegalArgumentException.class,
 				() -> new Setting<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, null,

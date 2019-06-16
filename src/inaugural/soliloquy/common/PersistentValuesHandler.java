@@ -2,11 +2,14 @@ package inaugural.soliloquy.common;
 
 import java.util.HashMap;
 
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.*;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.valueobjects.IPair;
 
 public class PersistentValuesHandler extends CanGetInterfaceName
 		implements IPersistentValuesHandler {
-	private HashMap<String,IPersistentValueTypeHandler<?>> _persistentValueTypeHandlers;
+	private HashMap<String, IPersistentValueTypeHandler> _persistentValueTypeHandlers;
 	private IPersistentCollectionHandler _persistentCollectionHandler;
 	private IPersistentMapHandler _persistentMapHandler;
 	private IPersistentPairHandler _persistentPairHandler;

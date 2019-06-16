@@ -6,7 +6,12 @@ import inaugural.soliloquy.common.test.stubs.MapStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentMapHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.valueobjects.IPair;
 
 import static org.junit.jupiter.api.Assertions.*;
 

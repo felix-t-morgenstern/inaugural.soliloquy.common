@@ -1,18 +1,18 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.IGenericParamsSetFactory;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.valueobjects.IPair;
 
 public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGenericParamsSet>
         implements IPersistentValueTypeHandler<IGenericParamsSet> {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final IGenericParamsSetFactory GENERIC_PARAMS_SET_FACTORY;
     private final IGenericParamsSet ARCHETYPE;
-
-    private final String DELIMITER_OUTER = "\u0095";
-    private final String DELIMITER_TYPE = "\u0093";
-    private final String DELIMITER_ITEM = "\u0096";
-    private final String DELIMITER_INNER = "\u0097";
 
     public PersistentGenericParamsSetHandler(IPersistentValuesHandler persistentValuesHandler,
                                              IGenericParamsSetFactory genericParamsSetFactory) {

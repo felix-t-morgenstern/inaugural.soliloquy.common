@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.valueobjects.IPair;
 
 public class PairFactoryStub implements IPairFactory {
 
@@ -11,6 +11,7 @@ public class PairFactoryStub implements IPairFactory {
 		return new PairStub(item1, item2);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T1, T2> IPair<T1, T2> make(T1 item1, T2 item2, T1 archetype1, T2 archetype2)
 			throws IllegalArgumentException {

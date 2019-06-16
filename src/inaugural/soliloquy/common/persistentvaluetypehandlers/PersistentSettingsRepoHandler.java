@@ -2,7 +2,11 @@ package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
 import inaugural.soliloquy.common.archetypes.SettingsRepoArchetype;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.entities.ISetting;
+import soliloquy.specs.common.entities.ISettingsRepo;
+import soliloquy.specs.common.valueobjects.ICollection;
 
 public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettingsRepo>
         implements IPersistentValueTypeHandler<ISettingsRepo> {

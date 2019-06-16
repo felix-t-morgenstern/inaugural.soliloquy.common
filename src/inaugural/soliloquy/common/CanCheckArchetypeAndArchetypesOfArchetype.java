@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.IHasOneGenericParam;
-import soliloquy.common.specs.IHasTwoGenericParams;
+import soliloquy.specs.common.shared.IHasOneGenericParam;
+import soliloquy.specs.common.shared.IHasTwoGenericParams;
 
 abstract class CanCheckArchetypeAndArchetypesOfArchetype {
-    protected void checkArchetypeAndArchetypesOfArchetype(String methodName, Object archetype) {
+    void checkArchetypeAndArchetypesOfArchetype(String methodName, Object archetype) {
         if (archetype == null) {
             throw new IllegalArgumentException(className() + "." + methodName +
                     ": provided archetype is null or has null archetypes");

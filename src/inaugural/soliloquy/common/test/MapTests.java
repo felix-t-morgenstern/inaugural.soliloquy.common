@@ -13,16 +13,19 @@ import org.mockito.Mockito;
 import inaugural.soliloquy.common.Map;
 import inaugural.soliloquy.common.test.stubs.MapValidatorStub;
 import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.valueobjects.IPair;
 
 class MapTests {
 	private Map<String,String> _map;
 	private IPair<String,String> _pairMock;
-	private IPair<String,String> _pairMock2;
 	private IFunction<IPair<String,String>,String> _validatorStub;
 	private ICollection<IPair<String,String>> _pairCollectionMock;
-	private Iterator<IPair<String,String>> _pairCollectionIteratorMock;
-	
+
 	private final String PAIR_1_KEY = "Key1";
 	private final String PAIR_1_VALUE = "Value1";
 	private final String PAIR_2_KEY = "Key2";
@@ -42,16 +45,16 @@ class MapTests {
 		_pairMock = mock(IPair.class);
     	when(_pairMock.getItem1()).thenReturn(PAIR_1_KEY);
     	when(_pairMock.getItem2()).thenReturn(PAIR_1_VALUE);
-    	
-		_pairMock2 = mock(IPair.class);
-    	when(_pairMock2.getItem1()).thenReturn(PAIR_2_KEY);
-    	when(_pairMock2.getItem2()).thenReturn(PAIR_2_VALUE);
+
+		IPair<String, String> pairMock2 = mock(IPair.class);
+    	when(pairMock2.getItem1()).thenReturn(PAIR_2_KEY);
+    	when(pairMock2.getItem2()).thenReturn(PAIR_2_VALUE);
     	
     	_validatorStub = new MapValidatorStub();
-    	
-    	_pairCollectionIteratorMock = mock(Iterator.class);
+
+		Iterator<IPair<String, String>> _pairCollectionIteratorMock = mock(Iterator.class);
     	when(_pairCollectionIteratorMock.hasNext()).thenReturn(true).thenReturn(true).thenReturn(false);
-    	when(_pairCollectionIteratorMock.next()).thenReturn(_pairMock).thenReturn(_pairMock2);
+    	when(_pairCollectionIteratorMock.next()).thenReturn(_pairMock).thenReturn(pairMock2);
     	
     	_pairCollectionMock = mock(ICollection.class);
     	when(_pairCollectionMock.iterator()).thenReturn(_pairCollectionIteratorMock);

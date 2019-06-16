@@ -3,8 +3,8 @@ package inaugural.soliloquy.common.test.stubs;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IFunction;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.valueobjects.ICollection;
 
 public class CollectionStub<V> implements ICollection<V> {
 	private V _archetype;

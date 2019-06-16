@@ -4,7 +4,7 @@ import inaugural.soliloquy.common.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import soliloquy.common.specs.ICoordinate;
+import soliloquy.specs.common.valueobjects.ICoordinate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

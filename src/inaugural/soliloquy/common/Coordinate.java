@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.ICoordinate;
+import soliloquy.specs.common.valueobjects.ICoordinate;
 
 public class Coordinate implements ICoordinate {
 	

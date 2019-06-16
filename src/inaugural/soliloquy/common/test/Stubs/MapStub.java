@@ -1,10 +1,14 @@
 package inaugural.soliloquy.common.test.stubs;
 
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.valueobjects.IPair;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import soliloquy.common.specs.*;
 
 public class MapStub<K,V> implements IMap<K,V> {
 	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();

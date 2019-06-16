@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IMapFactory;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.valueobjects.IMap;
 
 public class MapFactoryStub implements IMapFactory {
 

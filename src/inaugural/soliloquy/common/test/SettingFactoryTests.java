@@ -6,10 +6,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.SettingFactory;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.ISetting;
-import soliloquy.common.specs.ISettingFactory;
+import soliloquy.specs.common.entities.ISetting;
+import soliloquy.specs.common.factories.ISettingFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 

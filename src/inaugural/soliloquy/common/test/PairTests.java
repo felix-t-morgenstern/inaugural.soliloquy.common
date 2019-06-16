@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.Pair;
+import soliloquy.specs.common.valueobjects.IPair;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,6 +43,7 @@ class PairTests {
 
     @Test
     void testGetParameterizedClassName() {
-        assertEquals("soliloquy.common.specs.IPair<java.lang.String,java.lang.Integer>", _pair.getInterfaceName());
+        assertEquals(IPair.class.getCanonicalName() + "<" + String.class.getCanonicalName() + ","
+                + Integer.class.getCanonicalName() + ">", _pair.getInterfaceName());
     }
 }

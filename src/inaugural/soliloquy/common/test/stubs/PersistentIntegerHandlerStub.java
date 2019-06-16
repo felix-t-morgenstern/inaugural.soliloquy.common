@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
 
 public class PersistentIntegerHandlerStub implements IPersistentValueTypeHandler<Integer> {
     @Override

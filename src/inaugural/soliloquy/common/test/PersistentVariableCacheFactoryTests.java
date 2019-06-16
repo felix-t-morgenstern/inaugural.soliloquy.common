@@ -4,8 +4,8 @@ import inaugural.soliloquy.common.PersistentVariableCacheFactory;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.IPersistentVariableCacheFactory;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

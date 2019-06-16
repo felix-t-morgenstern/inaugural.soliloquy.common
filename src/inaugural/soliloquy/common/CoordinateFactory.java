@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.ICoordinate;
-import soliloquy.common.specs.ICoordinateFactory;
+import soliloquy.specs.common.factories.ICoordinateFactory;
+import soliloquy.specs.common.valueobjects.ICoordinate;
 
 public class CoordinateFactory implements ICoordinateFactory {
 

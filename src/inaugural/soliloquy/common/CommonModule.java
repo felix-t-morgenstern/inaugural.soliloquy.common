@@ -3,7 +3,8 @@ package inaugural.soliloquy.common;
 import com.google.inject.AbstractModule;
 import inaugural.soliloquy.common.archetypes.SettingArchetype;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.*;
+import soliloquy.specs.common.factories.*;
 
 public class CommonModule extends AbstractModule {
 	private ICollectionFactory _collectionFactory;

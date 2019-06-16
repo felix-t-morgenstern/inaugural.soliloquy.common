@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.IGenericParamsSetFactory;
-import soliloquy.common.specs.IMapFactory;
-import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.IGenericParamsSetFactory;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
 
 public class GenericParamsSetFactory implements IGenericParamsSetFactory {
 	private IPersistentValuesHandler _persistentValuesHandler;

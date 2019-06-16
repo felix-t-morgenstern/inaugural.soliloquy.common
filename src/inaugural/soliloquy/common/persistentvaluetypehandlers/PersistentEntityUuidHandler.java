@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.common.specs.IEntityUuid;
-import soliloquy.common.specs.IEntityUuidFactory;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.factories.IEntityUuidFactory;
+import soliloquy.specs.common.valueobjects.IEntityUuid;
 
 public class PersistentEntityUuidHandler extends PersistentTypeHandler<IEntityUuid>
         implements IPersistentValueTypeHandler<IEntityUuid> {

@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IPersistentVariableCache;
+import soliloquy.specs.common.entities.IPersistentVariableCache;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
 
 public class PersistentVariableCacheStub implements IPersistentVariableCache {
     private final IMap<String,Object> PERSISTENT_VARIABLES = new MapStub<>();
@@ -58,6 +58,7 @@ public class PersistentVariableCacheStub implements IPersistentVariableCache {
         throw new UnsupportedOperationException();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T getVariable(String name) {
         if (!P_VARS.isEmpty()) {

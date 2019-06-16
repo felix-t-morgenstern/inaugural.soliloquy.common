@@ -1,23 +1,29 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.ISetting;
+import soliloquy.specs.common.entities.ISettingsRepo;
+import soliloquy.specs.common.shared.IEntityGroupItem;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IPair;
 
 import java.util.HashMap;
 
 public class SettingsRepoStub implements ISettingsRepo {
-    public static final HashMap<String,Object> SETTINGS = new HashMap<>();
+    private static final HashMap<String,Object> SETTINGS = new HashMap<>();
 
-    public static final String SETTING_1_ID = "setting1Id";
+    private static final String SETTING_1_ID = "setting1Id";
     public static final String SETTING_1_NAME = "setting1Name";
     public static final String SETTING_1_VALUE = "setting1Value";
 
-    public static final String SETTING_2_ID = "setting2Id";
+    private static final String SETTING_2_ID = "setting2Id";
     public static final String SETTING_2_NAME = "setting2Name";
     public static final Integer SETTING_2_VALUE = 123123;
 
-    public static final ISetting SETTING_1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
+    @SuppressWarnings("unchecked")
+    private static final ISetting SETTING_1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
             SETTING_1_VALUE);
-    public static final ISetting SETTING_2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME,
+    @SuppressWarnings("unchecked")
+    private static final ISetting SETTING_2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME,
             SETTING_2_VALUE);
 
     @Override

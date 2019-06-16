@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.common.specs.IFunction;
-import soliloquy.common.specs.IPair;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.game.IGame;
+import soliloquy.specs.logger.ILogger;
 
 public class MapValidatorFunctionArchetype<K,V> implements IFunction<IPair<K,V>,String> {
     private final IPair<K,V> ARCHETYPE_1;

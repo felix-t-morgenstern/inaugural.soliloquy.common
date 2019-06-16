@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPairFactory;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.valueobjects.IPair;
 
 public class PairFactory extends CanCheckArchetypeAndArchetypesOfArchetype
 		implements IPairFactory {

@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IPair;
-import soliloquy.common.specs.IPersistentPairHandler;
+import soliloquy.specs.common.entities.IPersistentPairHandler;
+import soliloquy.specs.common.valueobjects.IPair;
 
 public class PersistentPairHandlerStub implements IPersistentPairHandler {
     @Override

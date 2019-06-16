@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.common.specs.IPersistentValuesHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
 
 public abstract class PersistentHandlerWithTwoGenerics<T> extends PersistentTypeHandler<T> {
     protected final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;

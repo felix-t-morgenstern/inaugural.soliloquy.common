@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import inaugural.soliloquy.common.archetypes.CollectionValidatorFunctionArchetype;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IFunction;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.valueobjects.ICollection;
 
 public class Collection<V> extends HasOneGenericParam<V> implements ICollection<V> {
 	private final ArrayList<V> COLLECTION;

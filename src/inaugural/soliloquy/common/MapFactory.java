@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.ICollectionFactory;
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IMapFactory;
-import soliloquy.common.specs.IPairFactory;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.valueobjects.IMap;
 
 public class MapFactory extends CanCheckArchetypeAndArchetypesOfArchetype implements IMapFactory {
 	private final IPairFactory PAIR_FACTORY;

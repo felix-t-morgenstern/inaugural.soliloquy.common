@@ -5,66 +5,65 @@ import com.google.inject.Injector;
 import inaugural.soliloquy.common.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.entities.ISetting;
+import soliloquy.specs.common.entities.ISettingsRepo;
+import soliloquy.specs.common.factories.*;
+import soliloquy.specs.common.valueobjects.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SettingsRepoIntegrationTests {
     private ISettingsRepo _settingsRepo;
 
-    private ICollectionFactory _collectionFactory;
-    private ICoordinateFactory _coordinateFactory;
     private IEntityUuidFactory _entityUuidFactory;
-    private IGenericParamsSetFactory _genericParamsSetFactory;
     private IMapFactory _mapFactory;
-    private IPairFactory _pairFactory;
-    private ISettingFactory _settingFactory;
 
     private IPersistentValueTypeHandler<ISettingsRepo> _settingsRepoHandler;
 
-    private final String SUBGROUPING_1 = "subgrouping1";
-    private final String SUBGROUPING_1_1 = "subgrouping1-1";
-    private final String SUBGROUPING_1_2 = "subgrouping1-2";
-    private final String SUBGROUPING_1_3 = "subgrouping1-3";
-    private final String SUBGROUPING_2 = "subgrouping2";
-    private final String SUBGROUPING_2_1 = "subgrouping2-1";
-    private final String SUBGROUPING_2_2 = "subgrouping2-2";
-    private final String SUBGROUPING_2_3 = "subgrouping2-3";
-    private final String SUBGROUPING_3 = "subgrouping3";
-    private final String SUBGROUPING_3_1 = "subgrouping3-1";
-    private final String SUBGROUPING_3_2 = "subgrouping3-2";
-    private final String SUBGROUPING_3_3 = "subgrouping3-3";
-
-    private final String VALUES_STRING = "[{\"id\":\"booleanSetting\",\"valueString\":\"true\"},{\"id\":\"collectionOfIntsSetting\",\"valueString\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"valueStrings\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"collectionOfMapsSetting\",\"valueString\":\"{\\\"typeName\\\":\\\"soliloquy.common.specs.IMap\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"valueStrings\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"id\":\"coordinateSetting\",\"valueString\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"id\":\"entityUuidSetting\",\"valueString\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"id\":\"integerSetting\",\"valueString\":\"123456789\"},{\"id\":\"mapOfStringsToIntsSetting\",\"valueString\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keyValueStrings\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueValueStrings\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"mapOfIntsToMapsOfIntsToBooleansSetting\",\"valueString\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.common.specs.IMap\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keyValueStrings\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueValueStrings\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"id\":\"pairOfStringsSetting\",\"valueString\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"valueString1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"valueString2\\\":\\\"pairString2\\\"}\"},{\"id\":\"pairOfStringAndCollectionOfInts\",\"valueString\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"valueString1\\\":\\\"stringValue\\\",\\\"valueType2\\\":\\\"soliloquy.common.specs.ICollection\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"valueString2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueStrings\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\",\"valueString\":\"stringSettingValue\"}]";
+    private final String VALUES_STRING = "[{\"id\":\"booleanSetting\",\"valueString\":\"true\"},{\"id\":\"collectionOfIntsSetting\",\"valueString\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"valueStrings\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"collectionOfMapsSetting\",\"valueString\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.valueobjects.IMap\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"valueStrings\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"id\":\"coordinateSetting\",\"valueString\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"id\":\"entityUuidSetting\",\"valueString\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"id\":\"integerSetting\",\"valueString\":\"123456789\"},{\"id\":\"mapOfStringsToIntsSetting\",\"valueString\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keyValueStrings\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueValueStrings\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"mapOfIntsToMapsOfIntsToBooleansSetting\",\"valueString\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.valueobjects.IMap\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keyValueStrings\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueValueStrings\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keyValueStrings\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueValueStrings\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"id\":\"pairOfStringsSetting\",\"valueString\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"valueString1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"valueString2\\\":\\\"pairString2\\\"}\"},{\"id\":\"pairOfStringAndCollectionOfInts\",\"valueString\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"valueString1\\\":\\\"stringValue\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.valueobjects.ICollection\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"valueString2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueStrings\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\",\"valueString\":\"stringSettingValue\"}]";
 
     @BeforeEach
     void setUp() {
         Injector commonInjector = Guice.createInjector(new CommonModule());
 
         _settingsRepo = commonInjector.getInstance(ISettingsRepo.class);
-        _collectionFactory = commonInjector.getInstance(ICollectionFactory.class);
-        _coordinateFactory = commonInjector.getInstance(ICoordinateFactory.class);
+        ICollectionFactory _collectionFactory = commonInjector.getInstance(ICollectionFactory.class);
+        ICoordinateFactory _coordinateFactory = commonInjector.getInstance(ICoordinateFactory.class);
         _entityUuidFactory = commonInjector.getInstance(IEntityUuidFactory.class);
-        _genericParamsSetFactory = commonInjector.getInstance(IGenericParamsSetFactory.class);
+        IGenericParamsSetFactory _genericParamsSetFactory = commonInjector.getInstance(IGenericParamsSetFactory.class);
         _mapFactory = commonInjector.getInstance(IMapFactory.class);
-        _pairFactory = commonInjector.getInstance(IPairFactory.class);
-        _settingFactory = commonInjector.getInstance(ISettingFactory.class);
+        IPairFactory _pairFactory = commonInjector.getInstance(IPairFactory.class);
+        ISettingFactory _settingFactory = commonInjector.getInstance(ISettingFactory.class);
 
         _settingsRepoHandler = commonInjector.getInstance(IPersistentValuesHandler.class)
                 .getPersistentValueTypeHandler(ISettingsRepo.class.getCanonicalName());
 
-        _settingsRepo.newSubgrouping(100, SUBGROUPING_1, null);
-        _settingsRepo.newSubgrouping(101, SUBGROUPING_1_1, SUBGROUPING_1);
-        _settingsRepo.newSubgrouping(102, SUBGROUPING_1_2, SUBGROUPING_1);
-        _settingsRepo.newSubgrouping(103, SUBGROUPING_1_3, SUBGROUPING_1);
-        _settingsRepo.newSubgrouping(104, SUBGROUPING_2, null);
-        _settingsRepo.newSubgrouping(105, SUBGROUPING_2_1, SUBGROUPING_2);
-        _settingsRepo.newSubgrouping(106, SUBGROUPING_2_2, SUBGROUPING_2);
-        _settingsRepo.newSubgrouping(107, SUBGROUPING_2_3, SUBGROUPING_2);
-        _settingsRepo.newSubgrouping(108, SUBGROUPING_3, null);
-        _settingsRepo.newSubgrouping(109, SUBGROUPING_3_1, SUBGROUPING_3);
-        _settingsRepo.newSubgrouping(110, SUBGROUPING_3_2, SUBGROUPING_3);
-        _settingsRepo.newSubgrouping(111, SUBGROUPING_3_3, SUBGROUPING_3);
+        String subgrouping1 = "subgrouping1";
+        _settingsRepo.newSubgrouping(100, subgrouping1, null);
+        String subgrouping1_1 = "subgrouping1-1";
+        _settingsRepo.newSubgrouping(101, subgrouping1_1, subgrouping1);
+        String subgrouping1_2 = "subgrouping1-2";
+        _settingsRepo.newSubgrouping(102, subgrouping1_2, subgrouping1);
+        String subgrouping1_3 = "subgrouping1-3";
+        _settingsRepo.newSubgrouping(103, subgrouping1_3, subgrouping1);
+        String subgrouping2 = "subgrouping2";
+        _settingsRepo.newSubgrouping(104, subgrouping2, null);
+        String subgrouping2_1 = "subgrouping2-1";
+        _settingsRepo.newSubgrouping(105, subgrouping2_1, subgrouping2);
+        String subgrouping2_2 = "subgrouping2-2";
+        _settingsRepo.newSubgrouping(106, subgrouping2_2, subgrouping2);
+        String subgrouping2_3 = "subgrouping2-3";
+        _settingsRepo.newSubgrouping(107, subgrouping2_3, subgrouping2);
+        String subgrouping3 = "subgrouping3";
+        _settingsRepo.newSubgrouping(108, subgrouping3, null);
+        String subgrouping3_1 = "subgrouping3-1";
+        _settingsRepo.newSubgrouping(109, subgrouping3_1, subgrouping3);
+        String subgrouping3_2 = "subgrouping3-2";
+        _settingsRepo.newSubgrouping(110, subgrouping3_2, subgrouping3);
+        String subgrouping3_3 = "subgrouping3-3";
+        _settingsRepo.newSubgrouping(111, subgrouping3_3, subgrouping3);
 
         ISetting booleanSetting = _settingFactory.make("booleanSetting", "BooleanSetting",
                 false, _genericParamsSetFactory.make());
@@ -73,52 +72,52 @@ class SettingsRepoIntegrationTests {
         ISetting collectionOfIntsSetting = _settingFactory.make("collectionOfIntsSetting",
                 "CollectionOfIntsSetting", _collectionFactory.make(0),
                 _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(collectionOfIntsSetting, 2, SUBGROUPING_1);
+        _settingsRepo.addEntity(collectionOfIntsSetting, 2, subgrouping1);
 
         ISetting collectionOfMapsSetting = _settingFactory.make("collectionOfMapsSetting",
                 "CollectionOfMapsSetting", _collectionFactory.make(_mapFactory.make(0, false)),
                 _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(collectionOfMapsSetting, 3, SUBGROUPING_1_1);
+        _settingsRepo.addEntity(collectionOfMapsSetting, 3, subgrouping1_1);
 
         ISetting coordinateSetting = _settingFactory.make("coordinateSetting", "CoordinateSetting",
                 _coordinateFactory.make(0,0), _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(coordinateSetting, 4, SUBGROUPING_1_2);
+        _settingsRepo.addEntity(coordinateSetting, 4, subgrouping1_2);
 
         ISetting entityUuidSetting = _settingFactory.make("entityUuidSetting", "EntityUuidSetting",
                 _entityUuidFactory.createRandomEntityUuid(), _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(entityUuidSetting, 5, SUBGROUPING_1_3);
+        _settingsRepo.addEntity(entityUuidSetting, 5, subgrouping1_3);
 
         ISetting integerSetting = _settingFactory.make("integerSetting", "IntegerSetting", 0,
                 _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(integerSetting, 6, SUBGROUPING_2);
+        _settingsRepo.addEntity(integerSetting, 6, subgrouping2);
 
         ISetting mapOfStringsToIntsSetting = _settingFactory.make("mapOfStringsToIntsSetting",
                 "MapOfStringsToIntsSetting", _mapFactory.make("", 0),
                 _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(mapOfStringsToIntsSetting, 7, SUBGROUPING_2_1);
+        _settingsRepo.addEntity(mapOfStringsToIntsSetting, 7, subgrouping2_1);
 
         ISetting mapOfIntsToMapsOfIntsToBooleansSetting =
                 _settingFactory.make("mapOfIntsToMapsOfIntsToBooleansSetting",
                         "MapOfIntsToMapsOfIntsToBooleansSetting",
                         _mapFactory.make(0, _mapFactory.make(0, true)),
                         _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(mapOfIntsToMapsOfIntsToBooleansSetting, 8, SUBGROUPING_2_2);
+        _settingsRepo.addEntity(mapOfIntsToMapsOfIntsToBooleansSetting, 8, subgrouping2_2);
 
         ISetting pairOfStringsSetting = _settingFactory.make("pairOfStringsSetting",
                 "PairOfStringsSetting", _pairFactory.make("", ""),
                 _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(pairOfStringsSetting, 9, SUBGROUPING_2_3);
+        _settingsRepo.addEntity(pairOfStringsSetting, 9, subgrouping2_3);
 
         ISetting pairOfStringAndCollectionOfInts =
                 _settingFactory.make("pairOfStringAndCollectionOfInts",
                         "PairOfStringAndCollectionOfInts",
                         _pairFactory.make("", _collectionFactory.make(0)),
                         _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(pairOfStringAndCollectionOfInts, 10, SUBGROUPING_3);
+        _settingsRepo.addEntity(pairOfStringAndCollectionOfInts, 10, subgrouping3);
 
         ISetting stringSetting = _settingFactory.make("stringSetting", "StringSetting", "",
                 _genericParamsSetFactory.make());
-        _settingsRepo.addEntity(stringSetting, 11, SUBGROUPING_3_1);
+        _settingsRepo.addEntity(stringSetting, 11, subgrouping3_1);
     }
 
     @SuppressWarnings("unchecked")

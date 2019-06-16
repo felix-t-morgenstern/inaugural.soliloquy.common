@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PersistentVariableCache;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentVariableCache;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 

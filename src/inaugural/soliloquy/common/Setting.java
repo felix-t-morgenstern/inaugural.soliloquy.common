@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.ISetting;
+import soliloquy.specs.common.entities.ISetting;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
 
 public class Setting<T> implements ISetting<T> {
 	private final String ID;
@@ -11,6 +11,7 @@ public class Setting<T> implements ISetting<T> {
 	private String _name;
 	private T _value;
 	
+	@SuppressWarnings("ConstantConditions")
 	public Setting(String id, String name, T defaultValue, T archetype, IGenericParamsSet controlParams) {
 		if (archetype == null) {
 			throw new IllegalArgumentException("Setting: archetype was null");

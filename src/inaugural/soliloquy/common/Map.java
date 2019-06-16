@@ -5,7 +5,12 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import inaugural.soliloquy.common.archetypes.MapValidatorFunctionArchetype;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.valueobjects.IPair;
 
 public class Map<K,V> extends HasTwoGenericParams<K,V> implements IMap<K,V> {
 	private HashMap<K,V> _map = new HashMap<>();

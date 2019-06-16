@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.ICollectionFactory;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
 
 public class CollectionFactory extends CanCheckArchetypeAndArchetypesOfArchetype
 		implements ICollectionFactory {

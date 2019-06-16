@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.common.specs.ICoordinate;
-import soliloquy.common.specs.ICoordinateFactory;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.factories.ICoordinateFactory;
+import soliloquy.specs.common.valueobjects.ICoordinate;
 
 public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordinate>
         implements IPersistentValueTypeHandler<ICoordinate> {
@@ -11,7 +11,6 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordina
     private final ICoordinateFactory COORDINATE_FACTORY;
 
     private static final String NULL = "NULL";
-    private static final String DELIMITER = "\u0080";
 
     public PersistentCoordinateHandler(ICoordinateFactory coordinateFactory) {
         ARCHETYPE = coordinateFactory.make(0,0);
@@ -23,6 +22,7 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordina
         return ARCHETYPE;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public ICoordinate read(String valueString) throws IllegalArgumentException {
         if (valueString == null) {

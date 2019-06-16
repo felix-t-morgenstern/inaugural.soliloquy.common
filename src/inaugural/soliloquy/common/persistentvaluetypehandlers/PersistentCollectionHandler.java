@@ -1,7 +1,11 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentCollectionHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
 
 public class PersistentCollectionHandler extends PersistentTypeHandler<ICollection>
         implements IPersistentCollectionHandler {

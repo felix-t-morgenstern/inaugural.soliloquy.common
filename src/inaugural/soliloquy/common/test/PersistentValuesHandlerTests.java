@@ -10,7 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PersistentValuesHandler;
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.entities.IPersistentCollectionHandler;
+import soliloquy.specs.common.entities.IPersistentMapHandler;
+import soliloquy.specs.common.entities.IPersistentPairHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.valueobjects.IPair;
 
 class PersistentValuesHandlerTests {
 	private PersistentValuesHandler _persistentValuesHandler;
@@ -31,7 +37,7 @@ class PersistentValuesHandlerTests {
     
     @SuppressWarnings("unchecked")
     @BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
     	_persistentValuesHandler = new PersistentValuesHandler();
     	
     	_persistentIntegerHandler = (IPersistentValueTypeHandler<Integer>) mock(IPersistentValueTypeHandler.class);

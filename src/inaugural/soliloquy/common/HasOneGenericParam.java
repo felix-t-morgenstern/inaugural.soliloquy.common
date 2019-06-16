@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.IHasOneGenericParam;
-import soliloquy.common.specs.ISoliloquyClass;
+import soliloquy.specs.common.shared.IHasOneGenericParam;
 
 public abstract class HasOneGenericParam<T> extends HasGenericParams
 		implements IHasOneGenericParam<T> {

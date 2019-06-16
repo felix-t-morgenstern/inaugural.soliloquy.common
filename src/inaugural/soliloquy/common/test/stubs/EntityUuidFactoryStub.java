@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IEntityUuid;
-import soliloquy.common.specs.IEntityUuidFactory;
+import soliloquy.specs.common.factories.IEntityUuidFactory;
+import soliloquy.specs.common.valueobjects.IEntityUuid;
 
 public class EntityUuidFactoryStub implements IEntityUuidFactory {
     @Override

@@ -5,9 +5,9 @@ import inaugural.soliloquy.common.test.stubs.CoordinateFactoryStub;
 import inaugural.soliloquy.common.test.stubs.CoordinateStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.common.specs.ICoordinate;
-import soliloquy.common.specs.ICoordinateFactory;
-import soliloquy.common.specs.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.factories.ICoordinateFactory;
+import soliloquy.specs.common.valueobjects.ICoordinate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,7 +61,7 @@ class PersistentCoordinateHandlerTests {
 
     @Test
     void testReadNull() {
-        assertEquals(_persistentCoordinateHandler.read("NULL"), null);
+        assertNull(_persistentCoordinateHandler.read("NULL"));
     }
 
     @Test

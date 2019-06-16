@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.common.specs.IEntityUuid;
-import soliloquy.common.specs.IEntityUuidFactory;
+import soliloquy.specs.common.factories.IEntityUuidFactory;
+import soliloquy.specs.common.valueobjects.IEntityUuid;
 
 public class EntityUuidFactory implements IEntityUuidFactory {
 

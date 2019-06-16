@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.GenericParamsSet;
 import inaugural.soliloquy.common.test.stubs.GenericParamsSetPersistentValuesHandlerStub;
 import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
-import soliloquy.common.specs.ICollection;
-import soliloquy.common.specs.IGenericParamsSet;
-import soliloquy.common.specs.IMap;
-import soliloquy.common.specs.IMapFactory;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.valueobjects.IMap;
 
 class GenericParamsSetTests {
 	private GenericParamsSet _genericParamsSet;

@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IPair;
+import soliloquy.specs.common.valueobjects.IPair;
 
 public class PairStub<K,V> implements IPair<K,V> {
 	private final K ARCHETYPE_1;

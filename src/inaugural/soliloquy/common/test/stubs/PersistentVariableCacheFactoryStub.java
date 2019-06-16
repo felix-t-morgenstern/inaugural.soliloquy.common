@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IPersistentVariableCache;
-import soliloquy.common.specs.IPersistentVariableCacheFactory;
+import soliloquy.specs.common.entities.IPersistentVariableCache;
+import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
 
 public class PersistentVariableCacheFactoryStub implements IPersistentVariableCacheFactory {
     @Override

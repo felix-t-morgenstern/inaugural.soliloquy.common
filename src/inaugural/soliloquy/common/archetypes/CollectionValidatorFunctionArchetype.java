@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.common.specs.IFunction;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.game.IGame;
+import soliloquy.specs.logger.ILogger;
 
 public class CollectionValidatorFunctionArchetype<V> implements IFunction<V,String> {
     private final V ARCHETYPE_1;

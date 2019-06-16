@@ -1,11 +1,15 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.*;
+import soliloquy.specs.common.factories.ICollectionFactory;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.valueobjects.IMap;
 
 import java.util.HashMap;
 
 public class GenericParamsSetStub implements IGenericParamsSet {
-	public HashMap<String,HashMap<String,Object>> GENERIC_PARAMS = new HashMap<>();
+	private HashMap<String,HashMap<String,Object>> GENERIC_PARAMS = new HashMap<>();
 
 	private IMapFactory MAP_FACTORY = new MapFactoryStub();
 	private ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();

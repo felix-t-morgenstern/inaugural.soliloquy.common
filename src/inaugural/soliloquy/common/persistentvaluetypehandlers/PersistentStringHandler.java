@@ -1,10 +1,11 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.common.specs.IPersistentValueTypeHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
 
 public class PersistentStringHandler extends PersistentTypeHandler<String>
 	implements IPersistentValueTypeHandler<String> {
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public String read(String valueString) throws IllegalArgumentException {
 		if (valueString == null) {
@@ -22,5 +23,4 @@ public class PersistentStringHandler extends PersistentTypeHandler<String>
 	public String getArchetype() {
 		return "";
 	}
-
 }

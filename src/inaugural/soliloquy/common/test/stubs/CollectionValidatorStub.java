@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.common.specs.IFunction;
-import soliloquy.game.primary.specs.IGame;
-import soliloquy.logger.specs.ILogger;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.game.IGame;
+import soliloquy.specs.logger.ILogger;
 
 public class CollectionValidatorStub<V> implements IFunction<V,String> {
     public final static int ILLEGAL_VALUE = 123;

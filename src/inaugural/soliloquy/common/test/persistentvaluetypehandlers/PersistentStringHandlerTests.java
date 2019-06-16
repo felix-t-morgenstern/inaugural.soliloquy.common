@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
+import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
 
 public class PersistentStringHandlerTests {
 	private PersistentStringHandler persistentStringHandler;
@@ -45,7 +46,8 @@ public class PersistentStringHandlerTests {
 
 	@Test
 	public void testGetInterfaceName() {
-		assertEquals("soliloquy.common.specs.IPersistentValueTypeHandler<java.lang.String>",
+		assertEquals(IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
+						String.class.getCanonicalName() + ">",
 				persistentStringHandler.getInterfaceName());
 	}
 }
