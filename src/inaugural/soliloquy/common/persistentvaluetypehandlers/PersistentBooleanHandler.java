@@ -7,12 +7,12 @@ public class PersistentBooleanHandler extends PersistentTypeHandler<Boolean>
 
 	@SuppressWarnings("ConstantConditions")
 	@Override
-	public Boolean read(String valueString) throws IllegalArgumentException {
-		if (valueString == null) {
+	public Boolean read(String serializedValue) throws IllegalArgumentException {
+		if (serializedValue == null) {
 			throw new IllegalArgumentException(
-					"PersistentBooleanHandler.read: valueString cannot be null");
+					"PersistentBooleanHandler.read: serializedValue cannot be null");
 		}
-		return Boolean.parseBoolean(valueString);
+		return Boolean.parseBoolean(serializedValue);
 	}
 
 	@Override

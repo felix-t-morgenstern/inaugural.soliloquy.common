@@ -21,7 +21,7 @@ class PersistentCollectionHandlerTests {
     private final Integer INTEGER_2 = 456;
     private final Integer INTEGER_3 = 789;
     private final String VALUES_STRING =
-            String.format("{\"typeName\":\"%s\",\"valueStrings\":[\"%d\",\"%d\",\"%d\"]}",
+            String.format("{\"typeName\":\"%s\",\"serializedValues\":[\"%d\",\"%d\",\"%d\"]}",
                     Integer.class.getCanonicalName(),
                     INTEGER_1, INTEGER_2, INTEGER_3);
 

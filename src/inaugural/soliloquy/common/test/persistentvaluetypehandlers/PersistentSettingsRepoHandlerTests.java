@@ -19,8 +19,8 @@ class PersistentSettingsRepoHandlerTests {
             new PersistentValuesHandlerStub();
 
     private final String VALUES_STRING =
-            "[{\"id\":\"setting1Id\",\"valueString\":\"setting1Value\"}," +
-                    "{\"id\":\"setting2Id\",\"valueString\":\"123123\"}]";
+            "[{\"id\":\"setting1Id\",\"serializedValue\":\"setting1Value\"}," +
+                    "{\"id\":\"setting2Id\",\"serializedValue\":\"123123\"}]";
 
     private IPersistentValueTypeHandler<ISettingsRepo> _persistentSettingsRepoHandler;
 

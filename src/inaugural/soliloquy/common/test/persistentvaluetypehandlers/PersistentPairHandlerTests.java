@@ -19,8 +19,8 @@ class PersistentPairHandlerTests {
     private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
     private final String VALUES_STRING =
-            "{\"valueType1\":\"java.lang.String\",\"valueString1\":\"String\"," +
-                    "\"valueType2\":\"java.lang.Integer\",\"valueString2\":\"123\"}";
+            "{\"valueType1\":\"java.lang.String\",\"serializedValue1\":\"String\"," +
+                    "\"valueType2\":\"java.lang.Integer\",\"serializedValue2\":\"123\"}";
 
     private IPersistentPairHandler _persistentPairHandler;
 

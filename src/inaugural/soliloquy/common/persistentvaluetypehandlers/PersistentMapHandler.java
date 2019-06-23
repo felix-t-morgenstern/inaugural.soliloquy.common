@@ -40,9 +40,9 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueValueType);
         IMap map = MAP_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.keyValueType),
                 PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueValueType));
-        for (int i = 0; i < dto.keyValueStrings.length; i++) {
-            map.put(keyHandler.read(dto.keyValueStrings[i]),
-                    valueHandler.read(dto.valueValueStrings[i]));
+        for (int i = 0; i < dto.keySerializedValues.length; i++) {
+            map.put(keyHandler.read(dto.keySerializedValues[i]),
+                    valueHandler.read(dto.valueSerializedValues[i]));
         }
         return map;
     }
@@ -62,13 +62,13 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
         MapDTO dto = new MapDTO();
         dto.keyValueType = keyValueType;
         dto.valueValueType = valueValueType;
-        dto.keyValueStrings = new String[map.size()];
-        dto.valueValueStrings = new String[map.size()];
+        dto.keySerializedValues = new String[map.size()];
+        dto.valueSerializedValues = new String[map.size()];
         int indexCounter = 0;
         for(Object entry : map) {
             IPair pair = (IPair) entry;
-            dto.keyValueStrings[indexCounter] = keyHandler.write(pair.getItem1());
-            dto.valueValueStrings[indexCounter] = valueHandler.write(pair.getItem2());
+            dto.keySerializedValues[indexCounter] = keyHandler.write(pair.getItem1());
+            dto.valueSerializedValues[indexCounter] = valueHandler.write(pair.getItem2());
             indexCounter++;
         }
         return new Gson().toJson(dto);
@@ -82,7 +82,7 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
     private class MapDTO {
         String keyValueType;
         String valueValueType;
-        String[] keyValueStrings;
-        String[] valueValueStrings;
+        String[] keySerializedValues;
+        String[] valueSerializedValues;
     }
 }

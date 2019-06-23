@@ -20,11 +20,11 @@ public class PersistentEntityUuidHandler extends PersistentTypeHandler<IEntityUu
     }
 
     @Override
-    public IEntityUuid read(String valueString) throws IllegalArgumentException {
-        if (valueString == null || valueString.equals("")) {
+    public IEntityUuid read(String serializedValue) throws IllegalArgumentException {
+        if (serializedValue == null || serializedValue.equals("")) {
             return null;
         } else {
-            return ENTITY_UUID_FACTORY.createFromString(valueString);
+            return ENTITY_UUID_FACTORY.createFromString(serializedValue);
         }
     }
 

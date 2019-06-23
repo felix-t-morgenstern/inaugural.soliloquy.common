@@ -36,8 +36,8 @@ public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPai
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueType2);
         IPair pair = PAIR_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType1),
                 PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType2));
-        pair.setItem1(handler1.read(dto.valueString1));
-        pair.setItem2(handler2.read(dto.valueString2));
+        pair.setItem1(handler1.read(dto.serializedValue1));
+        pair.setItem2(handler2.read(dto.serializedValue2));
         return pair;
     }
 
@@ -54,8 +54,8 @@ public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPai
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueType1);
         IPersistentValueTypeHandler handler2 =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueType2);
-        dto.valueString1 = handler1.write(pair.getItem1());
-        dto.valueString2 = handler2.write(pair.getItem2());
+        dto.serializedValue1 = handler1.write(pair.getItem1());
+        dto.serializedValue2 = handler2.write(pair.getItem2());
         return new Gson().toJson(dto);
     }
 
@@ -81,8 +81,8 @@ public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPai
 
     private class PairDTO {
         String valueType1;
-        String valueString1;
+        String serializedValue1;
         String valueType2;
-        String valueString2;
+        String serializedValue2;
     }
 }

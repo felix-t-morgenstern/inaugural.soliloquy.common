@@ -23,8 +23,8 @@ class PersistentVariableCachePersistenceHandlerTests {
             new PersistentVariableCacheStub();
 
     private final String VALUES_STRING =
-            "[{\"name\":\"variable1\",\"typeName\":\"java.lang.Integer\",\"valueString\":\"456456\"}," +
-                    "{\"name\":\"variable2\",\"typeName\":\"java.lang.String\",\"valueString\":\"variable2value\"}]";
+            "[{\"name\":\"variable1\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"456456\"}," +
+                    "{\"name\":\"variable2\",\"typeName\":\"java.lang.String\",\"serializedValue\":\"variable2value\"}]";
 
     private IPersistentValueTypeHandler<IPersistentVariableCache>
             _persistentVariablePersistentCachePersistenceHandler;

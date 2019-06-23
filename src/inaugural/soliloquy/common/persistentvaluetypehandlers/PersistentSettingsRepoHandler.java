@@ -28,16 +28,16 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
 
     @SuppressWarnings("unchecked")
     @Override
-    public ISettingsRepo read(String valueString) throws IllegalArgumentException {
-        if (valueString == null) {
+    public ISettingsRepo read(String serializedValue) throws IllegalArgumentException {
+        if (serializedValue == null) {
             throw new IllegalArgumentException(
-                    "PersistentSettingsRepoHandler.read: valueString must be non-null");
+                    "PersistentSettingsRepoHandler.read: serializedValue must be non-null");
         }
-        if (valueString.equals("")) {
+        if (serializedValue.equals("")) {
             throw new IllegalArgumentException(
-                    "PersistentSettingsRepoHandler.read: valueString must be non-empty");
+                    "PersistentSettingsRepoHandler.read: serializedValue must be non-empty");
         }
-        SettingDTO[] dto = new Gson().fromJson(valueString, SettingDTO[].class);
+        SettingDTO[] dto = new Gson().fromJson(serializedValue, SettingDTO[].class);
         for(SettingDTO settingDTO : dto) {
             ISetting setting = SETTINGS_REPO.getSetting(settingDTO.id);
             if (setting == null) {
@@ -48,7 +48,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
             String typeName = getProperTypeName(setting.getArchetype());
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
-            setting.setValue(handler.read(settingDTO.valueString));
+            setting.setValue(handler.read(settingDTO.serializedValue));
         }
         return SETTINGS_REPO;
     }
@@ -69,7 +69,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
             SettingDTO settingDTO = new SettingDTO();
             settingDTO.id = setting.id();
-            settingDTO.valueString = handler.write(setting.getValue());
+            settingDTO.serializedValue = handler.write(setting.getValue());
             dto[i] = settingDTO;
             i++;
         }
@@ -78,6 +78,6 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
 
     private class SettingDTO {
         String id;
-        String valueString;
+        String serializedValue;
     }
 }

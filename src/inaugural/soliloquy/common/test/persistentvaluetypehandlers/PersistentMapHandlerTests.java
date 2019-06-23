@@ -27,8 +27,8 @@ class PersistentMapHandlerTests {
     private final Integer VALUE_3 = 789;
     private final String VALUES_STRING = String.format(
             "{\"keyValueType\":\"%s\",\"valueValueType\":\"%s\"," +
-                    "\"keyValueStrings\":[\"%s\",\"%s\",\"%s\"]," +
-                    "\"valueValueStrings\":[\"%d\",\"%d\",\"%d\"]}",
+                    "\"keySerializedValues\":[\"%s\",\"%s\",\"%s\"]," +
+                    "\"valueSerializedValues\":[\"%d\",\"%d\",\"%d\"]}",
             String.class.getCanonicalName(), Integer.class.getCanonicalName(),
             KEY_1, KEY_2, KEY_3, VALUE_1, VALUE_2, VALUE_3);
 

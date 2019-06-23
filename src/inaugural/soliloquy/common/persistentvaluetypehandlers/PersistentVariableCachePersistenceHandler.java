@@ -28,23 +28,24 @@ public class PersistentVariableCachePersistenceHandler
     }
 
     @Override
-    public IPersistentVariableCache read(String valueString) throws IllegalArgumentException {
-        if (valueString == null) {
+    public IPersistentVariableCache read(String serializedValue) throws IllegalArgumentException {
+        if (serializedValue == null) {
             throw new IllegalArgumentException(
-                    "PersistentVariableCachePersistenceHandler.read: valueString must be non-null");
+                    "PersistentVariableCachePersistenceHandler.read: serializedValue must be non-null");
         }
-        if (valueString.equals("")) {
+        if (serializedValue.equals("")) {
             throw new IllegalArgumentException(
-                    "PersistentVariableCachePersistenceHandler.read: valueString must be non-empty");
+                    "PersistentVariableCachePersistenceHandler.read: serializedValue must be non-empty");
         }
         IPersistentVariableCache persistentVariableCache =
                 PERSISTENT_VARIABLE_CACHE_FACTORY.make();
-        PersistentVariableDTO[] dto = new Gson().fromJson(valueString,
+        PersistentVariableDTO[] dto = new Gson().fromJson(serializedValue,
                 PersistentVariableDTO[].class);
         for(PersistentVariableDTO pVarDTO : dto) {
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
-            persistentVariableCache.setVariable(pVarDTO.name, handler.read(pVarDTO.valueString));
+            persistentVariableCache.setVariable(pVarDTO.name,
+                    handler.read(pVarDTO.serializedValue));
         }
         return persistentVariableCache;
     }
@@ -67,7 +68,7 @@ public class PersistentVariableCachePersistenceHandler
             pVarDTO.typeName = getProperTypeName(pVarValue);
             IPersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
-            pVarDTO.valueString = handler.write(pVarValue);
+            pVarDTO.serializedValue = handler.write(pVarValue);
             dto[i] = pVarDTO;
         }
         return new Gson().toJson(dto);
@@ -76,6 +77,6 @@ public class PersistentVariableCachePersistenceHandler
     private class PersistentVariableDTO {
         String name;
         String typeName;
-        String valueString;
+        String serializedValue;
     }
 }

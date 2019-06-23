@@ -6,8 +6,8 @@ public class PersistentIntegerHandler extends PersistentTypeHandler<Integer>
 		implements IPersistentValueTypeHandler<Integer> {
 
 	@Override
-	public Integer read(String valueString) throws IllegalArgumentException {
-		return Integer.parseInt(valueString);
+	public Integer read(String serializedValue) throws IllegalArgumentException {
+		return Integer.parseInt(serializedValue);
 	}
 
 	@Override

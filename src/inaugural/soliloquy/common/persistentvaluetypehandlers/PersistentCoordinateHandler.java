@@ -24,19 +24,19 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordina
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public ICoordinate read(String valueString) throws IllegalArgumentException {
-        if (valueString == null) {
+    public ICoordinate read(String serializedValue) throws IllegalArgumentException {
+        if (serializedValue == null) {
             throw new IllegalArgumentException(
-                    "PersistentCoordinateHandler.read: valueString must be non-null");
+                    "PersistentCoordinateHandler.read: serializedValue must be non-null");
         }
-        if (valueString.equals("")) {
+        if (serializedValue.equals("")) {
             throw new IllegalArgumentException(
-                    "PersistentCoordinateHandler.read: valueString must be non-empty");
+                    "PersistentCoordinateHandler.read: serializedValue must be non-empty");
         }
-        if (valueString.equals(NULL)){
+        if (serializedValue.equals(NULL)){
             return null;
         } else {
-            CoordinateDTO dto = new Gson().fromJson(valueString, CoordinateDTO.class);
+            CoordinateDTO dto = new Gson().fromJson(serializedValue, CoordinateDTO.class);
             return COORDINATE_FACTORY.make(dto.x, dto.y);
         }
     }

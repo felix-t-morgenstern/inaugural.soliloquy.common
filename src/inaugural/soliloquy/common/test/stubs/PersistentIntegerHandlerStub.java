@@ -4,8 +4,8 @@ import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
 
 public class PersistentIntegerHandlerStub implements IPersistentValueTypeHandler<Integer> {
     @Override
-    public Integer read(String valueString) throws IllegalArgumentException {
-        return Integer.parseInt(valueString);
+    public Integer read(String serializedValue) throws IllegalArgumentException {
+        return Integer.parseInt(serializedValue);
     }
 
     @Override

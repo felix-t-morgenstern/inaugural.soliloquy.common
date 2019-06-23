@@ -27,16 +27,16 @@ public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGe
     }
 
     @Override
-    public IGenericParamsSet read(String valueString) throws IllegalArgumentException {
-        if(valueString == null) {
+    public IGenericParamsSet read(String serializedValue) throws IllegalArgumentException {
+        if(serializedValue == null) {
             throw new IllegalArgumentException(
-                    "PersistentGenericParamsSetHandler.read: valueString must be non-null");
+                    "PersistentGenericParamsSetHandler.read: serializedValue must be non-null");
         }
-        if(valueString.equals("")) {
+        if(serializedValue.equals("")) {
             throw new IllegalArgumentException(
-                    "PersistentGenericParamsSetHandler.read: valueString must be non-empty");
+                    "PersistentGenericParamsSetHandler.read: serializedValue must be non-empty");
         }
-        TypedParamsSetDTO[] dto = new Gson().fromJson(valueString, TypedParamsSetDTO[].class);
+        TypedParamsSetDTO[] dto = new Gson().fromJson(serializedValue, TypedParamsSetDTO[].class);
         IGenericParamsSet genericParamsSet = GENERIC_PARAMS_SET_FACTORY.make();
         for(TypedParamsSetDTO typedDTO : dto) {
             IPersistentValueTypeHandler handler =

@@ -47,8 +47,8 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.typeName);
         ICollection collection =
                 COLLECTION_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
-        for (int i = 0; i < dto.valueStrings.length; i++) {
-            collection.add(handler.read(dto.valueStrings[i]));
+        for (int i = 0; i < dto.serializedValues.length; i++) {
+            collection.add(handler.read(dto.serializedValues[i]));
         }
         return collection;
     }
@@ -65,11 +65,11 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(internalType);
         CollectionDTO dto = new CollectionDTO();
         dto.typeName = internalType;
-        String[] valueStrings = new String[collection.size()];
+        String[] serializedValues = new String[collection.size()];
         for (int i = 0; i < collection.size(); i++) {
-            valueStrings[i] = handler.write(collection.get(i));
+            serializedValues[i] = handler.write(collection.get(i));
         }
-        dto.valueStrings = valueStrings;
+        dto.serializedValues = serializedValues;
         return new Gson().toJson(dto);
     }
 
@@ -97,6 +97,6 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
 
     private class CollectionDTO {
         String typeName;
-        String[] valueStrings;
+        String[] serializedValues;
     }
 }

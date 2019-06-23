@@ -7,11 +7,11 @@ public class PersistentStringHandler extends PersistentTypeHandler<String>
 
 	@SuppressWarnings("ConstantConditions")
 	@Override
-	public String read(String valueString) throws IllegalArgumentException {
-		if (valueString == null) {
-			throw new IllegalArgumentException("PersistentStringHandler.read: valueString cannot be null");
+	public String read(String serializedValue) throws IllegalArgumentException {
+		if (serializedValue == null) {
+			throw new IllegalArgumentException("PersistentStringHandler.read: serializedValue cannot be null");
 		}
-		return valueString;
+		return serializedValue;
 	}
 
 	@Override
