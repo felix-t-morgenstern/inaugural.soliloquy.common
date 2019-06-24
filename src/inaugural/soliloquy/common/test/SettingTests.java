@@ -26,11 +26,59 @@ class SettingTests {
     	_setting = new Setting<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
 				SETTING_ARCHETYPE, _settingControlParams);
     }
+
+    @Test
+	void testWithInvalidConstructorParams() {
+		assertThrows(IllegalArgumentException.class,
+				() -> new Setting<>(null,
+						SETTING_NAME_1,
+						SETTING_VALUE_1,
+						SETTING_ARCHETYPE,
+						_settingControlParams));
+		assertThrows(IllegalArgumentException.class,
+				() -> new Setting<>("",
+						SETTING_NAME_1,
+						SETTING_VALUE_1,
+						SETTING_ARCHETYPE,
+						_settingControlParams));
+		assertThrows(IllegalArgumentException.class,
+				() -> new Setting<>(SETTING_ID,
+						null,
+						SETTING_VALUE_1,
+						SETTING_ARCHETYPE,
+						_settingControlParams));
+		assertThrows(IllegalArgumentException.class,
+				() -> new Setting<>(SETTING_ID,
+						"",
+						SETTING_VALUE_1,
+						SETTING_ARCHETYPE,
+						_settingControlParams));
+		assertThrows(IllegalArgumentException.class,
+				() -> new Setting<>(SETTING_ID,
+						SETTING_NAME_1,
+						SETTING_VALUE_1,
+						null,
+						_settingControlParams));
+		assertThrows(IllegalArgumentException.class,
+				() -> new Setting<>(SETTING_ID,
+						SETTING_NAME_1,
+						SETTING_VALUE_1,
+						SETTING_ARCHETYPE,
+						null));
+	}
     
     @Test
 	void testId() {
 		assertEquals(_setting.id(), SETTING_ID);
     }
+
+    @Test
+	void testEquals() {
+    	ISetting setting2 = new Setting<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
+				SETTING_ARCHETYPE, _settingControlParams);
+
+    	assertEquals(_setting, setting2);
+	}
 
     @Test
 	void testName() {
@@ -42,14 +90,6 @@ class SettingTests {
     @Test
 	void testGetArchetype() {
 		assertSame(_setting.getArchetype(), SETTING_ARCHETYPE);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-	@Test
-	void testConstructorWithNullArchetype() {
-    	assertThrows(IllegalArgumentException.class,
-				() -> new Setting<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1, null,
-						_settingControlParams));
     }
 
     @Test

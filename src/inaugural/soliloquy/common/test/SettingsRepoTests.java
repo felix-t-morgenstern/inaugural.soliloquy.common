@@ -24,7 +24,8 @@ class SettingsRepoTests {
 
 	private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
 	
-	private final IPersistentValuesHandler SETTINGS_REPO_PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
+	private final IPersistentValuesHandler SETTINGS_REPO_PERSISTENT_VALUES_HANDLER =
+			new PersistentValuesHandlerStub();
 	
 	private final String SETTING_1_ID = "Setting1Id";
 	private final String SETTING_2_ID = "Setting2Id";
@@ -44,14 +45,40 @@ class SettingsRepoTests {
 	private final Integer SETTING_1_VALUE_ALT = 789;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private final ISetting SETTING_ARCHETYPE = new SettingStub(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+	private final ISetting SETTING_ARCHETYPE = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
+			SETTING_1_VALUE);
 	
     @BeforeEach
 	void setUp()  {
-    	_settingsRepo = new SettingsRepo(COLLECTION_FACTORY, PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
+    	_settingsRepo = new SettingsRepo(COLLECTION_FACTORY, PAIR_FACTORY,
+				SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
+	void testId() {
+		_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
+
+		ISettingsRepo settingsRepo = _settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
+
+		assertEquals(SETTINGS_REPO_SUBGROUP_1_ID, settingsRepo.id());
+	}
+
+	@Test
+	void testEquals() {
+    	ISettingsRepo settingsRepo2 = new SettingsRepo(COLLECTION_FACTORY, PAIR_FACTORY,
+				SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
+		_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
+		settingsRepo2.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
+
+		ISettingsRepo settingsRepoSubgrouping =
+				_settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
+		ISettingsRepo settingsRepo2Subgrouping =
+				settingsRepo2.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
+
+		assertEquals(settingsRepoSubgrouping, settingsRepo2Subgrouping);
+	}
+
+    @Test
     @SuppressWarnings("rawtypes")
 	void testAddItemToTopLevel() {
     	ISetting setting = mock(ISetting.class);
@@ -63,7 +90,7 @@ class SettingsRepoTests {
 		assertEquals(_settingsRepo.getSetting(SETTING_1_ID).getValue(), SETTING_1_VALUE);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @SuppressWarnings("rawtypes")
 	void testAddTwoItemsToTopLevelWithSameId() {
     	ISetting setting1 = mock(ISetting.class);
@@ -80,7 +107,7 @@ class SettingsRepoTests {
 				() -> _settingsRepo.addEntity(setting2, 1, null));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @SuppressWarnings("rawtypes")
 	void testAddTwoItemsToTopLevelWithSameOrder() {
     	ISetting setting1 = mock(ISetting.class);
@@ -97,7 +124,7 @@ class SettingsRepoTests {
 				() -> _settingsRepo.addEntity(setting2, 0, null));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @SuppressWarnings("rawtypes")
 	void testAddItemToNonexistentSubGrouping() {
     	ISetting setting1 = mock(ISetting.class);
@@ -108,7 +135,7 @@ class SettingsRepoTests {
 				() -> _settingsRepo.addEntity(setting1, 0, SETTINGS_REPO_SUBGROUP_1_ID));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @SuppressWarnings("rawtypes")
 	void testAddItemToExistentSubGrouping() {
     	_settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
@@ -124,24 +151,24 @@ class SettingsRepoTests {
 		assertEquals(getResult.getValue(), SETTING_1_VALUE);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testSetNonexistentSetting() {
 		assertThrows(IllegalArgumentException.class,
 				() -> _settingsRepo.setSetting(SETTING_1_ID, SETTING_1_VALUE));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testGetSettingWithBlankId() {
 		assertThrows(IllegalArgumentException.class, () -> _settingsRepo.getSetting(""));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testSetSettingWithBlankId() {
 		assertThrows(IllegalArgumentException.class,
 				() -> _settingsRepo.setSetting("", SETTING_1_VALUE));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testAddSetAndGetSetting() {
     	ISetting<Integer> setting =
 				new SettingStub<>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
@@ -153,7 +180,7 @@ class SettingsRepoTests {
 		assertEquals(_settingsRepo.getSetting(SETTING_1_ID).getValue(), SETTING_1_VALUE_ALT);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testAddSetAndGetSettingInSubgrouping() {
     	ISetting<Integer> setting =
 				new SettingStub<>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
@@ -169,7 +196,7 @@ class SettingsRepoTests {
 		assertEquals(_settingsRepo.getSetting(SETTING_1_ID).getValue(), SETTING_1_VALUE_ALT);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testGetItemByOrder() {
     	ISetting<Integer> setting =
 				new SettingStub<>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE
@@ -178,12 +205,12 @@ class SettingsRepoTests {
 		assertEquals(_settingsRepo.getItemByOrder(123).entity().getValue(), SETTING_1_VALUE);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testGetNonexistentItemByOrder() {
 		assertThrows(IllegalArgumentException.class, () -> _settingsRepo.getItemByOrder(123));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @SuppressWarnings("rawtypes")
 	void testGetAllGrouped() {
     	ISetting<Integer> setting1 =
@@ -222,7 +249,7 @@ class SettingsRepoTests {
 		assertEquals(bottomLevelGrouped.get(0).entity().getValue(), SETTING_3_VALUE);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     @SuppressWarnings("rawtypes")
 	void testGetAllUngrouped() {
     	ISetting<Integer> setting1 =
@@ -272,7 +299,7 @@ class SettingsRepoTests {
     	assertTrue(setting3Used);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testRemoveItem() {
     	ISetting<Integer> setting1 =
 				new SettingStub<>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
@@ -298,13 +325,13 @@ class SettingsRepoTests {
 		assertNull(_settingsRepo.getSetting(SETTING_2_ID));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testRemoveItemWithNullOrBlankId() {
 		assertThrows(IllegalArgumentException.class, () -> _settingsRepo.removeItem(null));
 		assertThrows(IllegalArgumentException.class, () -> _settingsRepo.removeItem(""));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
 	void testGetGroupingIdAndOrder() {
     	ISetting<Integer> setting1 =
 				new SettingStub<>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE

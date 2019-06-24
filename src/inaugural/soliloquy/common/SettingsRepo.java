@@ -54,6 +54,17 @@ public class SettingsRepo extends CanGetInterfaceName implements ISettingsRepo {
 	public String id() throws IllegalStateException {
 		return ID;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (!(o instanceof ISettingsRepo)) {
+			return false;
+		}
+		return ((ISettingsRepo) o).id().equals(ID);
+	}
 	
 	@SuppressWarnings("rawtypes")
 	@Override

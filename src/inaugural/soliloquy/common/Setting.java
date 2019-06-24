@@ -13,13 +13,28 @@ public class Setting<T> implements ISetting<T> {
 	
 	@SuppressWarnings("ConstantConditions")
 	public Setting(String id, String name, T defaultValue, T archetype, IGenericParamsSet controlParams) {
-		if (archetype == null) {
-			throw new IllegalArgumentException("Setting: archetype was null");
+		if (id == null) {
+			throw new IllegalArgumentException("Setting: id must be non-null");
+		}
+		if (id.equals("")) {
+			throw new IllegalArgumentException("Setting: id must be non-empty");
 		}
 		ID = id;
+		if (name == null) {
+			throw new IllegalArgumentException("Setting: name must be non-null");
+		}
+		if (name.equals("")) {
+			throw new IllegalArgumentException("Setting: name must be non-empty");
+		}
 		_name = name;
 		_value = defaultValue;
+		if (archetype == null) {
+			throw new IllegalArgumentException("Setting: archetype must be non-null");
+		}
 		ARCHETYPE = archetype;
+		if (controlParams == null) {
+			throw new IllegalArgumentException("Setting: controlParams must be non-null");
+		}
 		CONTROL_PARAMS = controlParams;
 	}
 	
@@ -66,5 +81,16 @@ public class Setting<T> implements ISetting<T> {
 	@Override
 	public String getUnparameterizedInterfaceName() {
 		throw new UnsupportedOperationException("Setting.getUnparameterizedInterfaceName: This is not to be called");
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null) {
+			return false;
+		}
+		if (!(o instanceof ISetting)) {
+			return false;
+		}
+		return ((ISetting) o).id().equals(ID);
 	}
 }
