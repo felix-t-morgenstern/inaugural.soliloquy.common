@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.Pair;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.IPair;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,8 +15,8 @@ class PairTests {
 	private final Integer SECOND_ARCHETYPE = 2;
 
     @BeforeEach
-    void setUp() throws Exception {
-    	_pair = new Pair<String,Integer>(null,null,FIRST_ARCHETYPE,SECOND_ARCHETYPE);
+    void setUp() {
+    	_pair = new Pair<>(null, null, FIRST_ARCHETYPE, SECOND_ARCHETYPE);
     }
     
     @Test

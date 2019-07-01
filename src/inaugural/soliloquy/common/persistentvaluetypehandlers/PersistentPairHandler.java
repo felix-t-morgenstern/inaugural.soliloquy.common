@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.entities.IPersistentPairHandler;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
 import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.IPersistentPairHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
 
 public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPair>
         implements IPersistentPairHandler {

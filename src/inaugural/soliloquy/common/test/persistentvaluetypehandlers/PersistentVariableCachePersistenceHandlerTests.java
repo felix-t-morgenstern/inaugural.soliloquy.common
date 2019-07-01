@@ -6,11 +6,11 @@ import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
-import soliloquy.specs.common.entities.IPersistentVariableCache;
 import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
+import soliloquy.specs.common.infrastructure.IPersistentVariableCache;
+import soliloquy.specs.common.infrastructure.IReadOnlyMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,7 +64,7 @@ class PersistentVariableCachePersistenceHandlerTests {
 
         assertNotNull(pVarCache);
         assertEquals(2, pVarCache.size());
-        IMap<String,Object> representation = pVarCache.getVariablesRepresentation();
+        IReadOnlyMap<String,Object> representation = pVarCache.variablesRepresentation();
         assertEquals(PersistentVariableCacheStub.VARIABLE_1_VALUE,
                 representation.get(PersistentVariableCacheStub.VARIABLE_1_NAME));
         assertEquals(PersistentVariableCacheStub.VARIABLE_2_VALUE,

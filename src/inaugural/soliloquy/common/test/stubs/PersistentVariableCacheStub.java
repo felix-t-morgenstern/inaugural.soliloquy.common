@@ -1,8 +1,6 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.IPersistentVariableCache;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.*;
 
 public class PersistentVariableCacheStub implements IPersistentVariableCache {
     private final IMap<String,Object> PERSISTENT_VARIABLES = new MapStub<>();
@@ -36,7 +34,7 @@ public class PersistentVariableCacheStub implements IPersistentVariableCache {
     }
 
     @Override
-    public ICollection<String> getNamesRepresentation() {
+    public IReadOnlyCollection<String> namesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS.getKeys();
         } else {
@@ -45,7 +43,7 @@ public class PersistentVariableCacheStub implements IPersistentVariableCache {
     }
 
     @Override
-    public IMap<String,Object> getVariablesRepresentation() {
+    public IReadOnlyMap<String,Object> variablesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS;
         } else {

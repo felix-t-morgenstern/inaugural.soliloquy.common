@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.specs.common.entities.ISetting;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.ISetting;
 
 public class Setting<T> implements ISetting<T> {
 	private final String ID;

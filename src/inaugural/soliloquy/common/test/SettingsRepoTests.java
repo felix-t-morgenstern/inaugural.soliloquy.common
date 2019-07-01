@@ -9,13 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import soliloquy.specs.common.entities.*;
 import soliloquy.specs.common.factories.ICollectionFactory;
 import soliloquy.specs.common.factories.IPairFactory;
+import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.shared.IEntityGroupItem;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
-import soliloquy.specs.common.valueobjects.IPair;
 
 class SettingsRepoTests {
 	private SettingsRepo _settingsRepo;

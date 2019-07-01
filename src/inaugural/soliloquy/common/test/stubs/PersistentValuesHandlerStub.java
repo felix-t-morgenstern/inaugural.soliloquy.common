@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.*;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.*;
 
 public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
 

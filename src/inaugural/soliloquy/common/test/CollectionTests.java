@@ -4,7 +4,9 @@ import inaugural.soliloquy.common.test.stubs.CollectionValidatorStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.Collection;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -120,11 +122,16 @@ class CollectionTests {
 
     @Test
 	void testMakeClone() {
+    	IFunction<Integer,String> validator = new CollectionValidatorStub<>();
+    	_collection.validators().add(validator);
     	_collection.add(1);
     	_collection.add(2);
+
     	ICollection<Integer> newCollection = _collection.makeClone();
+
     	assertTrue(_collection.equals(newCollection));
     	assertNotNull(newCollection.getArchetype());
+    	assertTrue(newCollection.validators().contains(validator));
     }
 
     @Test
@@ -144,6 +151,21 @@ class CollectionTests {
 				() -> _collection.add(CollectionValidatorStub.ILLEGAL_VALUE));
 		assertThrows(IllegalArgumentException.class,
 				() -> _collection.addAll(new Integer[]{1,2,3,123}));
+	}
+
+	@Test
+	void testReadOnlyRepresentation() {
+		_collection.add(1);
+		_collection.add(2);
+		_collection.add(3);
+		IReadOnlyCollection<Integer> readOnlyCollection = _collection.readOnlyRepresentation();
+
+		assertNotNull(readOnlyCollection);
+		assertFalse(readOnlyCollection instanceof ICollection);
+		assertEquals(3, readOnlyCollection.size());
+		assertTrue(readOnlyCollection.contains(1));
+		assertTrue(readOnlyCollection.contains(2));
+		assertTrue(readOnlyCollection.contains(3));
 	}
 
     @Test

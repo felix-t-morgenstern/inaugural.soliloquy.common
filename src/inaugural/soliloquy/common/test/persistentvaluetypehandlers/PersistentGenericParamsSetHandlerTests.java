@@ -6,11 +6,11 @@ import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
 import soliloquy.specs.common.factories.IGenericParamsSetFactory;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.IMap;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 

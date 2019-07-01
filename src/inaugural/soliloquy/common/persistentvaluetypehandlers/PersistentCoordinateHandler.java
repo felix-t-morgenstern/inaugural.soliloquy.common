@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
 import soliloquy.specs.common.factories.ICoordinateFactory;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.ICoordinate;
 
 public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordinate>

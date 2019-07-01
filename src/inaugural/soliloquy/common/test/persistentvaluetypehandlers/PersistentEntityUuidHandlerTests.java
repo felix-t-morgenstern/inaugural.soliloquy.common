@@ -5,8 +5,8 @@ import inaugural.soliloquy.common.test.stubs.EntityUuidFactoryStub;
 import inaugural.soliloquy.common.test.stubs.EntityUuidStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
 import soliloquy.specs.common.factories.IEntityUuidFactory;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.IEntityUuid;
 
 import static org.junit.jupiter.api.Assertions.*;

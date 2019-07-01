@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.factories.IMapFactory;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.IMap;
 
 public class MapFactoryStub implements IMapFactory {
 
@@ -9,7 +9,7 @@ public class MapFactoryStub implements IMapFactory {
 	@Override
 	public <K, V> IMap<K, V> make(K archetype1, V archetype2) {
 		return new MapStub(archetype1, archetype2);
-	}    	
+	}
 
 	@Override
 	public String getInterfaceName() {

@@ -9,7 +9,7 @@ import inaugural.soliloquy.common.GenericParamsSet;
 import inaugural.soliloquy.common.GenericParamsSetFactory;
 import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
 import soliloquy.specs.common.factories.IMapFactory;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.IGenericParamsSet;
 
 class GenericParamsSetFactoryTests {
 	private GenericParamsSetFactory _genericParamsSetFactory;
@@ -18,7 +18,8 @@ class GenericParamsSetFactoryTests {
 
 	@BeforeEach
 	void setUp() {
-    	_genericParamsSetFactory = new GenericParamsSetFactory(new PersistentValuesHandlerStub(), MAP_FACTORY);
+    	_genericParamsSetFactory = new GenericParamsSetFactory(new PersistentValuesHandlerStub(),
+				MAP_FACTORY);
     	
     }
 

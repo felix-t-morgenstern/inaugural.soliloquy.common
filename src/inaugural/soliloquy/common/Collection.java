@@ -1,33 +1,20 @@
 package inaugural.soliloquy.common;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-
 import inaugural.soliloquy.common.archetypes.CollectionValidatorFunctionArchetype;
 import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
 
-public class Collection<V> extends HasOneGenericParam<V> implements ICollection<V> {
-	private final ArrayList<V> COLLECTION;
-	private final V ARCHETYPE;
+public class Collection<V> extends ReadOnlyCollection<V> implements ICollection<V> {
 	private final ICollection<IFunction<V,String>> VALIDATORS;
 	
 	public Collection(V archetype) {
-		COLLECTION = new ArrayList<>();
-		ARCHETYPE = archetype;
+		super(archetype);
 		VALIDATORS = new Collection<>(new CollectionValidatorFunctionArchetype<>(archetype), true);
 	}
 	
 	public Collection(V[] items, V archetype) {
-		COLLECTION = new ArrayList<>(Arrays.asList(items));
-		ARCHETYPE = archetype;
-		VALIDATORS = new Collection<>(new CollectionValidatorFunctionArchetype<>(archetype), true);
-	}
-
-	private Collection(ArrayList<V> collection, V archetype) {
-		COLLECTION = collection;
-		ARCHETYPE = archetype;
+		super(items, archetype);
 		VALIDATORS = new Collection<>(new CollectionValidatorFunctionArchetype<>(archetype), true);
 	}
 
@@ -35,24 +22,8 @@ public class Collection<V> extends HasOneGenericParam<V> implements ICollection<
 	//    hit an unending loop. This _does_ imply that VALIDATORS should not have any validators.
 	@SuppressWarnings("unused")
 	private Collection(V archetype, boolean unused) {
-		COLLECTION = new ArrayList<>();
-		ARCHETYPE = archetype;
+		super(archetype);
 		VALIDATORS = null;
-	}
-	
-	@Override
-	public Iterator<V> iterator() {
-		return COLLECTION.iterator();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public ICollection<V> makeClone() {
-		ICollection<V> clone =  new Collection<>((ArrayList<V>) COLLECTION.clone(), ARCHETYPE);
-		for(IFunction<V,String> validator : validators()) {
-			clone.validators().add(validator);
-		}
-		return clone;
 	}
 
 	@Override
@@ -92,39 +63,6 @@ public class Collection<V> extends HasOneGenericParam<V> implements ICollection<
 	}
 
 	@Override
-	public boolean contains(V item) {
-		return COLLECTION.contains(item);
-	}
-
-	@Override
-	public boolean equals(ICollection<V> items) {
-		if (items == null) return false;
-		if (COLLECTION.size() != items.size()) return false;
-		for(V item : COLLECTION) if(!items.contains(item)) return false;
-		return true;
-	}
-
-	@Override
-	public V get(int index) {
-		return COLLECTION.get(index);
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return COLLECTION.isEmpty();
-	}
-
-	@Override
-	public Object[] toArray() {
-		return COLLECTION.toArray();
-	}
-
-	@Override
-	public int size() {
-		return COLLECTION.size();
-	}
-
-	@Override
 	public boolean removeItem(V item) throws UnsupportedOperationException {
 		return COLLECTION.remove(item);
 	}
@@ -134,9 +72,18 @@ public class Collection<V> extends HasOneGenericParam<V> implements ICollection<
 		return VALIDATORS;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public V getArchetype() {
-		return ARCHETYPE;
+	public IReadOnlyCollection<V> readOnlyRepresentation() {
+		return new ReadOnlyCollection<>((V[]) COLLECTION.toArray(), ARCHETYPE);
+	}
+
+	@Override
+	public ICollection<V> makeClone() {
+		ICollection<V> clone =  super.makeClone();
+		assert VALIDATORS != null;
+		VALIDATORS.forEach(clone.validators()::add);
+		return clone;
 	}
 
 	@Override

@@ -1,12 +1,8 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.entities.IPersistentMapHandler;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
 import soliloquy.specs.common.factories.IMapFactory;
-import soliloquy.specs.common.valueobjects.IMap;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.*;
 
 public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
         implements IPersistentMapHandler {

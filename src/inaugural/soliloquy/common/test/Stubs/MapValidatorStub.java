@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common.test.stubs;
-
 import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.IPair;
 import soliloquy.specs.game.IGame;
 import soliloquy.specs.logger.ILogger;
 

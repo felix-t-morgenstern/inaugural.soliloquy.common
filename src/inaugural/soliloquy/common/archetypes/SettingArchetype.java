@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.entities.ISetting;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.ISetting;
 
 public class SettingArchetype implements ISetting {
     @Override

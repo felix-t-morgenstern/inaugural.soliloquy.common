@@ -2,9 +2,10 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.entities.IFunction;
 import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IMap;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IMap;
+import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.IReadOnlyMap;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -83,9 +84,28 @@ public class MapStub<K,V> implements IMap<K,V> {
 	}
 
 	@Override
-	public boolean equals(IMap<K, V> map) throws IllegalArgumentException {
+	public boolean equals(IReadOnlyMap<K, V> map) throws IllegalArgumentException {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean equals(Object o) {
+		try {
+			IReadOnlyMap<K,V> map = (IReadOnlyMap<K,V>) o;
+			if (map.size() != this.size()) {
+				return false;
+			}
+			for (K key : _map.keySet()) {
+				if (!_map.get(key).equals(map.get(key))) {
+					return false;
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override
@@ -150,6 +170,12 @@ public class MapStub<K,V> implements IMap<K,V> {
 
 	@Override
 	public ICollection<IFunction<IPair<K, V>, String>> validators() {
+		// Stub method; unimplemented
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public IReadOnlyMap<K, V> readOnlyRepresentation() {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
 	}

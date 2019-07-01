@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.specs.common.entities.ISetting;
 import soliloquy.specs.common.factories.ISettingFactory;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.ISetting;
 
 public class SettingFactory extends CanCheckArchetypeAndArchetypesOfArchetype
 		implements ISettingFactory {

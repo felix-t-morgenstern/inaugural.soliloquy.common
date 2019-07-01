@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.factories.ICollectionFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.ICollection;
 
 public class CollectionFactoryStub implements ICollectionFactory {
 	@Override

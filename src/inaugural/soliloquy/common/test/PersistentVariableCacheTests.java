@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PersistentVariableCache;
 import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import soliloquy.specs.common.entities.IPersistentVariableCache;
 import soliloquy.specs.common.factories.ICollectionFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.IPersistentVariableCache;
+import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,8 +56,8 @@ class PersistentVariableCacheTests {
 		_persistentVariableCache.setVariable("variable2", "value2");
 		_persistentVariableCache.setVariable("variable3", "value3");
 
-		ICollection<String> persistentVariableNamesRepresentation =
-				_persistentVariableCache.getNamesRepresentation();
+		IReadOnlyCollection<String> persistentVariableNamesRepresentation =
+				_persistentVariableCache.namesRepresentation();
 
 		assertNotNull(persistentVariableNamesRepresentation);
 		assertEquals(3, persistentVariableNamesRepresentation.size());

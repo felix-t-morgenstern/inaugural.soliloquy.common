@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
 
 public class PersistentBooleanHandler extends PersistentTypeHandler<Boolean>
 		implements IPersistentValueTypeHandler<Boolean> {

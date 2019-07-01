@@ -3,7 +3,7 @@ package inaugural.soliloquy.common;
 import com.google.inject.AbstractModule;
 import inaugural.soliloquy.common.archetypes.SettingArchetype;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
-import soliloquy.specs.common.entities.*;
+import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.factories.*;
 
 public class CommonModule extends AbstractModule {

@@ -1,14 +1,15 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.ISetting;
-import soliloquy.specs.common.entities.ISettingsRepo;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.ISetting;
+import soliloquy.specs.common.infrastructure.ISettingsRepo;
 import soliloquy.specs.common.shared.IEntityGroupItem;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IPair;
 
 import java.util.HashMap;
 
 public class SettingsRepoStub implements ISettingsRepo {
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final HashMap<String,Object> SETTINGS = new HashMap<>();
 
     private static final String SETTING_1_ID = "setting1Id";
@@ -26,6 +27,7 @@ public class SettingsRepoStub implements ISettingsRepo {
     private static final ISetting SETTING_2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME,
             SETTING_2_VALUE);
 
+    @SuppressWarnings("unchecked")
     @Override
     public <V> ISetting<V> getSetting(String name) throws IllegalArgumentException {
         switch (name) {
@@ -53,7 +55,6 @@ public class SettingsRepoStub implements ISettingsRepo {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public ICollection<ISetting> getAllUngrouped() {
         ICollection<ISetting> settings = new CollectionStub<>();

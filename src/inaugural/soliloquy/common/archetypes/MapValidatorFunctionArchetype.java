@@ -1,13 +1,12 @@
 package inaugural.soliloquy.common.archetypes;
 
 import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.IPair;
 import soliloquy.specs.game.IGame;
 import soliloquy.specs.logger.ILogger;
 
 public class MapValidatorFunctionArchetype<K,V> implements IFunction<IPair<K,V>,String> {
     private final IPair<K,V> ARCHETYPE_1;
-    private final String ARCHETYPE_2 = "";
 
     public MapValidatorFunctionArchetype(K keyArchetype, V valueArchetype) {
         ARCHETYPE_1 = new PairArchetype<>(keyArchetype, valueArchetype);
@@ -45,7 +44,7 @@ public class MapValidatorFunctionArchetype<K,V> implements IFunction<IPair<K,V>,
 
     @Override
     public String getSecondArchetype() throws IllegalStateException {
-        return ARCHETYPE_2;
+        return "";
     }
 
     @Override

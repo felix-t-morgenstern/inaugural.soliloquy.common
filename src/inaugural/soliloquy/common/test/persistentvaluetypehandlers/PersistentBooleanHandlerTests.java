@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 

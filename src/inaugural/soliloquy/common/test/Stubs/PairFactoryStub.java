@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.IPair;
 
 public class PairFactoryStub implements IPairFactory {
 

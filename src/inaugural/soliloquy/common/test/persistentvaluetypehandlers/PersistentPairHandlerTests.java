@@ -5,11 +5,11 @@ import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.IPersistentPairHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
 import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.IPersistentPairHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

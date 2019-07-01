@@ -1,11 +1,8 @@
 package inaugural.soliloquy.common;
 
-import java.util.HashMap;
+import soliloquy.specs.common.infrastructure.*;
 
-import soliloquy.specs.common.entities.*;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IMap;
-import soliloquy.specs.common.valueobjects.IPair;
+import java.util.HashMap;
 
 public class PersistentValuesHandler extends CanGetInterfaceName
 		implements IPersistentValuesHandler {

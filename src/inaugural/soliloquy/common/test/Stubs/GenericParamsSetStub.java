@@ -2,14 +2,15 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.factories.ICollectionFactory;
 import soliloquy.specs.common.factories.IMapFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.IMap;
+import soliloquy.specs.common.infrastructure.IReadOnlyMap;
 
 import java.util.HashMap;
 
 public class GenericParamsSetStub implements IGenericParamsSet {
-	private HashMap<String,HashMap<String,Object>> GENERIC_PARAMS = new HashMap<>();
+	private HashMap<String, HashMap<String,Object>> GENERIC_PARAMS = new HashMap<>();
 
 	private IMapFactory MAP_FACTORY = new MapFactoryStub();
 	private ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
@@ -30,7 +31,7 @@ public class GenericParamsSetStub implements IGenericParamsSet {
 	}
 
 	@Override
-	public <T> void addParamsSet(IMap<String, T> map)
+	public <T> void addParamsSet(IReadOnlyMap<String, T> map)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		// Stub class; no implementation needed
 		throw new UnsupportedOperationException();

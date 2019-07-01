@@ -10,13 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PersistentValuesHandler;
-import soliloquy.specs.common.entities.IPersistentCollectionHandler;
-import soliloquy.specs.common.entities.IPersistentMapHandler;
-import soliloquy.specs.common.entities.IPersistentPairHandler;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IMap;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.*;
 
 class PersistentValuesHandlerTests {
 	private PersistentValuesHandler _persistentValuesHandler;

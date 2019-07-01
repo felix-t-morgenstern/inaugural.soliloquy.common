@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
 import soliloquy.specs.common.factories.ICollectionFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.ICollection;
 
 public class CollectionFactory extends CanCheckArchetypeAndArchetypesOfArchetype
 		implements ICollectionFactory {
@@ -9,12 +9,12 @@ public class CollectionFactory extends CanCheckArchetypeAndArchetypesOfArchetype
 	@Override
 	public <T> ICollection<T> make(T archetype) {
 		checkArchetypeAndArchetypesOfArchetype("make", archetype);
-		return new Collection<T>(archetype);
+		return new Collection<>(archetype);
 	}
 
 	@Override
 	public <T> ICollection<T> make(T[] items, T archetype) throws IllegalArgumentException {
-		return new Collection<T>(items, archetype);
+		return new Collection<>(items, archetype);
 	}
 
 	@Override

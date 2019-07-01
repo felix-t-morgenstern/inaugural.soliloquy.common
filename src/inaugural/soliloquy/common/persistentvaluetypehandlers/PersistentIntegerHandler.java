@@ -1,10 +1,11 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
 
 public class PersistentIntegerHandler extends PersistentTypeHandler<Integer>
 		implements IPersistentValueTypeHandler<Integer> {
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public Integer read(String serializedValue) throws IllegalArgumentException {
 		return Integer.parseInt(serializedValue);

@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.Setting;
 import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
-import soliloquy.specs.common.entities.ISetting;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.IGenericParamsSet;
+import soliloquy.specs.common.infrastructure.ISetting;
 
 import static org.junit.jupiter.api.Assertions.*;
 

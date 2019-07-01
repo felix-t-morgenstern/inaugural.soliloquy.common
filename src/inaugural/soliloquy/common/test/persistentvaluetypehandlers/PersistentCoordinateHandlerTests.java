@@ -5,7 +5,7 @@ import inaugural.soliloquy.common.test.stubs.CoordinateFactoryStub;
 import inaugural.soliloquy.common.test.stubs.CoordinateStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
 import soliloquy.specs.common.factories.ICoordinateFactory;
 import soliloquy.specs.common.valueobjects.ICoordinate;
 

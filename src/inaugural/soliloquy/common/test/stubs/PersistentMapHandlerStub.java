@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.IPersistentMapHandler;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.IMap;
+import soliloquy.specs.common.infrastructure.IPersistentMapHandler;
 
 public class PersistentMapHandlerStub implements IPersistentMapHandler {
     @Override

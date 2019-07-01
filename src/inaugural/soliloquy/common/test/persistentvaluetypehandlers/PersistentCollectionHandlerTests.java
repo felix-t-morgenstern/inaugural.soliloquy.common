@@ -7,10 +7,10 @@ import inaugural.soliloquy.common.test.stubs.PersistentStringHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.IPersistentCollectionHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
 import soliloquy.specs.common.factories.ICollectionFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IPersistentCollectionHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -5,11 +5,7 @@ import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import inaugural.soliloquy.common.test.stubs.SettingsRepoStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
-import soliloquy.specs.common.entities.ISetting;
-import soliloquy.specs.common.entities.ISettingsRepo;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 

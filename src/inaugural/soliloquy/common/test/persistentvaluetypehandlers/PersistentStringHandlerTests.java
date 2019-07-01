@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHandler;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
 
 public class PersistentStringHandlerTests {
 	private PersistentStringHandler persistentStringHandler;

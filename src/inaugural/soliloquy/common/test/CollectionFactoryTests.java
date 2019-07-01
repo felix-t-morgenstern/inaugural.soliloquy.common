@@ -4,7 +4,7 @@ import inaugural.soliloquy.common.test.stubs.CollectionStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.CollectionFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.ICollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 

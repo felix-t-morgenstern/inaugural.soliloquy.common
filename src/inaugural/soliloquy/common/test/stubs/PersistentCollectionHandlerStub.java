@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.IPersistentCollectionHandler;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IPersistentCollectionHandler;
 
 public class PersistentCollectionHandlerStub implements IPersistentCollectionHandler {
     @Override

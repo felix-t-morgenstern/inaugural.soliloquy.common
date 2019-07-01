@@ -1,12 +1,8 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
 import soliloquy.specs.common.factories.IGenericParamsSetFactory;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
-import soliloquy.specs.common.valueobjects.IMap;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.*;
 
 public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGenericParamsSet>
         implements IPersistentValueTypeHandler<IGenericParamsSet> {

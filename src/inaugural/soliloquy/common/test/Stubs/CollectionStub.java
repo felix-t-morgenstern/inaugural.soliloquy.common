@@ -1,10 +1,11 @@
 package inaugural.soliloquy.common.test.stubs;
 
+import soliloquy.specs.common.entities.IFunction;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.valueobjects.ICollection;
 
 public class CollectionStub<V> implements ICollection<V> {
 	private V _archetype;
@@ -67,7 +68,7 @@ public class CollectionStub<V> implements ICollection<V> {
 	}
 
 	@Override
-	public boolean equals(ICollection<V> items) {
+	public boolean equals(IReadOnlyCollection<V> items) {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
 	}
@@ -102,6 +103,11 @@ public class CollectionStub<V> implements ICollection<V> {
 	@Override
 	public ICollection<IFunction<V, String>> validators() {
 		return null;
+	}
+
+	@Override
+	public IReadOnlyCollection<V> readOnlyRepresentation() {
+		return this;
 	}
 
 	@Override

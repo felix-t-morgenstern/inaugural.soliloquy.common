@@ -1,11 +1,8 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.entities.IPersistentValueTypeHandler;
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
-import soliloquy.specs.common.entities.IPersistentVariableCache;
 import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
+import soliloquy.specs.common.infrastructure.*;
 
 public class PersistentVariableCachePersistenceHandler
         extends PersistentTypeHandler<IPersistentVariableCache>
@@ -58,7 +55,7 @@ public class PersistentVariableCachePersistenceHandler
                     "PersistentVariableCachePersistenceHandler.write: persistentVariableCache " +
                             "must be non-null");
         }
-        ICollection<String> pVarNames = persistentVariableCache.getNamesRepresentation();
+        IReadOnlyCollection<String> pVarNames = persistentVariableCache.namesRepresentation();
         PersistentVariableDTO[] dto = new PersistentVariableDTO[pVarNames.size()];
         for(int i = 0; i < pVarNames.size(); i++) {
             String pVarName = pVarNames.get(i);

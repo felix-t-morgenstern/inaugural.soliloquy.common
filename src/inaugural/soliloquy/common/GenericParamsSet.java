@@ -1,21 +1,19 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.specs.common.entities.IPersistentValuesHandler;
 import soliloquy.specs.common.factories.IMapFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IGenericParamsSet;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;
 
 public class GenericParamsSet extends CanGetInterfaceName implements IGenericParamsSet {
-	private HashMap<String, IMap<String,?>> _paramsSetsRepository = new HashMap<>();
-	private IPersistentValuesHandler _persistentValuesHandler;
-	private IMapFactory _mapFactory;
+	private final HashMap<String, IMap<String,?>> PARAMS_SETS_REPOSITORY = new HashMap<>();
+	private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
+	private final IMapFactory MAP_FACTORY;
 	
-	public GenericParamsSet(IPersistentValuesHandler persistentValuesHandler, IMapFactory mapFactory) {
-		_persistentValuesHandler = persistentValuesHandler;
-		_mapFactory = mapFactory;
+	public GenericParamsSet(IPersistentValuesHandler persistentValuesHandler,
+							IMapFactory mapFactory) {
+		PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
+		MAP_FACTORY = mapFactory;
 	}
 	
 	@SuppressWarnings({"unchecked", "ConstantConditions"})
@@ -25,31 +23,36 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		}
 		String paramTypeName = getProperTypeName(value);
 		if (getParamsSet(paramTypeName) == null) {
-			addParamsSet(_mapFactory.make("", value));
+			addParamsSet(MAP_FACTORY.make("", value));
 		}
-		((IMap<String,T>) _paramsSetsRepository.get(paramTypeName)).put(name, value);
+		((IMap<String,T>) PARAMS_SETS_REPOSITORY.get(paramTypeName)).put(name, value);
 	}
 
-	@SuppressWarnings("ConstantConditions")
+	@SuppressWarnings({"ConstantConditions", "unchecked"})
 	@Override
-	public <T> void addParamsSet(IMap<String, T> paramsSet)
+	public <T> void addParamsSet(IReadOnlyMap<String, T> paramsSet)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		// TODO: Add a test to ensure that paramsSet archetypes cannot be null
 		if (paramsSet == null) {
 			throw new IllegalArgumentException("GenericParamsSet.addParamsSet: Cannot add null paramsSet");
 		}
 		String paramTypeName = getProperTypeName(paramsSet.getSecondArchetype());
-		if (_paramsSetsRepository.containsKey(paramTypeName)) {
+		if (PARAMS_SETS_REPOSITORY.containsKey(paramTypeName)) {
 			throw new UnsupportedOperationException("GenericParamsSet.addParamsSet: Params set of type "
 					+ paramTypeName + " already exists in this params set");
 		}
-		_paramsSetsRepository.put(paramTypeName, paramsSet);
+		IMap newParamsSet = MAP_FACTORY.make("", paramsSet.getSecondArchetype());
+		for(IPair<String, T> param : paramsSet) {
+			newParamsSet.put(param.getItem1(), param.getItem2());
+		}
+
+		PARAMS_SETS_REPOSITORY.put(paramTypeName, newParamsSet);
 	}
 
 	@Override
 	public <T> T getParam(String paramTypeName, String paramName) {
 		@SuppressWarnings("unchecked")
-		IMap<String,T> repository = (IMap<String, T>) _paramsSetsRepository.get(paramTypeName);
+		IMap<String,T> repository = (IMap<String, T>) PARAMS_SETS_REPOSITORY.get(paramTypeName);
 		if (repository == null) {
 			return null;
 		}
@@ -60,13 +63,13 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	public <T> IMap<String, T> getParamsSet(String paramTypeName)
 			throws IllegalArgumentException, IllegalStateException {
 		@SuppressWarnings("unchecked")
-		IMap<String, T> map = (IMap<String, T>) _paramsSetsRepository.get(paramTypeName);
+		IMap<String, T> map = (IMap<String, T>) PARAMS_SETS_REPOSITORY.get(paramTypeName);
 		return map;
 	}
 
 	@Override
 	public boolean paramExists(String paramTypeName, String paramName) {
-		IMap<String,?> repository = _paramsSetsRepository.get(paramTypeName);
+		IMap<String,?> repository = PARAMS_SETS_REPOSITORY.get(paramTypeName);
 		if (repository == null) {
 			return false;
 		}
@@ -77,7 +80,7 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 	public ICollection<String> paramTypes() {
 		// Class isn't parameterized, thus no archetype is needed by Collection
 		ICollection<String> paramTypeNames = new Collection<>("");
-		for(String paramTypeName : _paramsSetsRepository.keySet()) {
+		for(String paramTypeName : PARAMS_SETS_REPOSITORY.keySet()) {
 			paramTypeNames.add(paramTypeName);
 		}
 		return paramTypeNames;
@@ -88,13 +91,13 @@ public class GenericParamsSet extends CanGetInterfaceName implements IGenericPar
 		if (getParamsSet(paramTypeName) == null) {
 			return false;
 		}
-		return (_paramsSetsRepository.get(paramTypeName)).removeByKey(paramName) != null;
+		return (PARAMS_SETS_REPOSITORY.get(paramTypeName)).removeByKey(paramName) != null;
 	}
 
 	@Override
 	public IGenericParamsSet makeClone() {
-		GenericParamsSet cloned = new GenericParamsSet(_persistentValuesHandler, _mapFactory);
-		for(IMap<String,?> map : _paramsSetsRepository.values()) {
+		GenericParamsSet cloned = new GenericParamsSet(PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
+		for(IMap<String,?> map : PARAMS_SETS_REPOSITORY.values()) {
 			for(String key : map.getKeys()) cloned.addParam(key, map.get(key));
 		}
 		return cloned;

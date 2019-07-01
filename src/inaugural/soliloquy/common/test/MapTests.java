@@ -16,9 +16,10 @@ import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import soliloquy.specs.common.entities.IFunction;
 import soliloquy.specs.common.factories.ICollectionFactory;
 import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IMap;
-import soliloquy.specs.common.valueobjects.IPair;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IMap;
+import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.IReadOnlyMap;
 
 class MapTests {
 	private Map<String,String> _map;
@@ -286,6 +287,19 @@ class MapTests {
 		}
 	}
 
+	@Test
+	void testReadOnlyRepresentation() {
+		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
+		_map.put(PAIR_2_KEY, PAIR_2_VALUE);
+		IReadOnlyMap<String,String> readOnlyMap = _map.readOnlyRepresentation();
+
+		assertNotNull(readOnlyMap);
+		assertFalse(readOnlyMap instanceof IMap);
+		assertEquals(2, readOnlyMap.size());
+		assertEquals(PAIR_1_VALUE, readOnlyMap.get(PAIR_1_KEY));
+		assertEquals(PAIR_2_VALUE, readOnlyMap.get(PAIR_2_KEY));
+	}
+
     @Test
 	void testGetFirstArchetype() {
 		assertEquals(FIRST_ARCHETYPE, _map.getFirstArchetype());
@@ -306,6 +320,8 @@ class MapTests {
 	void testMakeClone() {
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
 		_map.put(PAIR_2_KEY, PAIR_2_VALUE);
+		IFunction<IPair<String,String>, String> validator = new MapValidatorStub();
+		_map.validators().add(validator);
 		
 		IMap<String,String> clonedMap = _map.makeClone();
 		assertNotNull(clonedMap);
@@ -317,7 +333,6 @@ class MapTests {
 		assertEquals(_map.size(), clonedMap.size());
 		assertNotNull(clonedMap.getFirstArchetype());
 		assertNotNull(clonedMap.getSecondArchetype());
+		assertTrue(clonedMap.validators().contains(validator));
 	}
-
-
 }

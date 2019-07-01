@@ -3,7 +3,7 @@ package inaugural.soliloquy.common;
 import soliloquy.specs.common.factories.ICollectionFactory;
 import soliloquy.specs.common.factories.IMapFactory;
 import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.valueobjects.IMap;
+import soliloquy.specs.common.infrastructure.IMap;
 
 public class MapFactory extends CanCheckArchetypeAndArchetypesOfArchetype implements IMapFactory {
 	private final IPairFactory PAIR_FACTORY;

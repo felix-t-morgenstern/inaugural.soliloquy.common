@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.entities.ISetting;
-import soliloquy.specs.common.entities.ISettingsRepo;
+import soliloquy.specs.common.infrastructure.ICollection;
+import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.ISetting;
+import soliloquy.specs.common.infrastructure.ISettingsRepo;
 import soliloquy.specs.common.shared.IEntityGroupItem;
-import soliloquy.specs.common.valueobjects.ICollection;
-import soliloquy.specs.common.valueobjects.IPair;
 
 public class SettingsRepoArchetype implements ISettingsRepo {
     @Override
