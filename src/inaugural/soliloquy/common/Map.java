@@ -86,8 +86,7 @@ public class Map<K,V> extends ReadOnlyMap<K,V> implements IMap<K,V> {
 
 	@Override
 	public IReadOnlyMap<K, V> readOnlyRepresentation() {
-		return new ReadOnlyMap<>(ARCHETYPE_1, ARCHETYPE_2, (HashMap<K, V>) MAP.clone(),
-				PAIR_FACTORY, COLLECTION_FACTORY);
+		return new ReadOnlyMap<>(ARCHETYPE_1, ARCHETYPE_2, MAP, PAIR_FACTORY, COLLECTION_FACTORY);
 	}
 
 	@Override

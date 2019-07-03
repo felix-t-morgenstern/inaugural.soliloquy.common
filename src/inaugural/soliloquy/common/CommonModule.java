@@ -25,9 +25,10 @@ public class CommonModule extends AbstractModule {
 		_pairFactory = new PairFactory();
 		_settingFactory = new SettingFactory();
 
-		_persistentVariableCacheFactory = new PersistentVariableCacheFactory(_collectionFactory);
-
 		_mapFactory = new MapFactory(_pairFactory, _collectionFactory);
+
+		_persistentVariableCacheFactory = new PersistentVariableCacheFactory(_collectionFactory,
+				_mapFactory);
 
 		_persistentValuesHandler = new PersistentValuesHandler();
 

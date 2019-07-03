@@ -1,20 +1,20 @@
 package inaugural.soliloquy.common;
 
 import soliloquy.specs.common.factories.ICollectionFactory;
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IPersistentVariableCache;
-import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
-import soliloquy.specs.common.infrastructure.IReadOnlyMap;
+import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;
 
 public class PersistentVariableCache implements IPersistentVariableCache {
 	private final ICollectionFactory COLLECTION_FACTORY;
+	private final IMapFactory MAP_FACTORY;
 	private final HashMap<String,Object> PERSISTENT_VARIABLES;
 
-	public PersistentVariableCache(ICollectionFactory collectionFactory) {
+	public PersistentVariableCache(ICollectionFactory collectionFactory, IMapFactory mapFactory) {
 		PERSISTENT_VARIABLES = new HashMap<>();
 		COLLECTION_FACTORY = collectionFactory;
+		MAP_FACTORY = mapFactory;
 	}
 	
 	@Override
@@ -47,8 +47,9 @@ public class PersistentVariableCache implements IPersistentVariableCache {
 
 	@Override
 	public IReadOnlyMap<String,Object> variablesRepresentation() {
-		// TODO: Test and implement!!!
-		return null;
+		IMap<String,Object> variablesMap = MAP_FACTORY.make("", new Object());
+		PERSISTENT_VARIABLES.forEach(variablesMap::put);
+		return variablesMap.readOnlyRepresentation();
 	}
 
 	@Override

@@ -4,39 +4,13 @@ import soliloquy.specs.common.entities.IFunction;
 import soliloquy.specs.common.infrastructure.ICollection;
 import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-public class CollectionStub<V> implements ICollection<V> {
-	private V _archetype;
-	
+public class CollectionStub<V> extends ReadOnlyCollectionStub<V> implements ICollection<V> {
 	public CollectionStub() {
+		super();
 	}
 	
 	public CollectionStub(V archetype) {
-		_archetype = archetype;
-	}
-	
-	private ArrayList<V> _collection = new ArrayList<>();
-
-	@Override
-	public Iterator<V> iterator() {
-		return _collection.iterator();
-	}
-
-	@Override
-	public ICollection<V> makeClone() {
-		return this;
-	}
-
-	@Override
-	public V getArchetype() {
-		return _archetype;
-	}
-
-	@Override
-	public String getInterfaceName() {
-		return "soliloquy.common.specs.ICollection<" + _archetype.getClass().getCanonicalName() + ">";
+		super(archetype);
 	}
 
 	@Override
@@ -63,38 +37,6 @@ public class CollectionStub<V> implements ICollection<V> {
 	}
 
 	@Override
-	public boolean contains(V item) {
-		return _collection.contains(item);
-	}
-
-	@Override
-	public boolean equals(IReadOnlyCollection<V> items) {
-		// Stub method; unimplemented
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public V get(int index) {
-		return _collection.get(index);
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return _collection.isEmpty();
-	}
-
-	@Override
-	public Object[] toArray() {
-		// Stub method; unimplemented
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public int size() {
-		return _collection.size();
-	}
-
-	@Override
 	public boolean removeItem(V item) throws UnsupportedOperationException {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
@@ -107,7 +49,7 @@ public class CollectionStub<V> implements ICollection<V> {
 
 	@Override
 	public IReadOnlyCollection<V> readOnlyRepresentation() {
-		return this;
+		return new ReadOnlyCollectionStub<>(_archetype, _collection);
 	}
 
 	@Override

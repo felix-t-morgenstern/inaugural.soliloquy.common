@@ -28,9 +28,10 @@ class ReadOnlyMap<K,V> extends HasTwoGenericParams<K,V> implements IReadOnlyMap<
         COLLECTION_FACTORY = collectionFactory;
     }
 
-    ReadOnlyMap(K archetype1, V archetype2, HashMap<K, V> internalMap, IPairFactory pairFactory,
+    ReadOnlyMap(K archetype1, V archetype2, HashMap<K, V> values, IPairFactory pairFactory,
                 ICollectionFactory collectionFactory) {
-        MAP = internalMap;
+        MAP = new HashMap<>();
+        values.forEach(MAP::put);
         ARCHETYPE_1 = archetype1;
         ARCHETYPE_2 = archetype2;
         PAIR_FACTORY = pairFactory;
