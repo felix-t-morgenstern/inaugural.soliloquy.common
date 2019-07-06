@@ -42,6 +42,7 @@ public class PersistentValuesHandler extends CanGetInterfaceName
 	public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(
 			String persistentValueType)
 			throws UnsupportedOperationException {
+		// TODO: Ensure that these tests work for read-only and read-write infrastructure
 		if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
 			return (IPersistentValueTypeHandler<T>) _persistentCollectionHandler;
 		} else if (interfaceIsOfGenericType(persistentValueType, MAP_GENERIC_INTERFACE_NAME)) {
