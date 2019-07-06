@@ -17,7 +17,15 @@ public class CommonModule extends AbstractModule {
 	private IPersistentVariableCacheFactory _persistentVariableCacheFactory;
 	private ISettingFactory _settingFactory;
 	private ISettingsRepo _settingsRepo;
-	
+
+	// TODO: Refactor away from service location pattern when JDK 13 is released
+	// NB: JDK 12 results in "Illegal reflective access" errors thrown by Guice; a Google support
+	//     technician has stated that this error will require workarounds until JDK 13 is released,
+	//     but no workarounds (in that thread or elsewhere) have worked to resolve the issue.
+	//     (The issue is that refactoring to true DI instead of service location requires the new
+	//     injector to produce the PersistentValuesHandler, to manage the recursive dependencies
+	//     with MapHandler, CollectionHandler, etc. This may also be a code smell.)
+	//     [Source: https://github.com/google/guice/issues/1133]
 	public CommonModule() {
 		_collectionFactory = new CollectionFactory();
 		_coordinateFactory = new CoordinateFactory();
