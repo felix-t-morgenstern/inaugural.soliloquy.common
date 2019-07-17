@@ -1,29 +1,29 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.game.IGame;
-import soliloquy.specs.logger.ILogger;
+import soliloquy.specs.common.entities.Function;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.game.Game;
+import soliloquy.specs.logger.Logger;
 
-public class MapValidatorFunctionArchetype<K,V> implements IFunction<IPair<K,V>,String> {
-    private final IPair<K,V> ARCHETYPE_1;
+public class MapValidatorFunctionArchetype<K,V> implements Function<Pair<K,V>,String> {
+    private final Pair<K,V> ARCHETYPE_1;
 
     public MapValidatorFunctionArchetype(K keyArchetype, V valueArchetype) {
         ARCHETYPE_1 = new PairArchetype<>(keyArchetype, valueArchetype);
     }
 
     @Override
-    public String run(IPair<K, V> kviPair) throws IllegalArgumentException {
+    public String run(Pair<K, V> kvPair) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public IGame game() {
+    public Game game() {
         return null;
     }
 
     @Override
-    public ILogger logger() {
+    public Logger logger() {
         return null;
     }
 
@@ -38,7 +38,7 @@ public class MapValidatorFunctionArchetype<K,V> implements IFunction<IPair<K,V>,
     }
 
     @Override
-    public IPair<K, V> getFirstArchetype() throws IllegalStateException {
+    public Pair<K, V> getFirstArchetype() throws IllegalStateException {
         return ARCHETYPE_1;
     }
 

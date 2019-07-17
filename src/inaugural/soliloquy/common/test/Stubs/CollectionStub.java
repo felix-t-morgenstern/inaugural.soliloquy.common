@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
+import soliloquy.specs.common.entities.Function;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
 
-public class CollectionStub<V> extends ReadOnlyCollectionStub<V> implements ICollection<V> {
+public class CollectionStub<V> extends ReadOnlyCollectionStub<V> implements Collection<V> {
 	public CollectionStub() {
 		super();
 	}
@@ -19,7 +19,7 @@ public class CollectionStub<V> extends ReadOnlyCollectionStub<V> implements ICol
 	}
 
 	@Override
-	public void addAll(ICollection<? extends V> items) throws UnsupportedOperationException {
+	public void addAll(Collection<? extends V> items) throws UnsupportedOperationException {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
 	}
@@ -43,12 +43,12 @@ public class CollectionStub<V> extends ReadOnlyCollectionStub<V> implements ICol
 	}
 
 	@Override
-	public ICollection<IFunction<V, String>> validators() {
+	public Collection<Function<V, String>> validators() {
 		return null;
 	}
 
 	@Override
-	public IReadOnlyCollection<V> readOnlyRepresentation() {
+	public ReadOnlyCollection<V> readOnlyRepresentation() {
 		return new ReadOnlyCollectionStub<>(_archetype, _collection);
 	}
 

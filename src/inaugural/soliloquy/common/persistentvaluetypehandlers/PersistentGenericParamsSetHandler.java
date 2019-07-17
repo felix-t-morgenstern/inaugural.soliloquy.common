@@ -1,29 +1,29 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.factories.IGenericParamsSetFactory;
+import soliloquy.specs.common.factories.GenericParamsSetFactory;
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGenericParamsSet>
-        implements IPersistentValueTypeHandler<IGenericParamsSet> {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
-    private final IGenericParamsSetFactory GENERIC_PARAMS_SET_FACTORY;
-    private final IGenericParamsSet ARCHETYPE;
+public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<GenericParamsSet>
+        implements PersistentValueTypeHandler<GenericParamsSet> {
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
+    private final GenericParamsSetFactory GENERIC_PARAMS_SET_FACTORY;
+    private final GenericParamsSet ARCHETYPE;
 
-    public PersistentGenericParamsSetHandler(IPersistentValuesHandler persistentValuesHandler,
-                                             IGenericParamsSetFactory genericParamsSetFactory) {
+    public PersistentGenericParamsSetHandler(PersistentValuesHandler persistentValuesHandler,
+                                             GenericParamsSetFactory genericParamsSetFactory) {
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         GENERIC_PARAMS_SET_FACTORY = genericParamsSetFactory;
         ARCHETYPE = genericParamsSetFactory.make();
     }
 
     @Override
-    public IGenericParamsSet getArchetype() {
+    public GenericParamsSet getArchetype() {
         return ARCHETYPE;
     }
 
     @Override
-    public IGenericParamsSet read(String serializedValue) throws IllegalArgumentException {
+    public GenericParamsSet read(String serializedValue) throws IllegalArgumentException {
         if(serializedValue == null) {
             throw new IllegalArgumentException(
                     "PersistentGenericParamsSetHandler.read: serializedValue must be non-null");
@@ -33,9 +33,9 @@ public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGe
                     "PersistentGenericParamsSetHandler.read: serializedValue must be non-empty");
         }
         TypedParamsSetDTO[] dto = new Gson().fromJson(serializedValue, TypedParamsSetDTO[].class);
-        IGenericParamsSet genericParamsSet = GENERIC_PARAMS_SET_FACTORY.make();
+        GenericParamsSet genericParamsSet = GENERIC_PARAMS_SET_FACTORY.make();
         for(TypedParamsSetDTO typedDTO : dto) {
-            IPersistentValueTypeHandler handler =
+            PersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typedDTO.typeName);
             for(int i = 0; i < typedDTO.paramNames.length; i++) {
                 genericParamsSet.addParam(typedDTO.paramNames[i],
@@ -47,7 +47,7 @@ public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGe
 
     @SuppressWarnings("unchecked")
     @Override
-    public String write(IGenericParamsSet genericParamsSet) {
+    public String write(GenericParamsSet genericParamsSet) {
         if (genericParamsSet == null) {
             throw new IllegalArgumentException(
                     "PersistentGenericParamsSetHandler.write: genericParamsSet must be non-null");
@@ -57,14 +57,14 @@ public class PersistentGenericParamsSetHandler extends PersistentTypeHandler<IGe
         for(String paramType : genericParamsSet.paramTypes()) {
             dto[paramCount] = new TypedParamsSetDTO();
             dto[paramCount].typeName = paramType;
-            IMap params = genericParamsSet.getParamsSet(paramType);
-            IPersistentValueTypeHandler handler =
+            Map params = genericParamsSet.getParamsSet(paramType);
+            PersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(paramType);
             dto[paramCount].paramNames = new String[params.size()];
             dto[paramCount].paramValues = new String[params.size()];
             int indexCount = 0;
             for(Object param : params) {
-                IPair<String,Object> pair = (IPair) param;
+                Pair<String,Object> pair = (Pair) param;
                 dto[paramCount].paramNames[indexCount] = pair.getItem1();
                 dto[paramCount].paramValues[indexCount] = handler.write(pair.getItem2());
                 indexCount++;

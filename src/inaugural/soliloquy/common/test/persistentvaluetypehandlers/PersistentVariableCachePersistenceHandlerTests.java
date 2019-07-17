@@ -6,27 +6,27 @@ import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentVariableCacheStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
-import soliloquy.specs.common.infrastructure.IPersistentVariableCache;
-import soliloquy.specs.common.infrastructure.IReadOnlyMap;
+import soliloquy.specs.common.factories.PersistentVariableCacheFactory;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
+import soliloquy.specs.common.infrastructure.PersistentVariableCache;
+import soliloquy.specs.common.infrastructure.ReadOnlyMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentVariableCachePersistenceHandlerTests {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
-    private final IPersistentVariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY =
+    private final PersistentVariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY =
             new PersistentVariableCacheFactoryStub();
-    private final IPersistentVariableCache PERSISTENT_VARIABLE_CACHE =
+    private final PersistentVariableCache PERSISTENT_VARIABLE_CACHE =
             new PersistentVariableCacheStub();
 
     private final String VALUES_STRING =
             "[{\"name\":\"variable1\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"456456\"}," +
                     "{\"name\":\"variable2\",\"typeName\":\"java.lang.String\",\"serializedValue\":\"variable2value\"}]";
 
-    private IPersistentValueTypeHandler<IPersistentVariableCache>
+    private PersistentValueTypeHandler<PersistentVariableCache>
             _persistentVariablePersistentCachePersistenceHandler;
 
     @BeforeEach
@@ -39,8 +39,8 @@ class PersistentVariableCachePersistenceHandlerTests {
 
     @Test
     void testGetInterfaceName() {
-        assertEquals(IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
-                IPersistentVariableCache.class.getCanonicalName() + ">",
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                PersistentVariableCache.class.getCanonicalName() + ">",
                 _persistentVariablePersistentCachePersistenceHandler.getInterfaceName());
     }
 
@@ -59,12 +59,12 @@ class PersistentVariableCachePersistenceHandlerTests {
 
     @Test
     void testRead() {
-        IPersistentVariableCache pVarCache =
+        PersistentVariableCache pVarCache =
                 _persistentVariablePersistentCachePersistenceHandler.read(VALUES_STRING);
 
         assertNotNull(pVarCache);
         assertEquals(2, pVarCache.size());
-        IReadOnlyMap<String,Object> representation = pVarCache.variablesRepresentation();
+        ReadOnlyMap<String,Object> representation = pVarCache.variablesRepresentation();
         assertEquals(PersistentVariableCacheStub.VARIABLE_1_VALUE,
                 representation.get(PersistentVariableCacheStub.VARIABLE_1_NAME));
         assertEquals(PersistentVariableCacheStub.VARIABLE_2_VALUE,
@@ -73,7 +73,7 @@ class PersistentVariableCachePersistenceHandlerTests {
 
     @Test
     void testReadEmptyCache() {
-        IPersistentVariableCache pVarCache =
+        PersistentVariableCache pVarCache =
                 _persistentVariablePersistentCachePersistenceHandler.read("[]");
 
         assertNotNull(pVarCache);

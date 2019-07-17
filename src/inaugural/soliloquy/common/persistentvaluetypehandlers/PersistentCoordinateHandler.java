@@ -1,30 +1,30 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.factories.ICoordinateFactory;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.valueobjects.ICoordinate;
+import soliloquy.specs.common.factories.CoordinateFactory;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.valueobjects.Coordinate;
 
-public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordinate>
-        implements IPersistentValueTypeHandler<ICoordinate> {
-    private final ICoordinate ARCHETYPE;
-    private final ICoordinateFactory COORDINATE_FACTORY;
+public class PersistentCoordinateHandler extends PersistentTypeHandler<Coordinate>
+        implements PersistentValueTypeHandler<Coordinate> {
+    private final Coordinate ARCHETYPE;
+    private final CoordinateFactory COORDINATE_FACTORY;
 
     private static final String NULL = "NULL";
 
-    public PersistentCoordinateHandler(ICoordinateFactory coordinateFactory) {
+    public PersistentCoordinateHandler(CoordinateFactory coordinateFactory) {
         ARCHETYPE = coordinateFactory.make(0,0);
         COORDINATE_FACTORY = coordinateFactory;
     }
 
     @Override
-    public ICoordinate getArchetype() {
+    public Coordinate getArchetype() {
         return ARCHETYPE;
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public ICoordinate read(String serializedValue) throws IllegalArgumentException {
+    public Coordinate read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null) {
             throw new IllegalArgumentException(
                     "PersistentCoordinateHandler.read: serializedValue must be non-null");
@@ -42,7 +42,7 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<ICoordina
     }
 
     @Override
-    public String write(ICoordinate coordinate) {
+    public String write(Coordinate coordinate) {
         if (coordinate == null) {
             return NULL;
         } else {

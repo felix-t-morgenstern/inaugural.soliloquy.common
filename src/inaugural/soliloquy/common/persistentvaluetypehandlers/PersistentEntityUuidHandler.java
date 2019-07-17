@@ -1,26 +1,26 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.factories.IEntityUuidFactory;
-import soliloquy.specs.common.valueobjects.IEntityUuid;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.factories.EntityUuidFactory;
+import soliloquy.specs.common.valueobjects.EntityUuid;
 
-public class PersistentEntityUuidHandler extends PersistentTypeHandler<IEntityUuid>
-        implements IPersistentValueTypeHandler<IEntityUuid> {
-    private final IEntityUuidFactory ENTITY_UUID_FACTORY;
-    private final IEntityUuid ARCHETYPE;
+public class PersistentEntityUuidHandler extends PersistentTypeHandler<EntityUuid>
+        implements PersistentValueTypeHandler<EntityUuid> {
+    private final EntityUuidFactory ENTITY_UUID_FACTORY;
+    private final EntityUuid ARCHETYPE;
 
-    public PersistentEntityUuidHandler(IEntityUuidFactory entityUuidFactory) {
+    public PersistentEntityUuidHandler(EntityUuidFactory entityUuidFactory) {
         ENTITY_UUID_FACTORY = entityUuidFactory;
         ARCHETYPE = entityUuidFactory.createFromLongs(0,0);
     }
 
     @Override
-    public IEntityUuid getArchetype() {
+    public EntityUuid getArchetype() {
         return ARCHETYPE;
     }
 
     @Override
-    public IEntityUuid read(String serializedValue) throws IllegalArgumentException {
+    public EntityUuid read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null || serializedValue.equals("")) {
             return null;
         } else {
@@ -29,7 +29,7 @@ public class PersistentEntityUuidHandler extends PersistentTypeHandler<IEntityUu
     }
 
     @Override
-    public String write(IEntityUuid entityUuid) {
+    public String write(EntityUuid entityUuid) {
         if (entityUuid == null) {
             return "";
         } else {

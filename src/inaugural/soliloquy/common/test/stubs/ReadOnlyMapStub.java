@@ -1,17 +1,16 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IMap;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.common.infrastructure.IReadOnlyMap;
+import soliloquy.specs.common.factories.PairFactory;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.Map;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.ReadOnlyMap;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
-public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
-    private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
+public class ReadOnlyMapStub<K,V> implements ReadOnlyMap<K,V> {
+    private final PairFactory PAIR_FACTORY = new PairFactoryStub();
 
     HashMap<K,V> _map = new HashMap<>();
     K _archetype1;
@@ -44,19 +43,19 @@ public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
     }
 
     @Override
-    public boolean contains(IPair<K, V> item) throws IllegalArgumentException {
+    public boolean contains(Pair<K, V> item) throws IllegalArgumentException {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean equals(ICollection<V> items) throws IllegalArgumentException {
+    public boolean equals(Collection<V> items) throws IllegalArgumentException {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean equals(IReadOnlyMap<K, V> map) throws IllegalArgumentException {
+    public boolean equals(ReadOnlyMap<K, V> map) throws IllegalArgumentException {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
@@ -65,7 +64,7 @@ public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
     @Override
     public boolean equals(Object o) {
         try {
-            IReadOnlyMap<K,V> map = (IReadOnlyMap<K,V>) o;
+            ReadOnlyMap<K,V> map = (ReadOnlyMap<K,V>) o;
             if (map.size() != this.size()) {
                 return false;
             }
@@ -86,8 +85,8 @@ public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
     }
 
     @Override
-    public ICollection<K> getKeys() {
-        ICollection<K> keys = new CollectionStub<>();
+    public Collection<K> getKeys() {
+        Collection<K> keys = new CollectionStub<>();
         for (K key : _map.keySet())
         {
             keys.add(key);
@@ -96,13 +95,13 @@ public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
     }
 
     @Override
-    public ICollection<V> getValues() {
+    public Collection<V> getValues() {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public ICollection<K> indicesOf(V item) {
+    public Collection<K> indicesOf(V item) {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
@@ -124,12 +123,12 @@ public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
     }
 
     @Override
-    public Iterator<IPair<K, V>> iterator() {
+    public Iterator<Pair<K, V>> iterator() {
         return new MapStubIterator(_map, PAIR_FACTORY);
     }
 
     @Override
-    public IMap<K, V> makeClone() {
+    public Map<K, V> makeClone() {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
@@ -155,11 +154,11 @@ public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
         throw new UnsupportedOperationException();
     }
 
-    private class MapStubIterator implements Iterator<IPair<K,V>> {
-        private Iterator<Map.Entry<K,V>> _hashMapIterator;
-        private IPairFactory _pairFactory;
+    private class MapStubIterator implements Iterator<Pair<K,V>> {
+        private Iterator<java.util.Map.Entry<K,V>> _hashMapIterator;
+        private PairFactory _pairFactory;
 
-        MapStubIterator(HashMap<K,V> hashMap, IPairFactory pairFactory) {
+        MapStubIterator(HashMap<K,V> hashMap, PairFactory pairFactory) {
             _hashMapIterator = hashMap.entrySet().iterator();
             _pairFactory = pairFactory;
         }
@@ -170,8 +169,8 @@ public class ReadOnlyMapStub<K,V> implements IReadOnlyMap<K,V> {
         }
 
         @Override
-        public IPair<K, V> next() {
-            Map.Entry<K,V> entry = _hashMapIterator.next();
+        public Pair<K, V> next() {
+            java.util.Map.Entry<K,V> entry = _hashMapIterator.next();
             return _pairFactory.make(entry.getKey(), entry.getValue());
         }
 

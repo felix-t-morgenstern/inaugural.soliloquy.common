@@ -1,21 +1,21 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IPersistentCollectionHandler;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.PersistentCollectionHandler;
 
-public class PersistentCollectionHandlerStub implements IPersistentCollectionHandler {
+public class PersistentCollectionHandlerStub implements PersistentCollectionHandler {
     @Override
-    public ICollection read(String s) throws IllegalArgumentException {
+    public Collection read(String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public String write(ICollection iCollection) {
+    public String write(Collection Collection) {
         return null;
     }
 
     @Override
-    public ICollection getArchetype() {
+    public Collection getArchetype() {
         return null;
     }
 
@@ -30,11 +30,11 @@ public class PersistentCollectionHandlerStub implements IPersistentCollectionHan
     }
 
     @Override
-    public ICollection generateArchetype(String valueType) throws IllegalArgumentException {
+    public Collection generateArchetype(String valueType) throws IllegalArgumentException {
 
         int openingCaret = valueType.indexOf("<");
         int closingCaret = valueType.lastIndexOf(">");
-        if (!valueType.substring(0, openingCaret).equals(ICollection.class.getCanonicalName())) {
+        if (!valueType.substring(0, openingCaret).equals(Collection.class.getCanonicalName())) {
             throw new IllegalArgumentException(
                     "PersistentCollectionHandler.generateArchetype: valueType is not a String representation of a Collection");
         }

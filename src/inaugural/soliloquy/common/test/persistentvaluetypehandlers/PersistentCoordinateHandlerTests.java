@@ -5,14 +5,14 @@ import inaugural.soliloquy.common.test.stubs.CoordinateFactoryStub;
 import inaugural.soliloquy.common.test.stubs.CoordinateStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.factories.ICoordinateFactory;
-import soliloquy.specs.common.valueobjects.ICoordinate;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.factories.CoordinateFactory;
+import soliloquy.specs.common.valueobjects.Coordinate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentCoordinateHandlerTests {
-    private final ICoordinateFactory COORDINATE_FACTORY = new CoordinateFactoryStub();
+    private final CoordinateFactory COORDINATE_FACTORY = new CoordinateFactoryStub();
     private final int X = 123;
     private final int Y = 456;
     private final String VALUES_STRING = "{\"x\":123,\"y\":456}";
@@ -27,8 +27,8 @@ class PersistentCoordinateHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(
-                IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
-                        ICoordinate.class.getCanonicalName() + ">",
+                PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        Coordinate.class.getCanonicalName() + ">",
                 _persistentCoordinateHandler.getInterfaceName());
     }
 
@@ -39,7 +39,7 @@ class PersistentCoordinateHandlerTests {
 
     @Test
     void testWrite() {
-        ICoordinate coordinate = new CoordinateStub();
+        Coordinate coordinate = new CoordinateStub();
         coordinate.setX(X);
         coordinate.setY(Y);
 
@@ -53,7 +53,7 @@ class PersistentCoordinateHandlerTests {
 
     @Test
     void testRead() {
-        ICoordinate coordinate = _persistentCoordinateHandler.read(VALUES_STRING);
+        Coordinate coordinate = _persistentCoordinateHandler.read(VALUES_STRING);
 
         assertEquals(X, coordinate.getX());
         assertEquals(Y, coordinate.getY());

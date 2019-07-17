@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.specs.common.shared.IHasGenericParams;
-
-public abstract class HasGenericParams extends CanGetInterfaceName implements IHasGenericParams {
+public abstract class HasGenericParams extends CanGetInterfaceName
+		implements soliloquy.specs.common.shared.HasGenericParams {
 	public abstract String getUnparameterizedInterfaceName();
 }

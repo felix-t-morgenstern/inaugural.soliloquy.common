@@ -1,19 +1,18 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.factories.ICollectionFactory;
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IPersistentCollectionHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.CollectionFactory;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
-public class PersistentCollectionHandler extends PersistentTypeHandler<ICollection>
-        implements IPersistentCollectionHandler {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
-    private final ICollectionFactory COLLECTION_FACTORY;
+public class PersistentCollectionHandler extends PersistentTypeHandler<Collection>
+        implements soliloquy.specs.common.infrastructure.PersistentCollectionHandler {
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
+    private final CollectionFactory COLLECTION_FACTORY;
 
-    public PersistentCollectionHandler(IPersistentValuesHandler persistentValuesHandler,
-                                       ICollectionFactory collectionFactory) {
+    public PersistentCollectionHandler(PersistentValuesHandler persistentValuesHandler,
+                                       CollectionFactory collectionFactory) {
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         COLLECTION_FACTORY = collectionFactory;
     }
@@ -24,16 +23,16 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
     }
 
     @Override
-    public ICollection getArchetype() {
+    public Collection getArchetype() {
         // NB: PersistentCollectionHandler should be selected by the PersistentValuesHandler
         // through specific, manually-defined String pattern recognition, rather than via
         // getArchetype.
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
-    public ICollection read(String valuesString) throws IllegalArgumentException {
+    public Collection read(String valuesString) throws IllegalArgumentException {
         if (valuesString == null) {
             throw new IllegalArgumentException(
                     "PersistentCollectionHandler.read: valuesString must be non-null");
@@ -43,9 +42,9 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
                     "PersistentCollectionHandler.read: valuesString must be non-null");
         }
         CollectionDTO dto = new Gson().fromJson(valuesString, CollectionDTO.class);
-        IPersistentValueTypeHandler handler =
+        PersistentValueTypeHandler handler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.typeName);
-        ICollection collection =
+        Collection collection =
                 COLLECTION_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
         for (int i = 0; i < dto.serializedValues.length; i++) {
             collection.add(handler.read(dto.serializedValues[i]));
@@ -53,15 +52,15 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
         return collection;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
-    public String write(ICollection collection) {
+    public String write(Collection collection) {
         if (collection == null) {
             throw new IllegalArgumentException(
                     "PersistentCollectionHandler.write: collection is null");
         }
         String internalType = getProperTypeName(collection.getArchetype());
-        IPersistentValueTypeHandler handler =
+        PersistentValueTypeHandler handler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(internalType);
         CollectionDTO dto = new CollectionDTO();
         dto.typeName = internalType;
@@ -73,8 +72,9 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
         return new Gson().toJson(dto);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
-    public ICollection generateArchetype(String valueType) throws IllegalArgumentException {
+    public Collection generateArchetype(String valueType) throws IllegalArgumentException {
         if(valueType == null) {
             throw new IllegalArgumentException(
                     "PersistentCollectionHandler.generateArchetype: valueType must be non-null");
@@ -86,7 +86,7 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<ICollecti
 
         int openingCaret = valueType.indexOf("<");
         int closingCaret = valueType.lastIndexOf(">");
-        if (!valueType.substring(0, openingCaret).equals(ICollection.class.getCanonicalName())) {
+        if (!valueType.substring(0, openingCaret).equals(Collection.class.getCanonicalName())) {
             throw new IllegalArgumentException(
                     "PersistentCollectionHandler.generateArchetype: valueType is not a String representation of a Collection");
         }

@@ -1,12 +1,12 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IMap;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.common.infrastructure.IReadOnlyMap;
+import soliloquy.specs.common.entities.Function;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.Map;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.ReadOnlyMap;
 
-public class MapStub<K,V> extends ReadOnlyMapStub<K,V> implements IMap<K,V> {
+public class MapStub<K,V> extends ReadOnlyMapStub<K,V> implements Map<K,V> {
 
 	public MapStub() {
 
@@ -28,7 +28,7 @@ public class MapStub<K,V> extends ReadOnlyMapStub<K,V> implements IMap<K,V> {
 	}
 
 	@Override
-	public void putAll(ICollection<IPair<K, V>> items) throws IllegalArgumentException {
+	public void putAll(Collection<Pair<K, V>> items) throws IllegalArgumentException {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
 	}
@@ -45,13 +45,13 @@ public class MapStub<K,V> extends ReadOnlyMapStub<K,V> implements IMap<K,V> {
 	}
 
 	@Override
-	public ICollection<IFunction<IPair<K, V>, String>> validators() {
+	public Collection<Function<Pair<K, V>, String>> validators() {
 		// Stub method; unimplemented
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public IReadOnlyMap<K, V> readOnlyRepresentation() {
+	public ReadOnlyMap<K, V> readOnlyRepresentation() {
 		return new ReadOnlyMapStub<>(_archetype1, _archetype2, _map);
 	}
 

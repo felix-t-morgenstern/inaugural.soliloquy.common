@@ -1,17 +1,17 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.HasOneGenericParam;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
 public abstract class PersistentTypeHandler<T> extends HasOneGenericParam<T>
-	implements IPersistentValueTypeHandler<T> {
+	implements PersistentValueTypeHandler<T> {
 
 	@Override
 	public abstract T getArchetype();
 
 	@Override
 	public String getUnparameterizedInterfaceName() {
-		return IPersistentValueTypeHandler.class.getCanonicalName();
+		return PersistentValueTypeHandler.class.getCanonicalName();
 	}
 
 }

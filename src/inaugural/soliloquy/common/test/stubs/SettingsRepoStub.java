@@ -1,14 +1,14 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.common.infrastructure.ISetting;
-import soliloquy.specs.common.infrastructure.ISettingsRepo;
-import soliloquy.specs.common.shared.IEntityGroupItem;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.SettingsRepo;
+import soliloquy.specs.common.shared.EntityGroupItem;
 
 import java.util.HashMap;
 
-public class SettingsRepoStub implements ISettingsRepo {
+public class SettingsRepoStub implements SettingsRepo {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final HashMap<String,Object> SETTINGS = new HashMap<>();
 
@@ -21,15 +21,15 @@ public class SettingsRepoStub implements ISettingsRepo {
     public static final Integer SETTING_2_VALUE = 123123;
 
     @SuppressWarnings("unchecked")
-    private static final ISetting SETTING_1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
+    private static final Setting SETTING_1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
             SETTING_1_VALUE);
     @SuppressWarnings("unchecked")
-    private static final ISetting SETTING_2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME,
+    private static final Setting SETTING_2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME,
             SETTING_2_VALUE);
 
     @SuppressWarnings("unchecked")
     @Override
-    public <V> ISetting<V> getSetting(String name) throws IllegalArgumentException {
+    public <V> Setting<V> getSetting(String name) throws IllegalArgumentException {
         switch (name) {
             case SETTING_1_ID:
                 return SETTING_1;
@@ -41,7 +41,7 @@ public class SettingsRepoStub implements ISettingsRepo {
     }
 
     @Override
-    public ISettingsRepo getSubgrouping(String s) throws IllegalArgumentException {
+    public SettingsRepo getSubgrouping(String s) throws IllegalArgumentException {
         return null;
     }
 
@@ -51,25 +51,25 @@ public class SettingsRepoStub implements ISettingsRepo {
     }
 
     @Override
-    public ICollection<IEntityGroupItem<ISetting>> getAllGrouped() {
+    public Collection<EntityGroupItem<Setting>> getAllGrouped() {
         return null;
     }
 
     @Override
-    public ICollection<ISetting> getAllUngrouped() {
-        ICollection<ISetting> settings = new CollectionStub<>();
+    public Collection<Setting> getAllUngrouped() {
+        Collection<Setting> settings = new CollectionStub<>();
         settings.add(SETTING_1);
         settings.add(SETTING_2);
         return settings;
     }
 
     @Override
-    public IEntityGroupItem<ISetting> getItemByOrder(int i) throws IllegalArgumentException {
+    public EntityGroupItem<Setting> getItemByOrder(int i) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public void addEntity(ISetting iSetting, int i, String s) throws IllegalArgumentException {
+    public void addEntity(Setting Setting, int i, String s) throws IllegalArgumentException {
 
     }
 
@@ -84,7 +84,7 @@ public class SettingsRepoStub implements ISettingsRepo {
     }
 
     @Override
-    public IPair<String, Integer> getGroupingIdAndOrder(String s) throws IllegalArgumentException {
+    public Pair<String, Integer> getGroupingIdAndOrder(String s) throws IllegalArgumentException {
         return null;
     }
 

@@ -10,15 +10,15 @@ import soliloquy.specs.common.infrastructure.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentSettingsRepoHandlerTests {
-    private final ISettingsRepo SETTINGS_REPO = new SettingsRepoStub();
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+    private final SettingsRepo SETTINGS_REPO = new SettingsRepoStub();
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
 
     private final String VALUES_STRING =
             "[{\"id\":\"setting1Id\",\"serializedValue\":\"setting1Value\"}," +
                     "{\"id\":\"setting2Id\",\"serializedValue\":\"123123\"}]";
 
-    private IPersistentValueTypeHandler<ISettingsRepo> _persistentSettingsRepoHandler;
+    private PersistentValueTypeHandler<SettingsRepo> _persistentSettingsRepoHandler;
 
     @BeforeEach
     void setUp() {
@@ -28,8 +28,8 @@ class PersistentSettingsRepoHandlerTests {
 
     @Test
     void testGetInterface() {
-        assertEquals(IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
-                ISettingsRepo.class.getCanonicalName() + ">",
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                SettingsRepo.class.getCanonicalName() + ">",
                 _persistentSettingsRepoHandler.getInterfaceName());
     }
 
@@ -46,13 +46,13 @@ class PersistentSettingsRepoHandlerTests {
 
     @Test
     void testRead() {
-        ISettingsRepo settingsRepo = _persistentSettingsRepoHandler.read(VALUES_STRING);
+        SettingsRepo settingsRepo = _persistentSettingsRepoHandler.read(VALUES_STRING);
 
         assertSame(SETTINGS_REPO, settingsRepo);
 
-        ICollection<ISetting> settings = SETTINGS_REPO.getAllUngrouped();
+        Collection<Setting> settings = SETTINGS_REPO.getAllUngrouped();
         assertEquals(2, settings.size());
-        for(ISetting setting : settings) {
+        for(Setting setting : settings) {
             switch(setting.getName()) {
                 case SettingsRepoStub.SETTING_1_NAME:
                     assertEquals(SettingsRepoStub.SETTING_1_VALUE, setting.getValue());

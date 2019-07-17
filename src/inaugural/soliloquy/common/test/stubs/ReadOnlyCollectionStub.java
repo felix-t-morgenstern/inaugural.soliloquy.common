@@ -1,12 +1,12 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IReadOnlyCollection;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ReadOnlyCollectionStub<V> implements IReadOnlyCollection<V> {
+public class ReadOnlyCollectionStub<V> implements ReadOnlyCollection<V> {
     ArrayList<V> _collection = new ArrayList<>();
     V _archetype;
 
@@ -29,7 +29,7 @@ public class ReadOnlyCollectionStub<V> implements IReadOnlyCollection<V> {
     }
 
     @Override
-    public boolean equals(IReadOnlyCollection<V> items) {
+    public boolean equals(ReadOnlyCollection<V> items) {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
@@ -61,8 +61,8 @@ public class ReadOnlyCollectionStub<V> implements IReadOnlyCollection<V> {
     }
 
     @Override
-    public ICollection<V> makeClone() {
-        ICollection<V> collection = new CollectionStub<>();
+    public Collection<V> makeClone() {
+        Collection<V> collection = new CollectionStub<>();
         _collection.forEach(collection::add);
         return collection;
     }
@@ -79,6 +79,6 @@ public class ReadOnlyCollectionStub<V> implements IReadOnlyCollection<V> {
 
     @Override
     public String getInterfaceName() {
-        return "soliloquy.common.specs.ICollection<" + _archetype.getClass().getCanonicalName() + ">";
+        return "soliloquy.common.specs.Collection<" + _archetype.getClass().getCanonicalName() + ">";
     }
 }

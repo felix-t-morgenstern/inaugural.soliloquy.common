@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.valueobjects.IEntityUuid;
+import soliloquy.specs.common.valueobjects.EntityUuid;
 
-public class EntityUuidStub implements IEntityUuid {
+public class EntityUuidStub implements EntityUuid {
     private final String GUID_STRING;
 
     EntityUuidStub() {
@@ -25,7 +25,7 @@ public class EntityUuidStub implements IEntityUuid {
 
     @Override
     public String getInterfaceName() {
-        return IEntityUuid.class.getCanonicalName();
+        return EntityUuid.class.getCanonicalName();
     }
 
     @Override

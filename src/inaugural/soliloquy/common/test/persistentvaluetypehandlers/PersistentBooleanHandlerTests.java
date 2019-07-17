@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,7 +38,7 @@ class PersistentBooleanHandlerTests {
 
     @Test
 	void testGetInterfaceName() {
-		assertEquals(IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
+		assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
 						Boolean.class.getCanonicalName() + ">",
 				_persistentBooleanHandler.getInterfaceName());
 	}

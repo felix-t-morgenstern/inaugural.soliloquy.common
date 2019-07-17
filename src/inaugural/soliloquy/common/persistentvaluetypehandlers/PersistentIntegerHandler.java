@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
 public class PersistentIntegerHandler extends PersistentTypeHandler<Integer>
-		implements IPersistentValueTypeHandler<Integer> {
+		implements PersistentValueTypeHandler<Integer> {
 
 	@SuppressWarnings("ConstantConditions")
 	@Override

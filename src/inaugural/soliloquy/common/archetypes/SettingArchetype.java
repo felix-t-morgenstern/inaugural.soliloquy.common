@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.infrastructure.IGenericParamsSet;
-import soliloquy.specs.common.infrastructure.ISetting;
+import soliloquy.specs.common.infrastructure.GenericParamsSet;
+import soliloquy.specs.common.infrastructure.Setting;
 
-public class SettingArchetype implements ISetting {
+public class SettingArchetype implements Setting {
     @Override
     public Object getValue() {
         return null;
@@ -15,7 +15,7 @@ public class SettingArchetype implements ISetting {
     }
 
     @Override
-    public IGenericParamsSet controlParams() {
+    public GenericParamsSet controlParams() {
         return null;
     }
 
@@ -46,6 +46,6 @@ public class SettingArchetype implements ISetting {
 
     @Override
     public String getInterfaceName() {
-        return ISetting.class.getCanonicalName();
+        return Setting.class.getCanonicalName();
     }
 }

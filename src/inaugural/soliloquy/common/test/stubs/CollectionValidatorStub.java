@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.game.IGame;
-import soliloquy.specs.logger.ILogger;
+import soliloquy.specs.common.entities.Function;
+import soliloquy.specs.game.Game;
+import soliloquy.specs.logger.Logger;
 
-public class CollectionValidatorStub<V> implements IFunction<V,String> {
+public class CollectionValidatorStub<V> implements Function<V,String> {
     public final static int ILLEGAL_VALUE = 123;
 
     @Override
@@ -13,12 +13,12 @@ public class CollectionValidatorStub<V> implements IFunction<V,String> {
     }
 
     @Override
-    public IGame game() {
+    public Game game() {
         return null;
     }
 
     @Override
-    public ILogger logger() {
+    public Logger logger() {
         return null;
     }
 

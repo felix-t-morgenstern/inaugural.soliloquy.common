@@ -1,31 +1,31 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.factories.IPersistentVariableCacheFactory;
+import soliloquy.specs.common.factories.PersistentVariableCacheFactory;
 import soliloquy.specs.common.infrastructure.*;
 
 public class PersistentVariableCachePersistenceHandler
-        extends PersistentTypeHandler<IPersistentVariableCache>
-        implements IPersistentValueTypeHandler<IPersistentVariableCache> {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
-    private final IPersistentVariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY;
-    private final IPersistentVariableCache ARCHETYPE;
+        extends PersistentTypeHandler<PersistentVariableCache>
+        implements PersistentValueTypeHandler<PersistentVariableCache> {
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
+    private final PersistentVariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY;
+    private final PersistentVariableCache ARCHETYPE;
 
     public PersistentVariableCachePersistenceHandler(
-            IPersistentValuesHandler persistentValuesHandler,
-            IPersistentVariableCacheFactory persistentVariableCacheFactory) {
+            PersistentValuesHandler persistentValuesHandler,
+            PersistentVariableCacheFactory persistentVariableCacheFactory) {
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         PERSISTENT_VARIABLE_CACHE_FACTORY = persistentVariableCacheFactory;
         ARCHETYPE = PERSISTENT_VARIABLE_CACHE_FACTORY.make();
     }
 
     @Override
-    public IPersistentVariableCache getArchetype() {
+    public PersistentVariableCache getArchetype() {
         return ARCHETYPE;
     }
 
     @Override
-    public IPersistentVariableCache read(String serializedValue) throws IllegalArgumentException {
+    public PersistentVariableCache read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null) {
             throw new IllegalArgumentException(
                     "PersistentVariableCachePersistenceHandler.read: serializedValue must be non-null");
@@ -34,12 +34,12 @@ public class PersistentVariableCachePersistenceHandler
             throw new IllegalArgumentException(
                     "PersistentVariableCachePersistenceHandler.read: serializedValue must be non-empty");
         }
-        IPersistentVariableCache persistentVariableCache =
+        PersistentVariableCache persistentVariableCache =
                 PERSISTENT_VARIABLE_CACHE_FACTORY.make();
         PersistentVariableDTO[] dto = new Gson().fromJson(serializedValue,
                 PersistentVariableDTO[].class);
         for(PersistentVariableDTO pVarDTO : dto) {
-            IPersistentValueTypeHandler handler =
+            PersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
             persistentVariableCache.setVariable(pVarDTO.name,
                     handler.read(pVarDTO.serializedValue));
@@ -49,13 +49,13 @@ public class PersistentVariableCachePersistenceHandler
 
     @SuppressWarnings("unchecked")
     @Override
-    public String write(IPersistentVariableCache persistentVariableCache) {
+    public String write(PersistentVariableCache persistentVariableCache) {
         if (persistentVariableCache == null) {
             throw new IllegalArgumentException(
                     "PersistentVariableCachePersistenceHandler.write: persistentVariableCache " +
                             "must be non-null");
         }
-        IReadOnlyCollection<String> pVarNames = persistentVariableCache.namesRepresentation();
+        ReadOnlyCollection<String> pVarNames = persistentVariableCache.namesRepresentation();
         PersistentVariableDTO[] dto = new PersistentVariableDTO[pVarNames.size()];
         for(int i = 0; i < pVarNames.size(); i++) {
             String pVarName = pVarNames.get(i);
@@ -63,7 +63,7 @@ public class PersistentVariableCachePersistenceHandler
             pVarDTO.name = pVarName;
             Object pVarValue = persistentVariableCache.getVariable(pVarName);
             pVarDTO.typeName = getProperTypeName(pVarValue);
-            IPersistentValueTypeHandler handler =
+            PersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(pVarDTO.typeName);
             pVarDTO.serializedValue = handler.write(pVarValue);
             dto[i] = pVarDTO;

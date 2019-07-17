@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
-public class PersistentStringHandlerStub implements IPersistentValueTypeHandler<String> {
+public class PersistentStringHandlerStub implements PersistentValueTypeHandler<String> {
     public final static String ARCHETYPE = "This is the archetype!";
 
     @Override

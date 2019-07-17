@@ -2,9 +2,9 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.infrastructure.*;
 
-public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentValuesHandler {
+public class GenericParamsSetPersistentValuesHandlerStub implements PersistentValuesHandler {
 	@Override
-	public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> persistentValueTypeHandler)
+	public void addPersistentValueTypeHandler(PersistentValueTypeHandler<?> persistentValueTypeHandler)
 			throws IllegalArgumentException {
 		// Not needed for test stub
 	}
@@ -16,7 +16,7 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 	}
 
 	@Override
-	public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType)
+	public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType)
 			throws UnsupportedOperationException {
 		// Not needed for test stub
 		return null;
@@ -28,23 +28,23 @@ public class GenericParamsSetPersistentValuesHandlerStub implements IPersistentV
 	}
 
 	@Override
-	public ICollection<String> persistentValueTypesHandled() {
+	public Collection<String> persistentValueTypesHandled() {
 		// Not needed for test stub
 		return null;
 	}
 
 	@Override
-	public void registerPersistentPairHandler(IPersistentPairHandler iPersistentPairHandler) {
+	public void registerPersistentPairHandler(PersistentPairHandler PersistentPairHandler) {
 
 	}
 
 	@Override
-	public void registerPersistentCollectionHandler(IPersistentCollectionHandler iPersistentCollectionHandler) {
+	public void registerPersistentCollectionHandler(PersistentCollectionHandler PersistentCollectionHandler) {
 
 	}
 
 	@Override
-	public void registerPersistentMapHandler(IPersistentMapHandler iPersistentMapHandler) {
+	public void registerPersistentMapHandler(PersistentMapHandler PersistentMapHandler) {
 
 	}
 

@@ -6,15 +6,15 @@ import inaugural.soliloquy.common.test.stubs.MapStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentMapHandlerTests {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
-    private final IMapFactory MAP_FACTORY = new MapFactoryStub();
+    private final MapFactory MAP_FACTORY = new MapFactoryStub();
     private final String KEY_1 = "key1";
     private final String KEY_2 = "key2";
     private final String KEY_3 = "key3";
@@ -28,7 +28,7 @@ class PersistentMapHandlerTests {
             String.class.getCanonicalName(), Integer.class.getCanonicalName(),
             KEY_1, KEY_2, KEY_3, VALUE_1, VALUE_2, VALUE_3);
 
-    private IPersistentMapHandler _persistentMapHandler;
+    private PersistentMapHandler _persistentMapHandler;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class PersistentMapHandlerTests {
 
     @Test
     void testWrite() {
-        IMap<String,Integer> map = new MapStub<>("", 0);
+        Map<String,Integer> map = new MapStub<>("", 0);
         map.put(KEY_1, VALUE_1);
         map.put(KEY_2, VALUE_2);
         map.put(KEY_3, VALUE_3);
@@ -54,7 +54,7 @@ class PersistentMapHandlerTests {
     @SuppressWarnings("unchecked")
     @Test
     void testRead() {
-        IMap<String,Integer> map = _persistentMapHandler.read(VALUES_STRING);
+        Map<String,Integer> map = _persistentMapHandler.read(VALUES_STRING);
 
         assertEquals(3, map.size());
         assertEquals(VALUE_1, map.get(KEY_1));
@@ -73,17 +73,17 @@ class PersistentMapHandlerTests {
     @SuppressWarnings("unchecked")
     @Test
     void testGenerateArchetype() {
-        final String valueType = IMap.class.getCanonicalName() + "<" +
-                String.class.getCanonicalName() + "," + ICollection.class.getCanonicalName() +
+        final String valueType = Map.class.getCanonicalName() + "<" +
+                String.class.getCanonicalName() + "," + Collection.class.getCanonicalName() +
                 "<" + Integer.class.getCanonicalName() + ">>";
 
-        IMap<String,ICollection<Integer>> archetype =
+        Map<String,Collection<Integer>> archetype =
                 _persistentMapHandler.generateArchetype(valueType);
 
         assertNotNull(archetype);
         assertNotNull(archetype.getFirstArchetype());
         assertNotNull(archetype.getSecondArchetype());
-        assertNotNull(((ICollection)archetype.getSecondArchetype()).getArchetype());
+        assertNotNull(((Collection)archetype.getSecondArchetype()).getArchetype());
     }
 
     @Test
@@ -93,12 +93,12 @@ class PersistentMapHandlerTests {
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentMapHandler.generateArchetype(""));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentMapHandler.generateArchetype(IPair.class.getCanonicalName()));
+                () -> _persistentMapHandler.generateArchetype(Pair.class.getCanonicalName()));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentMapHandler.generateArchetype(IPair.class.getCanonicalName() +
+                () -> _persistentMapHandler.generateArchetype(Pair.class.getCanonicalName() +
                         "<"));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentMapHandler.generateArchetype(IPair.class.getCanonicalName() +
+                () -> _persistentMapHandler.generateArchetype(Pair.class.getCanonicalName() +
                         "<>"));
     }
 }

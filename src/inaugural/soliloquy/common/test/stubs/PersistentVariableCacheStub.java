@@ -2,8 +2,8 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentVariableCacheStub implements IPersistentVariableCache {
-    private final IMap<String,Object> PERSISTENT_VARIABLES = new MapStub<>();
+public class PersistentVariableCacheStub implements PersistentVariableCache {
+    private final Map<String,Object> PERSISTENT_VARIABLES = new MapStub<>();
 
     public final static String VARIABLE_1_NAME = "variable1";
     public final static Integer VARIABLE_1_VALUE = 456456;
@@ -11,7 +11,7 @@ public class PersistentVariableCacheStub implements IPersistentVariableCache {
     public final static String VARIABLE_2_NAME = "variable2";
     public final static String VARIABLE_2_VALUE = "variable2value";
 
-    private final IMap<String,Object> P_VARS = new MapStub<>();
+    private final Map<String,Object> P_VARS = new MapStub<>();
 
     public PersistentVariableCacheStub() {
         PERSISTENT_VARIABLES.put(VARIABLE_1_NAME, VARIABLE_1_VALUE);
@@ -34,7 +34,7 @@ public class PersistentVariableCacheStub implements IPersistentVariableCache {
     }
 
     @Override
-    public IReadOnlyCollection<String> namesRepresentation() {
+    public ReadOnlyCollection<String> namesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS.getKeys();
         } else {
@@ -43,7 +43,7 @@ public class PersistentVariableCacheStub implements IPersistentVariableCache {
     }
 
     @Override
-    public IReadOnlyMap<String,Object> variablesRepresentation() {
+    public ReadOnlyMap<String,Object> variablesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS;
         } else {
@@ -68,6 +68,6 @@ public class PersistentVariableCacheStub implements IPersistentVariableCache {
 
     @Override
     public String getInterfaceName() {
-        return IPersistentVariableCache.class.getCanonicalName();
+        return PersistentVariableCache.class.getCanonicalName();
     }
 }

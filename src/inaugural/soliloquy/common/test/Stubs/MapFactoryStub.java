@@ -1,13 +1,13 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.factories.IMapFactory;
-import soliloquy.specs.common.infrastructure.IMap;
+import soliloquy.specs.common.factories.MapFactory;
+import soliloquy.specs.common.infrastructure.Map;
 
-public class MapFactoryStub implements IMapFactory {
+public class MapFactoryStub implements MapFactory {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <K, V> IMap<K, V> make(K archetype1, V archetype2) {
+	public <K, V> Map<K, V> make(K archetype1, V archetype2) {
 		return new MapStub(archetype1, archetype2);
 	}
 

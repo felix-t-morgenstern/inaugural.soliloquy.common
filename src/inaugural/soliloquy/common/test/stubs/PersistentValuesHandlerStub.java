@@ -2,12 +2,12 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
+public class PersistentValuesHandlerStub implements PersistentValuesHandler {
 
-    private final String COLLECTION_GENERIC_INTERFACE_NAME = ICollection.class.getCanonicalName();
+    private final String COLLECTION_GENERIC_INTERFACE_NAME = Collection.class.getCanonicalName();
 
     @Override
-    public void addPersistentValueTypeHandler(IPersistentValueTypeHandler<?> iPersistentValueTypeHandler) throws IllegalArgumentException {
+    public void addPersistentValueTypeHandler(PersistentValueTypeHandler<?> PersistentValueTypeHandler) throws IllegalArgumentException {
 
     }
 
@@ -17,13 +17,13 @@ public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
     }
 
     @Override
-    public <T> IPersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType) throws UnsupportedOperationException {
+    public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType) throws UnsupportedOperationException {
         if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
-            return (IPersistentValueTypeHandler<T>) new PersistentCollectionHandlerStub();
+            return (PersistentValueTypeHandler<T>) new PersistentCollectionHandlerStub();
         } else if (persistentValueType.equals(Integer.class.getCanonicalName())) {
-            return (IPersistentValueTypeHandler<T>) new PersistentIntegerHandlerStub();
+            return (PersistentValueTypeHandler<T>) new PersistentIntegerHandlerStub();
         } else if (persistentValueType.equals(String.class.getCanonicalName())) {
-            return (IPersistentValueTypeHandler<T>) new PersistentStringHandlerStub();
+            return (PersistentValueTypeHandler<T>) new PersistentStringHandlerStub();
         } else {
             return null;
         }
@@ -45,22 +45,22 @@ public class PersistentValuesHandlerStub implements IPersistentValuesHandler {
     }
 
     @Override
-    public ICollection<String> persistentValueTypesHandled() {
+    public Collection<String> persistentValueTypesHandled() {
         return null;
     }
 
     @Override
-    public void registerPersistentPairHandler(IPersistentPairHandler iPersistentPairHandler) {
+    public void registerPersistentPairHandler(PersistentPairHandler PersistentPairHandler) {
 
     }
 
     @Override
-    public void registerPersistentCollectionHandler(IPersistentCollectionHandler iPersistentCollectionHandler) {
+    public void registerPersistentCollectionHandler(PersistentCollectionHandler PersistentCollectionHandler) {
 
     }
 
     @Override
-    public void registerPersistentMapHandler(IPersistentMapHandler iPersistentMapHandler) {
+    public void registerPersistentMapHandler(PersistentMapHandler PersistentMapHandler) {
 
     }
 

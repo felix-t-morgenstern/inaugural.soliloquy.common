@@ -1,26 +1,25 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.common.infrastructure.IPersistentPairHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.PairFactory;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
-public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPair>
-        implements IPersistentPairHandler {
+public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<Pair>
+        implements soliloquy.specs.common.infrastructure.PersistentPairHandler {
 
-    private final IPairFactory PAIR_FACTORY;
+    private final PairFactory PAIR_FACTORY;
 
-    public PersistentPairHandler(IPersistentValuesHandler persistentValuesHandler,
-                                 IPairFactory pairFactory) {
+    public PersistentPairHandler(PersistentValuesHandler persistentValuesHandler,
+                                 PairFactory pairFactory) {
         super(persistentValuesHandler);
         PAIR_FACTORY = pairFactory;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
-    public IPair read(String valuesString) throws IllegalArgumentException {
+    public Pair read(String valuesString) throws IllegalArgumentException {
         if (valuesString == null) {
             throw new IllegalArgumentException(
                     "PersistentPairHandler.read: valuesString cannot be null");
@@ -30,29 +29,29 @@ public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPai
                     "PersistentPairHandler.read: valuesString cannot be empty");
         }
         PairDTO dto = new Gson().fromJson(valuesString, PairDTO.class);
-        IPersistentValueTypeHandler handler1 =
+        PersistentValueTypeHandler handler1 =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueType1);
-        IPersistentValueTypeHandler handler2 =
+        PersistentValueTypeHandler handler2 =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueType2);
-        IPair pair = PAIR_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType1),
+        Pair pair = PAIR_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType1),
                 PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType2));
         pair.setItem1(handler1.read(dto.serializedValue1));
         pair.setItem2(handler2.read(dto.serializedValue2));
         return pair;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
-    public String write(IPair pair) {
+    public String write(Pair pair) {
         if(pair == null) {
             throw new IllegalArgumentException("PersistentPairHandler.write: pair cannot be null");
         }
         PairDTO dto = new PairDTO();
         dto.valueType1 = getProperTypeName(pair.getFirstArchetype());
         dto.valueType2 = getProperTypeName(pair.getSecondArchetype());
-        IPersistentValueTypeHandler handler1 =
+        PersistentValueTypeHandler handler1 =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueType1);
-        IPersistentValueTypeHandler handler2 =
+        PersistentValueTypeHandler handler2 =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueType2);
         dto.serializedValue1 = handler1.write(pair.getItem1());
         dto.serializedValue2 = handler2.write(pair.getItem2());
@@ -60,7 +59,7 @@ public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<IPai
     }
 
     @Override
-    public IPair getArchetype() {
+    public Pair getArchetype() {
         throw new UnsupportedOperationException();
     }
 

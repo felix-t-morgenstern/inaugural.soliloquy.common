@@ -6,20 +6,20 @@ import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.IGenericParamsSetFactory;
-import soliloquy.specs.common.infrastructure.IGenericParamsSet;
-import soliloquy.specs.common.infrastructure.IMap;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.GenericParamsSetFactory;
+import soliloquy.specs.common.infrastructure.GenericParamsSet;
+import soliloquy.specs.common.infrastructure.Map;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentGenericParamsSetHandlerTests {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
-    private final IGenericParamsSetFactory GENERIC_PARAMS_SET_FACTORY =
+    private final GenericParamsSetFactory GENERIC_PARAMS_SET_FACTORY =
             new GenericParamsSetFactoryStub();
-    private final IGenericParamsSet GENERIC_PARAMS_SET = new GenericParamsSetStub();
+    private final GenericParamsSet GENERIC_PARAMS_SET = new GenericParamsSetStub();
 
     private final String STRING_PARAM_1_NAME = "stringParam1";
     private final String STRING_PARAM_1_VALUE = "value1";
@@ -42,7 +42,7 @@ class PersistentGenericParamsSetHandlerTests {
                     "\"paramNames\":[\"integerParam2\",\"integerParam1\",\"integerParam3\"]," +
                     "\"paramValues\":[\"456\",\"123\",\"789\"]}]";
 
-    private IPersistentValueTypeHandler<IGenericParamsSet> _persistentGenericParamsSetHandler;
+    private PersistentValueTypeHandler<GenericParamsSet> _persistentGenericParamsSetHandler;
 
     @BeforeEach
     void setUp() {
@@ -53,8 +53,8 @@ class PersistentGenericParamsSetHandlerTests {
 
     @Test
     void testGetInterfaceName() {
-        assertEquals(IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
-                IGenericParamsSet.class.getCanonicalName() + ">",
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                GenericParamsSet.class.getCanonicalName() + ">",
                 _persistentGenericParamsSetHandler.getInterfaceName());
     }
 
@@ -77,18 +77,18 @@ class PersistentGenericParamsSetHandlerTests {
 
     @Test
     void testRead() {
-        IGenericParamsSet genericParamsSet =
+        GenericParamsSet genericParamsSet =
                 _persistentGenericParamsSetHandler.read(VALUES_STRING);
 
         assertNotNull(genericParamsSet);
-        IMap<String,String> stringParams =
+        Map<String,String> stringParams =
                 genericParamsSet.getParamsSet(String.class.getCanonicalName());
         assertNotNull(stringParams);
         assertEquals(3, stringParams.size());
         assertEquals(STRING_PARAM_1_VALUE, stringParams.get(STRING_PARAM_1_NAME));
         assertEquals(STRING_PARAM_2_VALUE, stringParams.get(STRING_PARAM_2_NAME));
         assertEquals(STRING_PARAM_3_VALUE, stringParams.get(STRING_PARAM_3_NAME));
-        IMap<String,Integer> intParams =
+        Map<String,Integer> intParams =
                 genericParamsSet.getParamsSet(Integer.class.getCanonicalName());
         assertNotNull(intParams);
         assertEquals(3, intParams.size());

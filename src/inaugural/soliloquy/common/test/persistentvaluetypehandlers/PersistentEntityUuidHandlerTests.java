@@ -5,18 +5,18 @@ import inaugural.soliloquy.common.test.stubs.EntityUuidFactoryStub;
 import inaugural.soliloquy.common.test.stubs.EntityUuidStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.IEntityUuidFactory;
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
-import soliloquy.specs.common.valueobjects.IEntityUuid;
+import soliloquy.specs.common.factories.EntityUuidFactory;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.valueobjects.EntityUuid;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentEntityUuidHandlerTests {
-    private final IEntityUuidFactory ENTITY_UUID_FACTORY = new EntityUuidFactoryStub();
+    private final EntityUuidFactory ENTITY_UUID_FACTORY = new EntityUuidFactoryStub();
     private final String ENTITY_UUID_STRING = "5ab46602-2493-4dbd-831c-6e63a6e6094b";
-    private final IEntityUuid ENTITY_UUID = new EntityUuidStub(ENTITY_UUID_STRING);
+    private final EntityUuid ENTITY_UUID = new EntityUuidStub(ENTITY_UUID_STRING);
 
-    private IPersistentValueTypeHandler<IEntityUuid> _persistentEntityUuidHandler;
+    private PersistentValueTypeHandler<EntityUuid> _persistentEntityUuidHandler;
 
     @BeforeEach
     void setUp() {
@@ -30,8 +30,8 @@ class PersistentEntityUuidHandlerTests {
 
     @Test
     void testGetInterfaceName() {
-        assertEquals(IPersistentValueTypeHandler.class.getCanonicalName() + "<" +
-                IEntityUuid.class.getCanonicalName() + ">",
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                EntityUuid.class.getCanonicalName() + ">",
                 _persistentEntityUuidHandler.getInterfaceName());
     }
 

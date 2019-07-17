@@ -1,19 +1,19 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.common.infrastructure.ISetting;
-import soliloquy.specs.common.infrastructure.ISettingsRepo;
-import soliloquy.specs.common.shared.IEntityGroupItem;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.SettingsRepo;
+import soliloquy.specs.common.shared.EntityGroupItem;
 
-public class SettingsRepoArchetype implements ISettingsRepo {
+public class SettingsRepoArchetype implements SettingsRepo {
     @Override
-    public <V> ISetting<V> getSetting(String s) throws IllegalArgumentException {
+    public <V> Setting<V> getSetting(String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public ISettingsRepo getSubgrouping(String s) throws IllegalArgumentException {
+    public SettingsRepo getSubgrouping(String s) throws IllegalArgumentException {
         return null;
     }
 
@@ -23,22 +23,22 @@ public class SettingsRepoArchetype implements ISettingsRepo {
     }
 
     @Override
-    public ICollection<IEntityGroupItem<ISetting>> getAllGrouped() {
+    public Collection<EntityGroupItem<Setting>> getAllGrouped() {
         return null;
     }
 
     @Override
-    public ICollection<ISetting> getAllUngrouped() {
+    public Collection<Setting> getAllUngrouped() {
         return null;
     }
 
     @Override
-    public IEntityGroupItem<ISetting> getItemByOrder(int i) throws IllegalArgumentException {
+    public EntityGroupItem<Setting> getItemByOrder(int i) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public void addEntity(ISetting iSetting, int i, String s) throws IllegalArgumentException {
+    public void addEntity(Setting Setting, int i, String s) throws IllegalArgumentException {
 
     }
 
@@ -53,7 +53,7 @@ public class SettingsRepoArchetype implements ISettingsRepo {
     }
 
     @Override
-    public IPair<String, Integer> getGroupingIdAndOrder(String s) throws IllegalArgumentException {
+    public Pair<String, Integer> getGroupingIdAndOrder(String s) throws IllegalArgumentException {
         return null;
     }
 
@@ -64,6 +64,6 @@ public class SettingsRepoArchetype implements ISettingsRepo {
 
     @Override
     public String getInterfaceName() {
-        return ISettingsRepo.class.getCanonicalName();
+        return SettingsRepo.class.getCanonicalName();
     }
 }

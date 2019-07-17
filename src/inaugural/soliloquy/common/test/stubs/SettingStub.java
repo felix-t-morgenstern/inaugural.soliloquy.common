@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.IGenericParamsSet;
-import soliloquy.specs.common.infrastructure.ISetting;
+import soliloquy.specs.common.infrastructure.GenericParamsSet;
+import soliloquy.specs.common.infrastructure.Setting;
 
-public class SettingStub<T> implements ISetting<T> {
+public class SettingStub<T> implements Setting<T> {
     private String _id;
     private String _name;
     private T _value;
@@ -25,7 +25,7 @@ public class SettingStub<T> implements ISetting<T> {
     }
 
     @Override
-    public IGenericParamsSet controlParams() {
+    public GenericParamsSet controlParams() {
         return new GenericParamsSetStub();
     }
 

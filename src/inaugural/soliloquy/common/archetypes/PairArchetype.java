@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.Pair;
 
-public class PairArchetype<T1,T2> implements IPair<T1,T2> {
+public class PairArchetype<T1,T2> implements Pair<T1,T2> {
     private final T1 ARCHETYPE_1;
     private final T2 ARCHETYPE_2;
 

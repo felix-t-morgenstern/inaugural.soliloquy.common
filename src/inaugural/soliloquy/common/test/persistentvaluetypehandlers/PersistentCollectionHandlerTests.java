@@ -7,16 +7,15 @@ import inaugural.soliloquy.common.test.stubs.PersistentStringHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.ICollectionFactory;
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IPersistentCollectionHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.CollectionFactory;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentCollectionHandlerTests {
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
-    private final ICollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
+    private final CollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
     private final Integer INTEGER_1 = 123;
     private final Integer INTEGER_2 = 456;
     private final Integer INTEGER_3 = 789;
@@ -25,7 +24,7 @@ class PersistentCollectionHandlerTests {
                     Integer.class.getCanonicalName(),
                     INTEGER_1, INTEGER_2, INTEGER_3);
 
-    private IPersistentCollectionHandler _persistentCollectionHandler;
+    private PersistentCollectionHandler _persistentCollectionHandler;
 
     @BeforeEach
     void setUp() {
@@ -35,7 +34,7 @@ class PersistentCollectionHandlerTests {
 
     @Test
     void testWrite() {
-        ICollection<Integer> collection = new CollectionStub<>(0);
+        Collection<Integer> collection = new CollectionStub<>(0);
         collection.add(INTEGER_1);
         collection.add(INTEGER_2);
         collection.add(INTEGER_3);
@@ -52,7 +51,7 @@ class PersistentCollectionHandlerTests {
     @SuppressWarnings("unchecked")
     @Test
     void testRead() {
-        ICollection<Integer> collection = _persistentCollectionHandler.read(VALUES_STRING);
+        Collection<Integer> collection = _persistentCollectionHandler.read(VALUES_STRING);
 
         assertNotNull(collection);
         assertNotNull(collection.getArchetype());
@@ -80,7 +79,7 @@ class PersistentCollectionHandlerTests {
     void testGenerateArchetype() {
         assertEquals(PersistentStringHandlerStub.ARCHETYPE,
                 _persistentCollectionHandler.generateArchetype(
-                        ICollection.class.getCanonicalName() + "<" +
+                        Collection.class.getCanonicalName() + "<" +
                                 String.class.getCanonicalName() + ">").getArchetype());
     }
 
@@ -91,7 +90,7 @@ class PersistentCollectionHandlerTests {
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentCollectionHandler.generateArchetype(""));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentCollectionHandler.generateArchetype("IMap<java.lang.String>"));
+                () -> _persistentCollectionHandler.generateArchetype("Map<java.lang.String>"));
 
     }
 }

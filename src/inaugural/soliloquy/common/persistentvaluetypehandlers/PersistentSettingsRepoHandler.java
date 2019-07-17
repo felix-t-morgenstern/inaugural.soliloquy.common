@@ -4,27 +4,27 @@ import com.google.gson.Gson;
 import inaugural.soliloquy.common.archetypes.SettingsRepoArchetype;
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettingsRepo>
-        implements IPersistentValueTypeHandler<ISettingsRepo> {
-    private final static ISettingsRepo ARCHETYPE = new SettingsRepoArchetype();
+public class PersistentSettingsRepoHandler extends PersistentTypeHandler<SettingsRepo>
+        implements PersistentValueTypeHandler<SettingsRepo> {
+    private final static SettingsRepo ARCHETYPE = new SettingsRepoArchetype();
 
-    private final ISettingsRepo SETTINGS_REPO;
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER;
+    private final SettingsRepo SETTINGS_REPO;
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
 
-    public PersistentSettingsRepoHandler(IPersistentValuesHandler persistentValuesHandler,
-                                         ISettingsRepo settingsRepo) {
+    public PersistentSettingsRepoHandler(PersistentValuesHandler persistentValuesHandler,
+                                         SettingsRepo settingsRepo) {
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         SETTINGS_REPO = settingsRepo;
     }
 
     @Override
-    public ISettingsRepo getArchetype() {
+    public SettingsRepo getArchetype() {
         return ARCHETYPE;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public ISettingsRepo read(String serializedValue) throws IllegalArgumentException {
+    public SettingsRepo read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null) {
             throw new IllegalArgumentException(
                     "PersistentSettingsRepoHandler.read: serializedValue must be non-null");
@@ -35,14 +35,14 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
         }
         SettingDTO[] dto = new Gson().fromJson(serializedValue, SettingDTO[].class);
         for(SettingDTO settingDTO : dto) {
-            ISetting setting = SETTINGS_REPO.getSetting(settingDTO.id);
+            Setting setting = SETTINGS_REPO.getSetting(settingDTO.id);
             if (setting == null) {
                 throw new IllegalArgumentException(
                         "PersistentSettingsRepoHandler.read: attempted to read setting with " +
                                 "invalid id (" + settingDTO.id + ")");
             }
             String typeName = getProperTypeName(setting.getArchetype());
-            IPersistentValueTypeHandler handler =
+            PersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
             setting.setValue(handler.read(settingDTO.serializedValue));
         }
@@ -51,17 +51,17 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<ISettin
 
     @SuppressWarnings("unchecked")
     @Override
-    public String write(ISettingsRepo settingsRepo) {
+    public String write(SettingsRepo settingsRepo) {
         if (settingsRepo == null) {
             throw new IllegalArgumentException(
                     "PersistentSettingsRepoHandler.write: settingsRepo must be non-null");
         }
-        ICollection<ISetting> settings = settingsRepo.getAllUngrouped();
+        Collection<Setting> settings = settingsRepo.getAllUngrouped();
         SettingDTO[] dto = new SettingDTO[settings.size()];
         int i = 0;
-        for(ISetting setting : settings) {
+        for(Setting setting : settings) {
             String typeName = getProperTypeName(setting.getArchetype());
-            IPersistentValueTypeHandler handler =
+            PersistentValueTypeHandler handler =
                     PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(typeName);
             SettingDTO settingDTO = new SettingDTO();
             settingDTO.id = setting.id();

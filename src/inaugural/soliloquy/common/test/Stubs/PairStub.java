@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.IPair;
+import soliloquy.specs.common.infrastructure.Pair;
 
-public class PairStub<K,V> implements IPair<K,V> {
+public class PairStub<K,V> implements Pair<K,V> {
 	private final K ARCHETYPE_1;
 	private final V ARCHETYPE_2;
 

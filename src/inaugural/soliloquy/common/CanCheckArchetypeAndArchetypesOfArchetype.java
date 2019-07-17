@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.specs.common.shared.IHasOneGenericParam;
-import soliloquy.specs.common.shared.IHasTwoGenericParams;
+import soliloquy.specs.common.shared.HasOneGenericParam;
+import soliloquy.specs.common.shared.HasTwoGenericParams;
 
 abstract class CanCheckArchetypeAndArchetypesOfArchetype {
     void checkArchetypeAndArchetypesOfArchetype(String methodName, Object archetype) {
@@ -9,14 +9,14 @@ abstract class CanCheckArchetypeAndArchetypesOfArchetype {
             throw new IllegalArgumentException(className() + "." + methodName +
                     ": provided archetype is null or has null archetypes");
         }
-        if (archetype instanceof IHasOneGenericParam) {
+        if (archetype instanceof HasOneGenericParam) {
             checkArchetypeAndArchetypesOfArchetype(methodName,
-                    ((IHasOneGenericParam) archetype).getArchetype());
-        } else if (archetype instanceof IHasTwoGenericParams) {
+                    ((HasOneGenericParam) archetype).getArchetype());
+        } else if (archetype instanceof HasTwoGenericParams) {
             checkArchetypeAndArchetypesOfArchetype(methodName,
-                    ((IHasTwoGenericParams) archetype).getFirstArchetype());
+                    ((HasTwoGenericParams) archetype).getFirstArchetype());
             checkArchetypeAndArchetypesOfArchetype(methodName,
-                    ((IHasTwoGenericParams) archetype).getSecondArchetype());
+                    ((HasTwoGenericParams) archetype).getSecondArchetype());
         }
     }
 

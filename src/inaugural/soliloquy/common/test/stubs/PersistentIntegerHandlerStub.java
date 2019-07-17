@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.IPersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
-public class PersistentIntegerHandlerStub implements IPersistentValueTypeHandler<Integer> {
+public class PersistentIntegerHandlerStub implements PersistentValueTypeHandler<Integer> {
     @Override
     public Integer read(String serializedValue) throws IllegalArgumentException {
         return Integer.parseInt(serializedValue);

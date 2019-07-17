@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.test.stubs;
-import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.game.IGame;
-import soliloquy.specs.logger.ILogger;
+import soliloquy.specs.common.entities.Function;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.game.Game;
+import soliloquy.specs.logger.Logger;
 
-public class MapValidatorStub implements IFunction<IPair<String,String>,String> {
+public class MapValidatorStub implements Function<Pair<String,String>,String> {
 	@Override
 	public String id() {
 		// Ignore; stub class
@@ -12,7 +12,7 @@ public class MapValidatorStub implements IFunction<IPair<String,String>,String> 
 	}
 
 	@Override
-	public String run(IPair<String, String> input) throws IllegalArgumentException {
+	public String run(Pair<String, String> input) throws IllegalArgumentException {
 		if (input.getItem1().equals("Key1")) return null;
 		return "Input key (" + input.getItem1() + ") not equal to Key1";
 	}
@@ -24,7 +24,7 @@ public class MapValidatorStub implements IFunction<IPair<String,String>,String> 
 	}
 
 	@Override
-	public IPair<String, String> getFirstArchetype() {
+	public Pair<String, String> getFirstArchetype() {
 		// Ignore; stub class
 		return null;
 	}
@@ -42,13 +42,13 @@ public class MapValidatorStub implements IFunction<IPair<String,String>,String> 
 	}
 
 	@Override
-	public IGame game() {
+	public Game game() {
 		// Ignore; stub class
 		return null;
 	}
 
 	@Override
-	public ILogger logger() {
+	public Logger logger() {
 		// Ignore; stub class
 		return null;
 	}

@@ -5,24 +5,23 @@ import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
 import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.IPairFactory;
-import soliloquy.specs.common.infrastructure.ICollection;
-import soliloquy.specs.common.infrastructure.IPair;
-import soliloquy.specs.common.infrastructure.IPersistentPairHandler;
-import soliloquy.specs.common.infrastructure.IPersistentValuesHandler;
+import soliloquy.specs.common.factories.PairFactory;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PersistentPairHandlerTests {
-    private final IPairFactory PAIR_FACTORY = new PairFactoryStub();
-    private final IPersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+    private final PairFactory PAIR_FACTORY = new PairFactoryStub();
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
     private final String VALUES_STRING =
             "{\"valueType1\":\"java.lang.String\",\"serializedValue1\":\"String\"," +
                     "\"valueType2\":\"java.lang.Integer\",\"serializedValue2\":\"123\"}";
 
-    private IPersistentPairHandler _persistentPairHandler;
+    private PersistentPairHandler _persistentPairHandler;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +49,7 @@ class PersistentPairHandlerTests {
 
     @Test
     void testWrite() {
-        IPair<String,Integer> pair = PAIR_FACTORY.make("String",123);
+        Pair<String,Integer> pair = PAIR_FACTORY.make("String",123);
         assertEquals(VALUES_STRING, _persistentPairHandler.write(pair));
     }
 
@@ -62,7 +61,7 @@ class PersistentPairHandlerTests {
     @SuppressWarnings("unchecked")
     @Test
     void testRead() {
-        IPair<String,Integer> pair = _persistentPairHandler.read(VALUES_STRING);
+        Pair<String,Integer> pair = _persistentPairHandler.read(VALUES_STRING);
         assertEquals("String", pair.getItem1());
         assertEquals((Integer) 123, pair.getItem2());
     }
@@ -76,17 +75,17 @@ class PersistentPairHandlerTests {
     @SuppressWarnings("unchecked")
     @Test
     void testGenerateArchetype() {
-        final String valueType = IPair.class.getCanonicalName() + "<" +
-                String.class.getCanonicalName() + "," + ICollection.class.getCanonicalName() +
+        final String valueType = Pair.class.getCanonicalName() + "<" +
+                String.class.getCanonicalName() + "," + Collection.class.getCanonicalName() +
                 "<" + Integer.class.getCanonicalName() + ">>";
 
-        IPair<String, ICollection<Integer>> archetype =
+        Pair<String, Collection<Integer>> archetype =
                 _persistentPairHandler.generateArchetype(valueType);
 
         assertNotNull(archetype);
         assertNotNull(archetype.getFirstArchetype());
         assertNotNull(archetype.getSecondArchetype());
-        assertNotNull(((ICollection)archetype.getSecondArchetype()).getArchetype());
+        assertNotNull(((Collection)archetype.getSecondArchetype()).getArchetype());
     }
 
     @Test
@@ -96,12 +95,12 @@ class PersistentPairHandlerTests {
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentPairHandler.generateArchetype(""));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentPairHandler.generateArchetype(IPair.class.getCanonicalName()));
+                () -> _persistentPairHandler.generateArchetype(Pair.class.getCanonicalName()));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentPairHandler.generateArchetype(IPair.class.getCanonicalName() +
+                () -> _persistentPairHandler.generateArchetype(Pair.class.getCanonicalName() +
                         "<"));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentPairHandler.generateArchetype(IPair.class.getCanonicalName() +
+                () -> _persistentPairHandler.generateArchetype(Pair.class.getCanonicalName() +
                         "<>"));
     }
 }

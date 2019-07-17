@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.entities.IFunction;
-import soliloquy.specs.game.IGame;
-import soliloquy.specs.logger.ILogger;
+import soliloquy.specs.common.entities.Function;
+import soliloquy.specs.game.Game;
+import soliloquy.specs.logger.Logger;
 
-public class CollectionValidatorFunctionArchetype<V> implements IFunction<V,String> {
+public class CollectionValidatorFunctionArchetype<V> implements Function<V,String> {
     private final V ARCHETYPE_1;
     private final String ARCHETYPE_2 = "";
 
@@ -18,12 +18,12 @@ public class CollectionValidatorFunctionArchetype<V> implements IFunction<V,Stri
     }
 
     @Override
-    public IGame game() {
+    public Game game() {
         return null;
     }
 
     @Override
-    public ILogger logger() {
+    public Logger logger() {
         return null;
     }
 

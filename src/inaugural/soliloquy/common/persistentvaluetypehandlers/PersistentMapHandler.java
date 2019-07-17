@@ -1,15 +1,15 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
-import soliloquy.specs.common.factories.IMapFactory;
+import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
-        implements IPersistentMapHandler {
-    private final IMapFactory MAP_FACTORY;
+public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<Map>
+        implements soliloquy.specs.common.infrastructure.PersistentMapHandler {
+    private final MapFactory MAP_FACTORY;
 
-    public PersistentMapHandler(IPersistentValuesHandler persistentValuesHandler,
-                                IMapFactory mapFactory) {
+    public PersistentMapHandler(PersistentValuesHandler persistentValuesHandler,
+                                MapFactory mapFactory) {
         super(persistentValuesHandler);
         MAP_FACTORY = mapFactory;
     }
@@ -20,7 +20,7 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
     }
 
     @Override
-    public IMap getArchetype() {
+    public Map getArchetype() {
         // NB: PersistentMapHandler should be selected by the PersistentValuesHandler through
         // specific, manually-defined String pattern recognition, rather than via getArchetype.
         return null;
@@ -28,13 +28,13 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
 
     @SuppressWarnings("unchecked")
     @Override
-    public IMap read(String valuesString) throws IllegalArgumentException {
+    public Map read(String valuesString) throws IllegalArgumentException {
         MapDTO dto = new Gson().fromJson(valuesString, MapDTO.class);
-        IPersistentValueTypeHandler keyHandler =
+        PersistentValueTypeHandler keyHandler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.keyValueType);
-        IPersistentValueTypeHandler valueHandler =
+        PersistentValueTypeHandler valueHandler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(dto.valueValueType);
-        IMap map = MAP_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.keyValueType),
+        Map map = MAP_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.keyValueType),
                 PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueValueType));
         for (int i = 0; i < dto.keySerializedValues.length; i++) {
             map.put(keyHandler.read(dto.keySerializedValues[i]),
@@ -43,17 +43,17 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
         return map;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
-    public String write(IMap map) {
+    public String write(Map map) {
         if (map == null) {
             throw new IllegalArgumentException("PersistentMapHandler.write: map is null");
         }
         String keyValueType = getProperTypeName(map.getFirstArchetype());
         String valueValueType = getProperTypeName(map.getSecondArchetype());
-        IPersistentValueTypeHandler keyHandler =
+        PersistentValueTypeHandler keyHandler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(keyValueType);
-        IPersistentValueTypeHandler valueHandler =
+        PersistentValueTypeHandler valueHandler =
                 PERSISTENT_VALUES_HANDLER.getPersistentValueTypeHandler(valueValueType);
         MapDTO dto = new MapDTO();
         dto.keyValueType = keyValueType;
@@ -62,7 +62,7 @@ public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<IMap>
         dto.valueSerializedValues = new String[map.size()];
         int indexCounter = 0;
         for(Object entry : map) {
-            IPair pair = (IPair) entry;
+            Pair pair = (Pair) entry;
             dto.keySerializedValues[indexCounter] = keyHandler.write(pair.getItem1());
             dto.valueSerializedValues[indexCounter] = valueHandler.write(pair.getItem2());
             indexCounter++;
