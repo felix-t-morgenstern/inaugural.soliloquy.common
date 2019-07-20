@@ -10,8 +10,8 @@ import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.infrastructure.PersistentVariableCache;
-import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
-import soliloquy.specs.common.infrastructure.ReadOnlyMap;
+import soliloquy.specs.common.infrastructure.ReadableCollection;
+import soliloquy.specs.common.infrastructure.ReadableMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,7 +61,7 @@ class PersistentVariableCacheImplTests {
 		_persistentVariableCache.setVariable("variable2", "value2");
 		_persistentVariableCache.setVariable("variable3", "value3");
 
-		ReadOnlyCollection<String> namesRepresentation =
+		ReadableCollection<String> namesRepresentation =
 				_persistentVariableCache.namesRepresentation();
 
 		assertNotNull(namesRepresentation);
@@ -103,7 +103,7 @@ class PersistentVariableCacheImplTests {
 		_persistentVariableCache.setVariable("variable2", "value2");
 		_persistentVariableCache.setVariable("variable3", "value3");
 
-		ReadOnlyMap<String,Object> variablesRepresentation =
+		ReadableMap<String,Object> variablesRepresentation =
 				_persistentVariableCache.variablesRepresentation();
 
 		assertNotNull(variablesRepresentation);

@@ -2,15 +2,12 @@ package inaugural.soliloquy.common;
 
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.PairFactory;
-import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.Map;
-import soliloquy.specs.common.infrastructure.Pair;
-import soliloquy.specs.common.infrastructure.ReadOnlyMap;
+import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
-class ReadOnlyMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadOnlyMap<K,V> {
+class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableMap<K,V> {
     final HashMap<K,V> MAP;
     final K ARCHETYPE_1;
     final V ARCHETYPE_2;
@@ -18,7 +15,7 @@ class ReadOnlyMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadOnlyM
     final CollectionFactory COLLECTION_FACTORY;
 
     @SuppressWarnings("unchecked")
-    ReadOnlyMapImpl(K archetype1, V archetype2, PairFactory pairFactory,
+    ReadableMapImpl(K archetype1, V archetype2, PairFactory pairFactory,
                     CollectionFactory collectionFactory) {
         MAP = new HashMap<>();
         ARCHETYPE_1 = archetype1;
@@ -27,7 +24,7 @@ class ReadOnlyMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadOnlyM
         COLLECTION_FACTORY = collectionFactory;
     }
 
-    ReadOnlyMapImpl(K archetype1, V archetype2, HashMap<K, V> values, PairFactory pairFactory,
+    ReadableMapImpl(K archetype1, V archetype2, HashMap<K, V> values, PairFactory pairFactory,
                     CollectionFactory collectionFactory) {
         MAP = new HashMap<>();
         values.forEach(MAP::put);
@@ -58,7 +55,7 @@ class ReadOnlyMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadOnlyM
     }
 
     @Override
-    public boolean equals(Collection<V> items) throws IllegalArgumentException {
+    public boolean equals(ReadableCollection<V> items) throws IllegalArgumentException {
         if (items == null) {
             throw new IllegalArgumentException("Map.equals(Collection): comparator collection cannot be null");
         }
@@ -70,7 +67,7 @@ class ReadOnlyMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadOnlyM
     }
 
     @Override
-    public boolean equals(ReadOnlyMap<K, V> map) throws IllegalArgumentException {
+    public boolean equals(ReadableMap<K, V> map) throws IllegalArgumentException {
         if (map == null) {
             throw new IllegalArgumentException("Map.equals(Map): comparator map cannot be null");
         }

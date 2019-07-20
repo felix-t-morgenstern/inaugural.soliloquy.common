@@ -5,7 +5,7 @@ import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.GenericParamsSet;
 import soliloquy.specs.common.infrastructure.Map;
-import soliloquy.specs.common.infrastructure.ReadOnlyMap;
+import soliloquy.specs.common.infrastructure.ReadableMap;
 
 import java.util.HashMap;
 
@@ -31,7 +31,7 @@ public class GenericParamsSetStub implements GenericParamsSet {
 	}
 
 	@Override
-	public <T> void addParamsSet(ReadOnlyMap<String, T> map)
+	public <T> void addParamsSet(ReadableMap<String, T> map)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		// Stub class; no implementation needed
 		throw new UnsupportedOperationException();

@@ -10,7 +10,7 @@ import soliloquy.specs.common.factories.PersistentVariableCacheFactory;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 import soliloquy.specs.common.infrastructure.PersistentVariableCache;
-import soliloquy.specs.common.infrastructure.ReadOnlyMap;
+import soliloquy.specs.common.infrastructure.ReadableMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,7 +64,7 @@ class PersistentVariableCachePersistenceHandlerTests {
 
         assertNotNull(pVarCache);
         assertEquals(2, pVarCache.size());
-        ReadOnlyMap<String,Object> representation = pVarCache.variablesRepresentation();
+        ReadableMap<String,Object> representation = pVarCache.variablesRepresentation();
         assertEquals(PersistentVariableCacheStub.VARIABLE_1_VALUE,
                 representation.get(PersistentVariableCacheStub.VARIABLE_1_NAME));
         assertEquals(PersistentVariableCacheStub.VARIABLE_2_VALUE,

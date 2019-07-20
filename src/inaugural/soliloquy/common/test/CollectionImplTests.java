@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.CollectionImpl;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
+import soliloquy.specs.common.infrastructure.ReadableCollection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -158,14 +158,14 @@ class CollectionImplTests {
 		_collection.add(1);
 		_collection.add(2);
 		_collection.add(3);
-		ReadOnlyCollection<Integer> readOnlyCollection = _collection.readOnlyRepresentation();
+		ReadableCollection<Integer> ReadableCollection = _collection.readOnlyRepresentation();
 
-		assertNotNull(readOnlyCollection);
-		assertFalse(readOnlyCollection instanceof Collection);
-		assertEquals(3, readOnlyCollection.size());
-		assertTrue(readOnlyCollection.contains(1));
-		assertTrue(readOnlyCollection.contains(2));
-		assertTrue(readOnlyCollection.contains(3));
+		assertNotNull(ReadableCollection);
+		assertFalse(ReadableCollection instanceof Collection);
+		assertEquals(3, ReadableCollection.size());
+		assertTrue(ReadableCollection.contains(1));
+		assertTrue(ReadableCollection.contains(2));
+		assertTrue(ReadableCollection.contains(3));
 	}
 
     @Test

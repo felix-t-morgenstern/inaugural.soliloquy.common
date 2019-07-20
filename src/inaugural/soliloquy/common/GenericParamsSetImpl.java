@@ -30,7 +30,7 @@ public class GenericParamsSetImpl extends CanGetInterfaceName implements Generic
 
 	@SuppressWarnings({"ConstantConditions", "unchecked"})
 	@Override
-	public <T> void addParamsSet(ReadOnlyMap<String, T> paramsSet)
+	public <T> void addParamsSet(ReadableMap<String, T> paramsSet)
 			throws IllegalArgumentException, UnsupportedOperationException {
 		// TODO: Add a test to ensure that paramsSet archetypes cannot be null
 		if (paramsSet == null) {

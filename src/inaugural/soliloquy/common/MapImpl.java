@@ -6,12 +6,9 @@ import inaugural.soliloquy.common.archetypes.MapValidatorFunctionArchetype;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.PairFactory;
-import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.Map;
-import soliloquy.specs.common.infrastructure.Pair;
-import soliloquy.specs.common.infrastructure.ReadOnlyMap;
+import soliloquy.specs.common.infrastructure.*;
 
-public class MapImpl<K,V> extends ReadOnlyMapImpl<K,V> implements Map<K,V> {
+public class MapImpl<K,V> extends ReadableMapImpl<K,V> implements Map<K,V> {
 	final Collection<Function<Pair<K,V>,String>> VALIDATORS;
 
 	@SuppressWarnings("unchecked")
@@ -56,7 +53,7 @@ public class MapImpl<K,V> extends ReadOnlyMapImpl<K,V> implements Map<K,V> {
 	}
 
 	@Override
-	public void putAll(Collection<Pair<K, V>> items) throws IllegalArgumentException {
+	public void putAll(ReadableCollection<Pair<K, V>> items) throws IllegalArgumentException {
 		for(Pair<K,V> item : items) {
 			put(item.getItem1(), item.getItem2());
 		}
@@ -85,8 +82,8 @@ public class MapImpl<K,V> extends ReadOnlyMapImpl<K,V> implements Map<K,V> {
 	}
 
 	@Override
-	public ReadOnlyMap<K, V> readOnlyRepresentation() {
-		return new ReadOnlyMapImpl<>(ARCHETYPE_1, ARCHETYPE_2, MAP, PAIR_FACTORY, COLLECTION_FACTORY);
+	public ReadableMap<K, V> readOnlyRepresentation() {
+		return new ReadableMapImpl<>(ARCHETYPE_1, ARCHETYPE_2, MAP, PAIR_FACTORY, COLLECTION_FACTORY);
 	}
 
 	@Override

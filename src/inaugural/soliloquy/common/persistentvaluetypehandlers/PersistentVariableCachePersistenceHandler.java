@@ -55,7 +55,7 @@ public class PersistentVariableCachePersistenceHandler
                     "PersistentVariableCachePersistenceHandler.write: persistentVariableCache " +
                             "must be non-null");
         }
-        ReadOnlyCollection<String> pVarNames = persistentVariableCache.namesRepresentation();
+        ReadableCollection<String> pVarNames = persistentVariableCache.namesRepresentation();
         PersistentVariableDTO[] dto = new PersistentVariableDTO[pVarNames.size()];
         for(int i = 0; i < pVarNames.size(); i++) {
             String pVarName = pVarNames.get(i);

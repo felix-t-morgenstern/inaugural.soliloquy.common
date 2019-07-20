@@ -3,9 +3,9 @@ package inaugural.soliloquy.common;
 import inaugural.soliloquy.common.archetypes.CollectionValidatorFunctionArchetype;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
+import soliloquy.specs.common.infrastructure.ReadableCollection;
 
-public class CollectionImpl<V> extends ReadOnlyCollectionImpl<V> implements Collection<V> {
+public class CollectionImpl<V> extends ReadableCollectionImpl<V> implements Collection<V> {
 	private final Collection<Function<V,String>> VALIDATORS;
 	
 	public CollectionImpl(V archetype) {
@@ -74,8 +74,8 @@ public class CollectionImpl<V> extends ReadOnlyCollectionImpl<V> implements Coll
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ReadOnlyCollection<V> readOnlyRepresentation() {
-		return new ReadOnlyCollectionImpl<>((V[]) COLLECTION.toArray(), ARCHETYPE);
+	public ReadableCollection<V> readOnlyRepresentation() {
+		return new ReadableCollectionImpl<>((V[]) COLLECTION.toArray(), ARCHETYPE);
 	}
 
 	@Override

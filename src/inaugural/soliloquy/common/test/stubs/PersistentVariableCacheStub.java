@@ -34,7 +34,7 @@ public class PersistentVariableCacheStub implements PersistentVariableCache {
     }
 
     @Override
-    public ReadOnlyCollection<String> namesRepresentation() {
+    public ReadableCollection<String> namesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS.getKeys();
         } else {
@@ -43,7 +43,7 @@ public class PersistentVariableCacheStub implements PersistentVariableCache {
     }
 
     @Override
-    public ReadOnlyMap<String,Object> variablesRepresentation() {
+    public ReadableMap<String,Object> variablesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS;
         } else {

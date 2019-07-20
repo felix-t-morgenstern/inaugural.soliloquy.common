@@ -1,24 +1,24 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
+import soliloquy.specs.common.infrastructure.ReadableCollection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ReadOnlyCollectionStub<V> implements ReadOnlyCollection<V> {
+public class ReadableCollectionStub<V> implements ReadableCollection<V> {
     ArrayList<V> _collection = new ArrayList<>();
     V _archetype;
 
-    ReadOnlyCollectionStub() {
+    ReadableCollectionStub() {
 
     }
 
-    ReadOnlyCollectionStub(V archetype) {
+    ReadableCollectionStub(V archetype) {
         _archetype = archetype;
     }
 
-    ReadOnlyCollectionStub(V archetype, ArrayList<V> values) {
+    ReadableCollectionStub(V archetype, ArrayList<V> values) {
         _archetype = archetype;
         _collection.addAll(values);
     }
@@ -29,7 +29,7 @@ public class ReadOnlyCollectionStub<V> implements ReadOnlyCollection<V> {
     }
 
     @Override
-    public boolean equals(ReadOnlyCollection<V> items) {
+    public boolean equals(ReadableCollection<V> items) {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }

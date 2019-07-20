@@ -1,31 +1,28 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.factories.PairFactory;
-import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.Map;
-import soliloquy.specs.common.infrastructure.Pair;
-import soliloquy.specs.common.infrastructure.ReadOnlyMap;
+import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class ReadOnlyMapStub<K,V> implements ReadOnlyMap<K,V> {
+public class ReadableMapStub<K,V> implements ReadableMap<K,V> {
     private final PairFactory PAIR_FACTORY = new PairFactoryStub();
 
     HashMap<K,V> _map = new HashMap<>();
     K _archetype1;
     V _archetype2;
 
-    ReadOnlyMapStub() {
+    ReadableMapStub() {
 
     }
 
-    ReadOnlyMapStub(K archetype1, V archetype2) {
+    ReadableMapStub(K archetype1, V archetype2) {
         _archetype1 = archetype1;
         _archetype2 = archetype2;
     }
 
-    ReadOnlyMapStub(K archetype1, V archetype2, HashMap<K,V> values) {
+    ReadableMapStub(K archetype1, V archetype2, HashMap<K,V> values) {
         _archetype1 = archetype1;
         _archetype2 = archetype2;
         values.forEach(_map::put);
@@ -49,13 +46,13 @@ public class ReadOnlyMapStub<K,V> implements ReadOnlyMap<K,V> {
     }
 
     @Override
-    public boolean equals(Collection<V> items) throws IllegalArgumentException {
+    public boolean equals(ReadableCollection<V> items) throws IllegalArgumentException {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean equals(ReadOnlyMap<K, V> map) throws IllegalArgumentException {
+    public boolean equals(ReadableMap<K, V> map) throws IllegalArgumentException {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();
     }
@@ -64,7 +61,7 @@ public class ReadOnlyMapStub<K,V> implements ReadOnlyMap<K,V> {
     @Override
     public boolean equals(Object o) {
         try {
-            ReadOnlyMap<K,V> map = (ReadOnlyMap<K,V>) o;
+            ReadableMap<K,V> map = (ReadableMap<K,V>) o;
             if (map.size() != this.size()) {
                 return false;
             }

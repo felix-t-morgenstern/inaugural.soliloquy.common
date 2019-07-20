@@ -46,14 +46,14 @@ public class PersistentVariableCacheImpl implements PersistentVariableCache {
 	}
 
 	@Override
-	public ReadOnlyMap<String,Object> variablesRepresentation() {
+	public ReadableMap<String,Object> variablesRepresentation() {
 		Map<String,Object> variablesMap = MAP_FACTORY.make("", new Object());
 		PERSISTENT_VARIABLES.forEach(variablesMap::put);
 		return variablesMap.readOnlyRepresentation();
 	}
 
 	@Override
-	public ReadOnlyCollection<String> namesRepresentation() {
+	public ReadableCollection<String> namesRepresentation() {
 		Collection<String> names = COLLECTION_FACTORY.make("");
 		PERSISTENT_VARIABLES.keySet().forEach(names::add);
 		return names.readOnlyRepresentation();

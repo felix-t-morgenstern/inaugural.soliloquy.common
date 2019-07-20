@@ -1,22 +1,22 @@
 package inaugural.soliloquy.common;
 
 import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
+import soliloquy.specs.common.infrastructure.ReadableCollection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-class ReadOnlyCollectionImpl<V> extends HasOneGenericParam<V> implements ReadOnlyCollection<V> {
+class ReadableCollectionImpl<V> extends HasOneGenericParam<V> implements ReadableCollection<V> {
     final ArrayList<V> COLLECTION;
     final V ARCHETYPE;
 
-    ReadOnlyCollectionImpl(V archetype) {
+    ReadableCollectionImpl(V archetype) {
         COLLECTION = new ArrayList<>();
         ARCHETYPE = archetype;
     }
 
-    ReadOnlyCollectionImpl(V[] items, V archetype) {
+    ReadableCollectionImpl(V[] items, V archetype) {
         COLLECTION = new ArrayList<>(Arrays.asList(items));
         ARCHETYPE = archetype;
     }
@@ -27,7 +27,7 @@ class ReadOnlyCollectionImpl<V> extends HasOneGenericParam<V> implements ReadOnl
     }
 
     @Override
-    public boolean equals(ReadOnlyCollection<V> items) {
+    public boolean equals(ReadableCollection<V> items) {
         if (items == null) return false;
         if (COLLECTION.size() != items.size()) return false;
         for(V item : COLLECTION) if(!items.contains(item)) return false;
@@ -67,7 +67,7 @@ class ReadOnlyCollectionImpl<V> extends HasOneGenericParam<V> implements ReadOnl
 
     @Override
     public String getUnparameterizedInterfaceName() {
-        return ReadOnlyCollection.class.getCanonicalName();
+        return ReadableCollection.class.getCanonicalName();
     }
 
     @Override

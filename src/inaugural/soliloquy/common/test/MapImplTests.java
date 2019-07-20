@@ -19,7 +19,7 @@ import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.infrastructure.Pair;
-import soliloquy.specs.common.infrastructure.ReadOnlyMap;
+import soliloquy.specs.common.infrastructure.ReadableMap;
 
 class MapImplTests {
 	private MapImpl<String,String> _map;
@@ -291,13 +291,13 @@ class MapImplTests {
 	void testReadOnlyRepresentation() {
 		_map.put(PAIR_1_KEY, PAIR_1_VALUE);
 		_map.put(PAIR_2_KEY, PAIR_2_VALUE);
-		ReadOnlyMap<String,String> readOnlyMap = _map.readOnlyRepresentation();
+		ReadableMap<String,String> ReadableMap = _map.readOnlyRepresentation();
 
-		assertNotNull(readOnlyMap);
-		assertFalse(readOnlyMap instanceof Map);
-		assertEquals(2, readOnlyMap.size());
-		assertEquals(PAIR_1_VALUE, readOnlyMap.get(PAIR_1_KEY));
-		assertEquals(PAIR_2_VALUE, readOnlyMap.get(PAIR_2_KEY));
+		assertNotNull(ReadableMap);
+		assertFalse(ReadableMap instanceof Map);
+		assertEquals(2, ReadableMap.size());
+		assertEquals(PAIR_1_VALUE, ReadableMap.get(PAIR_1_KEY));
+		assertEquals(PAIR_2_VALUE, ReadableMap.get(PAIR_2_KEY));
 	}
 
     @Test

@@ -2,9 +2,9 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.ReadOnlyCollection;
+import soliloquy.specs.common.infrastructure.ReadableCollection;
 
-public class CollectionStub<V> extends ReadOnlyCollectionStub<V> implements Collection<V> {
+public class CollectionStub<V> extends ReadableCollectionStub<V> implements Collection<V> {
 	public CollectionStub() {
 		super();
 	}
@@ -48,8 +48,8 @@ public class CollectionStub<V> extends ReadOnlyCollectionStub<V> implements Coll
 	}
 
 	@Override
-	public ReadOnlyCollection<V> readOnlyRepresentation() {
-		return new ReadOnlyCollectionStub<>(_archetype, _collection);
+	public ReadableCollection<V> readOnlyRepresentation() {
+		return new ReadableCollectionStub<>(_archetype, _collection);
 	}
 
 	@Override
