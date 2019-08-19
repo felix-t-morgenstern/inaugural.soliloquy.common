@@ -18,6 +18,7 @@ public class CommonModule extends AbstractModule {
 	private PairFactory _pairFactory;
 	private PersistentValuesHandler _persistentValuesHandler;
 	private PersistentVariableCacheFactory _persistentVariableCacheFactory;
+	private RegistryFactory _registryFactory;
 	private SettingFactory _settingFactory;
 	private SettingsRepo _settingsRepo;
 
@@ -34,6 +35,8 @@ public class CommonModule extends AbstractModule {
 		_coordinateFactory = new CoordinateFactoryImpl();
 		_entityUuidFactory = new EntityUuidFactoryImpl();
 		_pairFactory = new PairFactoryImpl();
+		_registryFactory = new RegistryFactoryImpl();
+
 		_settingFactory = new SettingFactoryImpl();
 
 		_mapFactory = new MapFactoryImpl(_pairFactory, _collectionFactory);
@@ -95,6 +98,7 @@ public class CommonModule extends AbstractModule {
 		bind(PairFactory.class).toInstance(_pairFactory);
 		bind(PersistentValuesHandler.class).toInstance(_persistentValuesHandler);
 		bind(PersistentVariableCacheFactory.class).toInstance(_persistentVariableCacheFactory);
+		bind(RegistryFactory.class).toInstance(_registryFactory);
 		bind(SettingFactory.class).toInstance(_settingFactory);
 		bind(SettingsRepo.class).toInstance(_settingsRepo);
 	}
