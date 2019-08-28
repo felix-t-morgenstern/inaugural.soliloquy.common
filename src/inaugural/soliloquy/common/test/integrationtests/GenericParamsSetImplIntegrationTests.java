@@ -3,6 +3,8 @@ package inaugural.soliloquy.common.test.integrationtests;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import inaugural.soliloquy.common.CommonModule;
+import inaugural.soliloquy.common.test.stubs.HasIdAndNameStub;
+import inaugural.soliloquy.common.test.stubs.PersistentHasIdAndNameHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.*;
@@ -19,10 +21,11 @@ class GenericParamsSetImplIntegrationTests {
     private EntityUuidFactory _entityUuidFactory;
     private MapFactory _mapFactory;
     private PairFactory _pairFactory;
+    private RegistryFactory _registryFactory;
 
     private PersistentValueTypeHandler<GenericParamsSet> _genericParamsSetHandler;
 
-    private final String VALUES_STRING = "[{\"typeName\":\"soliloquy.specs.common.valueobjects.EntityUuid\",\"paramNames\":[\"entityUuid1\",\"entityUuid2\",\"entityUuid3\"],\"paramValues\":[\"5b18b261-00d9-44f4-8390-6bfa70ddbd0f\",\"f098c089-72d4-4c29-835d-4aee72f70abc\",\"dec10cbc-88ed-49f0-90f6-3a8c73922a1a\"]},{\"typeName\":\"java.lang.Boolean\",\"paramNames\":[\"Boolean1Name\",\"Boolean3Name\",\"Boolean2Name\"],\"paramValues\":[\"true\",\"true\",\"false\"]},{\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.String,soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.String\\u003e\\u003e\",\"paramNames\":[\"mapOfStringsToMapsOfIntegersToStrings\"],\"paramValues\":[\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.String\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"map3\\\",\\\"map2\\\",\\\"map1\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.String\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"seven\\\\\\\",\\\\\\\"eight\\\\\\\",\\\\\\\"nine\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.String\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"four\\\\\\\",\\\\\\\"five\\\\\\\",\\\\\\\"six\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.String\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"one\\\\\\\",\\\\\\\"two\\\\\\\",\\\\\\\"three\\\\\\\"]}\\\"]}\"]},{\"typeName\":\"java.lang.String\",\"paramNames\":[\"String1Name\",\"String2Name\",\"String3Name\"],\"paramValues\":[\"String1Value\",\"String2Value\",\"String3Value\"]},{\"typeName\":\"soliloquy.specs.common.infrastructure.Collection\\u003cjava.lang.Integer\\u003e\",\"paramNames\":[\"integerCollection3\",\"integerCollection2\",\"integerCollection1\"],\"paramValues\":[\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"7\\\",\\\"8\\\",\\\"9\\\"]}\",\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"4\\\",\\\"5\\\",\\\"6\\\"]}\",\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"1\\\",\\\"2\\\",\\\"3\\\"]}\"]},{\"typeName\":\"java.lang.Integer\",\"paramNames\":[\"Integer1Name\",\"Integer3Name\",\"Integer2Name\"],\"paramValues\":[\"123\",\"789\",\"456\"]},{\"typeName\":\"soliloquy.specs.common.valueobjects.Coordinate\",\"paramNames\":[\"coordinate3\",\"coordinate2\",\"coordinate1\"],\"paramValues\":[\"{\\\"x\\\":5,\\\"y\\\":6}\",\"{\\\"x\\\":3,\\\"y\\\":4}\",\"{\\\"x\\\":1,\\\"y\\\":2}\"]},{\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,java.lang.String\\u003e\",\"paramNames\":[\"pairOfStrings1\",\"pairOfStrings2\",\"pairOfStrings3\"],\"paramValues\":[\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pair1string1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pair1string2\\\"}\",\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pair2string1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pair2string2\\\"}\",\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pair3string1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pair3string2\\\"}\"]}]";
+    private final String VALUES_STRING = "[{\"typeName\":\"soliloquy.specs.common.valueobjects.EntityUuid\",\"paramNames\":[\"entityUuid1\",\"entityUuid2\",\"entityUuid3\"],\"paramValues\":[\"5b18b261-00d9-44f4-8390-6bfa70ddbd0f\",\"f098c089-72d4-4c29-835d-4aee72f70abc\",\"dec10cbc-88ed-49f0-90f6-3a8c73922a1a\"]},{\"typeName\":\"soliloquy.specs.common.infrastructure.Registry\\u003cinaugural.soliloquy.common.test.stubs.HasIdAndNameStub\\u003e\",\"paramNames\":[\"registry\"],\"paramValues\":[\"{\\\"typeName\\\":\\\"inaugural.soliloquy.common.test.stubs.HasIdAndNameStub\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id2\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name2\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id1\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name1\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id3\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name3\\\\\\\"}\\\"]}\"]},{\"typeName\":\"java.lang.Boolean\",\"paramNames\":[\"Boolean1Name\",\"Boolean3Name\",\"Boolean2Name\"],\"paramValues\":[\"true\",\"true\",\"false\"]},{\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.String,soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.String\\u003e\\u003e\",\"paramNames\":[\"mapOfStringsToMapsOfIntegersToStrings\"],\"paramValues\":[\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.String\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"map3\\\",\\\"map2\\\",\\\"map1\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.String\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"seven\\\\\\\",\\\\\\\"eight\\\\\\\",\\\\\\\"nine\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.String\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"four\\\\\\\",\\\\\\\"five\\\\\\\",\\\\\\\"six\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.String\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"one\\\\\\\",\\\\\\\"two\\\\\\\",\\\\\\\"three\\\\\\\"]}\\\"]}\"]},{\"typeName\":\"java.lang.String\",\"paramNames\":[\"String1Name\",\"String2Name\",\"String3Name\"],\"paramValues\":[\"String1Value\",\"String2Value\",\"String3Value\"]},{\"typeName\":\"soliloquy.specs.common.infrastructure.Collection\\u003cjava.lang.Integer\\u003e\",\"paramNames\":[\"integerCollection3\",\"integerCollection2\",\"integerCollection1\"],\"paramValues\":[\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"7\\\",\\\"8\\\",\\\"9\\\"]}\",\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"4\\\",\\\"5\\\",\\\"6\\\"]}\",\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"1\\\",\\\"2\\\",\\\"3\\\"]}\"]},{\"typeName\":\"java.lang.Integer\",\"paramNames\":[\"Integer1Name\",\"Integer3Name\",\"Integer2Name\"],\"paramValues\":[\"123\",\"789\",\"456\"]},{\"typeName\":\"soliloquy.specs.common.valueobjects.Coordinate\",\"paramNames\":[\"coordinate3\",\"coordinate2\",\"coordinate1\"],\"paramValues\":[\"{\\\"x\\\":5,\\\"y\\\":6}\",\"{\\\"x\\\":3,\\\"y\\\":4}\",\"{\\\"x\\\":1,\\\"y\\\":2}\"]},{\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,java.lang.String\\u003e\",\"paramNames\":[\"pairOfStrings1\",\"pairOfStrings2\",\"pairOfStrings3\"],\"paramValues\":[\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pair1string1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pair1string2\\\"}\",\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pair2string1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pair2string2\\\"}\",\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pair3string1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pair3string2\\\"}\"]}]";
 
     @BeforeEach
     void setUp() {
@@ -35,8 +38,13 @@ class GenericParamsSetImplIntegrationTests {
         _entityUuidFactory = commonInjector.getInstance(EntityUuidFactory.class);
         _mapFactory = commonInjector.getInstance(MapFactory.class);
         _pairFactory = commonInjector.getInstance(PairFactory.class);
+        _registryFactory = commonInjector.getInstance(RegistryFactory.class);
 
-        _genericParamsSetHandler = commonInjector.getInstance(PersistentValuesHandler.class)
+        PersistentValuesHandler persistentValuesHandler =
+                commonInjector.getInstance(PersistentValuesHandler.class);
+        persistentValuesHandler.addPersistentValueTypeHandler(new PersistentHasIdAndNameHandler());
+
+        _genericParamsSetHandler = persistentValuesHandler
                 .getPersistentValueTypeHandler(GenericParamsSet.class.getCanonicalName());
     }
 
@@ -108,6 +116,13 @@ class GenericParamsSetImplIntegrationTests {
         _genericParamsSet.addParam("pairOfStrings3",
                 _pairFactory.make("pair3string1", "pair3string2"));
 
+        Registry<HasIdAndNameStub> registry = _registryFactory.make(
+                PersistentHasIdAndNameHandler.ARCHETYPE);
+        registry.register(new HasIdAndNameStub("id1", "name1"));
+        registry.register(new HasIdAndNameStub("id2", "name2"));
+        registry.register(new HasIdAndNameStub("id3", "name3"));
+        _genericParamsSet.addParam("registry", registry);
+
         assertEquals(VALUES_STRING, _genericParamsSetHandler.write(_genericParamsSet));
     }
 
@@ -116,7 +131,7 @@ class GenericParamsSetImplIntegrationTests {
         _genericParamsSet = _genericParamsSetHandler.read(VALUES_STRING);
 
         assertNotNull(_genericParamsSet);
-        assertEquals(8, _genericParamsSet.paramTypes().size());
+        assertEquals(9, _genericParamsSet.paramTypes().size());
 
         Map<String,String> stringParams =
                 _genericParamsSet.getParamsSet(String.class.getCanonicalName());
@@ -242,5 +257,17 @@ class GenericParamsSetImplIntegrationTests {
         assertNotNull(pairOfStrings3);
         assertEquals("pair3string1", pairOfStrings3.getItem1());
         assertEquals("pair3string2", pairOfStrings3.getItem2());
+
+        Map<String,Registry<HasIdAndNameStub>> registryOfHasIdAndNameStubParams =
+                _genericParamsSet.getParamsSet(_registryFactory.make(
+                        PersistentHasIdAndNameHandler.ARCHETYPE).getInterfaceName());
+        assertNotNull(registryOfHasIdAndNameStubParams);
+        assertEquals(1, registryOfHasIdAndNameStubParams.size());
+        Registry<HasIdAndNameStub> regisry = registryOfHasIdAndNameStubParams.get("registry");
+        assertNotNull(regisry);
+        assertEquals(3, regisry.size());
+        assertEquals("name1", regisry.get("id1").getName());
+        assertEquals("name2", regisry.get("id2").getName());
+        assertEquals("name3", regisry.get("id3").getName());
     }
 }

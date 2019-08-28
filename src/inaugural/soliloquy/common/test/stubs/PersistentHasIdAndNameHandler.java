@@ -1,11 +1,14 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import com.google.gson.Gson;
+import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentTypeHandler;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
-public class PersistentHasIdAndNameHandler implements PersistentValueTypeHandler<HasIdAndNameStub> {
+public class PersistentHasIdAndNameHandler extends PersistentTypeHandler<HasIdAndNameStub>
+        implements PersistentValueTypeHandler<HasIdAndNameStub> {
     public final static String ARCHETYPE_ID = "ArchetypeId";
     public final static String ARCHETYPE_NAME = "ArchetypeName";
+    public final static HasIdAndNameStub ARCHETYPE = new HasIdAndNameStub(ARCHETYPE_ID, ARCHETYPE_NAME);
 
     @Override
     public HasIdAndNameStub read(String s) throws IllegalArgumentException {
@@ -23,17 +26,7 @@ public class PersistentHasIdAndNameHandler implements PersistentValueTypeHandler
 
     @Override
     public HasIdAndNameStub getArchetype() {
-        return new HasIdAndNameStub(ARCHETYPE_ID, ARCHETYPE_NAME);
-    }
-
-    @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
-    public String getInterfaceName() {
-        return null;
+        return ARCHETYPE;
     }
 
     private class HasIdAndNameStubDTO

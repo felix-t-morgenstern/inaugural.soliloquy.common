@@ -74,6 +74,8 @@ public class CommonModule extends AbstractModule {
 				_mapFactory);
 		PersistentPairHandler pairHandler = new PersistentPairHandler(_persistentValuesHandler,
 				_pairFactory);
+		PersistentRegistryHandler registryHandler = new PersistentRegistryHandlerImpl(
+				_persistentValuesHandler, _registryFactory);
 
 		_persistentValuesHandler.addPersistentValueTypeHandler(booleanHandler);
 		_persistentValuesHandler.addPersistentValueTypeHandler(coordinateHandler);
@@ -86,6 +88,7 @@ public class CommonModule extends AbstractModule {
 		_persistentValuesHandler.registerPersistentCollectionHandler(collectionHandler);
 		_persistentValuesHandler.registerPersistentMapHandler(mapHandler);
 		_persistentValuesHandler.registerPersistentPairHandler(pairHandler);
+		_persistentValuesHandler.registerPersistentRegistryHandler(registryHandler);
 	}
 	
 	@Override
