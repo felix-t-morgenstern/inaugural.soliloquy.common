@@ -81,4 +81,36 @@ class RegistryImplTests {
         assertFalse(_registry.remove(ID));
         assertFalse(_registry.contains(ID));
     }
+
+    @Test
+    void testSize() {
+        _registry.register(new HasIdAndNameStub("id1", "name1"));
+        _registry.register(new HasIdAndNameStub("id2", "name2"));
+        _registry.register(new HasIdAndNameStub("id3", "name3"));
+
+        assertEquals(3, _registry.size());
+    }
+
+    @Test
+    void testIterator() {
+        _registry.register(new HasIdAndNameStub("id1", "name1"));
+        _registry.register(new HasIdAndNameStub("id2", "name2"));
+        _registry.register(new HasIdAndNameStub("id3", "name3"));
+
+        for (HasIdAndNameStub hasIdAndNameStub : _registry) {
+            switch (hasIdAndNameStub.id()) {
+                case "id1":
+                    assertEquals("name1", hasIdAndNameStub.getName());
+                    break;
+                case "id2":
+                    assertEquals("name2", hasIdAndNameStub.getName());
+                    break;
+                case "id3":
+                    assertEquals("name3", hasIdAndNameStub.getName());
+                    break;
+                default:
+                    fail("Invalid id");
+            }
+        }
+    }
 }

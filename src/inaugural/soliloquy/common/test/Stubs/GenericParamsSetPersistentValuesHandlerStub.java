@@ -39,6 +39,11 @@ public class GenericParamsSetPersistentValuesHandlerStub implements PersistentVa
 	}
 
 	@Override
+	public void registerPersistentRegistryHandler(PersistentRegistryHandler persistentRegistryHandler) {
+
+	}
+
+	@Override
 	public void registerPersistentCollectionHandler(PersistentCollectionHandler PersistentCollectionHandler) {
 
 	}

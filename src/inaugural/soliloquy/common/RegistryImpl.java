@@ -4,6 +4,7 @@ import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> implements Registry<T> {
     private T _archetype;
@@ -47,6 +48,11 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
     }
 
     @Override
+    public int size() {
+        return _registry.size();
+    }
+
+    @Override
     public T getArchetype() {
         return _archetype;
     }
@@ -54,5 +60,10 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
     @Override
     public String getUnparameterizedInterfaceName() {
         return Registry.class.getCanonicalName();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return _registry.values().iterator();
     }
 }

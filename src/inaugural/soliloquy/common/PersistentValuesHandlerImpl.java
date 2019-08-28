@@ -10,10 +10,12 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
 	private PersistentCollectionHandler _persistentCollectionHandler;
 	private PersistentMapHandler _persistentMapHandler;
 	private PersistentPairHandler _persistentPairHandler;
+	private PersistentRegistryHandler _persistentRegistryHandler;
 
 	private final String COLLECTION_GENERIC_INTERFACE_NAME = Collection.class.getCanonicalName();
 	private final String MAP_GENERIC_INTERFACE_NAME = Map.class.getCanonicalName();
 	private final String PAIR_GENERIC_INTERFACE_NAME = Pair.class.getCanonicalName();
+	private final String REGISTRY_GENERIC_INTERFACE_NAME = Registry.class.getCanonicalName();
 	
 	public PersistentValuesHandlerImpl() {
 		_persistentValueTypeHandlers = new HashMap<>();
@@ -49,6 +51,9 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
 			return (PersistentValueTypeHandler<T>) _persistentMapHandler;
 		} else if (interfaceIsOfGenericType(persistentValueType, PAIR_GENERIC_INTERFACE_NAME)) {
 			return (PersistentValueTypeHandler<T>) _persistentPairHandler;
+		} else if (interfaceIsOfGenericType(persistentValueType,
+				REGISTRY_GENERIC_INTERFACE_NAME)) {
+			return (PersistentValueTypeHandler<T>) _persistentRegistryHandler;
 		} else {
 			return (PersistentValueTypeHandler<T>)
 					_persistentValueTypeHandlers.get(persistentValueType);
@@ -86,11 +91,6 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
 	}
 
 	@Override
-	public void registerPersistentPairHandler(PersistentPairHandler persistentPairHandler) {
-		_persistentPairHandler = persistentPairHandler;
-	}
-
-	@Override
 	public void registerPersistentCollectionHandler(
 			PersistentCollectionHandler persistentCollectionHandler) {
 		_persistentCollectionHandler = persistentCollectionHandler;
@@ -99,6 +99,17 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
 	@Override
 	public void registerPersistentMapHandler(PersistentMapHandler persistentMapHandler) {
 		_persistentMapHandler = persistentMapHandler;
+	}
+
+	@Override
+	public void registerPersistentPairHandler(PersistentPairHandler persistentPairHandler) {
+		_persistentPairHandler = persistentPairHandler;
+	}
+
+	@Override
+	public void registerPersistentRegistryHandler(
+			PersistentRegistryHandler persistentRegistryHandler) {
+		_persistentRegistryHandler = persistentRegistryHandler;
 	}
 
 	@Override

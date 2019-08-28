@@ -478,6 +478,13 @@ class SettingsRepoImplTests {
 		}
 
 		@Override
+		public void registerPersistentRegistryHandler(
+				PersistentRegistryHandler persistentRegistryHandler) {
+			// Stub class; no implementation needed
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
 		public void registerPersistentCollectionHandler(PersistentCollectionHandler PersistentCollectionHandler) {
 			// Stub class; no implementation needed
 			throw new UnsupportedOperationException();

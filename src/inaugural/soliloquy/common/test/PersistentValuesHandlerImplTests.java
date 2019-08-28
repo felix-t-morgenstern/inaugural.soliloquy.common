@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import inaugural.soliloquy.common.test.stubs.PersistentCollectionHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentMapHandlerStub;
 import inaugural.soliloquy.common.test.stubs.PersistentPairHandlerStub;
+import inaugural.soliloquy.common.test.stubs.PersistentRegistryHandlerStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -120,5 +121,15 @@ class PersistentValuesHandlerImplTests {
 		assertSame(persistentPairHandler,
 				_persistentValuesHandler.getPersistentValueTypeHandler(
 						Pair.class.getCanonicalName()));
+	}
+
+	@Test
+	void testRegisterPersistentRegistryHandler() {
+    	PersistentRegistryHandler persistentRegistryHandler = new PersistentRegistryHandlerStub();
+    	_persistentValuesHandler.registerPersistentRegistryHandler(persistentRegistryHandler);
+
+    	assertSame(persistentRegistryHandler,
+				_persistentValuesHandler.getPersistentValueTypeHandler(
+						Registry.class.getCanonicalName()));
 	}
 }

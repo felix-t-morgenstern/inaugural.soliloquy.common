@@ -6,7 +6,8 @@ import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
-public class PersistentCollectionHandler extends PersistentTypeHandler<Collection>
+public class PersistentCollectionHandler
+        extends PersistentDataStructureWithOneGenericParamHandler<Collection>
         implements soliloquy.specs.common.infrastructure.PersistentCollectionHandler {
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final CollectionFactory COLLECTION_FACTORY;
@@ -15,19 +16,6 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<Collectio
                                        CollectionFactory collectionFactory) {
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         COLLECTION_FACTORY = collectionFactory;
-    }
-
-    @Override
-    public String getInterfaceName() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Collection getArchetype() {
-        // NB: PersistentCollectionHandler should be selected by the PersistentValuesHandler
-        // through specific, manually-defined String pattern recognition, rather than via
-        // getArchetype.
-        return null;
     }
 
     @SuppressWarnings({"unchecked", "ConstantConditions"})
@@ -72,25 +60,10 @@ public class PersistentCollectionHandler extends PersistentTypeHandler<Collectio
         return new Gson().toJson(dto);
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public Collection generateArchetype(String valueType) throws IllegalArgumentException {
-        if(valueType == null) {
-            throw new IllegalArgumentException(
-                    "PersistentCollectionHandler.generateArchetype: valueType must be non-null");
-        }
-        if(valueType.equals("")) {
-            throw new IllegalArgumentException(
-                    "PersistentCollectionHandler.generateArchetype: valueType must be non-empty");
-        }
-
-        int openingCaret = valueType.indexOf("<");
-        int closingCaret = valueType.lastIndexOf(">");
-        if (!valueType.substring(0, openingCaret).equals(Collection.class.getCanonicalName())) {
-            throw new IllegalArgumentException(
-                    "PersistentCollectionHandler.generateArchetype: valueType is not a String representation of a Collection");
-        }
-        String innerType = valueType.substring(openingCaret + 1, closingCaret);
+        String innerType = getInnerType(valueType, Collection.class,
+                "PersistentCollectionHandler");
 
         return COLLECTION_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(innerType));
     }

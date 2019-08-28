@@ -24,6 +24,8 @@ public class PersistentValuesHandlerStub implements PersistentValuesHandler {
             return (PersistentValueTypeHandler<T>) new PersistentIntegerHandlerStub();
         } else if (persistentValueType.equals(String.class.getCanonicalName())) {
             return (PersistentValueTypeHandler<T>) new PersistentStringHandlerStub();
+        } else if (persistentValueType.equals(HasIdAndNameStub.class.getCanonicalName())) {
+            return (PersistentValueTypeHandler<T>) new PersistentHasIdAndNameHandler();
         } else {
             return null;
         }
@@ -51,6 +53,11 @@ public class PersistentValuesHandlerStub implements PersistentValuesHandler {
 
     @Override
     public void registerPersistentPairHandler(PersistentPairHandler PersistentPairHandler) {
+
+    }
+
+    @Override
+    public void registerPersistentRegistryHandler(PersistentRegistryHandler persistentRegistryHandler) {
 
     }
 
