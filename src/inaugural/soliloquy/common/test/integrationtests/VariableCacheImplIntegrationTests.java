@@ -13,8 +13,8 @@ import soliloquy.specs.common.valueobjects.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersistentVariableCacheImplIntegrationTests {
-    private PersistentVariableCache _persistentVariableCache;
+class VariableCacheImplIntegrationTests {
+    private VariableCache _variableCache;
 
     private CollectionFactory _collectionFactory;
     private CoordinateFactory _coordinateFactory;
@@ -23,7 +23,7 @@ class PersistentVariableCacheImplIntegrationTests {
     private PairFactory _pairFactory;
     private RegistryFactory _registryFactory;
 
-    private PersistentValueTypeHandler<PersistentVariableCache> _pVarCacheHandler;
+    private PersistentValueTypeHandler<VariableCache> _varCacheHandler;
 
     private final String VALUES_STRING = "[{\"name\":\"stringVariableName\",\"typeName\":\"java.lang.String\",\"serializedValue\":\"stringVariableValue\"},{\"name\":\"registry\",\"typeName\":\"soliloquy.specs.common.infrastructure.Registry\\u003cinaugural.soliloquy.common.test.stubs.HasIdAndNameStub\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"inaugural.soliloquy.common.test.stubs.HasIdAndNameStub\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id2\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name2\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id1\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name1\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id3\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name3\\\\\\\"}\\\"]}\"},{\"name\":\"coordinate\",\"typeName\":\"soliloquy.specs.common.valueobjects.Coordinate\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"name\":\"entityUuid\",\"typeName\":\"soliloquy.specs.common.valueobjects.EntityUuid\",\"serializedValue\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"name\":\"mapOfIntsToMapsOfIntsToBooleans\",\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.Boolean\\u003e\\u003e\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"name\":\"collectionOfMaps\",\"typeName\":\"soliloquy.specs.common.infrastructure.Collection\\u003csoliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.Boolean\\u003e\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"name\":\"pairOfStrings\",\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,java.lang.String\\u003e\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pairString2\\\"}\"},{\"name\":\"mapOfStringsToInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.String,java.lang.Integer\\u003e\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keySerializedValues\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueSerializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"name\":\"booleanVariable\",\"typeName\":\"java.lang.Boolean\",\"serializedValue\":\"true\"},{\"name\":\"collectionOfInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Collection\\u003cjava.lang.Integer\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"name\":\"integer\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"123456789\"},{\"name\":\"pairOfStringAndCollectionOfInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,soliloquy.specs.common.infrastructure.Collection\\u003cjava.lang.Integer\\u003e\\u003e\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"item1\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.infrastructure.Collection\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"serializedValue2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"serializedValues\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"}]";
 
@@ -31,8 +31,8 @@ class PersistentVariableCacheImplIntegrationTests {
     void setUp() {
         Injector commonInjector = Guice.createInjector(new CommonModule());
 
-        _persistentVariableCache =
-                commonInjector.getInstance(PersistentVariableCacheFactory.class).make();
+        _variableCache =
+                commonInjector.getInstance(VariableCacheFactory.class).make();
 
         _collectionFactory = commonInjector.getInstance(CollectionFactory.class);
         _coordinateFactory = commonInjector.getInstance(CoordinateFactory.class);
@@ -44,19 +44,19 @@ class PersistentVariableCacheImplIntegrationTests {
         PersistentValuesHandler persistentValuesHandler =
                 commonInjector.getInstance(PersistentValuesHandler.class);
         persistentValuesHandler.addPersistentValueTypeHandler(new PersistentHasIdAndNameHandler());
-        _pVarCacheHandler = persistentValuesHandler
-                .getPersistentValueTypeHandler(PersistentVariableCache.class.getCanonicalName());
+        _varCacheHandler = persistentValuesHandler
+                .getPersistentValueTypeHandler(VariableCache.class.getCanonicalName());
     }
 
     @Test
     void testWrite() {
-        _persistentVariableCache.setVariable("booleanVariable", true);
+        _variableCache.setVariable("booleanVariable", true);
 
         Collection<Integer> collectionOfInts = _collectionFactory.make(0);
         collectionOfInts.add(123);
         collectionOfInts.add(456);
         collectionOfInts.add(789);
-        _persistentVariableCache.setVariable("collectionOfInts", collectionOfInts);
+        _variableCache.setVariable("collectionOfInts", collectionOfInts);
 
         Collection<Map<Integer,Boolean>> collectionOfMaps =
                 _collectionFactory.make(_mapFactory.make(0, false));
@@ -70,23 +70,23 @@ class PersistentVariableCacheImplIntegrationTests {
         mapInCollection2.put(6, false);
         collectionOfMaps.add(mapInCollection1);
         collectionOfMaps.add(mapInCollection2);
-        _persistentVariableCache.setVariable("collectionOfMaps", collectionOfMaps);
+        _variableCache.setVariable("collectionOfMaps", collectionOfMaps);
 
         Coordinate coordinate = _coordinateFactory.make(123, 456);
-        _persistentVariableCache.setVariable("coordinate", coordinate);
+        _variableCache.setVariable("coordinate", coordinate);
 
         EntityUuid entityUuid =
                 _entityUuidFactory.createFromString("0115d3a5-383a-46f5-92db-6d9c23bbf9b8");
-        _persistentVariableCache.setVariable("entityUuid", entityUuid);
+        _variableCache.setVariable("entityUuid", entityUuid);
 
         Integer integer = 123456789;
-        _persistentVariableCache.setVariable("integer", integer);
+        _variableCache.setVariable("integer", integer);
 
         Map<String,Integer> mapOfStringsToInts = _mapFactory.make("", 0);
         mapOfStringsToInts.put("key1", 123);
         mapOfStringsToInts.put("key2", 456);
         mapOfStringsToInts.put("key3", 789);
-        _persistentVariableCache.setVariable("mapOfStringsToInts", mapOfStringsToInts);
+        _variableCache.setVariable("mapOfStringsToInts", mapOfStringsToInts);
 
         Map<Integer,Boolean> mapOfIntsToBooleans1 = _mapFactory.make(0, true);
         mapOfIntsToBooleans1.put(1, false);
@@ -105,11 +105,11 @@ class PersistentVariableCacheImplIntegrationTests {
         mapOfIntsToMapsOfIntsToBooleans.put(123, mapOfIntsToBooleans1);
         mapOfIntsToMapsOfIntsToBooleans.put(456, mapOfIntsToBooleans2);
         mapOfIntsToMapsOfIntsToBooleans.put(789, mapOfIntsToBooleans3);
-        _persistentVariableCache.setVariable("mapOfIntsToMapsOfIntsToBooleans",
+        _variableCache.setVariable("mapOfIntsToMapsOfIntsToBooleans",
                 mapOfIntsToMapsOfIntsToBooleans);
 
         Pair<String,String> pairOfStrings = _pairFactory.make("pairString1", "pairString2");
-        _persistentVariableCache.setVariable("pairOfStrings", pairOfStrings);
+        _variableCache.setVariable("pairOfStrings", pairOfStrings);
 
         Pair<String,Collection<Integer>> pairOfStringAndCollectionOfInts =
                 _pairFactory.make("", _collectionFactory.make(0));
@@ -117,7 +117,7 @@ class PersistentVariableCacheImplIntegrationTests {
         pairOfStringAndCollectionOfInts.getItem2().add(123);
         pairOfStringAndCollectionOfInts.getItem2().add(456);
         pairOfStringAndCollectionOfInts.getItem2().add(789);
-        _persistentVariableCache.setVariable("pairOfStringAndCollectionOfInts",
+        _variableCache.setVariable("pairOfStringAndCollectionOfInts",
                 pairOfStringAndCollectionOfInts);
 
         Registry<HasIdAndNameStub> registry = _registryFactory.make(
@@ -125,24 +125,24 @@ class PersistentVariableCacheImplIntegrationTests {
         registry.register(new HasIdAndNameStub("id1", "name1"));
         registry.register(new HasIdAndNameStub("id2", "name2"));
         registry.register(new HasIdAndNameStub("id3", "name3"));
-        _persistentVariableCache.setVariable("registry", registry);
+        _variableCache.setVariable("registry", registry);
 
-        _persistentVariableCache.setVariable("stringVariableName", "stringVariableValue");
+        _variableCache.setVariable("stringVariableName", "stringVariableValue");
 
-        assertEquals(VALUES_STRING, _pVarCacheHandler.write(_persistentVariableCache));
+        assertEquals(VALUES_STRING, _varCacheHandler.write(_variableCache));
     }
 
     @Test
     void testRead() {
-        _persistentVariableCache = _pVarCacheHandler.read(VALUES_STRING);
+        _variableCache = _varCacheHandler.read(VALUES_STRING);
 
-        assertNotNull(_persistentVariableCache);
-        assertEquals(12, _persistentVariableCache.size());
+        assertNotNull(_variableCache);
+        assertEquals(12, _variableCache.size());
 
-        assertTrue((boolean) _persistentVariableCache.getVariable("booleanVariable"));
+        assertTrue((boolean) _variableCache.getVariable("booleanVariable"));
 
         Collection<Integer> collectionOfInts =
-                _persistentVariableCache.getVariable("collectionOfInts");
+                _variableCache.getVariable("collectionOfInts");
         assertNotNull(collectionOfInts);
         assertEquals(3, collectionOfInts.size());
         assertTrue(collectionOfInts.contains(123));
@@ -150,7 +150,7 @@ class PersistentVariableCacheImplIntegrationTests {
         assertTrue(collectionOfInts.contains(789));
 
         Collection<Map<Integer,Boolean>> collectionOfMaps =
-                _persistentVariableCache.getVariable("collectionOfMaps");
+                _variableCache.getVariable("collectionOfMaps");
         assertNotNull(collectionOfMaps);
         assertEquals(2, collectionOfMaps.size());
         Map<Integer,Boolean> mapOfIntegersToBooleans1 = collectionOfMaps.get(0);
@@ -162,21 +162,21 @@ class PersistentVariableCacheImplIntegrationTests {
         assertTrue(mapOfIntegersToBooleans2.get(5));
         assertFalse(mapOfIntegersToBooleans2.get(6));
 
-        Coordinate coordinate = _persistentVariableCache.getVariable("coordinate");
+        Coordinate coordinate = _variableCache.getVariable("coordinate");
         assertNotNull(coordinate);
         assertEquals(123, coordinate.getX());
         assertEquals(456, coordinate.getY());
 
-        EntityUuid entityUuid = _persistentVariableCache.getVariable("entityUuid");
+        EntityUuid entityUuid = _variableCache.getVariable("entityUuid");
         assertNotNull(entityUuid);
         assertEquals("0115d3a5-383a-46f5-92db-6d9c23bbf9b8", entityUuid.toString());
 
-        Integer integer = _persistentVariableCache.getVariable("integer");
+        Integer integer = _variableCache.getVariable("integer");
         assertNotNull(integer);
         assertEquals((Integer) 123456789, integer);
 
         Map<Integer,Map<Integer,Boolean>> mapOfIntsToMapsOfIntsToBooleans =
-                _persistentVariableCache.getVariable("mapOfIntsToMapsOfIntsToBooleans");
+                _variableCache.getVariable("mapOfIntsToMapsOfIntsToBooleans");
         assertNotNull(mapOfIntsToMapsOfIntsToBooleans);
         assertEquals(3, mapOfIntsToMapsOfIntsToBooleans.size());
         Map<Integer,Boolean> map1 = mapOfIntsToMapsOfIntsToBooleans.get(123);
@@ -195,13 +195,13 @@ class PersistentVariableCacheImplIntegrationTests {
         assertFalse(map3.get(8));
         assertFalse(map3.get(9));
 
-        Pair<String,String> pairOfStrings = _persistentVariableCache.getVariable("pairOfStrings");
+        Pair<String,String> pairOfStrings = _variableCache.getVariable("pairOfStrings");
         assertNotNull(pairOfStrings);
         assertEquals("pairString1", pairOfStrings.getItem1());
         assertEquals("pairString2", pairOfStrings.getItem2());
 
         Pair<String,Collection<Integer>> pairOfStringAndCollectionOfInts =
-                _persistentVariableCache.getVariable("pairOfStringAndCollectionOfInts");
+                _variableCache.getVariable("pairOfStringAndCollectionOfInts");
         assertNotNull(pairOfStringAndCollectionOfInts);
         assertEquals("item1", pairOfStringAndCollectionOfInts.getItem1());
         assertEquals(3, pairOfStringAndCollectionOfInts.getItem2().size());
@@ -209,7 +209,7 @@ class PersistentVariableCacheImplIntegrationTests {
         assertTrue(pairOfStringAndCollectionOfInts.getItem2().contains(456));
         assertTrue(pairOfStringAndCollectionOfInts.getItem2().contains(789));
 
-        Registry<HasIdAndNameStub> registry = _persistentVariableCache.getVariable("registry");
+        Registry<HasIdAndNameStub> registry = _variableCache.getVariable("registry");
         assertNotNull(registry);
         assertEquals(3, registry.size());
         assertEquals("name1", registry.get("id1").getName());
@@ -217,6 +217,6 @@ class PersistentVariableCacheImplIntegrationTests {
         assertEquals("name3", registry.get("id3").getName());
 
         assertEquals("stringVariableValue",
-                _persistentVariableCache.getVariable("stringVariableName"));
+                _variableCache.getVariable("stringVariableName"));
     }
 }

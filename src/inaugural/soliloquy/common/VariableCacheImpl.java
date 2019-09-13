@@ -6,12 +6,12 @@ import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;
 
-public class PersistentVariableCacheImpl implements PersistentVariableCache {
+public class VariableCacheImpl implements VariableCache {
 	private final CollectionFactory COLLECTION_FACTORY;
 	private final MapFactory MAP_FACTORY;
 	private final HashMap<String,Object> PERSISTENT_VARIABLES;
 
-	public PersistentVariableCacheImpl(CollectionFactory collectionFactory, MapFactory mapFactory) {
+	public VariableCacheImpl(CollectionFactory collectionFactory, MapFactory mapFactory) {
 		PERSISTENT_VARIABLES = new HashMap<>();
 		COLLECTION_FACTORY = collectionFactory;
 		MAP_FACTORY = mapFactory;
@@ -19,18 +19,18 @@ public class PersistentVariableCacheImpl implements PersistentVariableCache {
 	
 	@Override
 	public String getInterfaceName() {
-		return PersistentVariableCache.class.getCanonicalName();
+		return VariableCache.class.getCanonicalName();
 	}
 
 	@Override
 	public <T> void setVariable(String name, T value) throws IllegalArgumentException {
 		if (value == null) {
 			throw new IllegalArgumentException(
-					"PersistentVariableCache.put: value cannot be null");
+					"VariableCache.put: value cannot be null");
 		}
 		if (name == null || name.equals("")) {
 			throw new IllegalArgumentException(
-					"PersistentVariableCache.put: key cannot be null or empty");
+					"VariableCache.put: key cannot be null or empty");
 		}
 		PERSISTENT_VARIABLES.put(name, value);
 	}

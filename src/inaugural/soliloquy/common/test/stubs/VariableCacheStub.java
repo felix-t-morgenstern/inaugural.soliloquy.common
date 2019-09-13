@@ -2,7 +2,7 @@ package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentVariableCacheStub implements PersistentVariableCache {
+public class VariableCacheStub implements VariableCache {
     private final Map<String,Object> PERSISTENT_VARIABLES = new MapStub<>();
 
     public final static String VARIABLE_1_NAME = "variable1";
@@ -13,7 +13,7 @@ public class PersistentVariableCacheStub implements PersistentVariableCache {
 
     private final Map<String,Object> P_VARS = new MapStub<>();
 
-    public PersistentVariableCacheStub() {
+    public VariableCacheStub() {
         PERSISTENT_VARIABLES.put(VARIABLE_1_NAME, VARIABLE_1_VALUE);
         PERSISTENT_VARIABLES.put(VARIABLE_2_NAME, VARIABLE_2_VALUE);
     }
@@ -68,6 +68,6 @@ public class PersistentVariableCacheStub implements PersistentVariableCache {
 
     @Override
     public String getInterfaceName() {
-        return PersistentVariableCache.class.getCanonicalName();
+        return VariableCache.class.getCanonicalName();
     }
 }

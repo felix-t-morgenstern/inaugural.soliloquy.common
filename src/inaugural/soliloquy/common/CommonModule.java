@@ -17,10 +17,10 @@ public class CommonModule extends AbstractModule {
 	private MapFactory _mapFactory;
 	private PairFactory _pairFactory;
 	private PersistentValuesHandler _persistentValuesHandler;
-	private PersistentVariableCacheFactory _persistentVariableCacheFactory;
 	private RegistryFactory _registryFactory;
 	private SettingFactory _settingFactory;
 	private SettingsRepo _settingsRepo;
+	private VariableCacheFactory _variableCacheFactory;
 
 	// TODO: Refactor away from service location pattern when JDK 13 is released
 	// NB: JDK 12 results in "Illegal reflective access" errors thrown by Guice; a Google support
@@ -41,7 +41,7 @@ public class CommonModule extends AbstractModule {
 
 		_mapFactory = new MapFactoryImpl(_pairFactory, _collectionFactory);
 
-		_persistentVariableCacheFactory = new PersistentVariableCacheFactoryImpl(_collectionFactory,
+		_variableCacheFactory = new VariableCacheFactoryImpl(_collectionFactory,
 				_mapFactory);
 
 		_persistentValuesHandler = new PersistentValuesHandlerImpl();
@@ -62,9 +62,9 @@ public class CommonModule extends AbstractModule {
 				new PersistentGenericParamsSetHandler(_persistentValuesHandler,
 						_genericParamsSetFactory);
 		PersistentValueTypeHandler integerHandler = new PersistentIntegerHandler();
-		PersistentValueTypeHandler persistentVariableCachePersistenceHandler =
-				new PersistentVariableCachePersistenceHandler(_persistentValuesHandler,
-						_persistentVariableCacheFactory);
+		PersistentValueTypeHandler variableCachePersistenceHandler =
+				new PersistentVariableCacheHandler(_persistentValuesHandler,
+						_variableCacheFactory);
 		PersistentValueTypeHandler settingsRepoHandler =
 				new PersistentSettingsRepoHandler(_persistentValuesHandler, _settingsRepo);
 		PersistentValueTypeHandler stringHandler = new PersistentStringHandler();
@@ -82,7 +82,7 @@ public class CommonModule extends AbstractModule {
 		_persistentValuesHandler.addPersistentValueTypeHandler(entityUuidHandler);
 		_persistentValuesHandler.addPersistentValueTypeHandler(genericParamsSetHandler);
 		_persistentValuesHandler.addPersistentValueTypeHandler(integerHandler);
-		_persistentValuesHandler.addPersistentValueTypeHandler(persistentVariableCachePersistenceHandler);
+		_persistentValuesHandler.addPersistentValueTypeHandler(variableCachePersistenceHandler);
 		_persistentValuesHandler.addPersistentValueTypeHandler(settingsRepoHandler);
 		_persistentValuesHandler.addPersistentValueTypeHandler(stringHandler);
 		_persistentValuesHandler.registerPersistentCollectionHandler(collectionHandler);
@@ -100,7 +100,7 @@ public class CommonModule extends AbstractModule {
 		bind(MapFactory.class).toInstance(_mapFactory);
 		bind(PairFactory.class).toInstance(_pairFactory);
 		bind(PersistentValuesHandler.class).toInstance(_persistentValuesHandler);
-		bind(PersistentVariableCacheFactory.class).toInstance(_persistentVariableCacheFactory);
+		bind(VariableCacheFactory.class).toInstance(_variableCacheFactory);
 		bind(RegistryFactory.class).toInstance(_registryFactory);
 		bind(SettingFactory.class).toInstance(_settingFactory);
 		bind(SettingsRepo.class).toInstance(_settingsRepo);
