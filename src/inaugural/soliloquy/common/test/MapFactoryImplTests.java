@@ -22,11 +22,13 @@ class MapFactoryImplTests {
 
     @Test
 	void testMake() {
-    	Map<String,Integer> newMap1 = _mapFactory.make("",0);
-		assertNotNull(newMap1);
+    	Map<String,Integer> map = _mapFactory.make("",0);
+		assertNotNull(map);
+		assertNotNull(map.getFirstArchetype());
+		assertNotNull(map.getSecondArchetype());
     	
-    	newMap1.put("String1", 123);
-		assertEquals(123, (int) newMap1.get("String1"));
+    	map.put("String1", 123);
+		assertEquals(123, (int) map.get("String1"));
     }
     
     @SuppressWarnings("unused")

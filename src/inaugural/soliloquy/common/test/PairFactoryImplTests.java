@@ -20,10 +20,12 @@ class PairFactoryImplTests {
     
     @Test
 	void testMake() {
-		Pair<String, Integer> _newPair = _pairfactory.make("String", 123);
-		assertNotNull(_newPair);
-		assertSame("String", _newPair.getItem1());
-		assertEquals(123, (int) _newPair.getItem2());
+		Pair<String, Integer> pair = _pairfactory.make("String", 123);
+		assertNotNull(pair);
+		assertNotNull(pair.getFirstArchetype());
+		assertNotNull(pair.getSecondArchetype());
+		assertSame("String", pair.getItem1());
+		assertEquals(123, (int) pair.getItem2());
     }
 
     @Test
