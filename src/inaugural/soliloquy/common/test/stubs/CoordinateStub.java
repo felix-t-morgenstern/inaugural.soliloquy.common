@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.valueobjects.Coordinate;
+import soliloquy.specs.common.valueobjects.ReadableCoordinate;
 
 public class CoordinateStub implements Coordinate {
     private int _x;
@@ -27,8 +28,8 @@ public class CoordinateStub implements Coordinate {
     }
 
     @Override
-    public int compareTo(Coordinate o) {
-        return 0;
+    public ReadableCoordinate readOnlyRepresentation() {
+        return null;
     }
 
     @Override
@@ -39,5 +40,10 @@ public class CoordinateStub implements Coordinate {
     @Override
     public String getInterfaceName() {
         return Coordinate.class.getCanonicalName();
+    }
+
+    @Override
+    public int compareTo(ReadableCoordinate o) {
+        return 0;
     }
 }
