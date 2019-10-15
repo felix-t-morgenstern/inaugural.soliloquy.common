@@ -10,44 +10,44 @@ import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentStringHa
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
 public class PersistentStringHandlerTests {
-	private PersistentStringHandler persistentStringHandler;
+    private PersistentStringHandler persistentStringHandler;
     
-	@BeforeEach
+    @BeforeEach
     protected void setUp() throws Exception {
-    	persistentStringHandler = new PersistentStringHandler();
+        persistentStringHandler = new PersistentStringHandler();
     }
 
-	@Test
+    @Test
     public void testRead() {
-    	assertTrue(persistentStringHandler.read("This Value!").equals("This Value!"));
+        assertTrue(persistentStringHandler.read("This Value!").equals("This Value!"));
     }
 
-	@Test
-	public void testReadNull() {
-		try {
-			persistentStringHandler.read(null);
-			assertTrue(false);
-		} catch(IllegalArgumentException e) {
-			assertTrue(true);
-		} catch(Exception e) {
-			assertTrue(false);
-		}
-	}
+    @Test
+    public void testReadNull() {
+        try {
+            persistentStringHandler.read(null);
+            assertTrue(false);
+        } catch(IllegalArgumentException e) {
+            assertTrue(true);
+        } catch(Exception e) {
+            assertTrue(false);
+        }
+    }
 
-	@Test
+    @Test
     public void testWrite() {
-    	assertTrue(persistentStringHandler.write("This Value!").equals("This Value!"));
+        assertTrue(persistentStringHandler.write("This Value!").equals("This Value!"));
     }
 
-	@Test
-	public void testGetArchetype() {
-		assertTrue(persistentStringHandler.getArchetype() != null);
-	}
+    @Test
+    public void testGetArchetype() {
+        assertTrue(persistentStringHandler.getArchetype() != null);
+    }
 
-	@Test
-	public void testGetInterfaceName() {
-		assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
-						String.class.getCanonicalName() + ">",
-				persistentStringHandler.getInterfaceName());
-	}
+    @Test
+    public void testGetInterfaceName() {
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        String.class.getCanonicalName() + ">",
+                persistentStringHandler.getInterfaceName());
+    }
 }

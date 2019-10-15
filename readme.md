@@ -23,9 +23,9 @@ To use the Inaugural Common Module in your Soliloquy game, ensure that you have 
 
 ```
     <dependency>
-    	<groupId>disorg.soliloquy</groupId>
-    	<artifactId>inaugural.soliloquy.common</artifactId>
-    	<version>[DESIRED VERSION NUMBER]</version>
+        <groupId>disorg.soliloquy</groupId>
+        <artifactId>inaugural.soliloquy.common</artifactId>
+        <version>[DESIRED VERSION NUMBER]</version>
     </dependency>
 ```
 

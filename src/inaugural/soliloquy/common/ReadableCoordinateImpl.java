@@ -27,7 +27,7 @@ public class ReadableCoordinateImpl implements ReadableCoordinate {
         return coordinateCount(this) - coordinateCount(arg0);
     }
 
-    private int coordinateCount(ReadableCoordinate coordinate)	{
+    private int coordinateCount(ReadableCoordinate coordinate)    {
         int digitsSum = (coordinate.getX() + coordinate.getY());
         int coordinatesHitherto = (digitsSum * (digitsSum + 1))/2;
         return 1 + coordinatesHitherto + coordinate.getX();

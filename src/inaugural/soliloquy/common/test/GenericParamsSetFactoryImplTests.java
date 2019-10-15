@@ -12,20 +12,20 @@ import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.GenericParamsSet;
 
 class GenericParamsSetFactoryImplTests {
-	private GenericParamsSetFactoryImpl _genericParamsSetFactory;
+    private GenericParamsSetFactoryImpl _genericParamsSetFactory;
 
-	private final MapFactory MAP_FACTORY = new MapFactoryStub();
+    private final MapFactory MAP_FACTORY = new MapFactoryStub();
 
-	@BeforeEach
-	void setUp() {
-    	_genericParamsSetFactory = new GenericParamsSetFactoryImpl(new PersistentValuesHandlerStub(),
-				MAP_FACTORY);
-    	
+    @BeforeEach
+    void setUp() {
+        _genericParamsSetFactory = new GenericParamsSetFactoryImpl(new PersistentValuesHandlerStub(),
+                MAP_FACTORY);
+
     }
 
     @Test
-	void testMake() {
-    	GenericParamsSet genericParamsSet = _genericParamsSetFactory.make();
-    	assertTrue(genericParamsSet instanceof GenericParamsSetImpl);
+    void testMake() {
+        GenericParamsSet genericParamsSet = _genericParamsSetFactory.make();
+        assertTrue(genericParamsSet instanceof GenericParamsSetImpl);
     }
 }

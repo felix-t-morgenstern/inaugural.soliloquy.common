@@ -9,19 +9,19 @@ import soliloquy.specs.common.valueobjects.Coordinate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CoordinateFactoryImplTests {
-	private CoordinateFactoryImpl _coordinateFactory;
+    private CoordinateFactoryImpl _coordinateFactory;
 
     @BeforeEach
     void setUp() {
-    	_coordinateFactory = new CoordinateFactoryImpl();
+        _coordinateFactory = new CoordinateFactoryImpl();
     }
 
     @Test
     void testMake() {
-    	Coordinate coordinate = _coordinateFactory.make(0,0);
+        Coordinate coordinate = _coordinateFactory.make(0,0);
         assertNotNull(coordinate);
-    	
-    	coordinate.setX(10);
+
+        coordinate.setX(10);
         assertEquals(10, coordinate.getX());
     }
 

@@ -9,41 +9,41 @@ import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentIntegerHandlerTests {
-	private PersistentIntegerHandler persistentIntegerHandler;
+    private PersistentIntegerHandler persistentIntegerHandler;
     
-	@BeforeEach
-	void setUp() {
-    	persistentIntegerHandler = new PersistentIntegerHandler();
+    @BeforeEach
+    void setUp() {
+        persistentIntegerHandler = new PersistentIntegerHandler();
     }
 
-	@Test
-	void testRead() {
-		assertEquals(123, (int) persistentIntegerHandler.read("123"));
-	}
+    @Test
+    void testRead() {
+        assertEquals(123, (int) persistentIntegerHandler.read("123"));
+    }
 
-	@Test
-	void testReadNull() {
-		assertThrows(IllegalArgumentException.class, () -> persistentIntegerHandler.read(null));
-	}
-	
-	@Test
-	void testWrite() {
-		assertEquals("123", persistentIntegerHandler.write(123));
-	}
+    @Test
+    void testReadNull() {
+        assertThrows(IllegalArgumentException.class, () -> persistentIntegerHandler.read(null));
+    }
 
-	@Test
-	void testWriteWhenNull() {
-		assertEquals("", persistentIntegerHandler.write(null));
-	}
+    @Test
+    void testWrite() {
+        assertEquals("123", persistentIntegerHandler.write(123));
+    }
 
-	@Test
-	void testGetArchetype() {
-		assertNotNull(persistentIntegerHandler.getArchetype());
-	}
+    @Test
+    void testWriteWhenNull() {
+        assertEquals("", persistentIntegerHandler.write(null));
+    }
 
-	@Test
-	void testGetInterfaceName() {
-		assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<java.lang.Integer>",
-				persistentIntegerHandler.getInterfaceName());
-	}
+    @Test
+    void testGetArchetype() {
+        assertNotNull(persistentIntegerHandler.getArchetype());
+    }
+
+    @Test
+    void testGetInterfaceName() {
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<java.lang.Integer>",
+                persistentIntegerHandler.getInterfaceName());
+    }
 }

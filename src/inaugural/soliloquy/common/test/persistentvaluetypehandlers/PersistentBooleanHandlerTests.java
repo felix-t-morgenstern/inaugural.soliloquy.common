@@ -9,37 +9,37 @@ import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentBooleanHandlerTests {
-	private PersistentBooleanHandler _persistentBooleanHandler;
-	
+    private PersistentBooleanHandler _persistentBooleanHandler;
+
     @BeforeEach
-	void setUp() {
-		_persistentBooleanHandler = new PersistentBooleanHandler();
+    void setUp() {
+        _persistentBooleanHandler = new PersistentBooleanHandler();
     }
-	
-    @Test
-	void testRead() {
-		assertEquals(true, _persistentBooleanHandler.read("true"));
-	}
 
     @Test
-	void testReadNull() {
-    	assertThrows(IllegalArgumentException.class, () -> _persistentBooleanHandler.read(null));
-	}
+    void testRead() {
+        assertEquals(true, _persistentBooleanHandler.read("true"));
+    }
 
     @Test
-	void testWrite() {
-		assertEquals("true", _persistentBooleanHandler.write(true));
-	}
+    void testReadNull() {
+        assertThrows(IllegalArgumentException.class, () -> _persistentBooleanHandler.read(null));
+    }
 
     @Test
-	void testGetArchetype() {
-		assertNotNull(_persistentBooleanHandler.getArchetype());
-	}
+    void testWrite() {
+        assertEquals("true", _persistentBooleanHandler.write(true));
+    }
 
     @Test
-	void testGetInterfaceName() {
-		assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
-						Boolean.class.getCanonicalName() + ">",
-				_persistentBooleanHandler.getInterfaceName());
-	}
+    void testGetArchetype() {
+        assertNotNull(_persistentBooleanHandler.getArchetype());
+    }
+
+    @Test
+    void testGetInterfaceName() {
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        Boolean.class.getCanonicalName() + ">",
+                _persistentBooleanHandler.getInterfaceName());
+    }
 }
