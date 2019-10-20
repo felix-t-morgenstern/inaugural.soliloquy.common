@@ -20,11 +20,6 @@ public class PersistentPairHandlerStub implements PersistentPairHandler {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String getInterfaceName() {
         return null;
     }

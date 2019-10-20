@@ -1,12 +1,13 @@
 package inaugural.soliloquy.common.archetypes;
 
+import inaugural.soliloquy.common.HasTwoGenericParams;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.game.Game;
 import soliloquy.specs.logger.Logger;
 
-public class CollectionValidatorFunctionArchetype<V> implements Function<V,String> {
+public class CollectionValidatorFunctionArchetype<V> extends HasTwoGenericParams<V,String>
+        implements Function<V,String> {
     private final V ARCHETYPE_1;
-    private final String ARCHETYPE_2 = "";
 
     public CollectionValidatorFunctionArchetype (V archetype1) {
         ARCHETYPE_1 = archetype1;
@@ -29,7 +30,7 @@ public class CollectionValidatorFunctionArchetype<V> implements Function<V,Strin
 
     @Override
     public String getUnparameterizedInterfaceName() {
-        return null;
+        return Function.class.getCanonicalName();
     }
 
     @Override
@@ -44,11 +45,6 @@ public class CollectionValidatorFunctionArchetype<V> implements Function<V,Strin
 
     @Override
     public String getSecondArchetype() throws IllegalStateException {
-        return ARCHETYPE_2;
-    }
-
-    @Override
-    public String getInterfaceName() {
-        return null;
+        return "";
     }
 }

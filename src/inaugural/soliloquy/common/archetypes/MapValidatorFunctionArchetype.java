@@ -1,11 +1,13 @@
 package inaugural.soliloquy.common.archetypes;
 
+import inaugural.soliloquy.common.HasTwoGenericParams;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.game.Game;
 import soliloquy.specs.logger.Logger;
 
-public class MapValidatorFunctionArchetype<K,V> implements Function<Pair<K,V>,String> {
+public class MapValidatorFunctionArchetype<K,V> extends HasTwoGenericParams<Pair<K,V>,String>
+        implements Function<Pair<K,V>,String> {
     private final Pair<K,V> ARCHETYPE_1;
 
     public MapValidatorFunctionArchetype(K keyArchetype, V valueArchetype) {
@@ -29,7 +31,7 @@ public class MapValidatorFunctionArchetype<K,V> implements Function<Pair<K,V>,St
 
     @Override
     public String getUnparameterizedInterfaceName() {
-        return null;
+        return Function.class.getCanonicalName();
     }
 
     @Override
@@ -45,10 +47,5 @@ public class MapValidatorFunctionArchetype<K,V> implements Function<Pair<K,V>,St
     @Override
     public String getSecondArchetype() throws IllegalStateException {
         return "";
-    }
-
-    @Override
-    public String getInterfaceName() {
-        return null;
     }
 }

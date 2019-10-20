@@ -51,10 +51,4 @@ public class CollectionStub<V> extends ReadableCollectionStub<V> implements Coll
     public ReadableCollection<V> readOnlyRepresentation() {
         return new ReadableCollectionStub<>(_archetype, _collection);
     }
-
-    @Override
-    public String getUnparameterizedInterfaceName() {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
-    }
 }

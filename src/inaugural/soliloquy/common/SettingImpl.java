@@ -79,11 +79,6 @@ public class SettingImpl<T> implements Setting<T> {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        throw new UnsupportedOperationException("Setting.getUnparameterizedInterfaceName: This is not to be called");
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (o == null) {
             return false;

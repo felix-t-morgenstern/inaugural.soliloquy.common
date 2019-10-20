@@ -141,11 +141,6 @@ public class ReadableMapStub<K,V> implements ReadableMap<K,V> {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String getInterfaceName() {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();

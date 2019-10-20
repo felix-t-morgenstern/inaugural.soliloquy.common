@@ -73,11 +73,6 @@ public class ReadableCollectionStub<V> implements ReadableCollection<V> {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String getInterfaceName() {
         return "soliloquy.common.specs.Collection<" + _archetype.getClass().getCanonicalName() + ">";
     }

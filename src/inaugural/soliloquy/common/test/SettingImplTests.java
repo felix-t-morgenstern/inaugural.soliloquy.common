@@ -98,12 +98,6 @@ class SettingImplTests {
     }
 
     @Test
-    void testGetUnparameterizedInterfaceName() {
-        assertThrows(UnsupportedOperationException.class,
-                () -> _setting.getUnparameterizedInterfaceName());
-    }
-
-    @Test
     void testGetValue() {
         assertSame(_setting.getValue(), SETTING_VALUE_1);
     }

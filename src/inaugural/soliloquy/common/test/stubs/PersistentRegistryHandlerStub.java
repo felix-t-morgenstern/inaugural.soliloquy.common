@@ -25,11 +25,6 @@ public class PersistentRegistryHandlerStub implements PersistentRegistryHandler 
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String getInterfaceName() {
         return null;
     }

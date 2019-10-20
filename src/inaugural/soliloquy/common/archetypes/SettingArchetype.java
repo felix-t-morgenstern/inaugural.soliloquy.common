@@ -20,11 +20,6 @@ public class SettingArchetype implements Setting {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String id() throws IllegalStateException {
         return null;
     }

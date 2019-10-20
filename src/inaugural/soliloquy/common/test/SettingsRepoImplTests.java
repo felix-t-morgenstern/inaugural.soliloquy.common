@@ -430,12 +430,6 @@ class SettingsRepoImplTests {
             return null;
         }
 
-        @Override
-        public String getUnparameterizedInterfaceName() {
-            // Stub method, unimplemented
-            throw new UnsupportedOperationException();
-        }
-
     }
     
     private class PersistentValuesHandlerStub implements PersistentValuesHandler {

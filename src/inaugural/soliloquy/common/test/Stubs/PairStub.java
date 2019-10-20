@@ -59,10 +59,4 @@ public class PairStub<K,V> implements Pair<K,V> {
         _item2 = item;
     }
 
-    @Override
-    public String getUnparameterizedInterfaceName() {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
-    }
-
 }

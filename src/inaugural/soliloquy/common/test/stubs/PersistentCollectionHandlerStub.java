@@ -20,11 +20,6 @@ public class PersistentCollectionHandlerStub implements PersistentCollectionHand
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String getInterfaceName() {
         return null;
     }

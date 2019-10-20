@@ -333,12 +333,6 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         }
 
         @Override
-        public String getUnparameterizedInterfaceName() {
-            // Stub method
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
         public String getInterfaceName() {
             // Stub method
             throw new UnsupportedOperationException();

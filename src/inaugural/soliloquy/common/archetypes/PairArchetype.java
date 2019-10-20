@@ -1,12 +1,13 @@
 package inaugural.soliloquy.common.archetypes;
 
+import inaugural.soliloquy.common.HasTwoGenericParams;
 import soliloquy.specs.common.infrastructure.Pair;
 
-public class PairArchetype<T1,T2> implements Pair<T1,T2> {
+public class PairArchetype<T1,T2> extends HasTwoGenericParams<T1,T2> implements Pair<T1,T2> {
     private final T1 ARCHETYPE_1;
     private final T2 ARCHETYPE_2;
 
-    PairArchetype(T1 archetype1, T2 archetype2) {
+    public PairArchetype(T1 archetype1, T2 archetype2) {
         ARCHETYPE_1 = archetype1;
         ARCHETYPE_2 = archetype2;
     }
@@ -43,11 +44,6 @@ public class PairArchetype<T1,T2> implements Pair<T1,T2> {
 
     @Override
     public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
-    public String getInterfaceName() {
-        return null;
+        return Pair.class.getCanonicalName();
     }
 }

@@ -36,12 +36,6 @@ public class MapValidatorStub implements Function<Pair<String,String>,String> {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        // Ignore; stub class
-        return null;
-    }
-
-    @Override
     public Game game() {
         // Ignore; stub class
         return null;

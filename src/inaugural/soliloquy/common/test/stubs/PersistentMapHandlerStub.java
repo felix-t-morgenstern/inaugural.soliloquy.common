@@ -20,11 +20,6 @@ public class PersistentMapHandlerStub implements PersistentMapHandler {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String getInterfaceName() {
         return null;
     }

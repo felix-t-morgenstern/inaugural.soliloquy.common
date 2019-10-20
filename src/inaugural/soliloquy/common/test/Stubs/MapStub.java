@@ -51,10 +51,4 @@ public class MapStub<K,V> extends ReadableMapStub<K,V> implements Map<K,V> {
     public ReadableMap<K, V> readOnlyRepresentation() {
         return new ReadableMapStub<>(_archetype1, _archetype2, _map);
     }
-
-    @Override
-    public String getUnparameterizedInterfaceName() {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
-    }
 }

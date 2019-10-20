@@ -23,11 +23,6 @@ public class CollectionValidatorStub<V> implements Function<V,String> {
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return null;
-    }
-
-    @Override
     public String id() throws IllegalStateException {
         return null;
     }
