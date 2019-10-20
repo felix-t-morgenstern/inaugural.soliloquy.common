@@ -35,9 +35,9 @@ public class EntityUuidImpl implements EntityUuid {
 
     @Override
     public boolean equals(Object comparand) {
-        return comparand != null
-                && _uuid.getMostSignificantBits() == ((EntityUuid)comparand).getMostSignificantBits()
-                && _uuid.getLeastSignificantBits() == ((EntityUuid)comparand).getLeastSignificantBits();
+        return comparand instanceof EntityUuid
+                && _uuid.getMostSignificantBits() == ((EntityUuid) comparand).getMostSignificantBits()
+                && _uuid.getLeastSignificantBits() == ((EntityUuid) comparand).getLeastSignificantBits();
     }
 
     @Override
