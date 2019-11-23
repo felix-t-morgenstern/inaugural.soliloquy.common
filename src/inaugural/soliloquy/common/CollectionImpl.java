@@ -13,7 +13,7 @@ public class CollectionImpl<V> extends ReadableCollectionImpl<V> implements Coll
         VALIDATORS = new CollectionImpl<>(new CollectionValidatorFunctionArchetype<>(archetype), true);
     }
 
-    public CollectionImpl(V[] items, V archetype) {
+    CollectionImpl(V[] items, V archetype) {
         super(items, archetype);
         VALIDATORS = new CollectionImpl<>(new CollectionValidatorFunctionArchetype<>(archetype), true);
     }
