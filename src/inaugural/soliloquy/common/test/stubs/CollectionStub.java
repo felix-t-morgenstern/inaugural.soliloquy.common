@@ -5,7 +5,7 @@ import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
 
 public class CollectionStub<V> extends ReadableCollectionStub<V> implements Collection<V> {
-    public CollectionStub() {
+    CollectionStub() {
         super();
     }
 
