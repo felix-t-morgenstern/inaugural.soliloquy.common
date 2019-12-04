@@ -11,6 +11,7 @@ class ReadableCollectionImpl<V> extends HasOneGenericParam<V> implements Readabl
     final ArrayList<V> COLLECTION;
     final V ARCHETYPE;
 
+    // TODO: Test exception for invalid constructor with ReadableCollectionImpl and CollectionImpl
     ReadableCollectionImpl(V archetype) {
         COLLECTION = new ArrayList<>();
         ARCHETYPE = archetype;
