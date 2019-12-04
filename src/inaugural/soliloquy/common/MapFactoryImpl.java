@@ -9,6 +9,7 @@ public class MapFactoryImpl extends CanCheckArchetypeAndArchetypesOfArchetype im
     private final PairFactory PAIR_FACTORY;
     private final CollectionFactory COLLECTION_FACTORY;
 
+    // TODO: Ensure constructor parameters are non-null
     public MapFactoryImpl(PairFactory pairFactory, CollectionFactory collectionFactory) {
         PAIR_FACTORY = pairFactory;
         COLLECTION_FACTORY = collectionFactory;
