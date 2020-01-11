@@ -120,47 +120,11 @@ class MapImplTests {
         assertEquals(2, _map.size());
     }
 
-    @SuppressWarnings("unchecked")
-    @Test
-    void testEqualsCollection() {
-        Iterator<String> stringsIteratorMock = mock(Iterator.class);
-        when(stringsIteratorMock.hasNext()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
-        when(stringsIteratorMock.next()).thenReturn("String1").thenReturn("String2").thenReturn("String3");
-
-        Collection<String> stringsMock = mock(Collection.class);
-        when(stringsMock.iterator()).thenReturn(stringsIteratorMock);
-        when(stringsMock.size()).thenReturn(3);
-
-        _map.put("String1", "String1");
-        assertTrue(!_map.equals(stringsMock));
-        _map.put("String2", "String2");
-        assertTrue(!_map.equals(stringsMock));
-        _map.put("String3", "String3");
-        assertTrue(_map.equals(stringsMock));
-
-        _map.clear();
-
-        Iterator<String> stringsIteratorMock_2 = mock(Iterator.class);
-        when(stringsIteratorMock_2.hasNext()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
-        when(stringsIteratorMock_2.next()).thenReturn("String1").thenReturn("String2").thenReturn("String3");
-
-        Collection<String> stringsMock_2 = mock(Collection.class);
-        when(stringsMock_2.iterator()).thenReturn(stringsIteratorMock_2);
-        when(stringsMock_2.size()).thenReturn(3);
-
-        _map.put("String1", "String1");
-        assertTrue(!_map.equals(stringsMock_2));
-        _map.put("String2", "String2");
-        assertTrue(!_map.equals(stringsMock_2));
-        _map.put("String3", "String4");
-        assertTrue(!_map.equals(stringsMock_2));
-    }
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void testEqualsException() {
-        assertThrows(IllegalArgumentException.class, () -> _map.equals((Map<String,String>)null));
-        assertThrows(IllegalArgumentException.class, () -> _map.equals((Collection<String>)null));
+        // TODO: Review whether this method should, in fact, throw an exception
+        assertThrows(IllegalArgumentException.class, () -> _map.equals(null));
     }
 
     @SuppressWarnings("StringEquality")

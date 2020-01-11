@@ -14,7 +14,7 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
     final PairFactory PAIR_FACTORY;
     final CollectionFactory COLLECTION_FACTORY;
 
-    @SuppressWarnings("unchecked")
+    // TODO: Verify that archetypes are non-null
     ReadableMapImpl(K archetype1, V archetype2, PairFactory pairFactory,
                     CollectionFactory collectionFactory) {
         MAP = new HashMap<>();
@@ -24,6 +24,7 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
         COLLECTION_FACTORY = collectionFactory;
     }
 
+    // TODO: Verify that archetypes are non-null
     ReadableMapImpl(K archetype1, V archetype2, HashMap<K, V> values, PairFactory pairFactory,
                     CollectionFactory collectionFactory) {
         MAP = new HashMap<>();
@@ -52,18 +53,6 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
     @Override
     public boolean contains(Pair<K, V> item) throws IllegalArgumentException {
         return get(item.getItem1()) == item.getItem2();
-    }
-
-    @Override
-    public boolean equals(ReadableCollection<V> items) throws IllegalArgumentException {
-        if (items == null) {
-            throw new IllegalArgumentException("Map.equals(Collection): comparator collection cannot be null");
-        }
-        if (items.size() != MAP.size()) return false;
-        for(V item : items) {
-            if (!MAP.containsValue(item)) return false;
-        }
-        return true;
     }
 
     @Override

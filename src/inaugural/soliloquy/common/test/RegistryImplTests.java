@@ -21,6 +21,7 @@ class RegistryImplTests {
         _registry = new RegistryImpl<>(ARCHETYPE);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> _registry = new RegistryImpl<>(null));
@@ -39,43 +40,74 @@ class RegistryImplTests {
     }
 
     @Test
-    void testRegisterAndGet() {
-        _registry.register(_hasIdAndStub);
+    void testAddAndGet() {
+        _registry.add(_hasIdAndStub);
 
         assertSame(_hasIdAndStub, _registry.get(ID));
     }
 
     @Test
-    void testRegisterNullItem() {
-        assertThrows(IllegalArgumentException.class, () -> _registry.register(null));
+    void testAddNull() {
+        assertThrows(IllegalArgumentException.class, () -> _registry.add(null));
     }
 
     @Test
-    void testRegisterWithNullId() {
+    void testAddWithInvalidIds() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.register(new HasIdAndNameStub(null, NAME)));
+                () -> _registry.add(new HasIdAndNameStub(null, NAME)));
+        assertThrows(IllegalArgumentException.class,
+                () -> _registry.add(new HasIdAndNameStub("", NAME)));
     }
 
     @Test
-    void testRegisterWithEmptyId() {
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.register(new HasIdAndNameStub("", NAME)));
+    void testAddAllFromCollection() {
+        fail("");
+    }
+
+    @Test
+    void testAddAllFromCollectionWithNull() {
+        fail("");
+    }
+
+    @Test
+    void testAddAllFromCollectionWithInvalidEntries() {
+        fail("");
+    }
+
+    @Test
+    void testAddAllFromArray() {
+        fail("");
+    }
+
+    @Test
+    void testAddAllFromArrayWithNull() {
+        fail("");
+    }
+
+    @Test
+    void testAddAllFromArrayWithInvalidEntries() {
+        fail("");
+    }
+
+    @Test
+    void testClear() {
+        fail("");
     }
 
     @Test
     void testContains() {
         assertFalse(_registry.contains(ID));
 
-        _registry.register(_hasIdAndStub);
+        _registry.add(_hasIdAndStub);
 
         assertTrue(_registry.contains(ID));
     }
 
     @Test
-    void testRemove() {
+    void testRemoveById() {
         assertFalse(_registry.contains(ID));
 
-        _registry.register(_hasIdAndStub);
+        _registry.add(_hasIdAndStub);
 
         assertTrue(_registry.remove(ID));
         assertFalse(_registry.remove(ID));
@@ -83,19 +115,24 @@ class RegistryImplTests {
     }
 
     @Test
+    void testRemoveByItem() {
+        fail("");
+    }
+
+    @Test
     void testSize() {
-        _registry.register(new HasIdAndNameStub("id1", "name1"));
-        _registry.register(new HasIdAndNameStub("id2", "name2"));
-        _registry.register(new HasIdAndNameStub("id3", "name3"));
+        _registry.add(new HasIdAndNameStub("id1", "name1"));
+        _registry.add(new HasIdAndNameStub("id2", "name2"));
+        _registry.add(new HasIdAndNameStub("id3", "name3"));
 
         assertEquals(3, _registry.size());
     }
 
     @Test
     void testIterator() {
-        _registry.register(new HasIdAndNameStub("id1", "name1"));
-        _registry.register(new HasIdAndNameStub("id2", "name2"));
-        _registry.register(new HasIdAndNameStub("id3", "name3"));
+        _registry.add(new HasIdAndNameStub("id1", "name1"));
+        _registry.add(new HasIdAndNameStub("id2", "name2"));
+        _registry.add(new HasIdAndNameStub("id3", "name3"));
 
         for (HasIdAndNameStub hasIdAndNameStub : _registry) {
             switch (hasIdAndNameStub.id()) {

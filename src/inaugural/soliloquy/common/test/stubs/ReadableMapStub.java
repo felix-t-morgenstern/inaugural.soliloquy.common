@@ -46,12 +46,6 @@ public class ReadableMapStub<K,V> implements ReadableMap<K,V> {
     }
 
     @Override
-    public boolean equals(ReadableCollection<V> items) throws IllegalArgumentException {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public boolean equals(ReadableMap<K, V> map) throws IllegalArgumentException {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();

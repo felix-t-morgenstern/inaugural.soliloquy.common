@@ -118,9 +118,9 @@ class GenericParamsSetImplIntegrationTests {
 
         Registry<HasIdAndNameStub> registry = _registryFactory.make(
                 PersistentHasIdAndNameHandler.ARCHETYPE);
-        registry.register(new HasIdAndNameStub("id1", "name1"));
-        registry.register(new HasIdAndNameStub("id2", "name2"));
-        registry.register(new HasIdAndNameStub("id3", "name3"));
+        registry.add(new HasIdAndNameStub("id1", "name1"));
+        registry.add(new HasIdAndNameStub("id2", "name2"));
+        registry.add(new HasIdAndNameStub("id3", "name3"));
         _genericParamsSet.addParam("registry", registry);
 
         assertEquals(VALUES_STRING, _genericParamsSetHandler.write(_genericParamsSet));

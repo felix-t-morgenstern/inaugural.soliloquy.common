@@ -56,7 +56,7 @@ public class PersistentRegistryHandlerImpl
                 REGISTRY_FACTORY.make(
                         (HasId) PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
         for (String serializedValue : dto.serializedValues) {
-            registry.register((HasId) handler.read(serializedValue));
+            registry.add(handler.read(serializedValue));
         }
         return registry;
     }

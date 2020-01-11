@@ -9,7 +9,8 @@ public class ReadablePairImpl<K, V> extends HasTwoGenericParams<K,V> implements 
     K _archetype1;
     V _archetype2;
 
-    ReadablePairImpl(K item1, V item2, K archetype1, V archetype2) {
+    @SuppressWarnings("ConstantConditions")
+    public ReadablePairImpl(K item1, V item2, K archetype1, V archetype2) {
         if (archetype1 == null) {
             throw new IllegalArgumentException("ReadablePairImpl: archetype1 is null");
         }

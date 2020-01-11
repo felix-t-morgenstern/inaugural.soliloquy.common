@@ -1,10 +1,8 @@
 package inaugural.soliloquy.common.test;
 
-import inaugural.soliloquy.common.test.stubs.CollectionValidatorStub;
+import inaugural.soliloquy.common.CollectionImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import inaugural.soliloquy.common.CollectionImpl;
-import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
 
@@ -107,9 +105,7 @@ class CollectionImplTests {
 
     @Test
     void testEquals() {
-        CollectionImpl<Integer> newCollection = null;
-        assertTrue(!_collection.equals(newCollection));
-        newCollection = new CollectionImpl<>(null);
+        CollectionImpl<Integer> newCollection = new CollectionImpl<>(null);
         _collection.add(1);
         assertTrue(!_collection.equals(newCollection));
         newCollection.add(1);
@@ -122,35 +118,19 @@ class CollectionImplTests {
 
     @Test
     void testMakeClone() {
-        Function<Integer,String> validator = new CollectionValidatorStub<>();
-        _collection.validators().add(validator);
-        _collection.add(1);
-        _collection.add(2);
-
         Collection<Integer> newCollection = _collection.makeClone();
 
         assertTrue(_collection.equals(newCollection));
         assertNotNull(newCollection.getArchetype());
-        assertTrue(newCollection.validators().contains(validator));
     }
 
     @Test
     void testRemoveItem() {
-        assertTrue(!_collection.removeItem(1));
+        assertTrue(!_collection.remove(1));
         _collection.add(1);
         assertTrue(_collection.contains(1));
-        assertTrue(_collection.removeItem(1));
+        assertTrue(_collection.remove(1));
         assertTrue(!_collection.contains(1));
-    }
-
-    @Test
-    void testValidators() {
-        assertThrows(IllegalArgumentException.class, () -> _collection.validators().add(null));
-        _collection.validators().add(new CollectionValidatorStub<>());
-        assertThrows(IllegalArgumentException.class,
-                () -> _collection.add(CollectionValidatorStub.ILLEGAL_VALUE));
-        assertThrows(IllegalArgumentException.class,
-                () -> _collection.addAll(new Integer[]{1,2,3,123}));
     }
 
     @Test
@@ -158,7 +138,7 @@ class CollectionImplTests {
         _collection.add(1);
         _collection.add(2);
         _collection.add(3);
-        ReadableCollection<Integer> ReadableCollection = _collection.readOnlyRepresentation();
+        ReadableCollection<Integer> ReadableCollection = _collection.representation();
 
         assertNotNull(ReadableCollection);
         assertFalse(ReadableCollection instanceof Collection);

@@ -56,7 +56,7 @@ public class VariableCacheImpl implements VariableCache {
     public ReadableCollection<String> namesRepresentation() {
         Collection<String> names = COLLECTION_FACTORY.make("");
         PERSISTENT_VARIABLES.keySet().forEach(names::add);
-        return names.readOnlyRepresentation();
+        return names.representation();
     }
 
     @Override

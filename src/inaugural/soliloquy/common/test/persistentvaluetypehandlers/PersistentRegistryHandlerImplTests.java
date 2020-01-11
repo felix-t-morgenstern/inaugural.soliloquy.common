@@ -37,9 +37,9 @@ class PersistentRegistryHandlerImplTests {
     @Test
     void testWrite() {
         Registry<HasIdAndNameStub> registry = new RegistryStub<>(new HasIdAndNameStub("", ""));
-        registry.register(new HasIdAndNameStub("id1", "name1"));
-        registry.register(new HasIdAndNameStub("id2", "name2"));
-        registry.register(new HasIdAndNameStub("id3", "name3"));
+        registry.add(new HasIdAndNameStub("id1", "name1"));
+        registry.add(new HasIdAndNameStub("id2", "name2"));
+        registry.add(new HasIdAndNameStub("id3", "name3"));
 
         String writeOutput = _persistentRegistryHandler.write(registry);
 

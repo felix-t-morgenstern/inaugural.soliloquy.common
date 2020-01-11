@@ -63,27 +63,14 @@ public class CollectionImpl<V> extends ReadableCollectionImpl<V> implements Coll
     }
 
     @Override
-    public boolean removeItem(V item) throws UnsupportedOperationException {
+    public boolean remove(V item) throws UnsupportedOperationException {
         return COLLECTION.remove(item);
-    }
-
-    @Override
-    public Collection<Function<V, String>> validators() {
-        return VALIDATORS;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public ReadableCollection<V> readOnlyRepresentation() {
+    public ReadableCollection<V> representation() {
         return new ReadableCollectionImpl<>((V[]) COLLECTION.toArray(), ARCHETYPE);
-    }
-
-    @Override
-    public Collection<V> makeClone() {
-        Collection<V> clone =  super.makeClone();
-        assert VALIDATORS != null;
-        VALIDATORS.forEach(clone.validators()::add);
-        return clone;
     }
 
     @Override
