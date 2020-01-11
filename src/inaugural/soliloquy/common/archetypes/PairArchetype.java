@@ -2,6 +2,7 @@ package inaugural.soliloquy.common.archetypes;
 
 import inaugural.soliloquy.common.HasTwoGenericParams;
 import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.ReadablePair;
 
 public class PairArchetype<T1,T2> extends HasTwoGenericParams<T1,T2> implements Pair<T1,T2> {
     private final T1 ARCHETYPE_1;
@@ -30,6 +31,11 @@ public class PairArchetype<T1,T2> extends HasTwoGenericParams<T1,T2> implements 
     @Override
     public void setItem2(T2 t2) throws IllegalArgumentException {
 
+    }
+
+    @Override
+    public ReadablePair<T1, T2> representation() {
+        return null;
     }
 
     @Override

@@ -5,18 +5,26 @@ import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.PairImpl;
 import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.ReadablePair;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PairImplTests {
-    private PairImpl<String,Integer> _pair;
+    private Pair<String,Integer> _pair;
 
-    private final String FIRST_ARCHETYPE = "FIRST_ARCHETYPE";
-    private final Integer SECOND_ARCHETYPE = 2;
+    private final String ARCHETYPE_1 = "Archetype1";
+    private final Integer ARCHETYPE_2 = 445566;
 
     @BeforeEach
     void setUp() {
-        _pair = new PairImpl<>(null, null, FIRST_ARCHETYPE, SECOND_ARCHETYPE);
+        _pair = new PairImpl<>(null, null, ARCHETYPE_1, ARCHETYPE_2);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> new PairImpl<>("", 0, null, 0));
+        assertThrows(IllegalArgumentException.class, () -> new PairImpl<>("", 0, "", null));
     }
     
     @Test
@@ -24,21 +32,47 @@ class PairImplTests {
         assertNull(_pair.getItem1());
         assertNull(_pair.getItem2());
 
-        _pair.setItem1("String");
-        assertSame("String", _pair.getItem1());
+        String value1 = "Value1";
+        _pair.setItem1(value1);
+        assertEquals(value1, _pair.getItem1());
 
-        _pair.setItem2(123);
-        assertEquals(123, (int) _pair.getItem2());
+        Integer value2 = 112233;
+        _pair.setItem2(value2);
+        assertEquals(value2, _pair.getItem2());
     }
 
     @Test
     void testGetFirstArchetype() {
-        assertEquals(FIRST_ARCHETYPE, _pair.getFirstArchetype());
+        assertEquals(ARCHETYPE_1, _pair.getFirstArchetype());
     }
 
     @Test
     void testGetSecondArchetype() {
-        assertSame(SECOND_ARCHETYPE, _pair.getSecondArchetype());
+        assertEquals(ARCHETYPE_2, _pair.getSecondArchetype());
+    }
+
+    @Test
+    void testRepresentation() {
+        String orig1 = "orig1";
+        Integer orig2 = 123;
+        _pair.setItem1(orig1);
+        _pair.setItem2(orig2);
+
+        ReadablePair<String, Integer> representation = _pair.representation();
+
+        _pair.setItem1("new1");
+        _pair.setItem2(456);
+
+        assertNotNull(representation);
+        assertNotSame(_pair, representation);
+        assertEquals(orig1, representation.getItem1());
+        assertEquals(orig2, representation.getItem2());
+        assertEquals(ARCHETYPE_1, representation.getFirstArchetype());
+        assertEquals(ARCHETYPE_2, representation.getSecondArchetype());
+        assertThrows(ClassCastException.class, () -> {
+            @SuppressWarnings("unused") Pair<String,Integer> pair =
+                    ((Pair<String, Integer>)representation);
+        });
     }
 
     @Test

@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
 import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.ReadablePair;
 
 class PairStub<K,V> implements Pair<K,V> {
     private final K ARCHETYPE_1;
@@ -57,6 +58,12 @@ class PairStub<K,V> implements Pair<K,V> {
     @Override
     public void setItem2(V item) throws IllegalArgumentException {
         _item2 = item;
+    }
+
+    @Override
+    public ReadablePair<K, V> representation() {
+        // Stub method, unimplemented
+        throw new UnsupportedOperationException();
     }
 
 }
