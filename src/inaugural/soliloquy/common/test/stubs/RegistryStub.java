@@ -34,7 +34,7 @@ public class RegistryStub<T extends HasId> implements Registry<T> {
     }
 
     @Override
-    public void addAll(Collection<? extends T> collection) throws UnsupportedOperationException {
+    public void addAll(ReadableCollection<? extends T> collection) throws UnsupportedOperationException {
 
     }
 

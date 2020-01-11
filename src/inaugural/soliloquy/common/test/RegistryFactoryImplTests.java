@@ -1,15 +1,18 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.RegistryFactoryImpl;
+import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
 import inaugural.soliloquy.common.test.stubs.HasIdAndNameStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RegistryFactoryImplTests {
+    private static CollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
     private static String ID = "id";
     private static String NAME = "name";
     private static HasIdAndNameStub HAS_ID_AND_NAME = new HasIdAndNameStub(ID, NAME);
@@ -18,7 +21,12 @@ class RegistryFactoryImplTests {
 
     @BeforeEach
     void setUp() {
-        _registryFactory = new RegistryFactoryImpl();
+        _registryFactory = new RegistryFactoryImpl(COLLECTION_FACTORY);
+    }
+
+    @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> new RegistryFactoryImpl(null));
     }
 
     @Test

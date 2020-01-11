@@ -35,7 +35,7 @@ public class CommonModule extends AbstractModule {
         _coordinateFactory = new CoordinateFactoryImpl();
         _entityUuidFactory = new EntityUuidFactoryImpl();
         _pairFactory = new PairFactoryImpl();
-        _registryFactory = new RegistryFactoryImpl();
+        _registryFactory = new RegistryFactoryImpl(_collectionFactory);
 
         _settingFactory = new SettingFactoryImpl();
 

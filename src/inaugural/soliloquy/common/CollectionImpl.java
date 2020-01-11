@@ -46,7 +46,7 @@ public class CollectionImpl<V> extends ReadableCollectionImpl<V> implements Coll
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addAll(Collection<? extends V> items) throws UnsupportedOperationException {
+    public void addAll(ReadableCollection<? extends V> items) throws UnsupportedOperationException {
         this.addAll((V[])items.toArray());
     }
 
