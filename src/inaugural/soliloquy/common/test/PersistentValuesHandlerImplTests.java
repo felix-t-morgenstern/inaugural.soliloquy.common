@@ -19,17 +19,6 @@ class PersistentValuesHandlerImplTests {
     private PersistentValueTypeHandler<Integer> _persistentIntegerHandler;
     private PersistentValueTypeHandler<String> _persistentStringHandler;
 
-    private final Integer INT_PARAM_1_INT_VALUE = 123;
-    private final String INT_PARAM_1_STR_VALUE = "123";
-    private final Integer INT_PARAM_2_INT_VALUE = 456;
-    private final String INT_PARAM_2_STR_VALUE = "456";
-    private final Integer INT_PARAM_3_INT_VALUE = 789;
-    private final String INT_PARAM_3_STR_VALUE = "789";
-
-    private final String STR_PARAM_1_VALUE = "String1";
-    private final String STR_PARAM_2_VALUE = "String2";
-    private final String STR_PARAM_3_VALUE = "String3";
-    
     @SuppressWarnings("unchecked")
     @BeforeEach
     void setUp() {
@@ -37,21 +26,30 @@ class PersistentValuesHandlerImplTests {
 
         _persistentIntegerHandler = (PersistentValueTypeHandler<Integer>) mock(PersistentValueTypeHandler.class);
         when(_persistentIntegerHandler.getArchetype()).thenReturn(0);
-        when(_persistentIntegerHandler.write(INT_PARAM_1_INT_VALUE)).thenReturn(INT_PARAM_1_STR_VALUE);
-        when(_persistentIntegerHandler.read(INT_PARAM_1_STR_VALUE)).thenReturn(INT_PARAM_1_INT_VALUE);
-        when(_persistentIntegerHandler.write(INT_PARAM_2_INT_VALUE)).thenReturn(INT_PARAM_2_STR_VALUE);
-        when(_persistentIntegerHandler.read(INT_PARAM_2_STR_VALUE)).thenReturn(INT_PARAM_2_INT_VALUE);
-        when(_persistentIntegerHandler.write(INT_PARAM_3_INT_VALUE)).thenReturn(INT_PARAM_3_STR_VALUE);
-        when(_persistentIntegerHandler.read(INT_PARAM_3_STR_VALUE)).thenReturn(INT_PARAM_3_INT_VALUE);
+        String intParam1StrValue = "123";
+        Integer intParam1IntValue = 123;
+        when(_persistentIntegerHandler.write(intParam1IntValue)).thenReturn(intParam1StrValue);
+        when(_persistentIntegerHandler.read(intParam1StrValue)).thenReturn(intParam1IntValue);
+        String intParam2StrValue = "456";
+        Integer intParam2IntValue = 456;
+        when(_persistentIntegerHandler.write(intParam2IntValue)).thenReturn(intParam2StrValue);
+        when(_persistentIntegerHandler.read(intParam2StrValue)).thenReturn(intParam2IntValue);
+        String intParam3StrValue = "789";
+        Integer intParam3IntValue = 789;
+        when(_persistentIntegerHandler.write(intParam3IntValue)).thenReturn(intParam3StrValue);
+        when(_persistentIntegerHandler.read(intParam3StrValue)).thenReturn(intParam3IntValue);
 
         _persistentStringHandler = (PersistentValueTypeHandler<String>) mock(PersistentValueTypeHandler.class);
         when(_persistentStringHandler.getArchetype()).thenReturn("");
-        when(_persistentStringHandler.write(STR_PARAM_1_VALUE)).thenReturn(STR_PARAM_1_VALUE);
-        when(_persistentStringHandler.read(STR_PARAM_1_VALUE)).thenReturn(STR_PARAM_1_VALUE);
-        when(_persistentStringHandler.write(STR_PARAM_2_VALUE)).thenReturn(STR_PARAM_2_VALUE);
-        when(_persistentStringHandler.read(STR_PARAM_2_VALUE)).thenReturn(STR_PARAM_2_VALUE);
-        when(_persistentStringHandler.write(STR_PARAM_3_VALUE)).thenReturn(STR_PARAM_3_VALUE);
-        when(_persistentStringHandler.read(STR_PARAM_3_VALUE)).thenReturn(STR_PARAM_3_VALUE);
+        String strParam1Value = "String1";
+        when(_persistentStringHandler.write(strParam1Value)).thenReturn(strParam1Value);
+        when(_persistentStringHandler.read(strParam1Value)).thenReturn(strParam1Value);
+        String strParam2Value = "String2";
+        when(_persistentStringHandler.write(strParam2Value)).thenReturn(strParam2Value);
+        when(_persistentStringHandler.read(strParam2Value)).thenReturn(strParam2Value);
+        String strParam3Value = "String3";
+        when(_persistentStringHandler.write(strParam3Value)).thenReturn(strParam3Value);
+        when(_persistentStringHandler.read(strParam3Value)).thenReturn(strParam3Value);
     }
 
     @Test
@@ -101,6 +99,9 @@ class PersistentValuesHandlerImplTests {
         assertSame(persistentCollectionHandler,
                 _persistentValuesHandler.getPersistentValueTypeHandler(
                         Collection.class.getCanonicalName()));
+        assertSame(persistentCollectionHandler,
+                _persistentValuesHandler.getPersistentValueTypeHandler(
+                        ReadableCollection.class.getCanonicalName()));
     }
 
     @Test
@@ -111,6 +112,9 @@ class PersistentValuesHandlerImplTests {
         assertSame(persistentMapHandler,
                 _persistentValuesHandler.getPersistentValueTypeHandler(
                         Map.class.getCanonicalName()));
+        assertSame(persistentMapHandler,
+                _persistentValuesHandler.getPersistentValueTypeHandler(
+                        ReadableMap.class.getCanonicalName()));
     }
 
     @Test
@@ -121,6 +125,9 @@ class PersistentValuesHandlerImplTests {
         assertSame(persistentPairHandler,
                 _persistentValuesHandler.getPersistentValueTypeHandler(
                         Pair.class.getCanonicalName()));
+        assertSame(persistentPairHandler,
+                _persistentValuesHandler.getPersistentValueTypeHandler(
+                        ReadablePair.class.getCanonicalName()));
     }
 
     @Test

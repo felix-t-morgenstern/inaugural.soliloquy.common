@@ -12,9 +12,15 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
     private PersistentPairHandler _persistentPairHandler;
     private PersistentRegistryHandler _persistentRegistryHandler;
 
+    private final String READABLE_COLLECTION_GENERIC_INTERFACE_NAME =
+            ReadableCollection.class.getCanonicalName();
     private final String COLLECTION_GENERIC_INTERFACE_NAME = Collection.class.getCanonicalName();
     private final String MAP_GENERIC_INTERFACE_NAME = Map.class.getCanonicalName();
+    private final String READABLE_MAP_GENERIC_INTERFACE_NAME =
+            ReadableMap.class.getCanonicalName();
     private final String PAIR_GENERIC_INTERFACE_NAME = Pair.class.getCanonicalName();
+    private final String READABLE_Pair_GENERIC_INTERFACE_NAME =
+            ReadablePair.class.getCanonicalName();
     private final String REGISTRY_GENERIC_INTERFACE_NAME = Registry.class.getCanonicalName();
 
     public PersistentValuesHandlerImpl() {
@@ -45,11 +51,17 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
             String persistentValueType)
             throws UnsupportedOperationException {
         // TODO: Ensure that these tests work for read-only and read-write infrastructure
-        if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
+        if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME) ||
+                interfaceIsOfGenericType(persistentValueType,
+                        READABLE_COLLECTION_GENERIC_INTERFACE_NAME)) {
             return (PersistentValueTypeHandler<T>) _persistentCollectionHandler;
-        } else if (interfaceIsOfGenericType(persistentValueType, MAP_GENERIC_INTERFACE_NAME)) {
+        } else if (interfaceIsOfGenericType(persistentValueType, MAP_GENERIC_INTERFACE_NAME) ||
+                interfaceIsOfGenericType(persistentValueType,
+                        READABLE_MAP_GENERIC_INTERFACE_NAME)) {
             return (PersistentValueTypeHandler<T>) _persistentMapHandler;
-        } else if (interfaceIsOfGenericType(persistentValueType, PAIR_GENERIC_INTERFACE_NAME)) {
+        } else if (interfaceIsOfGenericType(persistentValueType, PAIR_GENERIC_INTERFACE_NAME) ||
+                interfaceIsOfGenericType(persistentValueType,
+                        READABLE_Pair_GENERIC_INTERFACE_NAME)) {
             return (PersistentValueTypeHandler<T>) _persistentPairHandler;
         } else if (interfaceIsOfGenericType(persistentValueType,
                 REGISTRY_GENERIC_INTERFACE_NAME)) {
