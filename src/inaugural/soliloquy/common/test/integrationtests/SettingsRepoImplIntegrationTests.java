@@ -29,7 +29,8 @@ class SettingsRepoImplIntegrationTests {
         CollectionFactory _collectionFactory = commonInjector.getInstance(CollectionFactory.class);
         CoordinateFactory _coordinateFactory = commonInjector.getInstance(CoordinateFactory.class);
         _entityUuidFactory = commonInjector.getInstance(EntityUuidFactory.class);
-        GenericParamsSetFactory _genericParamsSetFactory = commonInjector.getInstance(GenericParamsSetFactory.class);
+        VariableCacheFactory _variableCacheFactory =
+                commonInjector.getInstance(VariableCacheFactory.class);
         _mapFactory = commonInjector.getInstance(MapFactory.class);
         PairFactory _pairFactory = commonInjector.getInstance(PairFactory.class);
         SettingFactory _settingFactory = commonInjector.getInstance(SettingFactory.class);
@@ -63,57 +64,57 @@ class SettingsRepoImplIntegrationTests {
         _settingsRepo.newSubgrouping(111, subgrouping3_3, subgrouping3);
 
         Setting booleanSetting = _settingFactory.make("booleanSetting", "BooleanSetting",
-                false, _genericParamsSetFactory.make());
+                false, _variableCacheFactory.make());
         _settingsRepo.addEntity(booleanSetting, 1, null);
 
         Setting collectionOfIntsSetting = _settingFactory.make("collectionOfIntsSetting",
                 "CollectionOfIntsSetting", _collectionFactory.make(0),
-                _genericParamsSetFactory.make());
+                _variableCacheFactory.make());
         _settingsRepo.addEntity(collectionOfIntsSetting, 2, subgrouping1);
 
         Setting collectionOfMapsSetting = _settingFactory.make("collectionOfMapsSetting",
                 "CollectionOfMapsSetting", _collectionFactory.make(_mapFactory.make(0, false)),
-                _genericParamsSetFactory.make());
+                _variableCacheFactory.make());
         _settingsRepo.addEntity(collectionOfMapsSetting, 3, subgrouping1_1);
 
         Setting coordinateSetting = _settingFactory.make("coordinateSetting", "CoordinateSetting",
-                _coordinateFactory.make(0,0), _genericParamsSetFactory.make());
+                _coordinateFactory.make(0,0), _variableCacheFactory.make());
         _settingsRepo.addEntity(coordinateSetting, 4, subgrouping1_2);
 
         Setting entityUuidSetting = _settingFactory.make("entityUuidSetting", "EntityUuidSetting",
-                _entityUuidFactory.createRandomEntityUuid(), _genericParamsSetFactory.make());
+                _entityUuidFactory.createRandomEntityUuid(), _variableCacheFactory.make());
         _settingsRepo.addEntity(entityUuidSetting, 5, subgrouping1_3);
 
         Setting integerSetting = _settingFactory.make("integerSetting", "IntegerSetting", 0,
-                _genericParamsSetFactory.make());
+                _variableCacheFactory.make());
         _settingsRepo.addEntity(integerSetting, 6, subgrouping2);
 
         Setting mapOfStringsToIntsSetting = _settingFactory.make("mapOfStringsToIntsSetting",
                 "MapOfStringsToIntsSetting", _mapFactory.make("", 0),
-                _genericParamsSetFactory.make());
+                _variableCacheFactory.make());
         _settingsRepo.addEntity(mapOfStringsToIntsSetting, 7, subgrouping2_1);
 
         Setting mapOfIntsToMapsOfIntsToBooleansSetting =
                 _settingFactory.make("mapOfIntsToMapsOfIntsToBooleansSetting",
                         "MapOfIntsToMapsOfIntsToBooleansSetting",
                         _mapFactory.make(0, _mapFactory.make(0, true)),
-                        _genericParamsSetFactory.make());
+                        _variableCacheFactory.make());
         _settingsRepo.addEntity(mapOfIntsToMapsOfIntsToBooleansSetting, 8, subgrouping2_2);
 
         Setting pairOfStringsSetting = _settingFactory.make("pairOfStringsSetting",
                 "PairOfStringsSetting", _pairFactory.make("", ""),
-                _genericParamsSetFactory.make());
+                _variableCacheFactory.make());
         _settingsRepo.addEntity(pairOfStringsSetting, 9, subgrouping2_3);
 
         Setting pairOfStringAndCollectionOfInts =
                 _settingFactory.make("pairOfStringAndCollectionOfInts",
                         "PairOfStringAndCollectionOfInts",
                         _pairFactory.make("", _collectionFactory.make(0)),
-                        _genericParamsSetFactory.make());
+                        _variableCacheFactory.make());
         _settingsRepo.addEntity(pairOfStringAndCollectionOfInts, 10, subgrouping3);
 
         Setting stringSetting = _settingFactory.make("stringSetting", "StringSetting", "",
-                _genericParamsSetFactory.make());
+                _variableCacheFactory.make());
         _settingsRepo.addEntity(stringSetting, 11, subgrouping3_1);
     }
 

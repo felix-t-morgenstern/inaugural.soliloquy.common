@@ -1,13 +1,14 @@
 package inaugural.soliloquy.common;
 
 import soliloquy.specs.common.factories.SettingFactory;
-import soliloquy.specs.common.infrastructure.GenericParamsSet;
 import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 public class SettingFactoryImpl extends CanCheckArchetypeAndArchetypesOfArchetype
         implements SettingFactory {
     @Override
-    public <T> Setting<T> make(String id, String name, T defaultValue, GenericParamsSet controlParams) {
+    public <T> Setting<T> make(String id, String name, T defaultValue,
+                               VariableCache controlParams) {
         checkArchetypeAndArchetypesOfArchetype("make", defaultValue);
         return new SettingImpl<>(id, name, defaultValue, defaultValue, controlParams);
     }

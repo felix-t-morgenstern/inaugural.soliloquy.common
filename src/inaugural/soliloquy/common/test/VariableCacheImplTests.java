@@ -115,4 +115,9 @@ class VariableCacheImplTests {
         assertEquals("value3", variablesRepresentation.get("variable3"));
         assertFalse(variablesRepresentation instanceof Map);
     }
+
+    @Test
+    void testMakeClone() {
+        fail("");
+    }
 }

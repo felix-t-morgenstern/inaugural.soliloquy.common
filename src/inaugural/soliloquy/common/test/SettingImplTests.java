@@ -1,23 +1,21 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.test.stubs.VariableCacheStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.SettingImpl;
-import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
-import soliloquy.specs.common.infrastructure.GenericParamsSet;
 import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SettingImplTests {
     private final String SETTING_ID = "SettingId";
     private final String SETTING_NAME_1 = "SettingName1";
-    private final String SETTING_NAME_2 = "SettingName2";
     private final Integer SETTING_VALUE_1 = 123;
-    private final Integer SETTING_VALUE_2 = 456;
     private final Integer SETTING_ARCHETYPE = 789;
-    private final GenericParamsSet _settingControlParams = new GenericParamsSetStub();
+    private final VariableCache _settingControlParams = new VariableCacheStub();
 
     private SettingImpl<Integer> _setting;
 
@@ -27,6 +25,7 @@ class SettingImplTests {
                 SETTING_ARCHETYPE, _settingControlParams);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     void testWithInvalidConstructorParams() {
         assertThrows(IllegalArgumentException.class,
@@ -83,8 +82,9 @@ class SettingImplTests {
     @Test
     void testName() {
         assertEquals(_setting.getName(), SETTING_NAME_1);
-        _setting.setName(SETTING_NAME_2);
-        assertEquals(_setting.getName(), SETTING_NAME_2);
+        String settingName2 = "settingName2";
+        _setting.setName(settingName2);
+        assertEquals(_setting.getName(), settingName2);
     }
 
     @Test
@@ -104,8 +104,9 @@ class SettingImplTests {
 
     @Test
     void testSetValue() {
-        _setting.setValue(SETTING_VALUE_2);
-        assertSame(_setting.getValue(), SETTING_VALUE_2);
+        Integer settingValue2 = 456;
+        _setting.setValue(settingValue2);
+        assertSame(_setting.getValue(), settingValue2);
     }
 
     @Test

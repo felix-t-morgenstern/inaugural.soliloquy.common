@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.stubs;
 
-import soliloquy.specs.common.infrastructure.GenericParamsSet;
 import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 public class SettingStub<T> implements Setting<T> {
     private String _id;
@@ -25,8 +25,8 @@ public class SettingStub<T> implements Setting<T> {
     }
 
     @Override
-    public GenericParamsSet controlParams() {
-        return new GenericParamsSetStub();
+    public VariableCache controlParams() {
+        return new VariableCacheStub();
     }
 
     @Override

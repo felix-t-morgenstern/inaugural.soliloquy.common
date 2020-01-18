@@ -70,4 +70,9 @@ public class VariableCacheImpl implements VariableCache {
         return (T) PERSISTENT_VARIABLES.get(name);
     }
 
+    @Override
+    public VariableCache makeClone() {
+        // TODO: Test and implement
+        return null;
+    }
 }

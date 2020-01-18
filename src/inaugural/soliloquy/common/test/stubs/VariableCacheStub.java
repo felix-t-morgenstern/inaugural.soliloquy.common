@@ -70,4 +70,9 @@ public class VariableCacheStub implements VariableCache {
     public String getInterfaceName() {
         return VariableCache.class.getCanonicalName();
     }
+
+    @Override
+    public VariableCache makeClone() {
+        return null;
+    }
 }

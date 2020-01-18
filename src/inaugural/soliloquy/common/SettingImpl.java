@@ -1,18 +1,19 @@
 package inaugural.soliloquy.common;
 
-import soliloquy.specs.common.infrastructure.GenericParamsSet;
 import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 public class SettingImpl<T> implements Setting<T> {
     private final String ID;
     private final T ARCHETYPE;
-    private final GenericParamsSet CONTROL_PARAMS;
+    private final VariableCache CONTROL_PARAMS;
 
     private String _name;
     private T _value;
 
     @SuppressWarnings("ConstantConditions")
-    public SettingImpl(String id, String name, T defaultValue, T archetype, GenericParamsSet controlParams) {
+    public SettingImpl(String id, String name, T defaultValue, T archetype,
+                       VariableCache controlParams) {
         if (id == null) {
             throw new IllegalArgumentException("Setting: id must be non-null");
         }
@@ -69,7 +70,7 @@ public class SettingImpl<T> implements Setting<T> {
     }
 
     @Override
-    public GenericParamsSet controlParams() {
+    public VariableCache controlParams() {
         return CONTROL_PARAMS;
     }
 

@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.infrastructure.GenericParamsSet;
 import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 public class SettingArchetype implements Setting {
     @Override
@@ -15,7 +15,7 @@ public class SettingArchetype implements Setting {
     }
 
     @Override
-    public GenericParamsSet controlParams() {
+    public VariableCache controlParams() {
         return null;
     }
 

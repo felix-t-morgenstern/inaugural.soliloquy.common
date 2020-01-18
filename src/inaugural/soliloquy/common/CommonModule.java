@@ -13,7 +13,6 @@ public class CommonModule extends AbstractModule {
     private CollectionFactory _collectionFactory;
     private CoordinateFactory _coordinateFactory;
     private EntityUuidFactory _entityUuidFactory;
-    private GenericParamsSetFactory _genericParamsSetFactory;
     private MapFactory _mapFactory;
     private PairFactory _pairFactory;
     private PersistentValuesHandler _persistentValuesHandler;
@@ -50,17 +49,11 @@ public class CommonModule extends AbstractModule {
         _settingsRepo = new SettingsRepoImpl(_collectionFactory, _pairFactory,
                 _persistentValuesHandler, settingArchetype);
 
-        _genericParamsSetFactory = new GenericParamsSetFactoryImpl(_persistentValuesHandler,
-                _mapFactory);
-
         PersistentValueTypeHandler booleanHandler = new PersistentBooleanHandler();
         PersistentValueTypeHandler coordinateHandler =
                 new PersistentCoordinateHandler(_coordinateFactory);
         PersistentValueTypeHandler entityUuidHandler =
                 new PersistentEntityUuidHandler(_entityUuidFactory);
-        PersistentValueTypeHandler genericParamsSetHandler =
-                new PersistentGenericParamsSetHandler(_persistentValuesHandler,
-                        _genericParamsSetFactory);
         PersistentValueTypeHandler integerHandler = new PersistentIntegerHandler();
         PersistentValueTypeHandler variableCachePersistenceHandler =
                 new PersistentVariableCacheHandler(_persistentValuesHandler,
@@ -80,7 +73,6 @@ public class CommonModule extends AbstractModule {
         _persistentValuesHandler.addPersistentValueTypeHandler(booleanHandler);
         _persistentValuesHandler.addPersistentValueTypeHandler(coordinateHandler);
         _persistentValuesHandler.addPersistentValueTypeHandler(entityUuidHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(genericParamsSetHandler);
         _persistentValuesHandler.addPersistentValueTypeHandler(integerHandler);
         _persistentValuesHandler.addPersistentValueTypeHandler(variableCachePersistenceHandler);
         _persistentValuesHandler.addPersistentValueTypeHandler(settingsRepoHandler);
@@ -96,7 +88,6 @@ public class CommonModule extends AbstractModule {
         bind(CollectionFactory.class).toInstance(_collectionFactory);
         bind(CoordinateFactory.class).toInstance(_coordinateFactory);
         bind(EntityUuidFactory.class).toInstance(_entityUuidFactory);
-        bind(GenericParamsSetFactory.class).toInstance(_genericParamsSetFactory);
         bind(MapFactory.class).toInstance(_mapFactory);
         bind(PairFactory.class).toInstance(_pairFactory);
         bind(PersistentValuesHandler.class).toInstance(_persistentValuesHandler);
@@ -105,5 +96,4 @@ public class CommonModule extends AbstractModule {
         bind(SettingFactory.class).toInstance(_settingFactory);
         bind(SettingsRepo.class).toInstance(_settingsRepo);
     }
-
 }

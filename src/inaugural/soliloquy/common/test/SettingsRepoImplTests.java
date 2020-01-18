@@ -426,7 +426,7 @@ class SettingsRepoImplTests {
         }
 
         @Override
-        public GenericParamsSet controlParams() {
+        public VariableCache controlParams() {
             return null;
         }
 

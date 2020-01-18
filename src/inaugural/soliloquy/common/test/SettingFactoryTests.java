@@ -1,15 +1,14 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.SettingFactoryImpl;
 import inaugural.soliloquy.common.test.stubs.CollectionStub;
-import inaugural.soliloquy.common.test.stubs.GenericParamsSetStub;
+import inaugural.soliloquy.common.test.stubs.VariableCacheStub;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import inaugural.soliloquy.common.SettingFactoryImpl;
 import soliloquy.specs.common.factories.SettingFactory;
 import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.GenericParamsSet;
 import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,11 +22,12 @@ class SettingFactoryTests {
     
     @Test
     void testMake() {
-        GenericParamsSet settingControlParams = new GenericParamsSetStub();
+        VariableCache settingControlParams = new VariableCacheStub();
         Integer settingValue = 123;
         String settingName = "SettingName";
         String settingId = "SettingId";
-        Setting<Integer> setting = _settingFactory.make(settingId, settingName, settingValue, settingControlParams);
+        Setting<Integer> setting = _settingFactory.make(settingId, settingName, settingValue,
+                settingControlParams);
         assertEquals(setting.id(), settingId);
         assertEquals(setting.getName(), settingName);
         assertSame(setting.getValue(), settingValue);
@@ -45,6 +45,6 @@ class SettingFactoryTests {
         Collection archetype = new CollectionStub(null);
 
         assertThrows(IllegalArgumentException.class, () -> _settingFactory.make("settingId",
-                "settingName", archetype, new GenericParamsSetStub()));
+                "settingName", archetype, new VariableCacheStub()));
     }
 }
