@@ -118,6 +118,16 @@ class VariableCacheImplTests {
 
     @Test
     void testMakeClone() {
-        fail("");
+        _variableCache.setVariable("variable1", "value1");
+        _variableCache.setVariable("variable2", "value2");
+        _variableCache.setVariable("variable3", "value3");
+
+        VariableCache clone = _variableCache.makeClone();
+        _variableCache.setVariable("variable1", "value4");
+
+        assertNotNull(clone);
+        assertEquals("value1", clone.getVariable("variable1"));
+        assertEquals("value2", clone.getVariable("variable2"));
+        assertEquals("value3", clone.getVariable("variable3"));
     }
 }

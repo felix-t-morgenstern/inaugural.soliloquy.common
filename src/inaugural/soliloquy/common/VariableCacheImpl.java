@@ -17,6 +17,14 @@ public class VariableCacheImpl implements VariableCache {
         MAP_FACTORY = mapFactory;
     }
 
+    @SuppressWarnings("unchecked")
+    private VariableCacheImpl(CollectionFactory collectionFactory, MapFactory mapFactory,
+                              HashMap<String,Object> persistentVariables) {
+        COLLECTION_FACTORY = collectionFactory;
+        MAP_FACTORY = mapFactory;
+        PERSISTENT_VARIABLES = (HashMap<String, Object>) persistentVariables.clone();
+    }
+
     @Override
     public String getInterfaceName() {
         return VariableCache.class.getCanonicalName();
@@ -72,7 +80,6 @@ public class VariableCacheImpl implements VariableCache {
 
     @Override
     public VariableCache makeClone() {
-        // TODO: Test and implement
-        return null;
+        return new VariableCacheImpl(COLLECTION_FACTORY, MAP_FACTORY, PERSISTENT_VARIABLES);
     }
 }
