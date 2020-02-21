@@ -17,6 +17,11 @@ class CollectionImplTests {
     }
 
     @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> new CollectionImpl<>(null));
+    }
+
+    @Test
     void testAddAndContains() {
         _collection.add(null);
         assertTrue(_collection.contains(null));
@@ -28,7 +33,7 @@ class CollectionImplTests {
     void testIsEmpty() {
         assertTrue(_collection.isEmpty());
         _collection.add(0);
-        assertTrue(!_collection.isEmpty());
+        assertFalse(_collection.isEmpty());
     }
 
     @Test
@@ -47,7 +52,7 @@ class CollectionImplTests {
 
     @Test
     void testContains() {
-        assertTrue(!_collection.contains(0));
+        assertFalse(_collection.contains(0));
         _collection.add(0);
         assertTrue(_collection.contains(0));
     }
@@ -63,7 +68,7 @@ class CollectionImplTests {
 
     @Test
     void testAddAllCollection() {
-        CollectionImpl<Integer> toAdd = new CollectionImpl<>(null);
+        CollectionImpl<Integer> toAdd = new CollectionImpl<>(0);
         toAdd.add(1);
         toAdd.add(2);
         toAdd.add(3);
@@ -77,6 +82,11 @@ class CollectionImplTests {
     void testGet() {
         _collection.add(3);
         assertEquals(3, (int) _collection.get(0));
+    }
+
+    @Test
+    void testGetWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> _collection.get(-1));
     }
 
     @Test
@@ -105,15 +115,15 @@ class CollectionImplTests {
 
     @Test
     void testEquals() {
-        CollectionImpl<Integer> newCollection = new CollectionImpl<>(null);
+        CollectionImpl<Integer> newCollection = new CollectionImpl<>(0);
         _collection.add(1);
-        assertTrue(!_collection.equals(newCollection));
+        assertFalse(_collection.equals(newCollection));
         newCollection.add(1);
         assertTrue(_collection.equals(newCollection));
         _collection.add(2);
-        assertTrue(!_collection.equals(newCollection));
+        assertFalse(_collection.equals(newCollection));
         newCollection.add(3);
-        assertTrue(!_collection.equals(newCollection));
+        assertFalse(_collection.equals(newCollection));
     }
 
     @Test
@@ -126,11 +136,11 @@ class CollectionImplTests {
 
     @Test
     void testRemoveItem() {
-        assertTrue(!_collection.remove(1));
+        assertFalse(_collection.remove(1));
         _collection.add(1);
         assertTrue(_collection.contains(1));
         assertTrue(_collection.remove(1));
-        assertTrue(!_collection.contains(1));
+        assertFalse(_collection.contains(1));
     }
 
     @Test

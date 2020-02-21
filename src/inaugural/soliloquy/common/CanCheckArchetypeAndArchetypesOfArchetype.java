@@ -4,6 +4,7 @@ import soliloquy.specs.common.shared.HasOneGenericParam;
 import soliloquy.specs.common.shared.HasTwoGenericParams;
 
 abstract class CanCheckArchetypeAndArchetypesOfArchetype {
+    @SuppressWarnings("rawtypes")
     void checkArchetypeAndArchetypesOfArchetype(String methodName, Object archetype) {
         if (archetype == null) {
             throw new IllegalArgumentException(className() + "." + methodName +

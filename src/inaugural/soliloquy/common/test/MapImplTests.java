@@ -62,6 +62,18 @@ class MapImplTests {
     }
 
     @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> new MapImpl<>(null,
+                FIRST_ARCHETYPE, SECOND_ARCHETYPE, COLLECTION_FACTORY));
+        assertThrows(IllegalArgumentException.class, () -> new MapImpl<>(PAIR_FACTORY,
+                null, SECOND_ARCHETYPE, COLLECTION_FACTORY));
+        assertThrows(IllegalArgumentException.class, () -> new MapImpl<>(PAIR_FACTORY,
+                FIRST_ARCHETYPE, null, COLLECTION_FACTORY));
+        assertThrows(IllegalArgumentException.class, () -> new MapImpl<>(PAIR_FACTORY,
+                FIRST_ARCHETYPE, SECOND_ARCHETYPE, null));
+    }
+
+    @Test
     void testPutNullOrBlankKey() {
         assertThrows(IllegalArgumentException.class, () -> _map.put(null, "String"));
         assertThrows(IllegalArgumentException.class, () -> _map.put("", "String"));
@@ -102,7 +114,7 @@ class MapImplTests {
 
     @Test
     void testContains() {
-        assertTrue(!_map.contains(_pairMock));
+        assertFalse(_map.contains(_pairMock));
         _map.put(PAIR_1_KEY, PAIR_1_VALUE);
         assertTrue(_map.contains(_pairMock));
     }
@@ -183,9 +195,9 @@ class MapImplTests {
     void testEqualsMap() {
         MapImpl<String,String> secondMap = new MapImpl<>(PAIR_FACTORY, "", "", COLLECTION_FACTORY);
         _map.put("Key1", "Value1");
-        assertTrue(!_map.equals(secondMap));
+        assertFalse(_map.equals(secondMap));
         secondMap.put("Key2", "Value2");
-        assertTrue(!_map.equals(secondMap));
+        assertFalse(_map.equals(secondMap));
         _map.put("Key2", "Value2");
         secondMap.put("Key1", "Value1");
         assertTrue(_map.equals(secondMap));
@@ -209,7 +221,7 @@ class MapImplTests {
         _map.put(PAIR_2_KEY, PAIR_2_VALUE);
         assertEquals(2, _map.size());
 
-        assertTrue(!_map.removeByKeyAndValue("not-a-key", "not-a-value"));
+        assertFalse(_map.removeByKeyAndValue("not-a-key", "not-a-value"));
         assertEquals(2, _map.size());
         assertTrue(_map.removeByKeyAndValue(PAIR_1_KEY, PAIR_1_VALUE));
         assertEquals(1, _map.size());
@@ -217,10 +229,16 @@ class MapImplTests {
 
     @Test
     void testItemExists() {
-        assertTrue(!_map.itemExists(PAIR_1_KEY));
+        assertFalse(_map.itemExists(PAIR_1_KEY));
 
         _map.put(PAIR_1_KEY, PAIR_1_VALUE);
         assertTrue(_map.itemExists(PAIR_1_KEY));
+    }
+
+    @Test
+    void testItemExistsWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> _map.itemExists(null));
+        assertThrows(IllegalArgumentException.class, () -> _map.itemExists(""));
     }
 
     @Test

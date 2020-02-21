@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         implements PersistentValuesHandler {
+    @SuppressWarnings("rawtypes")
     private HashMap<String, PersistentValueTypeHandler> _persistentValueTypeHandlers;
     private PersistentCollectionHandler _persistentCollectionHandler;
     private PersistentMapHandler _persistentMapHandler;
@@ -31,7 +32,10 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
     public void addPersistentValueTypeHandler(
             PersistentValueTypeHandler persistentValueTypeHandler)
             throws IllegalArgumentException {
-        String persistentValueType = getProperTypeName(persistentValueTypeHandler.getArchetype());
+        String persistentValueType = getProperTypeName(
+                Check.ifNull(persistentValueTypeHandler, "PersistentValuesHandlerImpl",
+                        "addPersistentValueTypeHandler", "persistentValueTypeHandler")
+                        .getArchetype());
         if (_persistentValueTypeHandlers.containsKey(persistentValueType)) {
             throw new IllegalArgumentException(
                     "PersistentValuesHandler.addPersistentValueTypeHandler: already has handler for "
@@ -42,14 +46,18 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
 
     @Override
     public boolean removePersistentValueTypeHandler(String persistentValueType) {
+        Check.ifNullOrEmpty(persistentValueType, "PersistentValuesHandlerImpl",
+                "removePersistentValueTypeHandler", "persistentValueType");
         return _persistentValueTypeHandlers.remove(persistentValueType) != null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
     public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(
             String persistentValueType)
             throws UnsupportedOperationException {
+        Check.ifNullOrEmpty(persistentValueType, "PersistentValuesHandlerImpl",
+                "getPersistentValueTypeHandler", "persistentValueType");
         // TODO: Ensure that these tests work for read-only and read-write infrastructure
         if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME) ||
                 interfaceIsOfGenericType(persistentValueType,
@@ -72,8 +80,11 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public Object generateArchetype(String valueType) throws IllegalArgumentException {
+        Check.ifNullOrEmpty(valueType, "PersistentValuesHandlerImpl",
+                "getPersistentValueTypeHandler", "valueType");
         if (interfaceIsOfGenericType(valueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
             return _persistentCollectionHandler.generateArchetype(valueType);
         } else if (interfaceIsOfGenericType(valueType, MAP_GENERIC_INTERFACE_NAME)) {
@@ -81,7 +92,7 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         } else if (interfaceIsOfGenericType(valueType, PAIR_GENERIC_INTERFACE_NAME)) {
             return _persistentPairHandler.generateArchetype(valueType);
         } else {
-            PersistentValueTypeHandler persistentValueTypeHandler =
+            @SuppressWarnings("rawtypes") PersistentValueTypeHandler persistentValueTypeHandler =
                     getPersistentValueTypeHandler(valueType);
             return persistentValueTypeHandler.getArchetype();
         }
@@ -95,7 +106,7 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
 
     @Override
     public Collection<String> persistentValueTypesHandled() {
-        CollectionImpl<String> persistentValueTypesHandled = new CollectionImpl<>(null);
+        CollectionImpl<String> persistentValueTypesHandled = new CollectionImpl<>("");
         for (String type : _persistentValueTypeHandlers.keySet()) {
             persistentValueTypesHandled.add(type);
         }
@@ -105,23 +116,31 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
     @Override
     public void registerPersistentCollectionHandler(
             PersistentCollectionHandler persistentCollectionHandler) {
-        _persistentCollectionHandler = persistentCollectionHandler;
+        _persistentCollectionHandler =
+                Check.ifNull(persistentCollectionHandler, "PersistentValuesHandlerImpl",
+        "registerPersistentCollectionHandler", "persistentCollectionHandler");
     }
 
     @Override
     public void registerPersistentMapHandler(PersistentMapHandler persistentMapHandler) {
-        _persistentMapHandler = persistentMapHandler;
+        _persistentMapHandler =
+                Check.ifNull(persistentMapHandler, "PersistentValuesHandlerImpl",
+                        "registerPersistentMapHandler", "persistentMapHandler");
     }
 
     @Override
     public void registerPersistentPairHandler(PersistentPairHandler persistentPairHandler) {
-        _persistentPairHandler = persistentPairHandler;
+        _persistentPairHandler =
+                Check.ifNull(persistentPairHandler, "PersistentValuesHandlerImpl",
+                        "registerPersistentPairHandler", "persistentPairHandler");
     }
 
     @Override
     public void registerPersistentRegistryHandler(
             PersistentRegistryHandler persistentRegistryHandler) {
-        _persistentRegistryHandler = persistentRegistryHandler;
+        _persistentRegistryHandler =
+                Check.ifNull(persistentRegistryHandler, "PersistentValuesHandlerImpl",
+                        "registerPersistentRegistryHandler", "persistentRegistryHandler");
     }
 
     @Override

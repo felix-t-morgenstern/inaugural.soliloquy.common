@@ -11,10 +11,10 @@ class ReadableCollectionImpl<V> extends HasOneGenericParam<V> implements Readabl
     final ArrayList<V> COLLECTION;
     final V ARCHETYPE;
 
-    // TODO: Test exception for invalid constructor with ReadableCollectionImpl and CollectionImpl
     ReadableCollectionImpl(V archetype) {
+        // TODO: Test whether null archetype was fed in
+        ARCHETYPE = Check.ifNull(archetype, "ReadableCollectionImpl", null, "archetype");
         COLLECTION = new ArrayList<>();
-        ARCHETYPE = archetype;
     }
 
     ReadableCollectionImpl(V[] items, V archetype) {
@@ -37,7 +37,8 @@ class ReadableCollectionImpl<V> extends HasOneGenericParam<V> implements Readabl
 
     @Override
     public V get(int index) {
-        return COLLECTION.get(index);
+        return COLLECTION.get(Check.ifNonNegative(index, "ReadableCollectionImpl", "get",
+                "index"));
     }
 
     @Override

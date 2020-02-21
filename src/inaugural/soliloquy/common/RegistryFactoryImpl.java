@@ -8,22 +8,15 @@ import soliloquy.specs.common.shared.HasId;
 public class RegistryFactoryImpl implements RegistryFactory {
     private final CollectionFactory COLLECTION_FACTORY;
 
-    @SuppressWarnings("ConstantConditions")
     public RegistryFactoryImpl(CollectionFactory collectionFactory) {
-        if (collectionFactory == null) {
-            throw new IllegalArgumentException(
-                    "RegistryFactoryImpl: collectionFactory cannot be null");
-        }
-        COLLECTION_FACTORY = collectionFactory;
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "RegistryFactoryImpl", null,
+                "collectionFactory");
     }
 
     @Override
     public <T extends HasId> Registry<T> make(T archetype) {
-        if (archetype == null) {
-            throw new IllegalArgumentException(
-                    "RegistryFactoryImpl.make: archetype must be non-null");
-        }
-        return new RegistryImpl<>(archetype, COLLECTION_FACTORY);
+        return new RegistryImpl<>(Check.ifNull(archetype, "RegistryFactoryImpl", "make",
+                "archetype"), COLLECTION_FACTORY);
     }
 
     @Override

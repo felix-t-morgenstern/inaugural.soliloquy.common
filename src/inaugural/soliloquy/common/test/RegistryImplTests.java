@@ -202,13 +202,19 @@ class RegistryImplTests {
     }
 
     @Test
-    void testRemoveByItemWithInvalidEntries() {
+    void testRemoveAndContainsWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> _registry.remove(((HasIdAndNameStub)null)));
         assertThrows(IllegalArgumentException.class,
                 () -> _registry.remove(new HasIdAndNameStub(null, "name")));
         assertThrows(IllegalArgumentException.class,
                 () -> _registry.remove(new HasIdAndNameStub("", "name")));
+        assertThrows(IllegalArgumentException.class, () -> _registry.remove((String) null));
+        assertThrows(IllegalArgumentException.class, () -> _registry.remove(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> _registry.contains((HasIdAndNameStub)null));
+        assertThrows(IllegalArgumentException.class, () -> _registry.contains((String) null));
+        assertThrows(IllegalArgumentException.class, () -> _registry.contains(""));
     }
 
     @Test

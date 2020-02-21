@@ -17,7 +17,16 @@ class MapFactoryImplTests {
     @BeforeEach
     void setUp() {
         // (No need to test PairFactory functionality in this suite)
+        // TODO: Revisit the assumption that PairFactory needn't be tested here
         _mapFactory = new MapFactoryImpl(new PairFactoryStub(), new CollectionFactoryStub());
+    }
+
+    @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new MapFactoryImpl(null, new CollectionFactoryStub()));
+        assertThrows(IllegalArgumentException.class,
+                () -> new MapFactoryImpl(new PairFactoryStub(), null));
     }
 
     @Test

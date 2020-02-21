@@ -11,20 +11,19 @@ import soliloquy.specs.common.infrastructure.*;
 public class MapImpl<K,V> extends ReadableMapImpl<K,V> implements Map<K,V> {
     final Collection<Function<Pair<K,V>,String>> VALIDATORS;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("ConstantConditions")
     public MapImpl(PairFactory pairFactory, K archetype1, V archetype2,
                    CollectionFactory collectionFactory) {
         super(archetype1, archetype2, pairFactory, collectionFactory);
         VALIDATORS = collectionFactory.make(
-                new MapValidatorFunctionArchetype(ARCHETYPE_1, ARCHETYPE_2));
+                new MapValidatorFunctionArchetype<>(ARCHETYPE_1, ARCHETYPE_2));
     }
 
-    @SuppressWarnings("unchecked")
     MapImpl(PairFactory pairFactory, K archetype1, V archetype2, CollectionFactory collectionFactory,
             HashMap<K,V> internalMap) {
         super(archetype1, archetype2, internalMap, pairFactory, collectionFactory);
         VALIDATORS = collectionFactory.make(
-                new MapValidatorFunctionArchetype(ARCHETYPE_1, ARCHETYPE_2));
+                new MapValidatorFunctionArchetype<>(ARCHETYPE_1, ARCHETYPE_2));
     }
 
     @Override
@@ -32,16 +31,10 @@ public class MapImpl<K,V> extends ReadableMapImpl<K,V> implements Map<K,V> {
         MAP.clear();
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void put(K key, V value) throws IllegalArgumentException {
-        if (key == null) {
-            throw new IllegalArgumentException("Map.put: Key to a Map cannot be null");
-        }
-        if (key == "") {
-            throw new IllegalArgumentException("Map.put: Blank string is an illegal key");
-        }
-        Pair<K,V> toInsert = PAIR_FACTORY.make(key, value, ARCHETYPE_1, ARCHETYPE_2);
+        Pair<K,V> toInsert = PAIR_FACTORY.make(Check.ifNullOrEmptyIfString(key, "itemExists",
+                "id", "key"), value, ARCHETYPE_1, ARCHETYPE_2);
         for(Function<Pair<K,V>, String> validator : VALIDATORS) {
             String exceptionMessage = validator.run(toInsert);
             if (exceptionMessage != null) {

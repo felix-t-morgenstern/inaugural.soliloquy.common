@@ -36,6 +36,11 @@ class EntityUuidImplTests {
     }
 
     @Test
+    void testUuidFromStringWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> new EntityUuidImpl(""));
+    }
+
+    @Test
     void testUuidEquals() {
         _entityUuid = new EntityUuidImpl("a1a2e5a2-8960-11e8-9a94-a6cf71072f73");
 

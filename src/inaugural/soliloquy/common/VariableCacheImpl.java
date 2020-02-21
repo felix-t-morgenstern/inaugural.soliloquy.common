@@ -13,8 +13,9 @@ public class VariableCacheImpl implements VariableCache {
 
     public VariableCacheImpl(CollectionFactory collectionFactory, MapFactory mapFactory) {
         PERSISTENT_VARIABLES = new HashMap<>();
-        COLLECTION_FACTORY = collectionFactory;
-        MAP_FACTORY = mapFactory;
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "VariableCacheImpl", null,
+                "collectionFactory");
+        MAP_FACTORY = Check.ifNull(mapFactory, "VariableCacheImpl", null, "mapFactory");
     }
 
     @SuppressWarnings("unchecked")
@@ -32,20 +33,15 @@ public class VariableCacheImpl implements VariableCache {
 
     @Override
     public <T> void setVariable(String name, T value) throws IllegalArgumentException {
-        if (value == null) {
-            throw new IllegalArgumentException(
-                    "VariableCache.put: value cannot be null");
-        }
-        if (name == null || name.equals("")) {
-            throw new IllegalArgumentException(
-                    "VariableCache.put: key cannot be null or empty");
-        }
-        PERSISTENT_VARIABLES.put(name, value);
+        PERSISTENT_VARIABLES.put(Check.ifNullOrEmpty(name, "VariableCacheImpl", "setVariable",
+                "name"),
+                Check.ifNullOrEmptyIfString(value, "VariableCacheImpl", "setVariable", "value"));
     }
 
     @Override
     public boolean remove(String name) {
-        return PERSISTENT_VARIABLES.remove(name) != null;
+        return PERSISTENT_VARIABLES.remove(Check.ifNullOrEmpty(name, "VariableCacheImpl",
+                "setVariable", "name")) != null;
     }
 
     @Override
@@ -75,7 +71,8 @@ public class VariableCacheImpl implements VariableCache {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getVariable(String name) {
-        return (T) PERSISTENT_VARIABLES.get(name);
+        return (T) PERSISTENT_VARIABLES.get(Check.ifNullOrEmpty(name, "VariableCacheImpl",
+                "setVariable", "name"));
     }
 
     @Override

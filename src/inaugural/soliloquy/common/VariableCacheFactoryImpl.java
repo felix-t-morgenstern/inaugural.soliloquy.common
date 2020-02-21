@@ -11,8 +11,9 @@ public class VariableCacheFactoryImpl implements VariableCacheFactory {
 
     public VariableCacheFactoryImpl(CollectionFactory collectionFactory,
                                     MapFactory mapFactory) {
-        COLLECTION_FACTORY = collectionFactory;
-        MAP_FACTORY = mapFactory;
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "VariableCacheFactoryImpl", null,
+                "collectionFactory");
+        MAP_FACTORY = Check.ifNull(mapFactory, "VariableCacheFactoryImpl", null, "mapFactory");
     }
 
     @Override

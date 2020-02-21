@@ -14,22 +14,15 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
     private final CollectionFactory COLLECTION_FACTORY;
     private final HashMap<String,T> REGISTRY;
 
-    @SuppressWarnings("ConstantConditions")
     public RegistryImpl(T archetype, CollectionFactory collectionFactory) {
-        if (archetype == null) {
-            throw new IllegalArgumentException("RegistryImpl: archetype must be non-null");
-        }
-        ARCHETYPE = archetype;
-        if (collectionFactory == null) {
-            throw new IllegalArgumentException("RegistryImpl: collectionFactory must be non-null");
-        }
-        COLLECTION_FACTORY = collectionFactory;
+        ARCHETYPE = Check.ifNull(archetype, "RegistryImpl", "make", "archetype");
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "RegistryImpl", "make", "collectionFactory");
         REGISTRY = new HashMap<>();
     }
 
     @Override
     public boolean contains(String id) {
-        return REGISTRY.containsKey(id);
+        return REGISTRY.containsKey(Check.ifNullOrEmpty(id, "RegistryImpl", "contains", "id"));
     }
 
     @Override
@@ -39,33 +32,19 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
 
     @Override
     public void add(T item) throws IllegalArgumentException {
-        if (item == null) {
-            throw new IllegalArgumentException("RegistryImpl.add: item must be non-null");
-        }
-        if (item.id() == null) {
-            throw new IllegalArgumentException("RegistryImpl.add: item's id must be non-null");
-        }
-        if (item.id().equals("")) {
-            throw new IllegalArgumentException("RegistryImpl.add: item's id must be non-empty");
-        }
-        REGISTRY.put(item.id(), item);
+        REGISTRY.put(Check.ifNullOrEmpty(Check.ifNull(item, "RegistryImpl", "add", "item").id(),
+                "RegistryImpl", "add", "item.id"), item);
     }
 
     @Override
     public void addAll(ReadableCollection<? extends T> collection)
             throws UnsupportedOperationException {
-        if (collection == null) {
-            throw new IllegalArgumentException("RegistryImpl.addAll: collection cannot be null");
-        }
-        collection.forEach(this::add);
+        Check.ifNull(collection, "RegistryImpl", "addAll", "collection").forEach(this::add);
     }
 
     @Override
     public void addAll(T[] array) throws UnsupportedOperationException {
-        if (array == null) {
-            throw new IllegalArgumentException("RegistryImpl.addAll: array cannot be null");
-        }
-        for (T t : array) {
+        for (T t : Check.ifNull(array, "RegistryImpl", "addAll", "array")) {
             this.add(t);
         }
     }
@@ -77,16 +56,8 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
 
     @Override
     public boolean remove(T item) throws UnsupportedOperationException {
-        if (item == null) {
-            throw new IllegalArgumentException("RegistryImpl.remove: item cannot be null");
-        }
-        if (item.id() == null) {
-            throw new IllegalArgumentException("RegistryImpl.remove: item cannot have null id");
-        }
-        if (item.id().equals("")) {
-            throw new IllegalArgumentException("RegistryImpl.remove: item cannot have null id");
-        }
-        return REGISTRY.remove(item.id()) != null;
+        return REGISTRY.remove(Check.ifNullOrEmpty(Check.ifNull(item, "RegistryImpl", "remove",
+                "item").id(), "RegistryImpl", "remove", "item.id")) != null;
     }
 
     @Override
@@ -98,12 +69,12 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
 
     @Override
     public boolean remove(String id) {
-        return REGISTRY.remove(id) != null;
+        return REGISTRY.remove(Check.ifNullOrEmpty(id, "RegistryImpl", "remove", "id")) != null;
     }
 
     @Override
     public boolean contains(T item) {
-        return REGISTRY.containsValue(item);
+        return REGISTRY.containsValue(Check.ifNull(item, "RegistryImpl", "contains", "item"));
     }
 
     @Override

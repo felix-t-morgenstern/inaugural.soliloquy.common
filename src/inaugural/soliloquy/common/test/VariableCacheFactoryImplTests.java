@@ -9,8 +9,7 @@ import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.factories.VariableCacheFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class VariableCacheFactoryImplTests {
     private final CollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
@@ -22,6 +21,14 @@ class VariableCacheFactoryImplTests {
     void setUp() {
         _variableCacheFactory = new VariableCacheFactoryImpl(COLLECTION_FACTORY,
                 MAP_FACTORY);
+    }
+
+    @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new VariableCacheFactoryImpl(null, MAP_FACTORY));
+        assertThrows(IllegalArgumentException.class,
+                () -> new VariableCacheFactoryImpl(COLLECTION_FACTORY, null));
     }
 
     @Test

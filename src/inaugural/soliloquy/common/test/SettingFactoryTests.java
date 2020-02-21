@@ -39,7 +39,7 @@ class SettingFactoryTests {
         assertEquals(SettingFactory.class.getCanonicalName(), _settingFactory.getInterfaceName());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testArchetypeWithNullArchetype() {
         Collection archetype = new CollectionStub(null);

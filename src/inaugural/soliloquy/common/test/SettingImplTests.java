@@ -25,7 +25,6 @@ class SettingImplTests {
                 SETTING_ARCHETYPE, _settingControlParams);
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     void testWithInvalidConstructorParams() {
         assertThrows(IllegalArgumentException.class,
@@ -71,6 +70,7 @@ class SettingImplTests {
         assertEquals(_setting.id(), SETTING_ID);
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     void testEquals() {
         Setting setting2 = new SettingImpl<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
@@ -85,6 +85,12 @@ class SettingImplTests {
         String settingName2 = "settingName2";
         _setting.setName(settingName2);
         assertEquals(_setting.getName(), settingName2);
+    }
+
+    @Test
+    void testSetNameWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> _setting.setName(null));
+        assertThrows(IllegalArgumentException.class, () -> _setting.setName(""));
     }
 
     @Test

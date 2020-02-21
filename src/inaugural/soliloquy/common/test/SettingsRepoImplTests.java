@@ -52,12 +52,34 @@ class SettingsRepoImplTests {
     }
 
     @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(null,
+                PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
+        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(COLLECTION_FACTORY,
+                null, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
+        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(COLLECTION_FACTORY,
+                PAIR_FACTORY, null, SETTING_ARCHETYPE));
+        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(COLLECTION_FACTORY,
+                PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, null));
+    }
+
+    @Test
     void testId() {
         _settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
 
         SettingsRepo settingsRepo = _settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
 
         assertEquals(SETTINGS_REPO_SUBGROUP_1_ID, settingsRepo.id());
+    }
+
+    @Test
+    void testNewSubgroupingWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _settingsRepo.newSubgrouping(-1, SETTINGS_REPO_SUBGROUP_1_ID, null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _settingsRepo.newSubgrouping(0, null, null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _settingsRepo.newSubgrouping(0, "", null));
     }
 
     @Test

@@ -11,32 +11,13 @@ public class SettingImpl<T> implements Setting<T> {
     private String _name;
     private T _value;
 
-    @SuppressWarnings("ConstantConditions")
     public SettingImpl(String id, String name, T defaultValue, T archetype,
                        VariableCache controlParams) {
-        if (id == null) {
-            throw new IllegalArgumentException("Setting: id must be non-null");
-        }
-        if (id.equals("")) {
-            throw new IllegalArgumentException("Setting: id must be non-empty");
-        }
-        ID = id;
-        if (name == null) {
-            throw new IllegalArgumentException("Setting: name must be non-null");
-        }
-        if (name.equals("")) {
-            throw new IllegalArgumentException("Setting: name must be non-empty");
-        }
-        _name = name;
+        ID = Check.ifNullOrEmpty(id, "SettingImpl", null, "id");
+        _name = Check.ifNullOrEmpty(name, "SettingImpl", null, "name");
         _value = defaultValue;
-        if (archetype == null) {
-            throw new IllegalArgumentException("Setting: archetype must be non-null");
-        }
-        ARCHETYPE = archetype;
-        if (controlParams == null) {
-            throw new IllegalArgumentException("Setting: controlParams must be non-null");
-        }
-        CONTROL_PARAMS = controlParams;
+        ARCHETYPE = Check.ifNull(archetype, "SettingImpl", null, "archetype");
+        CONTROL_PARAMS = Check.ifNull(controlParams, "SettingImpl", null, "controlParams");
     }
 
     @Override
@@ -51,7 +32,7 @@ public class SettingImpl<T> implements Setting<T> {
 
     @Override
     public void setName(String name) {
-        _name = name;
+        _name = Check.ifNullOrEmpty(name, "SettingImpl", "setName", "name");
     }
 
     @Override
@@ -87,6 +68,7 @@ public class SettingImpl<T> implements Setting<T> {
         if (!(o instanceof Setting)) {
             return false;
         }
+        //noinspection rawtypes
         return ((Setting) o).id().equals(ID);
     }
 }

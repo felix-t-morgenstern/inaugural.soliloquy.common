@@ -26,6 +26,14 @@ class VariableCacheImplTests {
         // archetype not necessary for test suite
         _variableCache = new VariableCacheImpl(COLLECTION_FACTORY, MAP_FACTORY);
     }
+
+    @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new VariableCacheImpl(null, MAP_FACTORY));
+        assertThrows(IllegalArgumentException.class,
+                () -> new VariableCacheImpl(COLLECTION_FACTORY, null));
+    }
     
     @Test
     void testPutAndSize() {
@@ -46,13 +54,17 @@ class VariableCacheImplTests {
     }
 
     @Test
-    void testPutWithNullOrEmptyParams() {
-        assertThrows(IllegalArgumentException.class,
-                () -> _variableCache.setVariable(null, 0));
-        assertThrows(IllegalArgumentException.class,
-                () -> _variableCache.setVariable("", 0));
+    void testSetGetAndRemoveWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> _variableCache.setVariable(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> _variableCache.setVariable("", 0));
         assertThrows(IllegalArgumentException.class,
                 () -> _variableCache.setVariable("variable", null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _variableCache.setVariable("variable", ""));
+        assertThrows(IllegalArgumentException.class, () -> _variableCache.getVariable(null));
+        assertThrows(IllegalArgumentException.class, () -> _variableCache.getVariable(""));
+        assertThrows(IllegalArgumentException.class, () -> _variableCache.remove(null));
+        assertThrows(IllegalArgumentException.class, () -> _variableCache.remove(""));
     }
 
     @Test

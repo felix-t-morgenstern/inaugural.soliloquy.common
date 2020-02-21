@@ -74,6 +74,21 @@ class PersistentValuesHandlerImplTests {
         assertTrue(_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
     }
 
+    @SuppressWarnings("ConstantConditions")
+    @Test
+    void testAddGetAndRemovePersistentValueTypeHandlerWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.addPersistentValueTypeHandler(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.removePersistentValueTypeHandler(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.removePersistentValueTypeHandler(""));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.getPersistentValueTypeHandler(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.getPersistentValueTypeHandler(""));
+    }
+
     @Test
     void testPersistentValueTypesHandled() {
         assertTrue(_persistentValuesHandler.persistentValueTypesHandled().isEmpty());
@@ -88,6 +103,14 @@ class PersistentValuesHandlerImplTests {
     void testGenerateArchetype() {
         _persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
         assertNotNull(_persistentValuesHandler.generateArchetype(Integer.class.getCanonicalName()));
+    }
+
+    @Test
+    void testGenerateArchetypeWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.generateArchetype(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.generateArchetype(""));
     }
 
     @Test
@@ -138,5 +161,17 @@ class PersistentValuesHandlerImplTests {
         assertSame(persistentRegistryHandler,
                 _persistentValuesHandler.getPersistentValueTypeHandler(
                         Registry.class.getCanonicalName()));
+    }
+
+    @Test
+    void testRegisterInfrastructureHandlersWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.registerPersistentCollectionHandler(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.registerPersistentMapHandler(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.registerPersistentPairHandler(null));
+        assertThrows(IllegalArgumentException.class,
+                () -> _persistentValuesHandler.registerPersistentRegistryHandler(null));
     }
 }

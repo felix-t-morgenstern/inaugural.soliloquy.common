@@ -25,10 +25,13 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         ID = null;
         ITEMS = new HashMap<>();
 
-        COLLECTION_FACTORY = collectionFactory;
-        PAIR_FACTORY = pairFactory;
-        PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
-        SETTING_ARCHETYPE = settingArchetype;
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "SettingsRepoImpl", null,
+                "collectionFactory");
+        PAIR_FACTORY = Check.ifNull(pairFactory, "SettingsRepoImpl", null, "pairFactory");
+        PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler, "SettingsRepoImpl",
+                null, "persistentValuesHandler");
+        SETTING_ARCHETYPE = Check.ifNull(settingArchetype, "SettingsRepoImpl", null,
+                "settingArchetype");
     }
 
     @SuppressWarnings("rawtypes")
@@ -98,7 +101,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         return item;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("unchecked")
     @Override
     public <V> Setting<V> getSetting(String settingId) throws IllegalArgumentException    {
         if (settingId == null) {
@@ -138,7 +141,6 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         setting.setValue(value);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void addEntity(Setting setting, int order, String groupId)
             throws IllegalArgumentException {
@@ -168,6 +170,8 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @Override
     public void newSubgrouping(int order, String groupId, String parentGroupId)
             throws IllegalArgumentException {
+        Check.ifNonNegative(order, "SettingsRepoImpl", "newSubgrouping", "order");
+        Check.ifNullOrEmpty(groupId, "SettingsRepoImpl", "newSubgrouping", "groupId");
         SettingsRepoImpl targetParentGrouping;
         if (parentGroupId == null || parentGroupId.equals("")) {
             targetParentGrouping = this;
@@ -182,23 +186,17 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("ConstantConditions")
     @Override
     public boolean removeItem(String itemId) throws IllegalArgumentException {
-        if (itemId == null) {
-            throw new IllegalArgumentException("SettingsRepo.removeItem: itemId cannot be null");
-        }
-        if (itemId.equals("")) {
-            throw new IllegalArgumentException("SettingsRepo.removeItem: itemId cannot be blank");
-        }
-        return removeItemRecursively(itemId);
+        return removeItemRecursively(Check.ifNullOrEmpty(itemId, "SettingsRepoImpl",
+                "newSubgrouping", "itemId"));
     }
 
     @Override
     public Pair<String,Integer> getGroupingIdAndOrder(String itemId) throws IllegalArgumentException {
-        if (itemId == null || itemId.equals("")) {
-            throw new IllegalArgumentException("SettingsRepo.getGroupingId: itemId cannot be null");
-        }
-        Pair<String,Integer> groupingIdAndOrderNumber = getGroupingIdRecursively(itemId, true);
+        Pair<String,Integer> groupingIdAndOrderNumber =
+                getGroupingIdRecursively(Check.ifNullOrEmpty(itemId, "SettingsRepoImpl",
+                        "newSubgrouping", "itemId"), true);
         if (groupingIdAndOrderNumber == null) {
-            throw new IllegalArgumentException("SettingsRepo.getGrouppingId: No item with itemId of "
+            throw new IllegalArgumentException("SettingsRepo.getGroupingId: No item with itemId of "
                     + itemId + " found");
         }
         return groupingIdAndOrderNumber;
