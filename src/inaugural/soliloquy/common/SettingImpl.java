@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
@@ -13,11 +14,11 @@ public class SettingImpl<T> implements Setting<T> {
 
     public SettingImpl(String id, String name, T defaultValue, T archetype,
                        VariableCache controlParams) {
-        ID = Check.ifNullOrEmpty(id, "SettingImpl", null, "id");
-        _name = Check.ifNullOrEmpty(name, "SettingImpl", null, "name");
+        ID = Check.ifNullOrEmpty(id, "id");
+        _name = Check.ifNullOrEmpty(name, "name");
         _value = defaultValue;
-        ARCHETYPE = Check.ifNull(archetype, "SettingImpl", null, "archetype");
-        CONTROL_PARAMS = Check.ifNull(controlParams, "SettingImpl", null, "controlParams");
+        ARCHETYPE = Check.ifNull(archetype, "archetype");
+        CONTROL_PARAMS = Check.ifNull(controlParams, "controlParams");
     }
 
     @Override
@@ -32,7 +33,7 @@ public class SettingImpl<T> implements Setting<T> {
 
     @Override
     public void setName(String name) {
-        _name = Check.ifNullOrEmpty(name, "SettingImpl", "setName", "name");
+        _name = Check.ifNullOrEmpty(name, "name");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.factories.PairFactory;
@@ -11,9 +12,8 @@ public class MapFactoryImpl extends CanCheckArchetypeAndArchetypesOfArchetype im
 
     // TODO: Ensure constructor parameters are non-null
     public MapFactoryImpl(PairFactory pairFactory, CollectionFactory collectionFactory) {
-        PAIR_FACTORY = Check.ifNull(pairFactory, "MapFactoryImpl", null, "pairFactory");
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "MapFactoryImpl", null,
-                "collectionFactory");
+        PAIR_FACTORY = Check.ifNull(pairFactory, "pairFactory");
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
     }
 
     public <K, V> Map<K,V> make(K archetype1, V archetype2) {

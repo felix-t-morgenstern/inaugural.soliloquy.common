@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.factories.VariableCacheFactory;
@@ -11,9 +12,8 @@ public class VariableCacheFactoryImpl implements VariableCacheFactory {
 
     public VariableCacheFactoryImpl(CollectionFactory collectionFactory,
                                     MapFactory mapFactory) {
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "VariableCacheFactoryImpl", null,
-                "collectionFactory");
-        MAP_FACTORY = Check.ifNull(mapFactory, "VariableCacheFactoryImpl", null, "mapFactory");
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
+        MAP_FACTORY = Check.ifNull(mapFactory, "mapFactory");
     }
 
     @Override

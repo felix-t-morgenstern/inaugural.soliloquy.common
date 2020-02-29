@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.*;
@@ -18,11 +19,10 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
     ReadableMapImpl(K archetype1, V archetype2, PairFactory pairFactory,
                     CollectionFactory collectionFactory) {
         MAP = new HashMap<>();
-        ARCHETYPE_1 = Check.ifNull(archetype1, "ReadableMapImpl", null, "archetype1");
-        ARCHETYPE_2 = Check.ifNull(archetype2, "ReadableMapImpl", null, "archetype2");
-        PAIR_FACTORY = Check.ifNull(pairFactory, "ReadableMapImpl", null, "pairFactory");
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "ReadableMapImpl", null,
-                "collectionFactory");
+        ARCHETYPE_1 = Check.ifNull(archetype1, "archetype1");
+        ARCHETYPE_2 = Check.ifNull(archetype2, "archetype2");
+        PAIR_FACTORY = Check.ifNull(pairFactory, "pairFactory");
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
     }
 
     // TODO: Verify that archetypes are non-null
@@ -30,11 +30,10 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
                     CollectionFactory collectionFactory) {
         MAP = new HashMap<>();
         values.forEach(MAP::put);
-        ARCHETYPE_1 = Check.ifNull(archetype1, "ReadableMapImpl", null, "archetype1");
-        ARCHETYPE_2 = Check.ifNull(archetype2, "ReadableMapImpl", null, "archetype2");
-        PAIR_FACTORY = Check.ifNull(pairFactory, "ReadableMapImpl", null, "pairFactory");
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "ReadableMapImpl", null,
-                "collectionFactory");
+        ARCHETYPE_1 = Check.ifNull(archetype1, "archetype1");
+        ARCHETYPE_2 = Check.ifNull(archetype2, "archetype2");
+        PAIR_FACTORY = Check.ifNull(pairFactory, "pairFactory");
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
     }
 
     @Override
@@ -60,7 +59,7 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
     @SuppressWarnings("ConstantConditions")
     @Override
     public boolean equals(ReadableMap<K, V> map) throws IllegalArgumentException {
-        Check.ifNull(map, "ReadableMapImpl", "equals", "map");
+        Check.ifNull(map, "map");
         if (this.size() != map.size()) {
             return false;
         }
@@ -72,10 +71,9 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
         return true;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public V get(K id) throws IllegalArgumentException, IllegalStateException {
-        return MAP.get(Check.ifNullOrEmptyIfString(id, "itemExists", "id", "id"));
+        return MAP.get(Check.ifNullOrEmptyIfString(id, "id"));
     }
 
     @Override
@@ -114,7 +112,7 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
 
     @Override
     public boolean itemExists(K key) {
-        return MAP.containsKey(Check.ifNullOrEmptyIfString(key, "itemExists", "id", "key"));
+        return MAP.containsKey(Check.ifNullOrEmptyIfString(key, "key"));
     }
 
     @Override

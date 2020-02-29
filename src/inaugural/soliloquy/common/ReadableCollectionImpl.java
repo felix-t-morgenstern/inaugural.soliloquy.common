@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
 
@@ -13,7 +14,7 @@ class ReadableCollectionImpl<V> extends HasOneGenericParam<V> implements Readabl
 
     ReadableCollectionImpl(V archetype) {
         // TODO: Test whether null archetype was fed in
-        ARCHETYPE = Check.ifNull(archetype, "ReadableCollectionImpl", null, "archetype");
+        ARCHETYPE = Check.ifNull(archetype, "archetype");
         COLLECTION = new ArrayList<>();
     }
 
@@ -37,8 +38,7 @@ class ReadableCollectionImpl<V> extends HasOneGenericParam<V> implements Readabl
 
     @Override
     public V get(int index) {
-        return COLLECTION.get(Check.ifNonNegative(index, "ReadableCollectionImpl", "get",
-                "index"));
+        return COLLECTION.get(Check.ifNonNegative(index, "index"));
     }
 
     @Override

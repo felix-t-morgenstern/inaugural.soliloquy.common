@@ -3,6 +3,7 @@ package inaugural.soliloquy.common;
 import java.util.HashMap;
 
 import inaugural.soliloquy.common.archetypes.MapValidatorFunctionArchetype;
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.PairFactory;
@@ -33,8 +34,8 @@ public class MapImpl<K,V> extends ReadableMapImpl<K,V> implements Map<K,V> {
 
     @Override
     public void put(K key, V value) throws IllegalArgumentException {
-        Pair<K,V> toInsert = PAIR_FACTORY.make(Check.ifNullOrEmptyIfString(key, "itemExists",
-                "id", "key"), value, ARCHETYPE_1, ARCHETYPE_2);
+        Pair<K,V> toInsert = PAIR_FACTORY.make(Check.ifNullOrEmptyIfString(key, "key"), value,
+                ARCHETYPE_1, ARCHETYPE_2);
         for(Function<Pair<K,V>, String> validator : VALIDATORS) {
             String exceptionMessage = validator.run(toInsert);
             if (exceptionMessage != null) {

@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
@@ -15,14 +16,14 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
     private final HashMap<String,T> REGISTRY;
 
     public RegistryImpl(T archetype, CollectionFactory collectionFactory) {
-        ARCHETYPE = Check.ifNull(archetype, "RegistryImpl", "make", "archetype");
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "RegistryImpl", "make", "collectionFactory");
+        ARCHETYPE = Check.ifNull(archetype, "archetype");
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
         REGISTRY = new HashMap<>();
     }
 
     @Override
     public boolean contains(String id) {
-        return REGISTRY.containsKey(Check.ifNullOrEmpty(id, "RegistryImpl", "contains", "id"));
+        return REGISTRY.containsKey(Check.ifNullOrEmpty(id, "id"));
     }
 
     @Override
@@ -32,19 +33,18 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
 
     @Override
     public void add(T item) throws IllegalArgumentException {
-        REGISTRY.put(Check.ifNullOrEmpty(Check.ifNull(item, "RegistryImpl", "add", "item").id(),
-                "RegistryImpl", "add", "item.id"), item);
+        REGISTRY.put(Check.ifNullOrEmpty(Check.ifNull(item, "item").id(), "item.id"), item);
     }
 
     @Override
     public void addAll(ReadableCollection<? extends T> collection)
             throws UnsupportedOperationException {
-        Check.ifNull(collection, "RegistryImpl", "addAll", "collection").forEach(this::add);
+        Check.ifNull(collection, "collection").forEach(this::add);
     }
 
     @Override
     public void addAll(T[] array) throws UnsupportedOperationException {
-        for (T t : Check.ifNull(array, "RegistryImpl", "addAll", "array")) {
+        for (T t : Check.ifNull(array, "array")) {
             this.add(t);
         }
     }
@@ -56,8 +56,8 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
 
     @Override
     public boolean remove(T item) throws UnsupportedOperationException {
-        return REGISTRY.remove(Check.ifNullOrEmpty(Check.ifNull(item, "RegistryImpl", "remove",
-                "item").id(), "RegistryImpl", "remove", "item.id")) != null;
+        return REGISTRY.remove(Check.ifNullOrEmpty(Check.ifNull(item, "item").id(), "item.id"))
+                != null;
     }
 
     @Override
@@ -69,12 +69,12 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
 
     @Override
     public boolean remove(String id) {
-        return REGISTRY.remove(Check.ifNullOrEmpty(id, "RegistryImpl", "remove", "id")) != null;
+        return REGISTRY.remove(Check.ifNullOrEmpty(id, "id")) != null;
     }
 
     @Override
     public boolean contains(T item) {
-        return REGISTRY.containsValue(Check.ifNull(item, "RegistryImpl", "contains", "item"));
+        return REGISTRY.containsValue(Check.ifNull(item, "item"));
     }
 
     @Override

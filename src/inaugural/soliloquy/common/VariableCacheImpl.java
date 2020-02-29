@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.*;
@@ -13,9 +14,8 @@ public class VariableCacheImpl implements VariableCache {
 
     public VariableCacheImpl(CollectionFactory collectionFactory, MapFactory mapFactory) {
         PERSISTENT_VARIABLES = new HashMap<>();
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "VariableCacheImpl", null,
-                "collectionFactory");
-        MAP_FACTORY = Check.ifNull(mapFactory, "VariableCacheImpl", null, "mapFactory");
+        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
+        MAP_FACTORY = Check.ifNull(mapFactory, "mapFactory");
     }
 
     @SuppressWarnings("unchecked")
@@ -33,15 +33,13 @@ public class VariableCacheImpl implements VariableCache {
 
     @Override
     public <T> void setVariable(String name, T value) throws IllegalArgumentException {
-        PERSISTENT_VARIABLES.put(Check.ifNullOrEmpty(name, "VariableCacheImpl", "setVariable",
-                "name"),
-                Check.ifNullOrEmptyIfString(value, "VariableCacheImpl", "setVariable", "value"));
+        PERSISTENT_VARIABLES.put(Check.ifNullOrEmpty(name, "name"),
+                Check.ifNullOrEmptyIfString(value, "value"));
     }
 
     @Override
     public boolean remove(String name) {
-        return PERSISTENT_VARIABLES.remove(Check.ifNullOrEmpty(name, "VariableCacheImpl",
-                "setVariable", "name")) != null;
+        return PERSISTENT_VARIABLES.remove(Check.ifNullOrEmpty(name, "name")) != null;
     }
 
     @Override
@@ -71,8 +69,7 @@ public class VariableCacheImpl implements VariableCache {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getVariable(String name) {
-        return (T) PERSISTENT_VARIABLES.get(Check.ifNullOrEmpty(name, "VariableCacheImpl",
-                "setVariable", "name"));
+        return (T) PERSISTENT_VARIABLES.get(Check.ifNullOrEmpty(name, "name"));
     }
 
     @Override
