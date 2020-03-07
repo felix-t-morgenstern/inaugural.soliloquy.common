@@ -5,14 +5,14 @@ import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
+import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import inaugural.soliloquy.common.MapImpl;
-import inaugural.soliloquy.common.test.stubs.MapValidatorStub;
-import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
+import inaugural.soliloquy.common.test.fakes.FakeMapValidator;
+import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.PairFactory;
@@ -34,8 +34,8 @@ class MapImplTests {
     private final String FIRST_ARCHETYPE = "FIRST_ARCHETYPE";
     private final String SECOND_ARCHETYPE = "SECOND_ARCHETYPE";
 
-    private final PairFactory PAIR_FACTORY = new PairFactoryStub();
-    private final CollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
+    private final PairFactory PAIR_FACTORY = new FakePairFactory();
+    private final CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
 
     @SuppressWarnings("unchecked")
     @BeforeEach
@@ -51,7 +51,7 @@ class MapImplTests {
         when(pairMock2.getItem1()).thenReturn(PAIR_2_KEY);
         when(pairMock2.getItem2()).thenReturn(PAIR_2_VALUE);
 
-        _validatorStub = new MapValidatorStub();
+        _validatorStub = new FakeMapValidator();
 
         Iterator<Pair<String, String>> _pairCollectionIteratorMock = mock(Iterator.class);
         when(_pairCollectionIteratorMock.hasNext()).thenReturn(true).thenReturn(true).thenReturn(false);
@@ -302,7 +302,7 @@ class MapImplTests {
     void testMakeClone() {
         _map.put(PAIR_1_KEY, PAIR_1_VALUE);
         _map.put(PAIR_2_KEY, PAIR_2_VALUE);
-        Function<Pair<String,String>, String> validator = new MapValidatorStub();
+        Function<Pair<String,String>, String> validator = new FakeMapValidator();
         _map.validators().add(validator);
 
         Map<String,String> clonedMap = _map.makeClone();

@@ -1,23 +1,23 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.ReadablePair;
 
-class PairStub<K,V> implements Pair<K,V> {
+class FakePair<K,V> implements Pair<K,V> {
     private final K ARCHETYPE_1;
     private final V ARCHETYPE_2;
 
     private K _item1;
     private V _item2;
 
-    PairStub(K item1, V item2) {
+    FakePair(K item1, V item2) {
         _item1 = item1;
         _item2 = item2;
         ARCHETYPE_1 = item1;
         ARCHETYPE_2 = item2;
     }
 
-    PairStub(K item1, V item2, K archetype1, V archetype2) {
+    FakePair(K item1, V item2, K archetype1, V archetype2) {
         _item1 = item1;
         _item2 = item2;
         ARCHETYPE_1 = archetype1;

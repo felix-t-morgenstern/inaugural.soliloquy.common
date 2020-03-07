@@ -1,14 +1,14 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
-public class SettingStub<T> implements Setting<T> {
+public class FakeSetting<T> implements Setting<T> {
     private String _id;
     private String _name;
     private T _value;
 
-    public SettingStub(String id, String name, T value) {
+    public FakeSetting(String id, String name, T value) {
         _id = id;
         _name = name;
         _value = value;
@@ -26,7 +26,7 @@ public class SettingStub<T> implements Setting<T> {
 
     @Override
     public VariableCache controlParams() {
-        return new VariableCacheStub();
+        return new FakeVariableCache();
     }
 
     @Override

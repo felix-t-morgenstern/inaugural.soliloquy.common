@@ -1,8 +1,8 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentValuesHandlerStub implements PersistentValuesHandler {
+public class FakePersistentValuesHandler implements PersistentValuesHandler {
 
     private final String COLLECTION_GENERIC_INTERFACE_NAME = Collection.class.getCanonicalName();
 
@@ -19,12 +19,12 @@ public class PersistentValuesHandlerStub implements PersistentValuesHandler {
     @Override
     public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType) throws UnsupportedOperationException {
         if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
-            return (PersistentValueTypeHandler<T>) new PersistentCollectionHandlerStub();
+            return (PersistentValueTypeHandler<T>) new FakePersistentCollectionHandler();
         } else if (persistentValueType.equals(Integer.class.getCanonicalName())) {
-            return (PersistentValueTypeHandler<T>) new PersistentIntegerHandlerStub();
+            return (PersistentValueTypeHandler<T>) new FakePersistentIntegerHandler();
         } else if (persistentValueType.equals(String.class.getCanonicalName())) {
-            return (PersistentValueTypeHandler<T>) new PersistentStringHandlerStub();
-        } else if (persistentValueType.equals(HasIdAndNameStub.class.getCanonicalName())) {
+            return (PersistentValueTypeHandler<T>) new FakePersistentStringHandler();
+        } else if (persistentValueType.equals(FakeHasIdAndName.class.getCanonicalName())) {
             return (PersistentValueTypeHandler<T>) new PersistentHasIdAndNameHandler();
         } else {
             return null;
@@ -40,7 +40,7 @@ public class PersistentValuesHandlerStub implements PersistentValuesHandler {
     @Override
     public Object generateArchetype(String valueType) throws IllegalArgumentException {
         if (interfaceIsOfGenericType(valueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
-            return new PersistentCollectionHandlerStub().generateArchetype(valueType);
+            return new FakePersistentCollectionHandler().generateArchetype(valueType);
         } else {
             return getPersistentValueTypeHandler(valueType).getArchetype();
         }

@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentMapHandler;
-import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
-import inaugural.soliloquy.common.test.stubs.MapStub;
-import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
+import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
+import inaugural.soliloquy.common.test.fakes.FakeMap;
+import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.MapFactory;
@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentMapHandlerTests {
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
-            new PersistentValuesHandlerStub();
-    private final MapFactory MAP_FACTORY = new MapFactoryStub();
+            new FakePersistentValuesHandler();
+    private final MapFactory MAP_FACTORY = new FakeMapFactory();
     private final String KEY_1 = "key1";
     private final String KEY_2 = "key2";
     private final String KEY_3 = "key3";
@@ -37,7 +37,7 @@ class PersistentMapHandlerTests {
 
     @Test
     void testWrite() {
-        Map<String,Integer> map = new MapStub<>("", 0);
+        Map<String,Integer> map = new FakeMap<>("", 0);
         map.put(KEY_1, VALUE_1);
         map.put(KEY_2, VALUE_2);
         map.put(KEY_3, VALUE_3);

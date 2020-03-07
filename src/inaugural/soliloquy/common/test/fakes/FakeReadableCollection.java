@@ -1,4 +1,4 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
@@ -6,19 +6,19 @@ import soliloquy.specs.common.infrastructure.ReadableCollection;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ReadableCollectionStub<V> implements ReadableCollection<V> {
+public class FakeReadableCollection<V> implements ReadableCollection<V> {
     ArrayList<V> _collection = new ArrayList<>();
     V _archetype;
 
-    ReadableCollectionStub() {
+    FakeReadableCollection() {
 
     }
 
-    ReadableCollectionStub(V archetype) {
+    FakeReadableCollection(V archetype) {
         _archetype = archetype;
     }
 
-    ReadableCollectionStub(V archetype, ArrayList<V> values) {
+    FakeReadableCollection(V archetype, ArrayList<V> values) {
         _archetype = archetype;
         _collection.addAll(values);
     }
@@ -62,7 +62,7 @@ public class ReadableCollectionStub<V> implements ReadableCollection<V> {
 
     @Override
     public Collection<V> makeClone() {
-        Collection<V> collection = new CollectionStub<>();
+        Collection<V> collection = new FakeCollection<>();
         _collection.forEach(collection::add);
         return collection;
     }

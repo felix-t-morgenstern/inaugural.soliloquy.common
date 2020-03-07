@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.SettingsRepoImpl;
-import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
+import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
+import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,9 +17,9 @@ import soliloquy.specs.common.shared.EntityGroupItem;
 class SettingsRepoImplTests {
     private SettingsRepoImpl _settingsRepo;
 
-    private final CollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
+    private final CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
 
-    private final PairFactory PAIR_FACTORY = new PairFactoryStub();
+    private final PairFactory PAIR_FACTORY = new FakePairFactory();
 
     private final PersistentValuesHandler SETTINGS_REPO_PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();

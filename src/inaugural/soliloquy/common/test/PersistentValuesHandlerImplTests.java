@@ -3,10 +3,10 @@ package inaugural.soliloquy.common.test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import inaugural.soliloquy.common.test.stubs.PersistentCollectionHandlerStub;
-import inaugural.soliloquy.common.test.stubs.PersistentMapHandlerStub;
-import inaugural.soliloquy.common.test.stubs.PersistentPairHandlerStub;
-import inaugural.soliloquy.common.test.stubs.PersistentRegistryHandlerStub;
+import inaugural.soliloquy.common.test.fakes.FakePersistentCollectionHandler;
+import inaugural.soliloquy.common.test.fakes.FakePersistentMapHandler;
+import inaugural.soliloquy.common.test.fakes.FakePersistentPairHandler;
+import inaugural.soliloquy.common.test.fakes.FakePersistentRegistryHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -116,7 +116,7 @@ class PersistentValuesHandlerImplTests {
     @Test
     void testRegisterPersistentCollectionHandler() {
         PersistentCollectionHandler persistentCollectionHandler =
-                new PersistentCollectionHandlerStub();
+                new FakePersistentCollectionHandler();
         _persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
 
         assertSame(persistentCollectionHandler,
@@ -129,7 +129,7 @@ class PersistentValuesHandlerImplTests {
 
     @Test
     void testRegisterPersistentMapHandler() {
-        PersistentMapHandler persistentMapHandler = new PersistentMapHandlerStub();
+        PersistentMapHandler persistentMapHandler = new FakePersistentMapHandler();
         _persistentValuesHandler.registerPersistentMapHandler(persistentMapHandler);
 
         assertSame(persistentMapHandler,
@@ -142,7 +142,7 @@ class PersistentValuesHandlerImplTests {
 
     @Test
     void testRegisterPersistentPairHandler() {
-        PersistentPairHandler persistentPairHandler = new PersistentPairHandlerStub();
+        PersistentPairHandler persistentPairHandler = new FakePersistentPairHandler();
         _persistentValuesHandler.registerPersistentPairHandler(persistentPairHandler);
 
         assertSame(persistentPairHandler,
@@ -155,7 +155,7 @@ class PersistentValuesHandlerImplTests {
 
     @Test
     void testRegisterPersistentRegistryHandler() {
-        PersistentRegistryHandler persistentRegistryHandler = new PersistentRegistryHandlerStub();
+        PersistentRegistryHandler persistentRegistryHandler = new FakePersistentRegistryHandler();
         _persistentValuesHandler.registerPersistentRegistryHandler(persistentRegistryHandler);
 
         assertSame(persistentRegistryHandler,

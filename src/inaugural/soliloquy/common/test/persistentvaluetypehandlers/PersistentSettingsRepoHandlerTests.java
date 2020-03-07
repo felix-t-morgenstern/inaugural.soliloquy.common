@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentSettingsRepoHandler;
-import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
-import inaugural.soliloquy.common.test.stubs.SettingsRepoStub;
+import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
+import inaugural.soliloquy.common.test.fakes.FakeSettingsRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.*;
@@ -10,9 +10,9 @@ import soliloquy.specs.common.infrastructure.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentSettingsRepoHandlerTests {
-    private final SettingsRepo SETTINGS_REPO = new SettingsRepoStub();
+    private final SettingsRepo SETTINGS_REPO = new FakeSettingsRepo();
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
-            new PersistentValuesHandlerStub();
+            new FakePersistentValuesHandler();
 
     private final String VALUES_STRING =
             "[{\"id\":\"setting1Id\",\"serializedValue\":\"setting1Value\"}," +
@@ -54,11 +54,11 @@ class PersistentSettingsRepoHandlerTests {
         assertEquals(2, settings.size());
         for(Setting setting : settings) {
             switch(setting.getName()) {
-                case SettingsRepoStub.SETTING_1_NAME:
-                    assertEquals(SettingsRepoStub.SETTING_1_VALUE, setting.getValue());
+                case FakeSettingsRepo.SETTING_1_NAME:
+                    assertEquals(FakeSettingsRepo.SETTING_1_VALUE, setting.getValue());
                     break;
-                case SettingsRepoStub.SETTING_2_NAME:
-                    assertEquals(SettingsRepoStub.SETTING_2_VALUE, setting.getValue());
+                case FakeSettingsRepo.SETTING_2_NAME:
+                    assertEquals(FakeSettingsRepo.SETTING_2_VALUE, setting.getValue());
                     break;
                 default:
                     fail("Invalid setting name");

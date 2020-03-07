@@ -1,9 +1,9 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.PersistentPairHandler;
 
-public class PersistentPairHandlerStub implements PersistentPairHandler {
+public class FakePersistentPairHandler implements PersistentPairHandler {
     @Override
     public Pair read(String s) throws IllegalArgumentException {
         return null;

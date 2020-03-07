@@ -1,9 +1,9 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.PersistentCollectionHandler;
 
-public class PersistentCollectionHandlerStub implements PersistentCollectionHandler {
+public class FakePersistentCollectionHandler implements PersistentCollectionHandler {
     @Override
     public Collection read(String s) throws IllegalArgumentException {
         return null;
@@ -35,7 +35,7 @@ public class PersistentCollectionHandlerStub implements PersistentCollectionHand
         }
         String innerType = valueType.substring(openingCaret + 1, closingCaret);
 
-        return new CollectionFactoryStub().make(new PersistentValuesHandlerStub()
+        return new FakeCollectionFactory().make(new FakePersistentValuesHandler()
                 .generateArchetype(innerType));
     }
 }

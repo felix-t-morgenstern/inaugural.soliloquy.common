@@ -1,4 +1,4 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
@@ -8,12 +8,12 @@ import soliloquy.specs.common.shared.HasId;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class RegistryStub<T extends HasId> implements Registry<T> {
+public class FakeRegistry<T extends HasId> implements Registry<T> {
     private HashMap<String,T> _registry = new HashMap<>();
 
     private T _archetype;
 
-    public RegistryStub(T archetype)
+    public FakeRegistry(T archetype)
     {
         _archetype = archetype;
     }

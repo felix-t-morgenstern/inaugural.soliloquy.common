@@ -1,10 +1,10 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.game.Game;
 import soliloquy.specs.logger.Logger;
 
-public class MapValidatorStub implements Function<Pair<String,String>,String> {
+public class FakeMapValidator implements Function<Pair<String,String>,String> {
     @Override
     public String id() {
         // Ignore; stub class

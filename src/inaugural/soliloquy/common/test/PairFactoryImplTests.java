@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test;
 
-import inaugural.soliloquy.common.test.stubs.MapStub;
+import inaugural.soliloquy.common.test.fakes.FakeMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,8 +41,8 @@ class PairFactoryImplTests {
     @SuppressWarnings("unchecked")
     @Test
     void testArchetypeWithNullArchetype() {
-        Map archetype1 = new MapStub(123, null);
-        Map archetype2 = new MapStub(null, 123);
+        Map archetype1 = new FakeMap(123, null);
+        Map archetype2 = new FakeMap(null, 123);
 
         assertThrows(IllegalArgumentException.class, () -> _pairfactory.make(123, archetype1));
         assertThrows(IllegalArgumentException.class, () -> _pairfactory.make(archetype2, 123));

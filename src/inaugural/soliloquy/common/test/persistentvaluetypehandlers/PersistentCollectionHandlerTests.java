@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentCollectionHandler;
-import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import inaugural.soliloquy.common.test.stubs.CollectionStub;
-import inaugural.soliloquy.common.test.stubs.PersistentStringHandlerStub;
-import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
+import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
+import inaugural.soliloquy.common.test.fakes.FakeCollection;
+import inaugural.soliloquy.common.test.fakes.FakePersistentStringHandler;
+import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.CollectionFactory;
@@ -14,8 +14,8 @@ import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentCollectionHandlerTests {
-    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerStub();
-    private final CollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER = new FakePersistentValuesHandler();
+    private final CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
     private final Integer INTEGER_1 = 123;
     private final Integer INTEGER_2 = 456;
     private final Integer INTEGER_3 = 789;
@@ -34,7 +34,7 @@ class PersistentCollectionHandlerTests {
 
     @Test
     void testWrite() {
-        Collection<Integer> collection = new CollectionStub<>(0);
+        Collection<Integer> collection = new FakeCollection<>(0);
         collection.add(INTEGER_1);
         collection.add(INTEGER_2);
         collection.add(INTEGER_3);
@@ -77,7 +77,7 @@ class PersistentCollectionHandlerTests {
 
     @Test
     void testGenerateArchetype() {
-        assertEquals(PersistentStringHandlerStub.ARCHETYPE,
+        assertEquals(FakePersistentStringHandler.ARCHETYPE,
                 _persistentCollectionHandler.generateArchetype(
                         Collection.class.getCanonicalName() + "<" +
                                 String.class.getCanonicalName() + ">").getArchetype());

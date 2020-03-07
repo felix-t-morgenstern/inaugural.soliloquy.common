@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.test;
 
-import inaugural.soliloquy.common.test.stubs.MapFactoryStub;
+import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.VariableCacheImpl;
-import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
+import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class VariableCacheImplTests {
     private VariableCache _variableCache;
 
-    private final CollectionFactory COLLECTION_FACTORY = new CollectionFactoryStub();
-    private final MapFactory MAP_FACTORY = new MapFactoryStub();
+    private final CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
+    private final MapFactory MAP_FACTORY = new FakeMapFactory();
 
     @BeforeEach
     void setUp() {

@@ -1,9 +1,9 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.*;
 
-public class VariableCacheStub implements VariableCache {
-    private final Map<String,Object> PERSISTENT_VARIABLES = new MapStub<>();
+public class FakeVariableCache implements VariableCache {
+    private final Map<String,Object> PERSISTENT_VARIABLES = new FakeMap<>();
 
     public final static String VARIABLE_1_NAME = "variable1";
     public final static Integer VARIABLE_1_VALUE = 456456;
@@ -11,9 +11,9 @@ public class VariableCacheStub implements VariableCache {
     public final static String VARIABLE_2_NAME = "variable2";
     public final static String VARIABLE_2_VALUE = "variable2value";
 
-    private final Map<String,Object> P_VARS = new MapStub<>();
+    private final Map<String,Object> P_VARS = new FakeMap<>();
 
-    public VariableCacheStub() {
+    public FakeVariableCache() {
         PERSISTENT_VARIABLES.put(VARIABLE_1_NAME, VARIABLE_1_VALUE);
         PERSISTENT_VARIABLES.put(VARIABLE_2_NAME, VARIABLE_2_VALUE);
     }

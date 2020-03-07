@@ -1,9 +1,9 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.valueobjects.Coordinate;
 import soliloquy.specs.common.valueobjects.ReadableCoordinate;
 
-public class CoordinateStub implements Coordinate {
+public class FakeCoordinate implements Coordinate {
     private int _x;
     private int _y;
 

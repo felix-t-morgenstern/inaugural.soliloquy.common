@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test;
 
-import inaugural.soliloquy.common.test.stubs.VariableCacheStub;
+import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ class SettingImplTests {
     private final String SETTING_NAME_1 = "SettingName1";
     private final Integer SETTING_VALUE_1 = 123;
     private final Integer SETTING_ARCHETYPE = 789;
-    private final VariableCache _settingControlParams = new VariableCacheStub();
+    private final VariableCache _settingControlParams = new FakeVariableCache();
 
     private SettingImpl<Integer> _setting;
 

@@ -1,15 +1,15 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.common.infrastructure.*;
 
-public class MapStub<K,V> extends ReadableMapStub<K,V> implements Map<K,V> {
+public class FakeMap<K,V> extends FakeReadableMap<K,V> implements Map<K,V> {
 
-    public MapStub() {
+    public FakeMap() {
 
     }
 
-    public MapStub(K archetype1, V archetype2) {
+    public FakeMap(K archetype1, V archetype2) {
         super(archetype1, archetype2);
     }
 
@@ -49,6 +49,6 @@ public class MapStub<K,V> extends ReadableMapStub<K,V> implements Map<K,V> {
 
     @Override
     public ReadableMap<K, V> readOnlyRepresentation() {
-        return new ReadableMapStub<>(_archetype1, _archetype2, _map);
+        return new FakeReadableMap<>(_archetype1, _archetype2, _map);
     }
 }

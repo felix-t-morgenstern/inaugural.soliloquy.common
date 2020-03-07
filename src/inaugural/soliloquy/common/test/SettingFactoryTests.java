@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.SettingFactoryImpl;
-import inaugural.soliloquy.common.test.stubs.CollectionStub;
-import inaugural.soliloquy.common.test.stubs.VariableCacheStub;
+import inaugural.soliloquy.common.test.fakes.FakeCollection;
+import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.SettingFactory;
@@ -22,7 +22,7 @@ class SettingFactoryTests {
     
     @Test
     void testMake() {
-        VariableCache settingControlParams = new VariableCacheStub();
+        VariableCache settingControlParams = new FakeVariableCache();
         Integer settingValue = 123;
         String settingName = "SettingName";
         String settingId = "SettingId";
@@ -42,9 +42,9 @@ class SettingFactoryTests {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testArchetypeWithNullArchetype() {
-        Collection archetype = new CollectionStub(null);
+        Collection archetype = new FakeCollection(null);
 
         assertThrows(IllegalArgumentException.class, () -> _settingFactory.make("settingId",
-                "settingName", archetype, new VariableCacheStub()));
+                "settingName", archetype, new FakeVariableCache()));
     }
 }

@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentVariableCacheHandler;
-import inaugural.soliloquy.common.test.stubs.PersistentValuesHandlerStub;
-import inaugural.soliloquy.common.test.stubs.VariableCacheFactoryStub;
-import inaugural.soliloquy.common.test.stubs.VariableCacheStub;
+import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
+import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
+import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
@@ -16,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentVariableCacheHandlerTests {
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
-            new PersistentValuesHandlerStub();
+            new FakePersistentValuesHandler();
     private final VariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY =
-            new VariableCacheFactoryStub();
+            new FakeVariableCacheFactory();
     private final VariableCache PERSISTENT_VARIABLE_CACHE =
-            new VariableCacheStub();
+            new FakeVariableCache();
 
     private final String VALUES_STRING =
             "[{\"name\":\"variable1\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"456456\"}," +
@@ -65,10 +65,10 @@ class PersistentVariableCacheHandlerTests {
         assertNotNull(pVarCache);
         assertEquals(2, pVarCache.size());
         ReadableMap<String,Object> representation = pVarCache.variablesRepresentation();
-        assertEquals(VariableCacheStub.VARIABLE_1_VALUE,
-                representation.get(VariableCacheStub.VARIABLE_1_NAME));
-        assertEquals(VariableCacheStub.VARIABLE_2_VALUE,
-                representation.get(VariableCacheStub.VARIABLE_2_NAME));
+        assertEquals(FakeVariableCache.VARIABLE_1_VALUE,
+                representation.get(FakeVariableCache.VARIABLE_1_NAME));
+        assertEquals(FakeVariableCache.VARIABLE_2_VALUE,
+                representation.get(FakeVariableCache.VARIABLE_2_NAME));
     }
 
     @Test

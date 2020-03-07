@@ -1,13 +1,13 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.factories.VariableCacheFactory;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
 
-public class VariableCacheFactoryStub implements VariableCacheFactory {
+public class FakeVariableCacheFactory implements VariableCacheFactory {
     @Override
     public VariableCache make() {
-        return new VariableCacheStub();
+        return new FakeVariableCache();
     }
 
     @Override

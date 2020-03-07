@@ -1,9 +1,9 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.infrastructure.PersistentMapHandler;
 
-public class PersistentMapHandlerStub implements PersistentMapHandler {
+public class FakePersistentMapHandler implements PersistentMapHandler {
     @Override
     public Map read(String s) throws IllegalArgumentException {
         return null;

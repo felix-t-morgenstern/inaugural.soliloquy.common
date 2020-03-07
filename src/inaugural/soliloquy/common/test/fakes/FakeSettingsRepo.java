@@ -1,4 +1,4 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.Pair;
@@ -8,7 +8,7 @@ import soliloquy.specs.common.shared.EntityGroupItem;
 
 import java.util.HashMap;
 
-public class SettingsRepoStub implements SettingsRepo {
+public class FakeSettingsRepo implements SettingsRepo {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final HashMap<String,Object> SETTINGS = new HashMap<>();
 
@@ -20,11 +20,9 @@ public class SettingsRepoStub implements SettingsRepo {
     public static final String SETTING_2_NAME = "setting2Name";
     public static final Integer SETTING_2_VALUE = 123123;
 
-    @SuppressWarnings("unchecked")
-    private static final Setting SETTING_1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
+    private static final Setting<String> SETTING_1 = new FakeSetting<>(SETTING_1_ID, SETTING_1_NAME,
             SETTING_1_VALUE);
-    @SuppressWarnings("unchecked")
-    private static final Setting SETTING_2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME,
+    private static final Setting<Integer> SETTING_2 = new FakeSetting<>(SETTING_2_ID, SETTING_2_NAME,
             SETTING_2_VALUE);
 
     @SuppressWarnings("unchecked")
@@ -32,9 +30,9 @@ public class SettingsRepoStub implements SettingsRepo {
     public <V> Setting<V> getSetting(String name) throws IllegalArgumentException {
         switch (name) {
             case SETTING_1_ID:
-                return SETTING_1;
+                return (Setting<V>)SETTING_1;
             case SETTING_2_ID:
-                return SETTING_2;
+                return (Setting<V>)SETTING_2;
             default:
                 return null;
         }
@@ -50,19 +48,22 @@ public class SettingsRepoStub implements SettingsRepo {
         SETTINGS.put(id, value);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Collection<EntityGroupItem<Setting>> getAllGrouped() {
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public Collection<Setting> getAllUngrouped() {
-        Collection<Setting> settings = new CollectionStub<>();
+        Collection<Setting> settings = new FakeCollection<>();
         settings.add(SETTING_1);
         settings.add(SETTING_2);
         return settings;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public EntityGroupItem<Setting> getItemByOrder(int i) throws IllegalArgumentException {
         return null;

@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test;
 
-import inaugural.soliloquy.common.test.stubs.CollectionStub;
+import inaugural.soliloquy.common.test.fakes.FakeCollection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.CollectionFactoryImpl;
@@ -49,7 +49,7 @@ class CollectionFactoryImplTests {
     @SuppressWarnings("unchecked")
     @Test
     void testArchetypeWithNullArchetype() {
-        Collection archetype = new CollectionStub(null);
+        Collection archetype = new FakeCollection(null);
 
         assertThrows(IllegalArgumentException.class, () -> _collectionFactory.make(archetype));
     }

@@ -1,12 +1,12 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.infrastructure.Collection;
 
-public class CollectionFactoryStub implements CollectionFactory {
+public class FakeCollectionFactory implements CollectionFactory {
     @Override
     public <T> Collection<T> make(T archetype) throws IllegalArgumentException {
-        return new CollectionStub<>(archetype);
+        return new FakeCollection<>(archetype);
     }
 
     @Override

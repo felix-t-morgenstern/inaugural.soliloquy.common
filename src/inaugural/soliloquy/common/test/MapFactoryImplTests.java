@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test;
 
-import inaugural.soliloquy.common.test.stubs.CollectionFactoryStub;
-import inaugural.soliloquy.common.test.stubs.MapStub;
-import inaugural.soliloquy.common.test.stubs.PairFactoryStub;
+import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
+import inaugural.soliloquy.common.test.fakes.FakeMap;
+import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +18,15 @@ class MapFactoryImplTests {
     void setUp() {
         // (No need to test PairFactory functionality in this suite)
         // TODO: Revisit the assumption that PairFactory needn't be tested here
-        _mapFactory = new MapFactoryImpl(new PairFactoryStub(), new CollectionFactoryStub());
+        _mapFactory = new MapFactoryImpl(new FakePairFactory(), new FakeCollectionFactory());
     }
 
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> new MapFactoryImpl(null, new CollectionFactoryStub()));
+                () -> new MapFactoryImpl(null, new FakeCollectionFactory()));
         assertThrows(IllegalArgumentException.class,
-                () -> new MapFactoryImpl(new PairFactoryStub(), null));
+                () -> new MapFactoryImpl(new FakePairFactory(), null));
     }
 
     @Test
@@ -50,7 +50,7 @@ class MapFactoryImplTests {
     @SuppressWarnings("unchecked")
     @Test
     void testArchetypeWithNullArchetype() {
-        Map archetype = new MapStub(null, null);
+        Map archetype = new FakeMap(null, null);
 
         assertThrows(IllegalArgumentException.class,
                 () -> _mapFactory.make(archetype, 123));

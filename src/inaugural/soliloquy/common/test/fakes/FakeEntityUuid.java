@@ -1,15 +1,15 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.valueobjects.EntityUuid;
 
-public class EntityUuidStub implements EntityUuid {
+public class FakeEntityUuid implements EntityUuid {
     private final String GUID_STRING;
 
-    EntityUuidStub() {
+    FakeEntityUuid() {
         GUID_STRING = null;
     }
 
-    public EntityUuidStub(String entityUuidString) {
+    public FakeEntityUuid(String entityUuidString) {
         GUID_STRING = entityUuidString;
     }
 

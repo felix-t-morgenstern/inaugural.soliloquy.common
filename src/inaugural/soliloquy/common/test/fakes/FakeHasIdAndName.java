@@ -1,13 +1,13 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.shared.HasId;
 import soliloquy.specs.common.shared.HasName;
 
-public class HasIdAndNameStub implements HasId, HasName {
+public class FakeHasIdAndName implements HasId, HasName {
     private String _id;
     private String _name;
 
-    public HasIdAndNameStub(String id, String name) {
+    public FakeHasIdAndName(String id, String name) {
         _id = id;
         _name = name;
     }
@@ -29,6 +29,6 @@ public class HasIdAndNameStub implements HasId, HasName {
 
     @Override
     public String getInterfaceName() {
-        return HasIdAndNameStub.class.getCanonicalName();
+        return FakeHasIdAndName.class.getCanonicalName();
     }
 }

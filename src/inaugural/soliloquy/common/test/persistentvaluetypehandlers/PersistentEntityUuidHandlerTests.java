@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentEntityUuidHandler;
-import inaugural.soliloquy.common.test.stubs.EntityUuidFactoryStub;
-import inaugural.soliloquy.common.test.stubs.EntityUuidStub;
+import inaugural.soliloquy.common.test.fakes.FakeEntityUuidFactory;
+import inaugural.soliloquy.common.test.fakes.FakeEntityUuid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.EntityUuidFactory;
@@ -12,9 +12,9 @@ import soliloquy.specs.common.valueobjects.EntityUuid;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentEntityUuidHandlerTests {
-    private final EntityUuidFactory ENTITY_UUID_FACTORY = new EntityUuidFactoryStub();
+    private final EntityUuidFactory ENTITY_UUID_FACTORY = new FakeEntityUuidFactory();
     private final String ENTITY_UUID_STRING = "5ab46602-2493-4dbd-831c-6e63a6e6094b";
-    private final EntityUuid ENTITY_UUID = new EntityUuidStub(ENTITY_UUID_STRING);
+    private final EntityUuid ENTITY_UUID = new FakeEntityUuid(ENTITY_UUID_STRING);
 
     private PersistentValueTypeHandler<EntityUuid> _persistentEntityUuidHandler;
 

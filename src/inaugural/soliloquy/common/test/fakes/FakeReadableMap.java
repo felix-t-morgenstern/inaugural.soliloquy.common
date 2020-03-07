@@ -1,4 +1,4 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.*;
@@ -6,23 +6,23 @@ import soliloquy.specs.common.infrastructure.*;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class ReadableMapStub<K,V> implements ReadableMap<K,V> {
-    private final PairFactory PAIR_FACTORY = new PairFactoryStub();
+public class FakeReadableMap<K,V> implements ReadableMap<K,V> {
+    private final PairFactory PAIR_FACTORY = new FakePairFactory();
 
     HashMap<K,V> _map = new HashMap<>();
     K _archetype1;
     V _archetype2;
 
-    ReadableMapStub() {
+    FakeReadableMap() {
 
     }
 
-    ReadableMapStub(K archetype1, V archetype2) {
+    FakeReadableMap(K archetype1, V archetype2) {
         _archetype1 = archetype1;
         _archetype2 = archetype2;
     }
 
-    ReadableMapStub(K archetype1, V archetype2, HashMap<K,V> values) {
+    FakeReadableMap(K archetype1, V archetype2, HashMap<K,V> values) {
         _archetype1 = archetype1;
         _archetype2 = archetype2;
         values.forEach(_map::put);
@@ -77,7 +77,7 @@ public class ReadableMapStub<K,V> implements ReadableMap<K,V> {
 
     @Override
     public Collection<K> getKeys() {
-        Collection<K> keys = new CollectionStub<>();
+        Collection<K> keys = new FakeCollection<>();
         for (K key : _map.keySet())
         {
             keys.add(key);

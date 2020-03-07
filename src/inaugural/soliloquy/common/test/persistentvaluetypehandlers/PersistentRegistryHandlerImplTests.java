@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentRegistryHandlerImpl;
-import inaugural.soliloquy.common.test.stubs.*;
+import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.PersistentRegistryHandler;
@@ -12,21 +12,21 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersistentRegistryHandlerImplTests {
     private PersistentRegistryHandler _persistentRegistryHandler;
 
-    private final String DATA_STRING = "{\"typeName\":\"inaugural.soliloquy.common.test.stubs.HasIdAndNameStub\",\"serializedValues\":[\"{\\\"id\\\":\\\"id2\\\",\\\"name\\\":\\\"name2\\\"}\",\"{\\\"id\\\":\\\"id1\\\",\\\"name\\\":\\\"name1\\\"}\",\"{\\\"id\\\":\\\"id3\\\",\\\"name\\\":\\\"name3\\\"}\"]}";
+    private final String DATA_STRING = "{\"typeName\":\"inaugural.soliloquy.common.test.fakes.FakeHasIdAndName\",\"serializedValues\":[\"{\\\"id\\\":\\\"id2\\\",\\\"name\\\":\\\"name2\\\"}\",\"{\\\"id\\\":\\\"id1\\\",\\\"name\\\":\\\"name1\\\"}\",\"{\\\"id\\\":\\\"id3\\\",\\\"name\\\":\\\"name3\\\"}\"]}";
 
     @BeforeEach
     void setup() {
         _persistentRegistryHandler = new PersistentRegistryHandlerImpl(
-                new PersistentValuesHandlerStub(), new RegistryFactoryStub());
+                new FakePersistentValuesHandler(), new FakeRegistryFactory());
     }
 
     @SuppressWarnings("ConstantConditions")
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> new PersistentRegistryHandlerImpl(null, new RegistryFactoryStub()));
+                () -> new PersistentRegistryHandlerImpl(null, new FakeRegistryFactory()));
         assertThrows(IllegalArgumentException.class,
-                () -> new PersistentRegistryHandlerImpl(new PersistentValuesHandlerStub(), null));
+                () -> new PersistentRegistryHandlerImpl(new FakePersistentValuesHandler(), null));
     }
 
     @Test
@@ -36,10 +36,10 @@ class PersistentRegistryHandlerImplTests {
 
     @Test
     void testWrite() {
-        Registry<HasIdAndNameStub> registry = new RegistryStub<>(new HasIdAndNameStub("", ""));
-        registry.add(new HasIdAndNameStub("id1", "name1"));
-        registry.add(new HasIdAndNameStub("id2", "name2"));
-        registry.add(new HasIdAndNameStub("id3", "name3"));
+        Registry<FakeHasIdAndName> registry = new FakeRegistry<>(new FakeHasIdAndName("", ""));
+        registry.add(new FakeHasIdAndName("id1", "name1"));
+        registry.add(new FakeHasIdAndName("id2", "name2"));
+        registry.add(new FakeHasIdAndName("id3", "name3"));
 
         String writeOutput = _persistentRegistryHandler.write(registry);
 
@@ -55,7 +55,7 @@ class PersistentRegistryHandlerImplTests {
     @SuppressWarnings("unchecked")
     @Test
     void testRead() {
-        Registry<HasIdAndNameStub> registry = _persistentRegistryHandler.read(DATA_STRING);
+        Registry<FakeHasIdAndName> registry = _persistentRegistryHandler.read(DATA_STRING);
 
         assertNotNull(registry);
         assertEquals(3, registry.size());
@@ -74,9 +74,9 @@ class PersistentRegistryHandlerImplTests {
 
     @Test
     void testGenerateArchetype() {
-        HasIdAndNameStub archetype = (HasIdAndNameStub) _persistentRegistryHandler
+        FakeHasIdAndName archetype = (FakeHasIdAndName) _persistentRegistryHandler
                 .generateArchetype(Registry.class.getCanonicalName() + "<" +
-                        HasIdAndNameStub.class.getCanonicalName() + ">").getArchetype();
+                        FakeHasIdAndName.class.getCanonicalName() + ">").getArchetype();
 
         assertEquals(PersistentHasIdAndNameHandler.ARCHETYPE_ID, archetype.id());
         assertEquals(PersistentHasIdAndNameHandler.ARCHETYPE_NAME, archetype.getName());

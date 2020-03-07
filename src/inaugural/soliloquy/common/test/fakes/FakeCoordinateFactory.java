@@ -1,12 +1,12 @@
-package inaugural.soliloquy.common.test.stubs;
+package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.factories.CoordinateFactory;
 import soliloquy.specs.common.valueobjects.Coordinate;
 
-public class CoordinateFactoryStub implements CoordinateFactory {
+public class FakeCoordinateFactory implements CoordinateFactory {
     @Override
     public Coordinate make(int x, int y) {
-        Coordinate coordinate = new CoordinateStub();
+        Coordinate coordinate = new FakeCoordinate();
         coordinate.setX(x);
         coordinate.setY(y);
         return coordinate;

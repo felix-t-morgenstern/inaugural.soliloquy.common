@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentCoordinateHandler;
-import inaugural.soliloquy.common.test.stubs.CoordinateFactoryStub;
-import inaugural.soliloquy.common.test.stubs.CoordinateStub;
+import inaugural.soliloquy.common.test.fakes.FakeCoordinateFactory;
+import inaugural.soliloquy.common.test.fakes.FakeCoordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
@@ -12,7 +12,7 @@ import soliloquy.specs.common.valueobjects.Coordinate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentCoordinateHandlerTests {
-    private final CoordinateFactory COORDINATE_FACTORY = new CoordinateFactoryStub();
+    private final CoordinateFactory COORDINATE_FACTORY = new FakeCoordinateFactory();
     private final int X = 123;
     private final int Y = 456;
     private final String VALUES_STRING = "{\"x\":123,\"y\":456}";
@@ -39,7 +39,7 @@ class PersistentCoordinateHandlerTests {
 
     @Test
     void testWrite() {
-        Coordinate coordinate = new CoordinateStub();
+        Coordinate coordinate = new FakeCoordinate();
         coordinate.setX(X);
         coordinate.setY(Y);
 
