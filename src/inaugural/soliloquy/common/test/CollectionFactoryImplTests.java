@@ -1,9 +1,11 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.test.fakes.FakeCollection;
+import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import inaugural.soliloquy.common.CollectionFactoryImpl;
+import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.infrastructure.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,8 +51,31 @@ class CollectionFactoryImplTests {
     @SuppressWarnings("unchecked")
     @Test
     void testArchetypeWithNullArchetype() {
-        Collection archetype = new FakeCollection(null);
+        @SuppressWarnings("rawtypes") Collection archetype = new FakeCollection(null);
 
         assertThrows(IllegalArgumentException.class, () -> _collectionFactory.make(archetype));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(CollectionFactoryImpl.class.getCanonicalName().hashCode(),
+                _collectionFactory.hashCode());
+    }
+
+    @SuppressWarnings({"SimplifiableJUnitAssertion", "ConstantConditions"})
+    @Test
+    void testEquals() {
+        CollectionFactory equalCollectionFactory = new CollectionFactoryImpl();
+        CollectionFactory unequalCollectionFactory = new FakeCollectionFactory();
+
+        assertTrue(_collectionFactory.equals(equalCollectionFactory));
+        assertFalse(_collectionFactory.equals(unequalCollectionFactory));
+        assertFalse(_collectionFactory.equals(null));
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(CollectionFactoryImpl.class.getCanonicalName(),
+                _collectionFactory.toString());
     }
 }

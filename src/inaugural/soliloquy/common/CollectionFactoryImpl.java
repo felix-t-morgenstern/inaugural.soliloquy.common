@@ -26,4 +26,19 @@ public class CollectionFactoryImpl extends CanCheckArchetypeAndArchetypesOfArche
     protected String className() {
         return "CollectionFactoryImpl";
     }
+
+    @Override
+    public int hashCode() {
+        return CollectionFactoryImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof CollectionFactoryImpl && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return CollectionFactoryImpl.class.getCanonicalName();
+    }
 }
