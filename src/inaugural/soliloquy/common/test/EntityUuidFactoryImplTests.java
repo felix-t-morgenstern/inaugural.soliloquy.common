@@ -1,14 +1,14 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import inaugural.soliloquy.common.EntityUuidFactoryImpl;
+import inaugural.soliloquy.common.test.fakes.FakeEntityUuidFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import inaugural.soliloquy.common.EntityUuidFactoryImpl;
 import soliloquy.specs.common.factories.EntityUuidFactory;
 import soliloquy.specs.common.valueobjects.EntityUuid;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class EntityUuidFactoryImplTests {
     private EntityUuidFactoryImpl _entityUuidFactory;
@@ -52,5 +52,28 @@ class EntityUuidFactoryImplTests {
     void testGetInterfaceName() {
         assertEquals(EntityUuidFactory.class.getCanonicalName(),
                 _entityUuidFactory.getInterfaceName());
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(EntityUuidFactoryImpl.class.getCanonicalName().hashCode(),
+                _entityUuidFactory.hashCode());
+    }
+
+    @SuppressWarnings({"SimplifiableJUnitAssertion", "ConstantConditions"})
+    @Test
+    void testEquals() {
+        EntityUuidFactory equalEntityUuidFactory = new EntityUuidFactoryImpl();
+        EntityUuidFactory unequalEntityUuidFactory = new FakeEntityUuidFactory();
+
+        assertTrue(_entityUuidFactory.equals(equalEntityUuidFactory));
+        assertFalse(_entityUuidFactory.equals(unequalEntityUuidFactory));
+        assertFalse(_entityUuidFactory.equals(null));
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(EntityUuidFactoryImpl.class.getCanonicalName(),
+                _entityUuidFactory.toString());
     }
 }

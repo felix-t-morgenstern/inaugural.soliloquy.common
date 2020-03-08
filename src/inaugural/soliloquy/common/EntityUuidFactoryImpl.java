@@ -24,4 +24,19 @@ public class EntityUuidFactoryImpl implements EntityUuidFactory {
     public String getInterfaceName() {
         return EntityUuidFactory.class.getCanonicalName();
     }
+
+    @Override
+    public int hashCode() {
+        return EntityUuidFactoryImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof EntityUuidFactoryImpl && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return EntityUuidFactoryImpl.class.getCanonicalName();
+    }
 }
