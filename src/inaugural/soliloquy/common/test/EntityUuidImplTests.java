@@ -9,6 +9,9 @@ import soliloquy.specs.common.valueobjects.EntityUuid;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EntityUuidImplTests {
+    private final String UUID_STRING = "a1a2e5a2-8960-11e8-9a94-a6cf71072f73";
+    private final String UUID_STRING_2 = "b1a2e5a2-8960-11e8-9a94-a6cf71072f73";
+
     private EntityUuidImpl _entityUuid;
 
     @BeforeEach
@@ -31,8 +34,8 @@ class EntityUuidImplTests {
 
     @Test
     void testUuidFromString() {
-        _entityUuid = new EntityUuidImpl("a1a2e5a2-8960-11e8-9a94-a6cf71072f73");
-        assertEquals("a1a2e5a2-8960-11e8-9a94-a6cf71072f73", _entityUuid.toString());
+        _entityUuid = new EntityUuidImpl(UUID_STRING);
+        assertEquals(UUID_STRING, _entityUuid.toString());
     }
 
     @Test
@@ -42,37 +45,54 @@ class EntityUuidImplTests {
 
     @Test
     void testUuidEquals() {
-        _entityUuid = new EntityUuidImpl("a1a2e5a2-8960-11e8-9a94-a6cf71072f73");
+        _entityUuid = new EntityUuidImpl(UUID_STRING);
 
-        EntityUuidImpl otherEntityUuid = new EntityUuidImpl("a1a2e5a2-8960-11e8-9a94-a6cf71072f73");
+        EntityUuidImpl otherEntityUuid = new EntityUuidImpl(UUID_STRING);
 
         assertEquals(_entityUuid, otherEntityUuid);
 
-        otherEntityUuid = new EntityUuidImpl("b1a2e5a2-8960-11e8-9a94-a6cf71072f73");
+        otherEntityUuid = new EntityUuidImpl(UUID_STRING_2);
 
-        assertTrue(!_entityUuid.equals(otherEntityUuid));
+        assertNotEquals(_entityUuid, otherEntityUuid);
     }
 
     @Test
     void testUuidEqualsNullEntityUuid() {
-        _entityUuid = new EntityUuidImpl("a1a2e5a2-8960-11e8-9a94-a6cf71072f73");
+        _entityUuid = new EntityUuidImpl(UUID_STRING);
 
         EntityUuidImpl otherEntityUuid = null;
 
-        assertTrue(!_entityUuid.equals(otherEntityUuid));
+        //noinspection ConstantConditions
+        assertNotEquals(_entityUuid, otherEntityUuid);
     }
 
     @Test
     void testInitializeToRandomUuid() {
-        _entityUuid = new EntityUuidImpl("a1a2e5a2-8960-11e8-9a94-a6cf71072f73");
+        _entityUuid = new EntityUuidImpl(UUID_STRING);
         for(int i = 0; i < 10000; i++) {
-            EntityUuidImpl otherUuid = new EntityUuidImpl();
-            assertTrue(!_entityUuid.equals(otherUuid));
+            EntityUuidImpl otherEntityUuid = new EntityUuidImpl(UUID_STRING_2);
+
+            assertNotEquals(_entityUuid, otherEntityUuid);
         }
     }
 
     @Test
     void testGetInterfaceName() {
         assertEquals(EntityUuid.class.getCanonicalName(), _entityUuid.getInterfaceName());
+    }
+
+    @Test
+    void testToString() {
+        _entityUuid = new EntityUuidImpl(UUID_STRING);
+        assertEquals(UUID_STRING, _entityUuid.toString());
+    }
+
+    @Test
+    void testHashCode() {
+        final int expectedHashCode = -1018069483;
+
+        _entityUuid = new EntityUuidImpl(UUID_STRING);
+
+        assertEquals(expectedHashCode, _entityUuid.hashCode());
     }
 }
