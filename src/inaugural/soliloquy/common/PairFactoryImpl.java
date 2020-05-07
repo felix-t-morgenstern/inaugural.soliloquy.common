@@ -31,4 +31,19 @@ public class PairFactoryImpl extends CanCheckArchetypeAndArchetypesOfArchetype
     protected String className() {
         return "PairFactory";
     }
+
+    @Override
+    public int hashCode() {
+        return PairFactoryImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PairFactoryImpl && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return PairFactoryImpl.class.getCanonicalName();
+    }
 }
