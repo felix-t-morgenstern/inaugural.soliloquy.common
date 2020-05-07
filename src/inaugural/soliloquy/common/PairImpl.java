@@ -4,7 +4,6 @@ import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.ReadablePair;
 
 public class PairImpl<K,V> extends ReadablePairImpl<K,V> implements Pair<K,V> {
-    @SuppressWarnings("ConstantConditions")
     public PairImpl(K item1, V item2, K archetype1, V archetype2) {
         super(item1, item2, archetype1, archetype2);
     }

@@ -3,6 +3,8 @@ package inaugural.soliloquy.common;
 import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.infrastructure.ReadablePair;
 
+import java.util.Objects;
+
 public class ReadablePairImpl<K, V> extends HasTwoGenericParams<K,V>
         implements ReadablePair<K, V> {
     K _item1;
@@ -41,5 +43,50 @@ public class ReadablePairImpl<K, V> extends HasTwoGenericParams<K,V>
     @Override
     public V getSecondArchetype() throws IllegalStateException {
         return _archetype2;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_item1, _item2);
+    }
+
+    @SuppressWarnings({"rawtypes", "RedundantIfStatement"})
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ReadablePair)) {
+            return false;
+        }
+        ReadablePair pair = (ReadablePair) obj;
+
+        if (_item1 == null) {
+            if (pair.getItem1() != null) {
+                return false;
+            }
+        }
+        else {
+            if (!_item1.equals(pair.getItem1())) {
+                return false;
+            }
+        }
+
+        if (_item2 == null) {
+            if (pair.getItem2() != null) {
+                return false;
+            }
+        }
+        else {
+            if (!_item2.equals(pair.getItem2())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException(
+                "ReadablePairImpl.toString: Operation not supported; use " +
+                        "PersistentPairHandler.write instead");
     }
 }
