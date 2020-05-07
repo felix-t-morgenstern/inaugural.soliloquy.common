@@ -1,12 +1,13 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.MapFactoryImpl;
 import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
 import inaugural.soliloquy.common.test.fakes.FakeMap;
+import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
 import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import inaugural.soliloquy.common.MapFactoryImpl;
+import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,14 +48,36 @@ class MapFactoryImplTests {
         assertThrows(IllegalArgumentException.class, () -> _mapFactory.make(null,0));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testArchetypeWithNullArchetype() {
-        Map archetype = new FakeMap(null, null);
+        FakeMap archetype = new FakeMap(null, null);
 
         assertThrows(IllegalArgumentException.class,
                 () -> _mapFactory.make(archetype, 123));
         assertThrows(IllegalArgumentException.class,
                 () -> _mapFactory.make(123, archetype));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(MapFactoryImpl.class.getCanonicalName().hashCode(),
+                _mapFactory.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        MapFactory equalMapUuidFactory = new MapFactoryImpl(new FakePairFactory(), new FakeCollectionFactory());
+        MapFactory unequalMapUuidFactory = new FakeMapFactory();
+
+        assertEquals(_mapFactory, equalMapUuidFactory);
+        assertNotEquals(_mapFactory, unequalMapUuidFactory);
+        assertNotEquals(null, _mapFactory);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(MapFactoryImpl.class.getCanonicalName(),
+                _mapFactory.toString());
     }
 }

@@ -31,4 +31,19 @@ public class MapFactoryImpl extends CanCheckArchetypeAndArchetypesOfArchetype im
     protected String className() {
         return "MapFactory";
     }
+
+    @Override
+    public int hashCode() {
+        return MapFactoryImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof MapFactoryImpl && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return MapFactoryImpl.class.getCanonicalName();
+    }
 }
