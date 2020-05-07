@@ -67,11 +67,11 @@ class MapFactoryImplTests {
 
     @Test
     void testEquals() {
-        MapFactory equalMapUuidFactory = new MapFactoryImpl(new FakePairFactory(), new FakeCollectionFactory());
-        MapFactory unequalMapUuidFactory = new FakeMapFactory();
+        MapFactory equalMapFactory = new MapFactoryImpl(new FakePairFactory(), new FakeCollectionFactory());
+        MapFactory unequalMapFactory = new FakeMapFactory();
 
-        assertEquals(_mapFactory, equalMapUuidFactory);
-        assertNotEquals(_mapFactory, unequalMapUuidFactory);
+        assertEquals(_mapFactory, equalMapFactory);
+        assertNotEquals(_mapFactory, unequalMapFactory);
         assertNotEquals(null, _mapFactory);
     }
 
