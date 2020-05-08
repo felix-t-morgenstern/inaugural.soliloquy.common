@@ -142,4 +142,18 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         return PersistentValuesHandler.class.getCanonicalName();
     }
 
+    @Override
+    public int hashCode() {
+        return PersistentValuesHandlerImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentValuesHandlerImpl && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return PersistentValuesHandlerImpl.class.getCanonicalName();
+    }
 }

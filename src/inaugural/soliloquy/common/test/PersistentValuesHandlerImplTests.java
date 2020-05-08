@@ -1,17 +1,14 @@
 package inaugural.soliloquy.common.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import inaugural.soliloquy.common.test.fakes.FakePersistentCollectionHandler;
-import inaugural.soliloquy.common.test.fakes.FakePersistentMapHandler;
-import inaugural.soliloquy.common.test.fakes.FakePersistentPairHandler;
-import inaugural.soliloquy.common.test.fakes.FakePersistentRegistryHandler;
+import inaugural.soliloquy.common.PersistentValuesHandlerImpl;
+import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import inaugural.soliloquy.common.PersistentValuesHandlerImpl;
 import soliloquy.specs.common.infrastructure.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class PersistentValuesHandlerImplTests {
     private PersistentValuesHandlerImpl _persistentValuesHandler;
@@ -68,13 +65,12 @@ class PersistentValuesHandlerImplTests {
 
     @Test
     void testRemovePersistentValueTypeHandler() {
-        assertTrue(!_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
+        assertFalse(_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
         _persistentValuesHandler.addPersistentValueTypeHandler(_persistentIntegerHandler);
         assertSame(_persistentValuesHandler.<Integer>getPersistentValueTypeHandler(Integer.class.getCanonicalName()), _persistentIntegerHandler);
         assertTrue(_persistentValuesHandler.removePersistentValueTypeHandler(Integer.class.getCanonicalName()));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     void testAddGetAndRemovePersistentValueTypeHandlerWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
@@ -173,5 +169,27 @@ class PersistentValuesHandlerImplTests {
                 () -> _persistentValuesHandler.registerPersistentPairHandler(null));
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentValuesHandler.registerPersistentRegistryHandler(null));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(PersistentValuesHandlerImpl.class.getCanonicalName().hashCode(),
+                _persistentValuesHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        PersistentValuesHandler equalPersistentValuesHandler = new PersistentValuesHandlerImpl();
+        PersistentValuesHandler unequalPersistentValuesHandler = new FakePersistentValuesHandler();
+
+        assertEquals(_persistentValuesHandler, equalPersistentValuesHandler);
+        assertNotEquals(_persistentValuesHandler, unequalPersistentValuesHandler);
+        assertNotEquals(null, _persistentValuesHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentValuesHandlerImpl.class.getCanonicalName(),
+                _persistentValuesHandler.toString());
     }
 }
