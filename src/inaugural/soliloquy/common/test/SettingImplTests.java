@@ -8,6 +8,8 @@ import inaugural.soliloquy.common.SettingImpl;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SettingImplTests {
@@ -70,15 +72,6 @@ class SettingImplTests {
         assertEquals(_setting.id(), SETTING_ID);
     }
 
-    @SuppressWarnings("rawtypes")
-    @Test
-    void testEquals() {
-        Setting setting2 = new SettingImpl<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
-                SETTING_ARCHETYPE, _settingControlParams);
-
-        assertEquals(_setting, setting2);
-    }
-
     @Test
     void testName() {
         assertEquals(_setting.getName(), SETTING_NAME_1);
@@ -118,5 +111,27 @@ class SettingImplTests {
     @Test
     void testControlParams() {
         assertSame(_setting.controlParams(), _settingControlParams);
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(Objects.hash(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
+                _settingControlParams),
+                _setting.hashCode());
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Test
+    void testEquals() {
+        Setting setting2 = new SettingImpl<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
+                SETTING_ARCHETYPE, _settingControlParams);
+
+        assertEquals(_setting, setting2);
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Test
+    void testToString() {
+        assertThrows(UnsupportedOperationException.class, _setting::toString);
     }
 }

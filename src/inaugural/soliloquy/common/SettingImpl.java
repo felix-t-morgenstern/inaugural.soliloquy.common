@@ -4,6 +4,8 @@ import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
+import java.util.Objects;
+
 public class SettingImpl<T> implements Setting<T> {
     private final String ID;
     private final T ARCHETYPE;
@@ -62,6 +64,11 @@ public class SettingImpl<T> implements Setting<T> {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(ID, _name, _value, CONTROL_PARAMS);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == null) {
             return false;
@@ -71,5 +78,12 @@ public class SettingImpl<T> implements Setting<T> {
         }
         //noinspection rawtypes
         return ((Setting) o).id().equals(ID);
+    }
+
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException(
+                "SettingImpl.toString: Operation not supported; use " +
+                        "PersistentSettingsRepoHandler.write instead");
     }
 }

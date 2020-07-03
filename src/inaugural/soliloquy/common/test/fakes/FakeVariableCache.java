@@ -75,4 +75,9 @@ public class FakeVariableCache implements VariableCache {
     public VariableCache makeClone() {
         return null;
     }
+
+    @Override
+    public int hashCode() {
+        return this.getClass().getCanonicalName().hashCode();
+    }
 }
