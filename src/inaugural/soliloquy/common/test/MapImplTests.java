@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.test;
 
 import java.util.Iterator;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -192,18 +193,6 @@ class MapImplTests {
     }
 
     @Test
-    void testEqualsMap() {
-        MapImpl<String,String> secondMap = new MapImpl<>(PAIR_FACTORY, "", "", COLLECTION_FACTORY);
-        _map.put("Key1", "Value1");
-        assertFalse(_map.equals(secondMap));
-        secondMap.put("Key2", "Value2");
-        assertFalse(_map.equals(secondMap));
-        _map.put("Key2", "Value2");
-        secondMap.put("Key1", "Value1");
-        assertTrue(_map.equals(secondMap));
-    }
-
-    @Test
     void testRemoveByKey() {
         _map.put(PAIR_1_KEY, PAIR_1_VALUE);
         _map.put(PAIR_2_KEY, PAIR_2_VALUE);
@@ -316,5 +305,37 @@ class MapImplTests {
         assertNotNull(clonedMap.getFirstArchetype());
         assertNotNull(clonedMap.getSecondArchetype());
         assertTrue(clonedMap.validators().contains(validator));
+    }
+
+    @Test
+    void testHashCode() {
+        // NB: TreeMap is chosen to contrast against the implementation, which uses HashMap
+        java.util.Map<String, String> comparandMap = new TreeMap<>();
+
+        comparandMap.put(PAIR_1_KEY, PAIR_1_VALUE);
+        comparandMap.put(PAIR_2_KEY, PAIR_2_VALUE);
+
+        _map.put(PAIR_1_KEY, PAIR_1_VALUE);
+        _map.put(PAIR_2_KEY, PAIR_2_VALUE);
+
+        assertEquals(comparandMap.hashCode(), _map.hashCode());
+    }
+
+    @Test
+    void testEqualsMap() {
+        MapImpl<String,String> secondMap = new MapImpl<>(PAIR_FACTORY, "", "", COLLECTION_FACTORY);
+        _map.put("Key1", "Value1");
+        assertFalse(_map.equals(secondMap));
+        secondMap.put("Key2", "Value2");
+        assertFalse(_map.equals(secondMap));
+        _map.put("Key2", "Value2");
+        secondMap.put("Key1", "Value1");
+        assertTrue(_map.equals(secondMap));
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Test
+    void testToString() {
+        assertThrows(UnsupportedOperationException.class, _map::toString);
     }
 }

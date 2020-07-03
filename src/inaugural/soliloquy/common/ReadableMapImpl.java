@@ -7,6 +7,7 @@ import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 
 class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableMap<K,V> {
     final HashMap<K,V> MAP;
@@ -54,21 +55,6 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
     @Override
     public boolean contains(Pair<K, V> item) throws IllegalArgumentException {
         return get(item.getItem1()) == item.getItem2();
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public boolean equals(ReadableMap<K, V> map) throws IllegalArgumentException {
-        Check.ifNull(map, "map");
-        if (this.size() != map.size()) {
-            return false;
-        }
-        for (K key : MAP.keySet()) {
-            if (MAP.get(key) != map.get(key)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override
@@ -163,5 +149,32 @@ class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableM
     @Override
     public V getSecondArchetype() {
         return ARCHETYPE_2;
+    }
+
+    @Override
+    public int hashCode() {
+        return MAP.hashCode();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public boolean equals(ReadableMap<K, V> map) throws IllegalArgumentException {
+        Check.ifNull(map, "map");
+        if (this.size() != map.size()) {
+            return false;
+        }
+        for (K key : MAP.keySet()) {
+            if (MAP.get(key) != map.get(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException(
+                "ReadableMapImpl.toString: Operation not supported; use " +
+                        "PersistentMapHandler.write instead");
     }
 }
