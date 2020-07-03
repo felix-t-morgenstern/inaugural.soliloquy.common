@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CollectionImplTests {
@@ -114,19 +116,6 @@ class CollectionImplTests {
     }
 
     @Test
-    void testEquals() {
-        CollectionImpl<Integer> newCollection = new CollectionImpl<>(0);
-        _collection.add(1);
-        assertFalse(_collection.equals(newCollection));
-        newCollection.add(1);
-        assertTrue(_collection.equals(newCollection));
-        _collection.add(2);
-        assertFalse(_collection.equals(newCollection));
-        newCollection.add(3);
-        assertFalse(_collection.equals(newCollection));
-    }
-
-    @Test
     void testMakeClone() {
         Collection<Integer> newCollection = _collection.makeClone();
 
@@ -165,17 +154,51 @@ class CollectionImplTests {
                         String.class.getCanonicalName() + ">",
                 strings.getInterfaceName());
 
-        Collection<Collection<Collection<String>>> stringsCeption =
+        Collection<Collection<Collection<String>>> groupsOfGroupsOfStrings =
                 new CollectionImpl<>(new CollectionImpl<>(new CollectionImpl<>("")));
         assertEquals(Collection.class.getCanonicalName() + "<" +
                         Collection.class.getCanonicalName() + "<" +
                         Collection.class.getCanonicalName() + "<" +
                         String.class.getCanonicalName() + ">>>",
-                stringsCeption.getInterfaceName());
+                groupsOfGroupsOfStrings.getInterfaceName());
     }
 
     @Test
     void testGetArchetype() {
         assertEquals(123123, (int) _collection.getArchetype());
+    }
+
+    @Test
+    void testHashCode() {
+        final String string1 = "string1";
+        final String string2 = "string2";
+        final String string3 = "string3";
+
+        Collection<String> strings = new CollectionImpl<>("");
+
+        strings.add(string1);
+        strings.add(string2);
+        strings.add(string3);
+
+        assertEquals(Objects.hash(string1, string2, string3), strings.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        CollectionImpl<Integer> newCollection = new CollectionImpl<>(0);
+        _collection.add(1);
+        assertFalse(_collection.equals(newCollection));
+        newCollection.add(1);
+        assertTrue(_collection.equals(newCollection));
+        _collection.add(2);
+        assertFalse(_collection.equals(newCollection));
+        newCollection.add(3);
+        assertFalse(_collection.equals(newCollection));
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Test
+    void testToString() {
+        assertThrows(UnsupportedOperationException.class, _collection::toString);
     }
 }
