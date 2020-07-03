@@ -9,6 +9,7 @@ import soliloquy.specs.common.shared.EntityGroupItem;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 
 public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRepo {
@@ -51,17 +52,6 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @Override
     public String id() throws IllegalStateException {
         return ID;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (!(o instanceof SettingsRepo)) {
-            return false;
-        }
-        return ((SettingsRepo) o).id().equals(ID);
     }
 
     @SuppressWarnings("rawtypes")
@@ -201,6 +191,32 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @Override
     public String getInterfaceName() {
         return SettingsRepo.class.getCanonicalName();
+    }
+
+    @SuppressWarnings("rawtypes")
+    @Override
+    public int hashCode() {
+        java.util.Map<String,Setting> settingsById = new HashMap<>();
+        getAllUngrouped().forEach(s -> settingsById.put(s.id(), s));
+        return settingsById.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof SettingsRepo)) {
+            return false;
+        }
+        return ((SettingsRepo) o).id().equals(ID);
+    }
+
+    @Override
+    public String toString() {
+        throw new UnsupportedOperationException(
+                "SettingsRepoImpl.toString: Operation not supported; use " +
+                        "PersistentSettingsRepoHandler.write instead");
     }
 
     @SuppressWarnings("rawtypes")

@@ -46,8 +46,7 @@ public class FakeReadableCollection<V> implements ReadableCollection<V> {
 
     @Override
     public Object[] toArray() {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
+        return _collection.toArray();
     }
 
     @Override

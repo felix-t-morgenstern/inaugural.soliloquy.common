@@ -14,6 +14,9 @@ import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.shared.EntityGroupItem;
 
+import java.util.Objects;
+import java.util.TreeMap;
+
 class SettingsRepoImplTests {
     private SettingsRepoImpl _settingsRepo;
 
@@ -80,21 +83,6 @@ class SettingsRepoImplTests {
                 () -> _settingsRepo.newSubgrouping(0, null, null));
         assertThrows(IllegalArgumentException.class,
                 () -> _settingsRepo.newSubgrouping(0, "", null));
-    }
-
-    @Test
-    void testEquals() {
-        SettingsRepo settingsRepo2 = new SettingsRepoImpl(COLLECTION_FACTORY, PAIR_FACTORY,
-                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
-        _settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
-        settingsRepo2.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
-
-        SettingsRepo settingsRepoSubgrouping =
-                _settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
-        SettingsRepo settingsRepo2Subgrouping =
-                settingsRepo2.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
-
-        assertEquals(settingsRepoSubgrouping, settingsRepo2Subgrouping);
     }
 
     @Test
@@ -399,8 +387,50 @@ class SettingsRepoImplTests {
     void testGetInterfaceName() {
         assertEquals(SettingsRepo.class.getCanonicalName(), _settingsRepo.getInterfaceName());
     }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Test
+    void testHashCode() {
+        final int order1 = 123123;
+        final int order2 = 456456;
+
+        Setting setting1 = new SettingStub(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+        Setting setting2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
+
+        // NB: TreeMap is chosen to contrast against the implementation, which uses HashMap
+        java.util.Map<String,Setting> comparand = new TreeMap<>();
+        comparand.put(SETTING_1_ID, setting1);
+        comparand.put(SETTING_2_ID, setting2);
+
+        _settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
+        _settingsRepo.addEntity(setting1, order1, null);
+        _settingsRepo.addEntity(setting2, order2, SETTINGS_REPO_SUBGROUP_1_ID);
+
+        assertEquals(comparand.hashCode(), _settingsRepo.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        SettingsRepo settingsRepo2 = new SettingsRepoImpl(COLLECTION_FACTORY, PAIR_FACTORY,
+                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
+        _settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
+        settingsRepo2.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
+
+        SettingsRepo settingsRepoSubgrouping =
+                _settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
+        SettingsRepo settingsRepo2Subgrouping =
+                settingsRepo2.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
+
+        assertEquals(settingsRepoSubgrouping, settingsRepo2Subgrouping);
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Test
+    void testToString() {
+        assertThrows(UnsupportedOperationException.class, _settingsRepo::toString);
+    }
     
-    private class SettingStub<T> implements Setting<T> {
+    private static class SettingStub<T> implements Setting<T> {
         private final String ID;
 
         private String _name;
@@ -452,9 +482,13 @@ class SettingsRepoImplTests {
             return null;
         }
 
+        @Override
+        public int hashCode() {
+            return Objects.hash(ID, _name, _value);
+        }
     }
     
-    private class PersistentValuesHandlerStub implements PersistentValuesHandler {
+    private static class PersistentValuesHandlerStub implements PersistentValuesHandler {
         @Override
         public void addPersistentValueTypeHandler(PersistentValueTypeHandler<?> persistentValueTypeHandler)
                 throws IllegalArgumentException {
