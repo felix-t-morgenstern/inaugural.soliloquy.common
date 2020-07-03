@@ -22,4 +22,19 @@ public class RegistryFactoryImpl implements RegistryFactory {
     public String getInterfaceName() {
         return RegistryFactory.class.getCanonicalName();
     }
+
+    @Override
+    public int hashCode() {
+        return RegistryFactoryImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof RegistryFactoryImpl && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return RegistryFactoryImpl.class.getCanonicalName();
+    }
 }

@@ -3,6 +3,7 @@ package inaugural.soliloquy.common.test;
 import inaugural.soliloquy.common.RegistryFactoryImpl;
 import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
 import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
+import inaugural.soliloquy.common.test.fakes.FakeRegistryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.CollectionFactory;
@@ -48,5 +49,27 @@ class RegistryFactoryImplTests {
     @Test
     void testMakeWithNullArchetype() {
         assertThrows(IllegalArgumentException.class, () -> _registryFactory.make(null));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(RegistryFactoryImpl.class.getCanonicalName().hashCode(),
+                _registryFactory.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        RegistryFactory equalRegistryFactory = new RegistryFactoryImpl(COLLECTION_FACTORY);
+        RegistryFactory unequalRegistryFactory = new FakeRegistryFactory();
+
+        assertEquals(equalRegistryFactory, _registryFactory);
+        assertNotEquals(unequalRegistryFactory, _registryFactory);
+        assertNotEquals(null, _registryFactory);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(RegistryFactoryImpl.class.getCanonicalName(),
+                _registryFactory.toString());
     }
 }
