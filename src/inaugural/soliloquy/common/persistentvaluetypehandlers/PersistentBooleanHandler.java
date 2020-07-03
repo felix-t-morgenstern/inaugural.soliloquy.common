@@ -25,4 +25,18 @@ public class PersistentBooleanHandler extends PersistentTypeHandler<Boolean>
         return Boolean.FALSE;
     }
 
+    @Override
+    public int hashCode() {
+        return PersistentBooleanHandler.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentBooleanHandler && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return PersistentBooleanHandler.class.getCanonicalName();
+    }
 }

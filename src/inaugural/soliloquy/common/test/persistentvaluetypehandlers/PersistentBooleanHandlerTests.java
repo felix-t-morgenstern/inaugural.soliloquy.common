@@ -1,9 +1,10 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
+import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
+import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentBooleanHandler;
+import soliloquy.specs.common.factories.VariableCacheFactory;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,5 +42,28 @@ class PersistentBooleanHandlerTests {
         assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
                         Boolean.class.getCanonicalName() + ">",
                 _persistentBooleanHandler.getInterfaceName());
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(PersistentBooleanHandler.class.getCanonicalName().hashCode(),
+                _persistentBooleanHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        PersistentValueTypeHandler<Boolean> equalPersistentBooleanHandler =
+                new PersistentBooleanHandler();
+        VariableCacheFactory unequalPersistentBooleanHandler = new FakeVariableCacheFactory();
+
+        assertEquals(_persistentBooleanHandler, equalPersistentBooleanHandler);
+        assertNotEquals(_persistentBooleanHandler, unequalPersistentBooleanHandler);
+        assertNotEquals(null, _persistentBooleanHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentBooleanHandler.class.getCanonicalName(),
+                _persistentBooleanHandler.toString());
     }
 }
