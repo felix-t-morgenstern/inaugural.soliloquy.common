@@ -1,7 +1,9 @@
 package inaugural.soliloquy.common.test;
 
+import inaugural.soliloquy.common.RegistryFactoryImpl;
 import inaugural.soliloquy.common.SettingFactoryImpl;
 import inaugural.soliloquy.common.test.fakes.FakeCollection;
+import inaugural.soliloquy.common.test.fakes.FakeSettingFactory;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,5 +48,27 @@ class SettingFactoryTests {
 
         assertThrows(IllegalArgumentException.class, () -> _settingFactory.make("settingId",
                 "settingName", archetype, new FakeVariableCache()));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(SettingFactoryImpl.class.getCanonicalName().hashCode(),
+                _settingFactory.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        SettingFactory equalSettingFactory = new SettingFactoryImpl();
+        SettingFactory unequalSettingFactory = new FakeSettingFactory();
+
+        assertEquals(equalSettingFactory, _settingFactory);
+        assertNotEquals(unequalSettingFactory, _settingFactory);
+        assertNotEquals(null, _settingFactory);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(SettingFactoryImpl.class.getCanonicalName(),
+                _settingFactory.toString());
     }
 }

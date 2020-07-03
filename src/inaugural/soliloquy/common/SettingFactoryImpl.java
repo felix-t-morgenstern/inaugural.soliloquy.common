@@ -22,4 +22,19 @@ public class SettingFactoryImpl extends CanCheckArchetypeAndArchetypesOfArchetyp
     protected String className() {
         return "SettingFactory";
     }
+
+    @Override
+    public int hashCode() {
+        return SettingFactoryImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof SettingFactoryImpl && obj.hashCode() == hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return SettingFactoryImpl.class.getCanonicalName();
+    }
 }
