@@ -43,14 +43,14 @@
   </build>
   <distributionManagement>
       <repository>
-          <id>inaugural.soliloquy.common</id>
-          <name>Soliloquy, Inaugural Engine, Common Module</name>
+          <id>github</id>
+          <name>Soliloquy Specifications</name>
           <uniqueVersion>false</uniqueVersion>
-          <url>file://${project.build.directory}/mvn-repo</url>
+          <url>https://maven.pkg.github.com/felix-t-morgenstern/inaugural.soliloquy.common</url>
       </repository>
       <snapshotRepository>
-          <id>inaugural.soliloquy.common</id>
-          <name>Soliloquy, Inaugural Engine, Common Module</name>
+          <id>github</id>
+          <name>Soliloquy Specifications</name>
           <uniqueVersion>false</uniqueVersion>
           <url>file://${project.build.directory}/mvn-repo</url>
       </snapshotRepository>
