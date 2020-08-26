@@ -3,7 +3,11 @@
 .settings/org.eclipse.m2e.core.prefs
 target
 *.class
-.idea
-inaugural.soliloquy.common.iml
 *.kotlin_module
-.idea/dictionaries/*
+.idea/inaugural.soliloquy.common.iml
+.idea/libraries
+.idea/tasks.xml
+.idea/uiDesigner.xml
+.idea/usage.statistics.xml
+.idea/workspace.xml
+.idea/shelf
