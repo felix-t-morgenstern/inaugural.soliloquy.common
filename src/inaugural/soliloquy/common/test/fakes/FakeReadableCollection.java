@@ -2,6 +2,7 @@ package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;
+import soliloquy.specs.common.shared.SoliloquyClass;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -73,6 +74,10 @@ public class FakeReadableCollection<V> implements ReadableCollection<V> {
 
     @Override
     public String getInterfaceName() {
-        return "soliloquy.common.specs.Collection<" + _archetype.getClass().getCanonicalName() + ">";
+        return Collection.class.getCanonicalName() + "<" +
+                (_archetype instanceof SoliloquyClass ?
+                        ((SoliloquyClass)_archetype).getInterfaceName() :
+                        _archetype.getClass().getCanonicalName())
+                + ">";
     }
 }
