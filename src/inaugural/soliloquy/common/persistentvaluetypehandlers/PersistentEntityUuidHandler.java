@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.factories.EntityUuidFactory;
 import soliloquy.specs.common.valueobjects.EntityUuid;

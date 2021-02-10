@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import soliloquy.specs.common.factories.VariableCacheFactory;
 import soliloquy.specs.common.infrastructure.*;
 

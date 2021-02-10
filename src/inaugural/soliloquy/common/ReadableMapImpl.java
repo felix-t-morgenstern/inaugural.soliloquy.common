@@ -1,13 +1,16 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.tools.Check;
+import inaugural.soliloquy.tools.generic.HasTwoGenericParams;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.PairFactory;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.Map;
+import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.infrastructure.ReadableMap;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Objects;
 
 class ReadableMapImpl<K,V> extends HasTwoGenericParams<K,V> implements ReadableMap<K,V> {
     final HashMap<K,V> MAP;

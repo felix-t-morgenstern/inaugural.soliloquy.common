@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.tools.Check;
+import inaugural.soliloquy.tools.generic.CanGetInterfaceName;
 import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;

@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.tools.Check;
+import inaugural.soliloquy.tools.generic.HasOneGenericParam;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.infrastructure.Collection;
 import soliloquy.specs.common.infrastructure.ReadableCollection;

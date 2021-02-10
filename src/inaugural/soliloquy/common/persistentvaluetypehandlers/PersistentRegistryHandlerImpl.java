@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentDataStructureWithOneGenericParamHandler;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.PersistentRegistryHandler;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;

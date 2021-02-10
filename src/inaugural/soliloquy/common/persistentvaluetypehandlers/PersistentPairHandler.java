@@ -1,12 +1,13 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandlerWithTwoGenerics;
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
-public class PersistentPairHandler extends PersistentHandlerWithTwoGenerics<Pair>
+public class PersistentPairHandler extends PersistentTypeHandlerWithTwoGenerics<Pair>
         implements soliloquy.specs.common.infrastructure.PersistentPairHandler {
 
     private final PairFactory PAIR_FACTORY;

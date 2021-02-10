@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.tools.Check;
+import inaugural.soliloquy.tools.generic.HasTwoGenericParams;
 import soliloquy.specs.common.infrastructure.ReadablePair;
 
 import java.util.Objects;

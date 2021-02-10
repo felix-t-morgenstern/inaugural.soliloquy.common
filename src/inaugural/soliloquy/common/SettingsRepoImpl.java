@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.tools.Check;
+import inaugural.soliloquy.tools.generic.CanGetInterfaceName;
 import soliloquy.specs.common.factories.CollectionFactory;
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.*;
@@ -9,7 +10,6 @@ import soliloquy.specs.common.shared.EntityGroupItem;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Set;
 
 public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRepo {

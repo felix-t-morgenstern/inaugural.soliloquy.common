@@ -1,10 +1,11 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandlerWithTwoGenerics;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.*;
 
-public class PersistentMapHandler extends PersistentHandlerWithTwoGenerics<Map>
+public class PersistentMapHandler extends PersistentTypeHandlerWithTwoGenerics<Map>
         implements soliloquy.specs.common.infrastructure.PersistentMapHandler {
     private final MapFactory MAP_FACTORY;
 

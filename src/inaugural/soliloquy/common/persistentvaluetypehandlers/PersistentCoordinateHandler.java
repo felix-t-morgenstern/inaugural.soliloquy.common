@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import com.google.gson.Gson;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import soliloquy.specs.common.factories.CoordinateFactory;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate;
@@ -53,6 +54,7 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<Coordinat
         }
     }
 
+    @SuppressWarnings("InnerClassMayBeStatic")
     private class CoordinateDTO {
         int x;
         int y;

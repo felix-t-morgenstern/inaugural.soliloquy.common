@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.archetypes;
 
-import inaugural.soliloquy.common.HasTwoGenericParams;
+import inaugural.soliloquy.tools.generic.HasTwoGenericParams;
 import soliloquy.specs.common.entities.Function;
 import soliloquy.specs.game.Game;
 import soliloquy.specs.logger.Logger;

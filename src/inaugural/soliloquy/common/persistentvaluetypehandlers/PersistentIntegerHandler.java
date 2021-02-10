@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 
 public class PersistentIntegerHandler extends PersistentTypeHandler<Integer>
