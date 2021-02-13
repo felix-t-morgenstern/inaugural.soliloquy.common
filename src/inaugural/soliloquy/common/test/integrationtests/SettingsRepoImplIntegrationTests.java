@@ -19,14 +19,15 @@ class SettingsRepoImplIntegrationTests {
 
     private PersistentValueTypeHandler<SettingsRepo> _settingsRepoHandler;
 
-    private final String VALUES_STRING = "[{\"id\":\"booleanSetting\",\"serializedValue\":\"true\"},{\"id\":\"collectionOfIntsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"collectionOfMapsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"id\":\"coordinateSetting\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"id\":\"entityUuidSetting\",\"serializedValue\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"id\":\"integerSetting\",\"serializedValue\":\"123456789\"},{\"id\":\"mapOfStringsToIntsSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keySerializedValues\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueSerializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"mapOfIntsToMapsOfIntsToBooleansSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"id\":\"pairOfStringsSetting\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pairString2\\\"}\"},{\"id\":\"pairOfStringAndCollectionOfInts\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"stringValue\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.infrastructure.Collection\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"serializedValue2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"serializedValues\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\",\"serializedValue\":\"stringSettingValue\"}]";
+    private final String VALUES_STRING = "[{\"id\":\"booleanSetting\",\"serializedValue\":\"true\"},{\"id\":\"collectionOfIntsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"collectionOfMapsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"id\":\"coordinateSetting\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"id\":\"entityUuidSetting\",\"serializedValue\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"id\":\"integerSetting\",\"serializedValue\":\"123456789\"},{\"id\":\"mapOfStringsToIntsSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keySerializedValues\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueSerializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"mapOfIntsToMapsOfIntsToBooleansSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"id\":\"pairOfStringsSetting\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pairString2\\\"}\"},{\"id\":\"pairOfStringAndCollectionOfInts\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"stringValue\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.infrastructure.List\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"serializedValue2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"serializedValues\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\",\"serializedValue\":\"stringSettingValue\"}]";
 
+    @SuppressWarnings("rawtypes")
     @BeforeEach
     void setUp() {
         Injector commonInjector = Guice.createInjector(new CommonModule());
 
         _settingsRepo = commonInjector.getInstance(SettingsRepo.class);
-        CollectionFactory _collectionFactory = commonInjector.getInstance(CollectionFactory.class);
+        ListFactory listFactory = commonInjector.getInstance(ListFactory.class);
         CoordinateFactory _coordinateFactory = commonInjector.getInstance(CoordinateFactory.class);
         _entityUuidFactory = commonInjector.getInstance(EntityUuidFactory.class);
         VariableCacheFactory _variableCacheFactory =
@@ -68,12 +69,12 @@ class SettingsRepoImplIntegrationTests {
         _settingsRepo.addEntity(booleanSetting, 1, null);
 
         Setting collectionOfIntsSetting = _settingFactory.make("collectionOfIntsSetting",
-                "CollectionOfIntsSetting", _collectionFactory.make(0),
+                "CollectionOfIntsSetting", listFactory.make(0),
                 _variableCacheFactory.make());
         _settingsRepo.addEntity(collectionOfIntsSetting, 2, subgrouping1);
 
         Setting collectionOfMapsSetting = _settingFactory.make("collectionOfMapsSetting",
-                "CollectionOfMapsSetting", _collectionFactory.make(_mapFactory.make(0, false)),
+                "CollectionOfMapsSetting", listFactory.make(_mapFactory.make(0, false)),
                 _variableCacheFactory.make());
         _settingsRepo.addEntity(collectionOfMapsSetting, 3, subgrouping1_1);
 
@@ -109,7 +110,7 @@ class SettingsRepoImplIntegrationTests {
         Setting pairOfStringAndCollectionOfInts =
                 _settingFactory.make("pairOfStringAndCollectionOfInts",
                         "PairOfStringAndCollectionOfInts",
-                        _pairFactory.make("", _collectionFactory.make(0)),
+                        _pairFactory.make("", listFactory.make(0)),
                         _variableCacheFactory.make());
         _settingsRepo.addEntity(pairOfStringAndCollectionOfInts, 10, subgrouping3);
 
@@ -118,16 +119,16 @@ class SettingsRepoImplIntegrationTests {
         _settingsRepo.addEntity(stringSetting, 11, subgrouping3_1);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testWrite() {
         Setting booleanSetting = _settingsRepo.getSetting("booleanSetting");
         booleanSetting.setValue(true);
 
         Setting collectionOfIntsSetting = _settingsRepo.getSetting("collectionOfIntsSetting");
-        ((Collection<Integer>) collectionOfIntsSetting.getValue()).add(123);
-        ((Collection<Integer>) collectionOfIntsSetting.getValue()).add(456);
-        ((Collection<Integer>) collectionOfIntsSetting.getValue()).add(789);
+        ((List<Integer>) collectionOfIntsSetting.getValue()).add(123);
+        ((List<Integer>) collectionOfIntsSetting.getValue()).add(456);
+        ((List<Integer>) collectionOfIntsSetting.getValue()).add(789);
 
         Setting collectionOfMapsSetting = _settingsRepo.getSetting("collectionOfMapsSetting");
         Map collectionOfMapsMap1 = _mapFactory.make(0, true);
@@ -138,8 +139,8 @@ class SettingsRepoImplIntegrationTests {
         collectionOfMapsMap2.put(123, false);
         collectionOfMapsMap2.put(456, true);
         collectionOfMapsMap2.put(789, false);
-        ((Collection<Map>) collectionOfMapsSetting.getValue()).add(collectionOfMapsMap1);
-        ((Collection<Map>) collectionOfMapsSetting.getValue()).add(collectionOfMapsMap2);
+        ((List<Map>) collectionOfMapsSetting.getValue()).add(collectionOfMapsMap1);
+        ((List<Map>) collectionOfMapsSetting.getValue()).add(collectionOfMapsMap2);
 
         Setting coordinateSetting = _settingsRepo.getSetting("coordinateSetting");
         ((Coordinate) coordinateSetting.getValue()).setX(123);
@@ -185,10 +186,10 @@ class SettingsRepoImplIntegrationTests {
 
         Setting pairOfStringAndCollectionOfIntsSetting =
                 _settingsRepo.getSetting("pairOfStringAndCollectionOfInts");
-        ((Pair<String,Collection<Integer>>) pairOfStringAndCollectionOfIntsSetting.getValue())
+        ((Pair<String,List<Integer>>) pairOfStringAndCollectionOfIntsSetting.getValue())
                 .setItem1("stringValue");
-        Collection<Integer> collectionOfInts =
-                ((Pair<String,Collection<Integer>>) pairOfStringAndCollectionOfIntsSetting.getValue())
+        List<Integer> collectionOfInts =
+                ((Pair<String,List<Integer>>) pairOfStringAndCollectionOfIntsSetting.getValue())
                         .getItem2();
         collectionOfInts.add(123);
         collectionOfInts.add(456);
@@ -207,18 +208,18 @@ class SettingsRepoImplIntegrationTests {
         Setting<Boolean> booleanSetting = _settingsRepo.getSetting("booleanSetting");
         assertTrue(booleanSetting.getValue());
 
-        Setting<Collection<Integer>> collectionOfIntsSetting =
+        Setting<List<Integer>> collectionOfIntsSetting =
                 _settingsRepo.getSetting("collectionOfIntsSetting");
-        Collection<Integer> collectionOfInts = collectionOfIntsSetting.getValue();
+        List<Integer> collectionOfInts = collectionOfIntsSetting.getValue();
         assertNotNull(collectionOfInts);
         assertEquals(3, collectionOfInts.size());
         assertTrue(collectionOfInts.contains(123));
         assertTrue(collectionOfInts.contains(456));
         assertTrue(collectionOfInts.contains(789));
 
-        Setting<Collection<Map<Integer,Boolean>>> collectionOfMapsSetting =
+        Setting<List<Map<Integer,Boolean>>> collectionOfMapsSetting =
                 _settingsRepo.getSetting("collectionOfMapsSetting");
-        Collection<Map<Integer,Boolean>> collectionOfMaps = collectionOfMapsSetting.getValue();
+        List<Map<Integer,Boolean>> collectionOfMaps = collectionOfMapsSetting.getValue();
         assertNotNull(collectionOfMaps);
         assertEquals(2, collectionOfMaps.size());
         Map<Integer,Boolean> mapFromCollection1 = collectionOfMaps.get(0);
@@ -291,13 +292,13 @@ class SettingsRepoImplIntegrationTests {
         assertEquals("pairString1", pairOfStrings.getItem1());
         assertEquals("pairString2", pairOfStrings.getItem2());
 
-        Setting<Pair<String,Collection<Integer>>> pairOfStringAndCollectionOfIntsSetting =
+        Setting<Pair<String,List<Integer>>> pairOfStringAndCollectionOfIntsSetting =
                 _settingsRepo.getSetting("pairOfStringAndCollectionOfInts");
-        Pair<String,Collection<Integer>> pairOfStringAndCollectionOfInts
+        Pair<String,List<Integer>> pairOfStringAndCollectionOfInts
                 = pairOfStringAndCollectionOfIntsSetting.getValue();
         assertNotNull(pairOfStringAndCollectionOfInts);
         assertEquals("stringValue", pairOfStringAndCollectionOfInts.getItem1());
-        Collection<Integer> collectionOfIntsFromPair = pairOfStringAndCollectionOfInts.getItem2();
+        List<Integer> collectionOfIntsFromPair = pairOfStringAndCollectionOfInts.getItem2();
         assertNotNull(collectionOfIntsFromPair);
         assertEquals(3, collectionOfIntsFromPair.size());
         assertTrue(collectionOfIntsFromPair.contains(123));

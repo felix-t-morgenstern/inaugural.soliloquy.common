@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.SettingsRepoImpl;
-import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
+import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import soliloquy.specs.common.factories.CollectionFactory;
+import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.shared.EntityGroupItem;
@@ -20,7 +20,7 @@ import java.util.TreeMap;
 class SettingsRepoImplTests {
     private SettingsRepoImpl _settingsRepo;
 
-    private final CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
+    private final ListFactory LIST_FACTORY = new FakeListFactory();
 
     private final PairFactory PAIR_FACTORY = new FakePairFactory();
 
@@ -50,7 +50,7 @@ class SettingsRepoImplTests {
 
     @BeforeEach
     void setUp()  {
-        _settingsRepo = new SettingsRepoImpl(COLLECTION_FACTORY, PAIR_FACTORY,
+        _settingsRepo = new SettingsRepoImpl(LIST_FACTORY, PAIR_FACTORY,
                 SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
 
@@ -58,11 +58,11 @@ class SettingsRepoImplTests {
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(null,
                 PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(COLLECTION_FACTORY,
+        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
                 null, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(COLLECTION_FACTORY,
+        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
                 PAIR_FACTORY, null, SETTING_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(COLLECTION_FACTORY,
+        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
                 PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, null));
     }
 
@@ -240,17 +240,17 @@ class SettingsRepoImplTests {
 
         _settingsRepo.addEntity(setting3, 0, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        Collection<EntityGroupItem<Setting>> topLevelGrouped = _settingsRepo.getAllGrouped();
+        List<EntityGroupItem<Setting>> topLevelGrouped = _settingsRepo.getAllGrouped();
 
         assertEquals(2, topLevelGrouped.size());
         assertEquals(topLevelGrouped.get(0).entity().getValue(), SETTING_1_VALUE);
 
-        Collection<EntityGroupItem<Setting>> midLevelGrouped = topLevelGrouped.get(1).group().getAllGrouped();
+        List<EntityGroupItem<Setting>> midLevelGrouped = topLevelGrouped.get(1).group().getAllGrouped();
 
         assertEquals(2, midLevelGrouped.size());
         assertEquals(midLevelGrouped.get(0).entity().getValue(), SETTING_2_VALUE);
 
-        Collection<EntityGroupItem<Setting>> bottomLevelGrouped = midLevelGrouped.get(1).group().getAllGrouped();
+        List<EntityGroupItem<Setting>> bottomLevelGrouped = midLevelGrouped.get(1).group().getAllGrouped();
 
         assertEquals(1, bottomLevelGrouped.size());
         assertEquals(bottomLevelGrouped.get(0).entity().getValue(), SETTING_3_VALUE);
@@ -276,15 +276,14 @@ class SettingsRepoImplTests {
 
         _settingsRepo.addEntity(setting3, 0, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        Collection<Setting> allSettingsUngrouped = _settingsRepo.getAllUngrouped();
+        List<Setting> allSettingsUngrouped = _settingsRepo.getAllUngrouped();
 
         assertEquals(3, allSettingsUngrouped.size());
 
         boolean setting1Used = false;
         boolean setting2Used = false;
         boolean setting3Used = false;
-        for(int i = 0; i < allSettingsUngrouped.size(); i++) {
-            Setting setting = allSettingsUngrouped.get(i);
+        for (Setting setting : allSettingsUngrouped) {
             if (setting.id().equals(setting1.id())
                     && setting.getName().equals(setting1.getName())
                     && setting.getValue().equals(setting1.getValue())) {
@@ -411,7 +410,7 @@ class SettingsRepoImplTests {
 
     @Test
     void testEquals() {
-        SettingsRepo settingsRepo2 = new SettingsRepoImpl(COLLECTION_FACTORY, PAIR_FACTORY,
+        SettingsRepo settingsRepo2 = new SettingsRepoImpl(LIST_FACTORY, PAIR_FACTORY,
                 SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
         _settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
         settingsRepo2.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
@@ -516,13 +515,13 @@ class SettingsRepoImplTests {
         }
 
         @Override
-        public Collection<String> persistentValueTypesHandled() {
+        public List<String> persistentValueTypesHandled() {
             // Stub class; no implementation needed
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public void registerPersistentPairHandler(PersistentPairHandler PersistentPairHandler) {
+        public void registerPersistentPairHandler(PersistentPairHandler persistentPairHandler) {
             // Stub class; no implementation needed
             throw new UnsupportedOperationException();
         }
@@ -535,13 +534,13 @@ class SettingsRepoImplTests {
         }
 
         @Override
-        public void registerPersistentCollectionHandler(PersistentCollectionHandler PersistentCollectionHandler) {
+        public void registerPersistentListHandler(PersistentListHandler persistentListHandler) {
             // Stub class; no implementation needed
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public void registerPersistentMapHandler(PersistentMapHandler PersistentMapHandler) {
+        public void registerPersistentMapHandler(PersistentMapHandler persistentMapHandler) {
             // Stub class; no implementation needed
             throw new UnsupportedOperationException();
         }

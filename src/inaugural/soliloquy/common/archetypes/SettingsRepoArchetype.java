@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.archetypes;
 
-import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
@@ -23,12 +23,12 @@ public class SettingsRepoArchetype implements SettingsRepo {
     }
 
     @Override
-    public Collection<EntityGroupItem<Setting>> getAllGrouped() {
+    public List<EntityGroupItem<Setting>> getAllGrouped() {
         return null;
     }
 
     @Override
-    public Collection<Setting> getAllUngrouped() {
+    public List<Setting> getAllUngrouped() {
         return null;
     }
 

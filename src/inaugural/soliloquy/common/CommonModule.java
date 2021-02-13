@@ -3,14 +3,14 @@ package inaugural.soliloquy.common;
 import com.google.inject.AbstractModule;
 import inaugural.soliloquy.common.archetypes.SettingArchetype;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentCollectionHandler;
+import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentListHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentMapHandler;
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentPairHandler;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.factories.*;
 
 public class CommonModule extends AbstractModule {
-    private CollectionFactory _collectionFactory;
+    private ListFactory _listFactory;
     private CoordinateFactory _coordinateFactory;
     private EntityUuidFactory _entityUuidFactory;
     private MapFactory _mapFactory;
@@ -30,23 +30,23 @@ public class CommonModule extends AbstractModule {
     //     with MapHandler, CollectionHandler, etc. This may also be a code smell.)
     //     [Source: https://github.com/google/guice/issues/1133]
     public CommonModule() {
-        _collectionFactory = new CollectionFactoryImpl();
+        _listFactory = new ListFactoryImpl();
         _coordinateFactory = new CoordinateFactoryImpl();
         _entityUuidFactory = new EntityUuidFactoryImpl();
         _pairFactory = new PairFactoryImpl();
-        _registryFactory = new RegistryFactoryImpl(_collectionFactory);
-
         _settingFactory = new SettingFactoryImpl();
 
-        _mapFactory = new MapFactoryImpl(_pairFactory, _collectionFactory);
+        _mapFactory = new MapFactoryImpl(_listFactory);
+        _registryFactory = new RegistryFactoryImpl(_listFactory);
 
-        _variableCacheFactory = new VariableCacheFactoryImpl(_collectionFactory,
+
+        _variableCacheFactory = new VariableCacheFactoryImpl(_listFactory,
                 _mapFactory);
 
         _persistentValuesHandler = new PersistentValuesHandlerImpl();
 
         Setting settingArchetype = new SettingArchetype();
-        _settingsRepo = new SettingsRepoImpl(_collectionFactory, _pairFactory,
+        _settingsRepo = new SettingsRepoImpl(_listFactory, _pairFactory,
                 _persistentValuesHandler, settingArchetype);
 
         PersistentValueTypeHandler booleanHandler = new PersistentBooleanHandler();
@@ -61,8 +61,8 @@ public class CommonModule extends AbstractModule {
         PersistentValueTypeHandler settingsRepoHandler =
                 new PersistentSettingsRepoHandler(_persistentValuesHandler, _settingsRepo);
         PersistentValueTypeHandler stringHandler = new PersistentStringHandler();
-        PersistentCollectionHandler collectionHandler =
-                new PersistentCollectionHandler(_persistentValuesHandler, _collectionFactory);
+        PersistentListHandler listHandler =
+                new PersistentListHandler(_persistentValuesHandler, _listFactory);
         PersistentMapHandler mapHandler = new PersistentMapHandler(_persistentValuesHandler,
                 _mapFactory);
         PersistentPairHandler pairHandler = new PersistentPairHandler(_persistentValuesHandler,
@@ -77,7 +77,7 @@ public class CommonModule extends AbstractModule {
         _persistentValuesHandler.addPersistentValueTypeHandler(variableCachePersistenceHandler);
         _persistentValuesHandler.addPersistentValueTypeHandler(settingsRepoHandler);
         _persistentValuesHandler.addPersistentValueTypeHandler(stringHandler);
-        _persistentValuesHandler.registerPersistentCollectionHandler(collectionHandler);
+        _persistentValuesHandler.registerPersistentListHandler(listHandler);
         _persistentValuesHandler.registerPersistentMapHandler(mapHandler);
         _persistentValuesHandler.registerPersistentPairHandler(pairHandler);
         _persistentValuesHandler.registerPersistentRegistryHandler(registryHandler);
@@ -85,9 +85,9 @@ public class CommonModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(CollectionFactory.class).toInstance(_collectionFactory);
         bind(CoordinateFactory.class).toInstance(_coordinateFactory);
         bind(EntityUuidFactory.class).toInstance(_entityUuidFactory);
+        bind(ListFactory.class).toInstance(_listFactory);
         bind(MapFactory.class).toInstance(_mapFactory);
         bind(PairFactory.class).toInstance(_pairFactory);
         bind(PersistentValuesHandler.class).toInstance(_persistentValuesHandler);

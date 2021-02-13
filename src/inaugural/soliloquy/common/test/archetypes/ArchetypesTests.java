@@ -18,14 +18,6 @@ class ArchetypesTests {
     }
 
     @Test
-    void testMapValidatorFunctionArchetype() {
-        assertEquals(Function.class.getCanonicalName() + "<" + Pair.class.getCanonicalName() + "<"
-                + Integer.class.getCanonicalName() + "," + Boolean.class.getCanonicalName() + ">,"
-                + String.class.getCanonicalName() + ">",
-                new MapValidatorFunctionArchetype<>(0, false).getInterfaceName());
-    }
-
-    @Test
     void testPairArchetype() {
         assertEquals(Pair.class.getCanonicalName() + "<" + String.class.getCanonicalName() + "," +
                 Integer.class.getCanonicalName() + ">",

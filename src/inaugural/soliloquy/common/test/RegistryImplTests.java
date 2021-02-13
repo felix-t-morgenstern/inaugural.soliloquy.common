@@ -1,21 +1,22 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.RegistryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeCollection;
-import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
+import inaugural.soliloquy.common.test.fakes.FakeList;
 import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
+import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.CollectionFactory;
-import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.ReadableCollection;
+import soliloquy.specs.common.factories.ListFactory;
+import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Registry;
+
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RegistryImplTests {
     private static FakeHasIdAndName ARCHETYPE = new FakeHasIdAndName("", "");
-    private static CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
+    private static ListFactory LIST_FACTORY = new FakeListFactory();
     private static String ID = "id";
     private static String NAME = "name";
 
@@ -24,13 +25,13 @@ class RegistryImplTests {
 
     @BeforeEach
     void setUp() {
-        _registry = new RegistryImpl<>(ARCHETYPE, COLLECTION_FACTORY);
+        _registry = new RegistryImpl<>(ARCHETYPE, LIST_FACTORY);
     }
 
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry = new RegistryImpl<>(null, COLLECTION_FACTORY));
+                () -> _registry = new RegistryImpl<>(null, LIST_FACTORY));
         assertThrows(IllegalArgumentException.class,
                 () -> _registry = new RegistryImpl<>(ARCHETYPE, null));
     }
@@ -88,7 +89,7 @@ class RegistryImplTests {
         FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
         FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
         FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
-        Collection<FakeHasIdAndName> toAdd = new FakeCollection<>(null);
+        List<FakeHasIdAndName> toAdd = new FakeList<>();
         toAdd.add(item1);
         toAdd.add(item2);
         toAdd.add(item3);
@@ -103,18 +104,29 @@ class RegistryImplTests {
     @Test
     void testAddAllFromCollectionWithNull() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll((ReadableCollection<FakeHasIdAndName>)null));
+                () -> _registry.addAll((Collection<FakeHasIdAndName>)null));
+    }
+
+    @Test
+    void testAddAllFromTypedArrayWithNull() {
+        assertThrows(IllegalArgumentException.class,
+                () -> _registry.addAll((FakeHasIdAndName[])null));
+    }
+
+    @Test
+    void testAddAllFromUntypedArrayWithNull() {
+        assertThrows(IllegalArgumentException.class, () -> _registry.addAll((Object[])null));
     }
 
     @Test
     void testAddAllFromCollectionWithInvalidEntries() {
-        Collection<FakeHasIdAndName> collectionWithNull = new FakeCollection<>();
+        Collection<FakeHasIdAndName> collectionWithNull = new FakeList<>();
         collectionWithNull.add(null);
 
-        Collection<FakeHasIdAndName> collectionWithNullId = new FakeCollection<>();
+        Collection<FakeHasIdAndName> collectionWithNullId = new FakeList<>();
         collectionWithNullId.add(new FakeHasIdAndName(null, "name"));
 
-        Collection<FakeHasIdAndName> collectionWithEmptyId = new FakeCollection<>();
+        Collection<FakeHasIdAndName> collectionWithEmptyId = new FakeList<>();
         collectionWithEmptyId.add(new FakeHasIdAndName("", "name"));
 
         assertThrows(IllegalArgumentException.class, () -> _registry.addAll(collectionWithNull));
@@ -124,7 +136,24 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddAllFromArray() {
+    void testAddAllFromUntypedArray() {
+        FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
+        FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
+        FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
+        Object[] array = new Object[3];
+        array[0] = item1;
+        array[1] = item2;
+        array[2] = item3;
+
+        _registry.addAll(array);
+
+        assertTrue(_registry.contains(item1));
+        assertTrue(_registry.contains(item2));
+        assertTrue(_registry.contains(item3));
+    }
+
+    @Test
+    void testAddAllFromTypedArray() {
         FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
         FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
         FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
@@ -147,7 +176,7 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddAllFromArrayWithInvalidEntries() {
+    void testAddAllFromTypedArrayWithInvalidEntries() {
         FakeHasIdAndName[] arrayWithNull = new FakeHasIdAndName[1];
         arrayWithNull[0] = null;
 
@@ -160,6 +189,14 @@ class RegistryImplTests {
         assertThrows(IllegalArgumentException.class, () -> _registry.addAll(arrayWithNull));
         assertThrows(IllegalArgumentException.class, () -> _registry.addAll(arrayWithNullId));
         assertThrows(IllegalArgumentException.class, () -> _registry.addAll(arrayWithEmptyId));
+    }
+
+    @Test
+    void testAddAllFromUntypedArrayWithInvalidEntries() {
+        Object[] untypedArray = new Object[1];
+        untypedArray[0] = 123;
+
+        assertThrows(IllegalArgumentException.class, () -> _registry.addAll(untypedArray));
     }
 
     @Test
@@ -225,7 +262,7 @@ class RegistryImplTests {
         _registry.add(item2);
         _registry.add(item3);
 
-        ReadableCollection<FakeHasIdAndName> representation = _registry.representation();
+        List<FakeHasIdAndName> representation = _registry.representation();
 
         assertNotNull(representation);
         assertEquals(3, representation.size());

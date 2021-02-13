@@ -5,26 +5,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import inaugural.soliloquy.common.VariableCacheImpl;
-import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
-import soliloquy.specs.common.factories.CollectionFactory;
+import inaugural.soliloquy.common.test.fakes.FakeListFactory;
+import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.MapFactory;
+import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.infrastructure.VariableCache;
-import soliloquy.specs.common.infrastructure.ReadableCollection;
-import soliloquy.specs.common.infrastructure.ReadableMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VariableCacheImplTests {
     private VariableCache _variableCache;
 
-    private final CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
+    private final ListFactory LIST_FACTORY = new FakeListFactory();
     private final MapFactory MAP_FACTORY = new FakeMapFactory();
 
     @BeforeEach
     void setUp() {
         // archetype not necessary for test suite
-        _variableCache = new VariableCacheImpl(COLLECTION_FACTORY, MAP_FACTORY);
+        _variableCache = new VariableCacheImpl(LIST_FACTORY, MAP_FACTORY);
     }
 
     @Test
@@ -32,7 +31,7 @@ class VariableCacheImplTests {
         assertThrows(IllegalArgumentException.class,
                 () -> new VariableCacheImpl(null, MAP_FACTORY));
         assertThrows(IllegalArgumentException.class,
-                () -> new VariableCacheImpl(COLLECTION_FACTORY, null));
+                () -> new VariableCacheImpl(LIST_FACTORY, null));
     }
     
     @Test
@@ -73,8 +72,7 @@ class VariableCacheImplTests {
         _variableCache.setVariable("variable2", "value2");
         _variableCache.setVariable("variable3", "value3");
 
-        ReadableCollection<String> namesRepresentation =
-                _variableCache.namesRepresentation();
+        List<String> namesRepresentation = _variableCache.namesRepresentation();
 
         assertNotNull(namesRepresentation);
         assertEquals(3, namesRepresentation.size());
@@ -115,8 +113,7 @@ class VariableCacheImplTests {
         _variableCache.setVariable("variable2", "value2");
         _variableCache.setVariable("variable3", "value3");
 
-        ReadableMap<String,Object> variablesRepresentation =
-                _variableCache.variablesRepresentation();
+        Map<String,Object> variablesRepresentation = _variableCache.variablesRepresentation();
 
         assertNotNull(variablesRepresentation);
         assertNotNull(variablesRepresentation.getFirstArchetype());
@@ -125,7 +122,6 @@ class VariableCacheImplTests {
         assertEquals("value1", variablesRepresentation.get("variable1"));
         assertEquals("value2", variablesRepresentation.get("variable2"));
         assertEquals("value3", variablesRepresentation.get("variable3"));
-        assertFalse(variablesRepresentation instanceof Map);
     }
 
     @Test

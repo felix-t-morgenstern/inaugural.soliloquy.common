@@ -111,16 +111,12 @@ class PersistentValuesHandlerImplTests {
 
     @Test
     void testRegisterPersistentCollectionHandler() {
-        PersistentCollectionHandler persistentCollectionHandler =
-                new FakePersistentCollectionHandler();
-        _persistentValuesHandler.registerPersistentCollectionHandler(persistentCollectionHandler);
+        PersistentListHandler persistentListHandler = new FakePersistentListHandler();
+        _persistentValuesHandler.registerPersistentListHandler(persistentListHandler);
 
-        assertSame(persistentCollectionHandler,
+        assertSame(persistentListHandler,
                 _persistentValuesHandler.getPersistentValueTypeHandler(
-                        Collection.class.getCanonicalName()));
-        assertSame(persistentCollectionHandler,
-                _persistentValuesHandler.getPersistentValueTypeHandler(
-                        ReadableCollection.class.getCanonicalName()));
+                        List.class.getCanonicalName()));
     }
 
     @Test
@@ -131,9 +127,6 @@ class PersistentValuesHandlerImplTests {
         assertSame(persistentMapHandler,
                 _persistentValuesHandler.getPersistentValueTypeHandler(
                         Map.class.getCanonicalName()));
-        assertSame(persistentMapHandler,
-                _persistentValuesHandler.getPersistentValueTypeHandler(
-                        ReadableMap.class.getCanonicalName()));
     }
 
     @Test
@@ -144,9 +137,6 @@ class PersistentValuesHandlerImplTests {
         assertSame(persistentPairHandler,
                 _persistentValuesHandler.getPersistentValueTypeHandler(
                         Pair.class.getCanonicalName()));
-        assertSame(persistentPairHandler,
-                _persistentValuesHandler.getPersistentValueTypeHandler(
-                        ReadablePair.class.getCanonicalName()));
     }
 
     @Test
@@ -162,7 +152,7 @@ class PersistentValuesHandlerImplTests {
     @Test
     void testRegisterInfrastructureHandlersWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentValuesHandler.registerPersistentCollectionHandler(null));
+                () -> _persistentValuesHandler.registerPersistentListHandler(null));
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentValuesHandler.registerPersistentMapHandler(null));
         assertThrows(IllegalArgumentException.class,

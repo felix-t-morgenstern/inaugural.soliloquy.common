@@ -1,27 +1,27 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.tools.Check;
-import soliloquy.specs.common.factories.CollectionFactory;
+import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.*;
 
 import java.util.HashMap;
 
 public class VariableCacheImpl implements VariableCache {
-    private final CollectionFactory COLLECTION_FACTORY;
+    private final ListFactory LIST_FACTORY;
     private final MapFactory MAP_FACTORY;
     private final HashMap<String,Object> PERSISTENT_VARIABLES;
 
-    public VariableCacheImpl(CollectionFactory collectionFactory, MapFactory mapFactory) {
+    public VariableCacheImpl(ListFactory listFactory, MapFactory mapFactory) {
         PERSISTENT_VARIABLES = new HashMap<>();
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
+        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
         MAP_FACTORY = Check.ifNull(mapFactory, "mapFactory");
     }
 
     @SuppressWarnings("unchecked")
-    private VariableCacheImpl(CollectionFactory collectionFactory, MapFactory mapFactory,
+    private VariableCacheImpl(ListFactory listFactory, MapFactory mapFactory,
                               HashMap<String,Object> persistentVariables) {
-        COLLECTION_FACTORY = collectionFactory;
+        LIST_FACTORY = listFactory;
         MAP_FACTORY = mapFactory;
         PERSISTENT_VARIABLES = (HashMap<String, Object>) persistentVariables.clone();
     }
@@ -48,17 +48,17 @@ public class VariableCacheImpl implements VariableCache {
     }
 
     @Override
-    public ReadableMap<String,Object> variablesRepresentation() {
+    public Map<String,Object> variablesRepresentation() {
         Map<String,Object> variablesMap = MAP_FACTORY.make("", new Object());
         PERSISTENT_VARIABLES.forEach(variablesMap::put);
-        return variablesMap.readOnlyRepresentation();
+        return variablesMap;
     }
 
     @Override
-    public ReadableCollection<String> namesRepresentation() {
-        Collection<String> names = COLLECTION_FACTORY.make("");
-        PERSISTENT_VARIABLES.keySet().forEach(names::add);
-        return names.representation();
+    public List<String> namesRepresentation() {
+        List<String> names = LIST_FACTORY.make("");
+        names.addAll(PERSISTENT_VARIABLES.keySet());
+        return names;
     }
 
     @Override
@@ -74,6 +74,6 @@ public class VariableCacheImpl implements VariableCache {
 
     @Override
     public VariableCache makeClone() {
-        return new VariableCacheImpl(COLLECTION_FACTORY, MAP_FACTORY, PERSISTENT_VARIABLES);
+        return new VariableCacheImpl(LIST_FACTORY, MAP_FACTORY, PERSISTENT_VARIABLES);
     }
 }

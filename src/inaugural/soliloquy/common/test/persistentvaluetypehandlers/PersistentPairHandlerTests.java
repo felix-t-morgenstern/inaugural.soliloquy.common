@@ -6,12 +6,11 @@ import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.PairFactory;
-import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PersistentPairHandlerTests {
     private final PairFactory PAIR_FACTORY = new FakePairFactory();
@@ -76,16 +75,16 @@ class PersistentPairHandlerTests {
     @Test
     void testGenerateArchetype() {
         final String valueType = Pair.class.getCanonicalName() + "<" +
-                String.class.getCanonicalName() + "," + Collection.class.getCanonicalName() +
+                String.class.getCanonicalName() + "," + List.class.getCanonicalName() +
                 "<" + Integer.class.getCanonicalName() + ">>";
 
-        Pair<String, Collection<Integer>> archetype =
+        Pair<String, List<Integer>> archetype =
                 _persistentPairHandler.generateArchetype(valueType);
 
         assertNotNull(archetype);
         assertNotNull(archetype.getFirstArchetype());
         assertNotNull(archetype.getSecondArchetype());
-        assertNotNull(((Collection)archetype.getSecondArchetype()).getArchetype());
+        assertNotNull(((List)archetype.getSecondArchetype()).getArchetype());
     }
 
     @Test

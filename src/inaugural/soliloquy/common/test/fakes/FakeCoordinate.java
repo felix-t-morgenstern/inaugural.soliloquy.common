@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.valueobjects.Coordinate;
-import soliloquy.specs.common.valueobjects.ReadableCoordinate;
 
 public class FakeCoordinate implements Coordinate {
     private int _x;
@@ -28,11 +27,6 @@ public class FakeCoordinate implements Coordinate {
     }
 
     @Override
-    public ReadableCoordinate readOnlyRepresentation() {
-        return null;
-    }
-
-    @Override
     public Coordinate makeClone() {
         return null;
     }
@@ -43,7 +37,7 @@ public class FakeCoordinate implements Coordinate {
     }
 
     @Override
-    public int compareTo(ReadableCoordinate o) {
+    public int compareTo(Coordinate o) {
         return 0;
     }
 }

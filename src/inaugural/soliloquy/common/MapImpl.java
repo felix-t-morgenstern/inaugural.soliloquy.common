@@ -1,88 +1,80 @@
 package inaugural.soliloquy.common;
 
+import inaugural.soliloquy.tools.Check;
+import inaugural.soliloquy.tools.generic.CanGetInterfaceName;
+import soliloquy.specs.common.factories.ListFactory;
+import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.infrastructure.Map;
+
 import java.util.HashMap;
 
-import inaugural.soliloquy.common.archetypes.MapValidatorFunctionArchetype;
-import inaugural.soliloquy.tools.Check;
-import soliloquy.specs.common.entities.Function;
-import soliloquy.specs.common.factories.CollectionFactory;
-import soliloquy.specs.common.factories.PairFactory;
-import soliloquy.specs.common.infrastructure.*;
+public class MapImpl<K,V> extends HashMap<K,V> implements Map<K,V> {
+    private final ListFactory LIST_FACTORY;
+    private final K KEY_ARCHETYPE;
+    private final V VALUE_ARCHETYPE;
 
-public class MapImpl<K,V> extends ReadableMapImpl<K,V> implements Map<K,V> {
-    final Collection<Function<Pair<K,V>,String>> VALIDATORS;
+    private static CanGetInterfaceName GET_INTERFACE_NAME = new CanGetInterfaceName();
 
-    @SuppressWarnings("ConstantConditions")
-    public MapImpl(PairFactory pairFactory, K archetype1, V archetype2,
-                   CollectionFactory collectionFactory) {
-        super(archetype1, archetype2, pairFactory, collectionFactory);
-        VALIDATORS = collectionFactory.make(
-                new MapValidatorFunctionArchetype<>(ARCHETYPE_1, ARCHETYPE_2));
+    // TODO: Ensure that archetype's child archetypes are tested in constructor
+    public MapImpl(ListFactory listFactory, K keyArchetype, V valueArchetype) {
+        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
+        Check.archetypeAndArchetypesOfArchetypeAreNotNull("keyArchetype", keyArchetype);
+        Check.archetypeAndArchetypesOfArchetypeAreNotNull("valueArchetype", valueArchetype);
+        KEY_ARCHETYPE = Check.ifNull(keyArchetype, "keyArchetype");
+        VALUE_ARCHETYPE = Check.ifNull(valueArchetype, "valueArchetype");
     }
 
-    MapImpl(PairFactory pairFactory, K archetype1, V archetype2, CollectionFactory collectionFactory,
-            HashMap<K,V> internalMap) {
-        super(archetype1, archetype2, internalMap, pairFactory, collectionFactory);
-        VALIDATORS = collectionFactory.make(
-                new MapValidatorFunctionArchetype<>(ARCHETYPE_1, ARCHETYPE_2));
-    }
-
-    @Override
-    public void clear() {
-        MAP.clear();
+    // TODO: Ensure that archetype's child archetypes are tested in constructor
+    public MapImpl(ListFactory listFactory, java.util.Map<K,V> map,
+                   K keyArchetype, V valueArchetype) {
+        super(Check.ifNull(map, "map"));
+        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
+        Check.archetypeAndArchetypesOfArchetypeAreNotNull("keyArchetype", keyArchetype);
+        Check.archetypeAndArchetypesOfArchetypeAreNotNull("valueArchetype", valueArchetype);
+        KEY_ARCHETYPE = Check.ifNull(keyArchetype, "keyArchetype");
+        VALUE_ARCHETYPE = Check.ifNull(valueArchetype, "valueArchetype");
     }
 
     @Override
-    public void put(K key, V value) throws IllegalArgumentException {
-        Pair<K,V> toInsert = PAIR_FACTORY.make(Check.ifNullOrEmptyIfString(key, "key"), value,
-                ARCHETYPE_1, ARCHETYPE_2);
-        for(Function<Pair<K,V>, String> validator : VALIDATORS) {
-            String exceptionMessage = validator.run(toInsert);
-            if (exceptionMessage != null) {
-                throw new IllegalArgumentException("Map.put: Input failed validation; " +
-                        exceptionMessage);
-            }
-        }
-        MAP.put(key, value);
+    public V get(Object key) {
+        return super.get(Check.ifNullOrEmptyIfString(key, "key"));
     }
 
     @Override
-    public void putAll(ReadableCollection<Pair<K, V>> items) throws IllegalArgumentException {
-        for(Pair<K,V> item : items) {
-            put(item.getItem1(), item.getItem2());
-        }
+    public V put(K key, V value) {
+        return super.put(Check.ifNullOrEmptyIfString(key, "key"), value);
     }
 
     @Override
-    public V removeByKey(K key) {
-        return MAP.remove(key);
+    public Map<K, V> makeClone() {
+        return new MapImpl<>(LIST_FACTORY, this, KEY_ARCHETYPE, VALUE_ARCHETYPE);
     }
 
     @Override
-    public boolean removeByKeyAndValue(K key, V value) {
-        return MAP.remove(key, value);
+    public K getFirstArchetype() throws IllegalStateException {
+        return KEY_ARCHETYPE;
     }
 
     @Override
-    public Collection<Function<Pair<K, V>, String>> validators() {
-        return VALIDATORS;
+    public V getSecondArchetype() throws IllegalStateException {
+        return VALUE_ARCHETYPE;
     }
 
     @Override
-    public Map<K,V> makeClone() {
-        Map<K,V> clonedMap = super.makeClone();
-        VALIDATORS.forEach(clonedMap.validators()::add);
-        return clonedMap;
+    public String getInterfaceName() {
+        return Map.class.getCanonicalName() + "<" +
+                GET_INTERFACE_NAME.getProperTypeName(KEY_ARCHETYPE) + "," +
+                GET_INTERFACE_NAME.getProperTypeName(VALUE_ARCHETYPE) + ">";
     }
 
     @Override
-    public ReadableMap<K, V> readOnlyRepresentation() {
-        return new ReadableMapImpl<>(ARCHETYPE_1, ARCHETYPE_2, MAP, PAIR_FACTORY, COLLECTION_FACTORY);
+    public String toString() {
+        throw new UnsupportedOperationException("PairImpl.toString: Not supported; c.f. " +
+                "PersistentMapHandler");
     }
 
     @Override
-    public String getUnparameterizedInterfaceName() {
-        return Map.class.getCanonicalName();
+    public List<V> getValuesList() {
+        return LIST_FACTORY.make(values(), VALUE_ARCHETYPE);
     }
-
 }

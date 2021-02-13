@@ -44,13 +44,14 @@ class PersistentSettingsRepoHandlerTests {
                 () -> _persistentSettingsRepoHandler.write(null));
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     void testRead() {
         SettingsRepo settingsRepo = _persistentSettingsRepoHandler.read(VALUES_STRING);
 
         assertSame(SETTINGS_REPO, settingsRepo);
 
-        Collection<Setting> settings = SETTINGS_REPO.getAllUngrouped();
+        List<Setting> settings = SETTINGS_REPO.getAllUngrouped();
         assertEquals(2, settings.size());
         for(Setting setting : settings) {
             switch(setting.getName()) {

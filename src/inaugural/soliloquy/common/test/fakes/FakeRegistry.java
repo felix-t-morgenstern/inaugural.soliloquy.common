@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import soliloquy.specs.common.infrastructure.Collection;
-import soliloquy.specs.common.infrastructure.ReadableCollection;
+import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -24,6 +24,11 @@ public class FakeRegistry<T extends HasId> implements Registry<T> {
     }
 
     @Override
+    public boolean contains(T t) throws IllegalArgumentException {
+        return false;
+    }
+
+    @Override
     public T get(String s) {
         return _registry.get(s);
     }
@@ -33,14 +38,24 @@ public class FakeRegistry<T extends HasId> implements Registry<T> {
         _registry.put(item.id(), item);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void addAll(ReadableCollection<? extends T> collection) throws UnsupportedOperationException {
-
+    public void addAll(Object[] items) throws IllegalArgumentException {
+        for(Object item : items) {
+            add((T)item);
+        }
     }
 
     @Override
-    public void addAll(T[] ts) throws UnsupportedOperationException {
+    public void addAll(T[] items) throws IllegalArgumentException {
+        for(T item : items) {
+            add(item);
+        }
+    }
 
+    @Override
+    public void addAll(Collection<T> items) throws IllegalArgumentException {
+        items.forEach(this::add);
     }
 
     @Override
@@ -49,12 +64,7 @@ public class FakeRegistry<T extends HasId> implements Registry<T> {
     }
 
     @Override
-    public boolean remove(T t) throws UnsupportedOperationException {
-        return false;
-    }
-
-    @Override
-    public ReadableCollection<T> representation() {
+    public List<T> representation() {
         return null;
     }
 
@@ -64,28 +74,8 @@ public class FakeRegistry<T extends HasId> implements Registry<T> {
     }
 
     @Override
-    public boolean contains(T t) {
+    public boolean remove(T t) throws IllegalArgumentException {
         return false;
-    }
-
-    @Override
-    public boolean equals(ReadableCollection<T> readableCollection) {
-        return false;
-    }
-
-    @Override
-    public T get(int i) {
-        return null;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
     }
 
     @Override
@@ -106,10 +96,5 @@ public class FakeRegistry<T extends HasId> implements Registry<T> {
     @Override
     public Iterator<T> iterator() {
         return _registry.values().iterator();
-    }
-
-    @Override
-    public Collection<T> makeClone() {
-        return null;
     }
 }

@@ -4,7 +4,7 @@ import soliloquy.specs.common.infrastructure.*;
 
 public class FakePersistentValuesHandler implements PersistentValuesHandler {
 
-    private final String COLLECTION_GENERIC_INTERFACE_NAME = Collection.class.getCanonicalName();
+    private final String COLLECTION_GENERIC_INTERFACE_NAME = List.class.getCanonicalName();
 
     @Override
     public void addPersistentValueTypeHandler(PersistentValueTypeHandler<?> PersistentValueTypeHandler) throws IllegalArgumentException {
@@ -19,7 +19,7 @@ public class FakePersistentValuesHandler implements PersistentValuesHandler {
     @Override
     public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType) throws UnsupportedOperationException {
         if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
-            return (PersistentValueTypeHandler<T>) new FakePersistentCollectionHandler();
+            return (PersistentValueTypeHandler<T>) new FakePersistentListHandler();
         } else if (persistentValueType.equals(Integer.class.getCanonicalName())) {
             return (PersistentValueTypeHandler<T>) new FakePersistentIntegerHandler();
         } else if (persistentValueType.equals(String.class.getCanonicalName())) {
@@ -40,14 +40,14 @@ public class FakePersistentValuesHandler implements PersistentValuesHandler {
     @Override
     public Object generateArchetype(String valueType) throws IllegalArgumentException {
         if (interfaceIsOfGenericType(valueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
-            return new FakePersistentCollectionHandler().generateArchetype(valueType);
+            return new FakePersistentListHandler().generateArchetype(valueType);
         } else {
             return getPersistentValueTypeHandler(valueType).getArchetype();
         }
     }
 
     @Override
-    public Collection<String> persistentValueTypesHandled() {
+    public List<String> persistentValueTypesHandled() {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class FakePersistentValuesHandler implements PersistentValuesHandler {
     }
 
     @Override
-    public void registerPersistentCollectionHandler(PersistentCollectionHandler PersistentCollectionHandler) {
+    public void registerPersistentListHandler(PersistentListHandler persistentListHandler) {
 
     }
 

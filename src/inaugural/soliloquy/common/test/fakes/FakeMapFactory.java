@@ -12,6 +12,12 @@ public class FakeMapFactory implements MapFactory {
     }
 
     @Override
+    public <K, V> Map<K, V> make(java.util.Map<K, V> map, K k, V v)
+            throws IllegalArgumentException {
+        return null;
+    }
+
+    @Override
     public String getInterfaceName() {
         // Stub method; unimplemented
         throw new UnsupportedOperationException();

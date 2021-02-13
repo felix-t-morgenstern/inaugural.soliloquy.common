@@ -25,6 +25,7 @@ public class PersistentVariableCacheHandler
         return ARCHETYPE;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public VariableCache read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null) {
@@ -48,7 +49,7 @@ public class PersistentVariableCacheHandler
         return VariableCache;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public String write(VariableCache VariableCache) {
         if (VariableCache == null) {
@@ -56,7 +57,7 @@ public class PersistentVariableCacheHandler
                     "PersistentVariableCacheHandler.write: VariableCache " +
                             "must be non-null");
         }
-        ReadableCollection<String> pVarNames = VariableCache.namesRepresentation();
+        List<String> pVarNames = VariableCache.namesRepresentation();
         PersistentVariableDTO[] dto = new PersistentVariableDTO[pVarNames.size()];
         for(int i = 0; i < pVarNames.size(); i++) {
             String pVarName = pVarNames.get(i);
@@ -72,6 +73,7 @@ public class PersistentVariableCacheHandler
         return new Gson().toJson(dto);
     }
 
+    @SuppressWarnings("InnerClassMayBeStatic")
     private class PersistentVariableDTO {
         String name;
         String typeName;

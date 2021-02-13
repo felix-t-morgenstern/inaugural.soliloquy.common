@@ -70,22 +70,23 @@ class PersistentMapHandlerTests {
                 () -> _persistentMapHandler.getInterfaceName());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testGenerateArchetype() {
         final String valueType = Map.class.getCanonicalName() + "<" +
-                String.class.getCanonicalName() + "," + Collection.class.getCanonicalName() +
+                String.class.getCanonicalName() + "," + List.class.getCanonicalName() +
                 "<" + Integer.class.getCanonicalName() + ">>";
 
-        Map<String,Collection<Integer>> archetype =
+        Map<String,List<Integer>> archetype =
                 _persistentMapHandler.generateArchetype(valueType);
 
         assertNotNull(archetype);
         assertNotNull(archetype.getFirstArchetype());
         assertNotNull(archetype.getSecondArchetype());
-        assertNotNull(((Collection)archetype.getSecondArchetype()).getArchetype());
+        assertNotNull(((List)archetype.getSecondArchetype()).getArchetype());
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     void testGenerateArchetypeWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,

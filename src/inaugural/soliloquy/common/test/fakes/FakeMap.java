@@ -1,54 +1,51 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import soliloquy.specs.common.entities.Function;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.infrastructure.Map;
 
-public class FakeMap<K,V> extends FakeReadableMap<K,V> implements Map<K,V> {
+import java.util.HashMap;
+
+public class FakeMap<K,V> extends HashMap<K,V> implements Map<K,V> {
+    public K _keyArchetype;
+    public V _valueArchetype;
 
     public FakeMap() {
 
     }
 
-    public FakeMap(K archetype1, V archetype2) {
-        super(archetype1, archetype2);
+    public FakeMap(K keyArchetype, V valueArchetype) {
+        _keyArchetype = keyArchetype;
+        _valueArchetype = valueArchetype;
+    }
+
+    public FakeMap(java.util.Map<K,V> map, K keyArchetype, V valueArchetype) {
+        super(map);
+        _keyArchetype = keyArchetype;
+        _valueArchetype = valueArchetype;
     }
 
     @Override
-    public void clear() {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
+    public Map<K, V> makeClone() {
+        return null;
     }
 
     @Override
-    public void put(K key, V value) throws IllegalArgumentException {
-        _map.put(key, value);
+    public K getFirstArchetype() throws IllegalStateException {
+        return _keyArchetype;
     }
 
     @Override
-    public void putAll(ReadableCollection<Pair<K, V>> items) throws IllegalArgumentException {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
+    public V getSecondArchetype() throws IllegalStateException {
+        return _valueArchetype;
     }
 
     @Override
-    public V removeByKey(K key) {
-        return _map.remove(key);
+    public String getInterfaceName() {
+        return null;
     }
 
     @Override
-    public boolean removeByKeyAndValue(K key, V value) {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Collection<Function<Pair<K, V>, String>> validators() {
-        // Stub method; unimplemented
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public ReadableMap<K, V> readOnlyRepresentation() {
-        return new FakeReadableMap<>(_archetype1, _archetype2, _map);
+    public List<V> getValuesList() {
+        return null;
     }
 }

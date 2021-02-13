@@ -1,28 +1,28 @@
 package inaugural.soliloquy.common.test;
 
 import inaugural.soliloquy.common.RegistryFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeCollectionFactory;
+import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
 import inaugural.soliloquy.common.test.fakes.FakeRegistryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.CollectionFactory;
+import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RegistryFactoryImplTests {
-    private static CollectionFactory COLLECTION_FACTORY = new FakeCollectionFactory();
-    private static String ID = "id";
-    private static String NAME = "name";
-    private static FakeHasIdAndName HAS_ID_AND_NAME = new FakeHasIdAndName(ID, NAME);
+    private static final ListFactory LIST_FACTORY = new FakeListFactory();
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final FakeHasIdAndName HAS_ID_AND_NAME = new FakeHasIdAndName(ID, NAME);
 
     private RegistryFactory _registryFactory;
 
     @BeforeEach
     void setUp() {
-        _registryFactory = new RegistryFactoryImpl(COLLECTION_FACTORY);
+        _registryFactory = new RegistryFactoryImpl(LIST_FACTORY);
     }
 
     @Test
@@ -59,7 +59,7 @@ class RegistryFactoryImplTests {
 
     @Test
     void testEquals() {
-        RegistryFactory equalRegistryFactory = new RegistryFactoryImpl(COLLECTION_FACTORY);
+        RegistryFactory equalRegistryFactory = new RegistryFactoryImpl(LIST_FACTORY);
         RegistryFactory unequalRegistryFactory = new FakeRegistryFactory();
 
         assertEquals(equalRegistryFactory, _registryFactory);

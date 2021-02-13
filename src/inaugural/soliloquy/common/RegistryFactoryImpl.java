@@ -1,21 +1,21 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.tools.Check;
-import soliloquy.specs.common.factories.CollectionFactory;
+import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;
 
 public class RegistryFactoryImpl implements RegistryFactory {
-    private final CollectionFactory COLLECTION_FACTORY;
+    private final ListFactory LIST_FACTORY;
 
-    public RegistryFactoryImpl(CollectionFactory collectionFactory) {
-        COLLECTION_FACTORY = Check.ifNull(collectionFactory, "collectionFactory");
+    public RegistryFactoryImpl(ListFactory listFactory) {
+        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
     }
 
     @Override
     public <T extends HasId> Registry<T> make(T archetype) {
-        return new RegistryImpl<>(Check.ifNull(archetype, "archetype"), COLLECTION_FACTORY);
+        return new RegistryImpl<>(Check.ifNull(archetype, "archetype"), LIST_FACTORY);
     }
 
     @Override

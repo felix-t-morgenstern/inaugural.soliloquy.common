@@ -57,7 +57,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<Setting
             throw new IllegalArgumentException(
                     "PersistentSettingsRepoHandler.write: settingsRepo must be non-null");
         }
-        Collection<Setting> settings = settingsRepo.getAllUngrouped();
+        List<Setting> settings = settingsRepo.getAllUngrouped();
         SettingDTO[] dto = new SettingDTO[settings.size()];
         int i = 0;
         for(Setting setting : settings) {

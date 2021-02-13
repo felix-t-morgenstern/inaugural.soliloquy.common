@@ -34,16 +34,20 @@ public class FakeVariableCache implements VariableCache {
     }
 
     @Override
-    public ReadableCollection<String> namesRepresentation() {
+    public List<String> namesRepresentation() {
         if (!P_VARS.isEmpty()) {
-            return P_VARS.getKeys();
+            List<String> representation = new FakeList<>();
+            P_VARS.forEach((k,v) -> representation.add(k));
+            return representation;
         } else {
-            return PERSISTENT_VARIABLES.getKeys();
+            List<String> representation = new FakeList<>();
+            PERSISTENT_VARIABLES.forEach((k,v) -> representation.add(k));
+            return representation;
         }
     }
 
     @Override
-    public ReadableMap<String,Object> variablesRepresentation() {
+    public Map<String,Object> variablesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS;
         } else {

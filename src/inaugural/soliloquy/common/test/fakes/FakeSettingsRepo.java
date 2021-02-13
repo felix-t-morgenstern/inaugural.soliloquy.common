@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
@@ -50,14 +50,14 @@ public class FakeSettingsRepo implements SettingsRepo {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public Collection<EntityGroupItem<Setting>> getAllGrouped() {
+    public List<EntityGroupItem<Setting>> getAllGrouped() {
         return null;
     }
 
     @SuppressWarnings("rawtypes")
     @Override
-    public Collection<Setting> getAllUngrouped() {
-        Collection<Setting> settings = new FakeCollection<>();
+    public List<Setting> getAllUngrouped() {
+        List<Setting> settings = new FakeList<>();
         settings.add(SETTING_1);
         settings.add(SETTING_2);
         return settings;

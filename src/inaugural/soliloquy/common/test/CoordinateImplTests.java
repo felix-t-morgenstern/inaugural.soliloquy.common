@@ -3,18 +3,15 @@ package inaugural.soliloquy.common.test;
 import inaugural.soliloquy.common.CoordinateImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import soliloquy.specs.common.valueobjects.Coordinate;
-import soliloquy.specs.common.valueobjects.ReadableCoordinate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CoordinateImplTests {
     private CoordinateImpl _coordinate;
 
     @BeforeEach
     void setUp() {
-        Mockito.reset();
         _coordinate = new CoordinateImpl(0,0);
     }
 
@@ -63,18 +60,5 @@ class CoordinateImplTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(Coordinate.class.getCanonicalName(), _coordinate.getInterfaceName());
-    }
-
-    @Test
-    void testReadOnlyRepresentation() {
-        _coordinate.setX(123);
-        _coordinate.setY(456);
-
-        ReadableCoordinate representation = _coordinate.readOnlyRepresentation();
-
-        assertNotNull(representation);
-        assertFalse(representation instanceof Coordinate);
-        assertEquals(123, representation.getX());
-        assertEquals(456, representation.getY());
     }
 }

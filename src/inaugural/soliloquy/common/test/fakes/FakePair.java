@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Pair;
-import soliloquy.specs.common.infrastructure.ReadablePair;
 
 public class FakePair<K,V> implements Pair<K,V> {
     private final K ARCHETYPE_1;
@@ -61,7 +60,7 @@ public class FakePair<K,V> implements Pair<K,V> {
     }
 
     @Override
-    public ReadablePair<K, V> representation() {
+    public Pair<K, V> makeClone() {
         // Stub method, unimplemented
         throw new UnsupportedOperationException();
     }

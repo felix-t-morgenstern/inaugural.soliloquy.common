@@ -1,14 +1,13 @@
 package inaugural.soliloquy.common.test;
 
-import inaugural.soliloquy.common.RegistryFactoryImpl;
 import inaugural.soliloquy.common.SettingFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeCollection;
+import inaugural.soliloquy.common.test.fakes.FakeList;
 import inaugural.soliloquy.common.test.fakes.FakeSettingFactory;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.SettingFactory;
-import soliloquy.specs.common.infrastructure.Collection;
+import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
@@ -41,10 +40,9 @@ class SettingFactoryTests {
         assertEquals(SettingFactory.class.getCanonicalName(), _settingFactory.getInterfaceName());
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testArchetypeWithNullArchetype() {
-        Collection archetype = new FakeCollection(null);
+        List<String> archetype = new FakeList<>((String)null);
 
         assertThrows(IllegalArgumentException.class, () -> _settingFactory.make("settingId",
                 "settingName", archetype, new FakeVariableCache()));

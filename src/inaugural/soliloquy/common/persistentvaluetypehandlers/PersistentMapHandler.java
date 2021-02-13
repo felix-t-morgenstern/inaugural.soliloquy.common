@@ -62,10 +62,9 @@ public class PersistentMapHandler extends PersistentTypeHandlerWithTwoGenerics<M
         dto.keySerializedValues = new String[map.size()];
         dto.valueSerializedValues = new String[map.size()];
         int indexCounter = 0;
-        for(Object entry : map) {
-            Pair pair = (Pair) entry;
-            dto.keySerializedValues[indexCounter] = keyHandler.write(pair.getItem1());
-            dto.valueSerializedValues[indexCounter] = valueHandler.write(pair.getItem2());
+        for(Object key : map.keySet()) {
+            dto.keySerializedValues[indexCounter] = keyHandler.write(key);
+            dto.valueSerializedValues[indexCounter] = valueHandler.write(map.get(key));
             indexCounter++;
         }
         return new Gson().toJson(dto);

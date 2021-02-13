@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VariableCacheImplIntegrationTests {
     private VariableCache _variableCache;
 
-    private CollectionFactory _collectionFactory;
+    private ListFactory _listFactory;
     private CoordinateFactory _coordinateFactory;
     private EntityUuidFactory _entityUuidFactory;
     private MapFactory _mapFactory;
@@ -25,7 +25,7 @@ class VariableCacheImplIntegrationTests {
 
     private PersistentValueTypeHandler<VariableCache> _varCacheHandler;
 
-    private final String VALUES_STRING = "[{\"name\":\"stringVariableName\",\"typeName\":\"java.lang.String\",\"serializedValue\":\"stringVariableValue\"},{\"name\":\"registry\",\"typeName\":\"soliloquy.specs.common.infrastructure.Registry\\u003cinaugural.soliloquy.common.test.fakes.FakeHasIdAndName\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"inaugural.soliloquy.common.test.fakes.FakeHasIdAndName\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id2\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name2\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id1\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name1\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id3\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name3\\\\\\\"}\\\"]}\"},{\"name\":\"coordinate\",\"typeName\":\"soliloquy.specs.common.valueobjects.Coordinate\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"name\":\"entityUuid\",\"typeName\":\"soliloquy.specs.common.valueobjects.EntityUuid\",\"serializedValue\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"name\":\"mapOfIntsToMapsOfIntsToBooleans\",\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.Boolean\\u003e\\u003e\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"name\":\"collectionOfMaps\",\"typeName\":\"soliloquy.specs.common.infrastructure.Collection\\u003csoliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.Boolean\\u003e\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"name\":\"pairOfStrings\",\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,java.lang.String\\u003e\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pairString2\\\"}\"},{\"name\":\"mapOfStringsToInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.String,java.lang.Integer\\u003e\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keySerializedValues\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueSerializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"name\":\"booleanVariable\",\"typeName\":\"java.lang.Boolean\",\"serializedValue\":\"true\"},{\"name\":\"collectionOfInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Collection\\u003cjava.lang.Integer\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"name\":\"integer\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"123456789\"},{\"name\":\"pairOfStringAndCollectionOfInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,soliloquy.specs.common.infrastructure.Collection\\u003cjava.lang.Integer\\u003e\\u003e\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"item1\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.infrastructure.Collection\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"serializedValue2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"serializedValues\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"}]";
+    private final String VALUES_STRING = "[{\"name\":\"stringVariableName\",\"typeName\":\"java.lang.String\",\"serializedValue\":\"stringVariableValue\"},{\"name\":\"registry\",\"typeName\":\"soliloquy.specs.common.infrastructure.Registry\\u003cinaugural.soliloquy.common.test.fakes.FakeHasIdAndName\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"inaugural.soliloquy.common.test.fakes.FakeHasIdAndName\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id2\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name2\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id1\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name1\\\\\\\"}\\\",\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id3\\\\\\\",\\\\\\\"name\\\\\\\":\\\\\\\"name3\\\\\\\"}\\\"]}\"},{\"name\":\"coordinate\",\"typeName\":\"soliloquy.specs.common.valueobjects.Coordinate\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"name\":\"entityUuid\",\"typeName\":\"soliloquy.specs.common.valueobjects.EntityUuid\",\"serializedValue\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"name\":\"mapOfIntsToMapsOfIntsToBooleans\",\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.Boolean\\u003e\\u003e\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"name\":\"collectionOfMaps\",\"typeName\":\"soliloquy.specs.common.infrastructure.List\\u003csoliloquy.specs.common.infrastructure.Map\\u003cjava.lang.Integer,java.lang.Boolean\\u003e\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"name\":\"pairOfStrings\",\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,java.lang.String\\u003e\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pairString2\\\"}\"},{\"name\":\"mapOfStringsToInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Map\\u003cjava.lang.String,java.lang.Integer\\u003e\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keySerializedValues\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueSerializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"name\":\"booleanVariable\",\"typeName\":\"java.lang.Boolean\",\"serializedValue\":\"true\"},{\"name\":\"collectionOfInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.List\\u003cjava.lang.Integer\\u003e\",\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"name\":\"integer\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"123456789\"},{\"name\":\"pairOfStringAndCollectionOfInts\",\"typeName\":\"soliloquy.specs.common.infrastructure.Pair\\u003cjava.lang.String,soliloquy.specs.common.infrastructure.List\\u003cjava.lang.Integer\\u003e\\u003e\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"item1\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.infrastructure.List\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"serializedValue2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"serializedValues\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"}]";
 
     @BeforeEach
     void setUp() {
@@ -34,7 +34,7 @@ class VariableCacheImplIntegrationTests {
         _variableCache =
                 commonInjector.getInstance(VariableCacheFactory.class).make();
 
-        _collectionFactory = commonInjector.getInstance(CollectionFactory.class);
+        _listFactory = commonInjector.getInstance(ListFactory.class);
         _coordinateFactory = commonInjector.getInstance(CoordinateFactory.class);
         _entityUuidFactory = commonInjector.getInstance(EntityUuidFactory.class);
         _mapFactory = commonInjector.getInstance(MapFactory.class);
@@ -52,14 +52,14 @@ class VariableCacheImplIntegrationTests {
     void testWrite() {
         _variableCache.setVariable("booleanVariable", true);
 
-        Collection<Integer> collectionOfInts = _collectionFactory.make(0);
+        List<Integer> collectionOfInts = _listFactory.make(0);
         collectionOfInts.add(123);
         collectionOfInts.add(456);
         collectionOfInts.add(789);
         _variableCache.setVariable("collectionOfInts", collectionOfInts);
 
-        Collection<Map<Integer,Boolean>> collectionOfMaps =
-                _collectionFactory.make(_mapFactory.make(0, false));
+        List<Map<Integer,Boolean>> collectionOfMaps =
+                _listFactory.make(_mapFactory.make(0, false));
         Map<Integer,Boolean> mapInCollection1 = _mapFactory.make(0, false);
         mapInCollection1.put(1, false);
         mapInCollection1.put(2, true);
@@ -111,8 +111,8 @@ class VariableCacheImplIntegrationTests {
         Pair<String,String> pairOfStrings = _pairFactory.make("pairString1", "pairString2");
         _variableCache.setVariable("pairOfStrings", pairOfStrings);
 
-        Pair<String,Collection<Integer>> pairOfStringAndCollectionOfInts =
-                _pairFactory.make("", _collectionFactory.make(0));
+        Pair<String,List<Integer>> pairOfStringAndCollectionOfInts =
+                _pairFactory.make("", _listFactory.make(0));
         pairOfStringAndCollectionOfInts.setItem1("item1");
         pairOfStringAndCollectionOfInts.getItem2().add(123);
         pairOfStringAndCollectionOfInts.getItem2().add(456);
@@ -141,7 +141,7 @@ class VariableCacheImplIntegrationTests {
 
         assertTrue((boolean) _variableCache.getVariable("booleanVariable"));
 
-        Collection<Integer> collectionOfInts =
+        List<Integer> collectionOfInts =
                 _variableCache.getVariable("collectionOfInts");
         assertNotNull(collectionOfInts);
         assertEquals(3, collectionOfInts.size());
@@ -149,7 +149,7 @@ class VariableCacheImplIntegrationTests {
         assertTrue(collectionOfInts.contains(456));
         assertTrue(collectionOfInts.contains(789));
 
-        Collection<Map<Integer,Boolean>> collectionOfMaps =
+        List<Map<Integer,Boolean>> collectionOfMaps =
                 _variableCache.getVariable("collectionOfMaps");
         assertNotNull(collectionOfMaps);
         assertEquals(2, collectionOfMaps.size());
@@ -200,7 +200,7 @@ class VariableCacheImplIntegrationTests {
         assertEquals("pairString1", pairOfStrings.getItem1());
         assertEquals("pairString2", pairOfStrings.getItem2());
 
-        Pair<String,Collection<Integer>> pairOfStringAndCollectionOfInts =
+        Pair<String,List<Integer>> pairOfStringAndCollectionOfInts =
                 _variableCache.getVariable("pairOfStringAndCollectionOfInts");
         assertNotNull(pairOfStringAndCollectionOfInts);
         assertEquals("item1", pairOfStringAndCollectionOfInts.getItem1());
@@ -211,7 +211,6 @@ class VariableCacheImplIntegrationTests {
 
         Registry<FakeHasIdAndName> registry = _variableCache.getVariable("registry");
         assertNotNull(registry);
-        assertEquals(3, registry.size());
         assertEquals("name1", registry.get("id1").getName());
         assertEquals("name2", registry.get("id2").getName());
         assertEquals("name3", registry.get("id3").getName());

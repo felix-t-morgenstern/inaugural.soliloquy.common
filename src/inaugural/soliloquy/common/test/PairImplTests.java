@@ -5,7 +5,6 @@ import inaugural.soliloquy.common.test.fakes.FakePair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.Pair;
-import soliloquy.specs.common.infrastructure.ReadablePair;
 
 import java.util.Objects;
 
@@ -53,27 +52,22 @@ class PairImplTests {
     }
 
     @Test
-    void testRepresentation() {
+    void testMakeClone() {
         String orig1 = "orig1";
         Integer orig2 = 123;
         _pair.setItem1(orig1);
         _pair.setItem2(orig2);
 
-        ReadablePair<String, Integer> representation = _pair.representation();
+        Pair<String, Integer> clone = _pair.makeClone();
+
+        assertNotNull(clone);
+        assertNotSame(_pair, clone);
+        assertEquals(_pair, clone);
 
         _pair.setItem1("new1");
         _pair.setItem2(456);
 
-        assertNotNull(representation);
-        assertNotSame(_pair, representation);
-        assertEquals(orig1, representation.getItem1());
-        assertEquals(orig2, representation.getItem2());
-        assertEquals(ARCHETYPE_1, representation.getFirstArchetype());
-        assertEquals(ARCHETYPE_2, representation.getSecondArchetype());
-        assertThrows(ClassCastException.class, () -> {
-            @SuppressWarnings("unused") Pair<String,Integer> pair =
-                    ((Pair<String, Integer>)representation);
-        });
+        assertNotEquals(_pair, clone);
     }
 
     @Test

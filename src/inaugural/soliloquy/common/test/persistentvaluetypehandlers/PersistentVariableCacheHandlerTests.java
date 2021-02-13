@@ -2,15 +2,15 @@ package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentVariableCacheHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
-import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
+import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
+import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
 import soliloquy.specs.common.infrastructure.VariableCache;
-import soliloquy.specs.common.infrastructure.ReadableMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,7 +64,7 @@ class PersistentVariableCacheHandlerTests {
 
         assertNotNull(pVarCache);
         assertEquals(2, pVarCache.size());
-        ReadableMap<String,Object> representation = pVarCache.variablesRepresentation();
+        Map<String,Object> representation = pVarCache.variablesRepresentation();
         assertEquals(FakeVariableCache.VARIABLE_1_VALUE,
                 representation.get(FakeVariableCache.VARIABLE_1_NAME));
         assertEquals(FakeVariableCache.VARIABLE_2_VALUE,
