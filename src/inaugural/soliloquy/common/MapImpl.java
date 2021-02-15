@@ -25,6 +25,7 @@ public class MapImpl<K,V> extends HashMap<K,V> implements Map<K,V> {
     }
 
     // TODO: Ensure that archetype's child archetypes are tested in constructor
+    @SuppressWarnings("ConstantConditions")
     public MapImpl(ListFactory listFactory, java.util.Map<K,V> map,
                    K keyArchetype, V valueArchetype) {
         super(Check.ifNull(map, "map"));
