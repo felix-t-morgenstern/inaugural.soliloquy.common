@@ -1,8 +1,10 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentEntityUuidHandler;
-import inaugural.soliloquy.common.test.fakes.FakeEntityUuidFactory;
 import inaugural.soliloquy.common.test.fakes.FakeEntityUuid;
+import inaugural.soliloquy.common.test.fakes.FakeEntityUuidFactory;
+import inaugural.soliloquy.common.test.fakes.FakePersistentEntityUuidHandler;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.EntityUuidFactory;
@@ -53,5 +55,31 @@ class PersistentEntityUuidHandlerTests {
     @Test
     void testWriteNull() {
         assertEquals("", _persistentEntityUuidHandler.write(null));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals((PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        EntityUuid.class.getCanonicalName() + ">").hashCode(),
+                _persistentEntityUuidHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        PersistentTypeHandler<EntityUuid> equalHandler =
+                new PersistentEntityUuidHandler(ENTITY_UUID_FACTORY);
+        PersistentValueTypeHandler<EntityUuid> unequalHandler =
+                new FakePersistentEntityUuidHandler();
+
+        assertEquals(_persistentEntityUuidHandler, equalHandler);
+        assertNotEquals(_persistentEntityUuidHandler, unequalHandler);
+        assertNotEquals(null, _persistentEntityUuidHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        EntityUuid.class.getCanonicalName() + ">",
+                _persistentEntityUuidHandler.toString());
     }
 }

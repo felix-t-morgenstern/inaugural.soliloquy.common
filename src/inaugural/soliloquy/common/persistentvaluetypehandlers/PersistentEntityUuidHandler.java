@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
-import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.factories.EntityUuidFactory;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.EntityUuid;
 
 public class PersistentEntityUuidHandler extends PersistentTypeHandler<EntityUuid>
@@ -36,5 +36,22 @@ public class PersistentEntityUuidHandler extends PersistentTypeHandler<EntityUui
         } else {
             return entityUuid.toString();
         }
+    }
+
+    @Override
+    public String toString() {
+        return PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                EntityUuid.class.getCanonicalName() + ">";
+    }
+
+    @Override
+    public int hashCode() {
+        return (PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                EntityUuid.class.getCanonicalName() + ">").hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentEntityUuidHandler && obj.hashCode() == hashCode();
     }
 }
