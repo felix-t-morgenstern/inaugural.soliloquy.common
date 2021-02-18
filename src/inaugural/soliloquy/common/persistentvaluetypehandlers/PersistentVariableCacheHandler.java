@@ -3,7 +3,10 @@ package inaugural.soliloquy.common.persistentvaluetypehandlers;
 import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import soliloquy.specs.common.factories.VariableCacheFactory;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.infrastructure.PersistentValuesHandler;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 public class PersistentVariableCacheHandler
         extends PersistentTypeHandler<VariableCache>
@@ -78,5 +81,22 @@ public class PersistentVariableCacheHandler
         String name;
         String typeName;
         String serializedValue;
+    }
+
+    @Override
+    public String toString() {
+        return PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                VariableCache.class.getCanonicalName() + ">";
+    }
+
+    @Override
+    public int hashCode() {
+        return (PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                VariableCache.class.getCanonicalName() + ">").hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentVariableCacheHandler && obj.hashCode() == hashCode();
     }
 }

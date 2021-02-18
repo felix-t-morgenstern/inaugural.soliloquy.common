@@ -2,8 +2,10 @@ package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentVariableCacheHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
+import inaugural.soliloquy.common.test.fakes.FakePersistentVariableCacheHandler;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersistentVariableCacheHandlerTests {
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new FakePersistentValuesHandler();
-    private final VariableCacheFactory PERSISTENT_VARIABLE_CACHE_FACTORY =
+    private final VariableCacheFactory VARIABLE_CACHE_FACTORY =
             new FakeVariableCacheFactory();
     private final VariableCache PERSISTENT_VARIABLE_CACHE =
             new FakeVariableCache();
@@ -34,7 +36,7 @@ class PersistentVariableCacheHandlerTests {
         _persistentVariablePersistentCachePersistenceHandler =
                 new PersistentVariableCacheHandler(
                         PERSISTENT_VALUES_HANDLER,
-                        PERSISTENT_VARIABLE_CACHE_FACTORY);
+                        VARIABLE_CACHE_FACTORY);
     }
 
     @Test
@@ -86,5 +88,32 @@ class PersistentVariableCacheHandlerTests {
                 () -> _persistentVariablePersistentCachePersistenceHandler.read(null));
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentVariablePersistentCachePersistenceHandler.read(""));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals((PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        VariableCache.class.getCanonicalName() + ">").hashCode(),
+                _persistentVariablePersistentCachePersistenceHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        PersistentTypeHandler<VariableCache> equalHandler =
+                new PersistentVariableCacheHandler(PERSISTENT_VALUES_HANDLER,
+                        VARIABLE_CACHE_FACTORY);
+        PersistentValueTypeHandler<VariableCache> unequalHandler =
+                new FakePersistentVariableCacheHandler();
+
+        assertEquals(_persistentVariablePersistentCachePersistenceHandler, equalHandler);
+        assertNotEquals(_persistentVariablePersistentCachePersistenceHandler, unequalHandler);
+        assertNotEquals(null, _persistentVariablePersistentCachePersistenceHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        VariableCache.class.getCanonicalName() + ">",
+                _persistentVariablePersistentCachePersistenceHandler.toString());
     }
 }
