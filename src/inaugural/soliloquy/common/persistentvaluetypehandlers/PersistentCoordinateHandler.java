@@ -59,4 +59,21 @@ public class PersistentCoordinateHandler extends PersistentTypeHandler<Coordinat
         int x;
         int y;
     }
+
+    @Override
+    public String toString() {
+        return PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                Coordinate.class.getCanonicalName() + ">";
+    }
+
+    @Override
+    public int hashCode() {
+        return (PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                Coordinate.class.getCanonicalName() + ">").hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentCoordinateHandler && obj.hashCode() == hashCode();
+    }
 }

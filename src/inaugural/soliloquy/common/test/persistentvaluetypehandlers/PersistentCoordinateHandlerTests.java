@@ -1,12 +1,14 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentCoordinateHandler;
-import inaugural.soliloquy.common.test.fakes.FakeCoordinateFactory;
 import inaugural.soliloquy.common.test.fakes.FakeCoordinate;
+import inaugural.soliloquy.common.test.fakes.FakeCoordinateFactory;
+import inaugural.soliloquy.common.test.fakes.FakePersistentCoordinateHandler;
+import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.factories.CoordinateFactory;
+import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,5 +72,31 @@ class PersistentCoordinateHandlerTests {
                 () -> _persistentCoordinateHandler.read(null));
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentCoordinateHandler.read(""));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals((PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                        Coordinate.class.getCanonicalName() + ">").hashCode(),
+                _persistentCoordinateHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        PersistentTypeHandler<Coordinate> equalHandler =
+                new PersistentCoordinateHandler(COORDINATE_FACTORY);
+        PersistentValueTypeHandler<Coordinate> unequalHandler =
+                new FakePersistentCoordinateHandler();
+
+        assertEquals(_persistentCoordinateHandler, equalHandler);
+        assertNotEquals(_persistentCoordinateHandler, unequalHandler);
+        assertNotEquals(null, _persistentCoordinateHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentValueTypeHandler.class.getCanonicalName() + "<" +
+                Coordinate.class.getCanonicalName() + ">",
+                _persistentCoordinateHandler.toString());
     }
 }
