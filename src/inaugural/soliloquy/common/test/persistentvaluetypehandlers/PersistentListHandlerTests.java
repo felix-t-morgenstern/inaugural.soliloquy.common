@@ -1,10 +1,7 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentListHandler;
-import inaugural.soliloquy.common.test.fakes.FakeList;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
-import inaugural.soliloquy.common.test.fakes.FakePersistentStringHandler;
-import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
+import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.ListFactory;
@@ -100,5 +97,31 @@ class PersistentListHandlerTests {
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentListHandler.generateArchetype("Map<java.lang.String>"));
 
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(soliloquy.specs.common.infrastructure.PersistentListHandler
+                        .class.getCanonicalName().hashCode(),
+                _persistentListHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        soliloquy.specs.common.infrastructure.PersistentListHandler equalHandler =
+                new PersistentListHandler(PERSISTENT_VALUES_HANDLER, LIST_FACTORY);
+        soliloquy.specs.common.infrastructure.PersistentListHandler unequalHandler =
+                new FakePersistentListHandler();
+
+        assertEquals(_persistentListHandler, equalHandler);
+        assertNotEquals(_persistentListHandler, unequalHandler);
+        assertNotEquals(null, _persistentListHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(soliloquy.specs.common.infrastructure.PersistentListHandler
+                        .class.getCanonicalName(),
+                _persistentListHandler.toString());
     }
 }

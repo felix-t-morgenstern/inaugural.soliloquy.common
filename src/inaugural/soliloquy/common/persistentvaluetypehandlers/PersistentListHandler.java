@@ -75,4 +75,22 @@ public class PersistentListHandler
         String typeName;
         String[] serializedValues;
     }
+
+    @Override
+    public String toString() {
+        return soliloquy.specs.common.infrastructure.PersistentListHandler
+                .class.getCanonicalName();
+    }
+
+    @Override
+    public int hashCode() {
+        return soliloquy.specs.common.infrastructure.PersistentListHandler
+                .class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof soliloquy.specs.common.infrastructure.PersistentListHandler
+                && obj.hashCode() == hashCode();
+    }
 }
