@@ -101,8 +101,7 @@ class PersistentListHandlerTests {
 
     @Test
     void testHashCode() {
-        assertEquals(soliloquy.specs.common.infrastructure.PersistentListHandler
-                        .class.getCanonicalName().hashCode(),
+        assertEquals(PersistentListHandler.class.getCanonicalName().hashCode(),
                 _persistentListHandler.hashCode());
     }
 
@@ -120,8 +119,7 @@ class PersistentListHandlerTests {
 
     @Test
     void testToString() {
-        assertEquals(soliloquy.specs.common.infrastructure.PersistentListHandler
-                        .class.getCanonicalName(),
+        assertEquals(PersistentListHandler.class.getCanonicalName(),
                 _persistentListHandler.toString());
     }
 }

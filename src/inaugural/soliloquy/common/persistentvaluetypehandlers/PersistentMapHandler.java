@@ -81,4 +81,19 @@ public class PersistentMapHandler extends PersistentTypeHandlerWithTwoGenerics<M
         String[] keySerializedValues;
         String[] valueSerializedValues;
     }
+
+    @Override
+    public String toString() {
+        return PersistentMapHandler.class.getCanonicalName();
+    }
+
+    @Override
+    public int hashCode() {
+        return PersistentMapHandler.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentMapHandler && obj.hashCode() == hashCode();
+    }
 }

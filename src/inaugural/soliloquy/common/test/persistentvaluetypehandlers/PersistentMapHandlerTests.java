@@ -1,9 +1,7 @@
 package inaugural.soliloquy.common.test.persistentvaluetypehandlers;
 
 import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentMapHandler;
-import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
-import inaugural.soliloquy.common.test.fakes.FakeMap;
-import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
+import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.MapFactory;
@@ -101,5 +99,30 @@ class PersistentMapHandlerTests {
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentMapHandler.generateArchetype(Pair.class.getCanonicalName() +
                         "<>"));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(PersistentMapHandler.class.getCanonicalName().hashCode(),
+                _persistentMapHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        soliloquy.specs.common.infrastructure.PersistentMapHandler equalHandler =
+                new inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentMapHandler(
+                        PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
+        soliloquy.specs.common.infrastructure.PersistentMapHandler unequalHandler =
+                new FakePersistentMapHandler();
+
+        assertEquals(_persistentMapHandler, equalHandler);
+        assertNotEquals(_persistentMapHandler, unequalHandler);
+        assertNotEquals(null, _persistentMapHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentMapHandler.class.getCanonicalName(),
+                _persistentMapHandler.toString());
     }
 }
