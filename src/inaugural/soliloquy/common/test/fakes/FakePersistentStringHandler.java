@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 
 public class FakePersistentStringHandler implements PersistentValueTypeHandler<String> {
     public final static String ARCHETYPE = "This is the archetype!";

@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.List;
-import soliloquy.specs.common.infrastructure.PersistentListHandler;
+import soliloquy.specs.common.persistence.PersistentListHandler;
 
 public class FakePersistentListHandler implements PersistentListHandler {
     @Override

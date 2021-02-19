@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import com.google.gson.Gson;
-import inaugural.soliloquy.tools.persistentvaluetypehandlers.PersistentTypeHandler;
-import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import inaugural.soliloquy.tools.persistence.PersistentTypeHandler;
+import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 
 public class PersistentHasIdAndNameHandler extends PersistentTypeHandler<FakeHasIdAndName>
         implements PersistentValueTypeHandler<FakeHasIdAndName> {

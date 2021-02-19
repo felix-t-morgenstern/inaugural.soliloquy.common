@@ -1,8 +1,12 @@
-package inaugural.soliloquy.common.test.fakes;
+package inaugural.soliloquy.common.persistence;
 
+import inaugural.soliloquy.tools.persistence.PersistentTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 
-public class FakePersistentIntegerHandler implements PersistentValueTypeHandler<Integer> {
+public class PersistentIntegerHandler extends PersistentTypeHandler<Integer>
+        implements PersistentValueTypeHandler<Integer> {
+
+    @SuppressWarnings("ConstantConditions")
     @Override
     public Integer read(String serializedValue) throws IllegalArgumentException {
         return Integer.parseInt(serializedValue);
@@ -21,8 +25,4 @@ public class FakePersistentIntegerHandler implements PersistentValueTypeHandler<
         return 0;
     }
 
-    @Override
-    public String getInterfaceName() {
-        return null;
-    }
 }

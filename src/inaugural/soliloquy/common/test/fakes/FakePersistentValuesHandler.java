@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.persistence.*;
 
 public class FakePersistentValuesHandler implements PersistentValuesHandler {
 

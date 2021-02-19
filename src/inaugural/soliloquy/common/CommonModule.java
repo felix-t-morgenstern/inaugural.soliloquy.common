@@ -2,12 +2,17 @@ package inaugural.soliloquy.common;
 
 import com.google.inject.AbstractModule;
 import inaugural.soliloquy.common.archetypes.SettingArchetype;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.*;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentListHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentMapHandler;
-import inaugural.soliloquy.common.persistentvaluetypehandlers.PersistentPairHandler;
+import inaugural.soliloquy.common.factories.*;
+import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
+import inaugural.soliloquy.common.persistence.*;
+import inaugural.soliloquy.common.persistence.PersistentListHandler;
+import inaugural.soliloquy.common.persistence.PersistentMapHandler;
+import inaugural.soliloquy.common.persistence.PersistentPairHandler;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.factories.*;
+import soliloquy.specs.common.persistence.PersistentRegistryHandler;
+import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
+import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
 public class CommonModule extends AbstractModule {
     private ListFactory _listFactory;

@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import soliloquy.specs.common.infrastructure.PersistentValueTypeHandler;
+import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate;
 
 public class FakePersistentCoordinateHandler

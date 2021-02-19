@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Map;
-import soliloquy.specs.common.infrastructure.PersistentMapHandler;
+import soliloquy.specs.common.persistence.PersistentMapHandler;
 
 public class FakePersistentMapHandler implements PersistentMapHandler {
     @Override

@@ -1,7 +1,7 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.Pair;
-import soliloquy.specs.common.infrastructure.PersistentPairHandler;
+import soliloquy.specs.common.persistence.PersistentPairHandler;
 
 public class FakePersistentPairHandler implements PersistentPairHandler {
     @Override

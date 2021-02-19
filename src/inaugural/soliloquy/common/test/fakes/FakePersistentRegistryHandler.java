@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import soliloquy.specs.common.infrastructure.PersistentRegistryHandler;
+import soliloquy.specs.common.persistence.PersistentRegistryHandler;
 import soliloquy.specs.common.infrastructure.Registry;
 
 public class FakePersistentRegistryHandler implements PersistentRegistryHandler {
