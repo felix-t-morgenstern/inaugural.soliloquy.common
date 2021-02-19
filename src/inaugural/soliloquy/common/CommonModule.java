@@ -5,9 +5,9 @@ import inaugural.soliloquy.common.archetypes.SettingArchetype;
 import inaugural.soliloquy.common.factories.*;
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
 import inaugural.soliloquy.common.persistence.*;
-import inaugural.soliloquy.common.persistence.PersistentListHandler;
-import inaugural.soliloquy.common.persistence.PersistentMapHandler;
-import inaugural.soliloquy.common.persistence.PersistentPairHandler;
+import inaugural.soliloquy.common.persistence.PersistentListHandlerImpl;
+import inaugural.soliloquy.common.persistence.PersistentMapHandlerImpl;
+import inaugural.soliloquy.common.persistence.PersistentPairHandlerImpl;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.factories.*;
 import soliloquy.specs.common.persistence.PersistentRegistryHandler;
@@ -66,11 +66,11 @@ public class CommonModule extends AbstractModule {
         PersistentValueTypeHandler settingsRepoHandler =
                 new PersistentSettingsRepoHandler(_persistentValuesHandler, _settingsRepo);
         PersistentValueTypeHandler stringHandler = new PersistentStringHandler();
-        PersistentListHandler listHandler =
-                new PersistentListHandler(_persistentValuesHandler, _listFactory);
-        PersistentMapHandler mapHandler = new PersistentMapHandler(_persistentValuesHandler,
+        PersistentListHandlerImpl listHandler =
+                new PersistentListHandlerImpl(_persistentValuesHandler, _listFactory);
+        PersistentMapHandlerImpl mapHandler = new PersistentMapHandlerImpl(_persistentValuesHandler,
                 _mapFactory);
-        PersistentPairHandler pairHandler = new PersistentPairHandler(_persistentValuesHandler,
+        PersistentPairHandlerImpl pairHandler = new PersistentPairHandlerImpl(_persistentValuesHandler,
                 _pairFactory);
         PersistentRegistryHandler registryHandler = new PersistentRegistryHandlerImpl(
                 _persistentValuesHandler, _registryFactory);

@@ -71,7 +71,7 @@ public class MapImpl<K,V> extends HashMap<K,V> implements Map<K,V> {
     @Override
     public String toString() {
         throw new UnsupportedOperationException("PairImpl.toString: Not supported; c.f. " +
-                "PersistentMapHandler");
+                "PersistentMapHandlerImpl");
     }
 
     @Override

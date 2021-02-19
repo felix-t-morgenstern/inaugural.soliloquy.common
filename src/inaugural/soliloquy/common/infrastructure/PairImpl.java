@@ -67,7 +67,7 @@ public class PairImpl<T1, T2> implements Pair<T1, T2> {
     @Override
     public String toString() {
         throw new UnsupportedOperationException("PairImpl.toString: Not supported; c.f. " +
-                "PersistentPairHandler");
+                "PersistentPairHandlerImpl");
     }
 
     @Override

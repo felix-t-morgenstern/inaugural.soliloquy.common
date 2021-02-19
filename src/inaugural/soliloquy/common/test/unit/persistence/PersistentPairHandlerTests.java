@@ -1,6 +1,6 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
-import inaugural.soliloquy.common.persistence.PersistentPairHandler;
+import inaugural.soliloquy.common.persistence.PersistentPairHandlerImpl;
 import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +20,12 @@ class PersistentPairHandlerTests {
             "{\"valueType1\":\"java.lang.String\",\"serializedValue1\":\"String\"," +
                     "\"valueType2\":\"java.lang.Integer\",\"serializedValue2\":\"123\"}";
 
-    private PersistentPairHandler _persistentPairHandler;
+    private PersistentPairHandlerImpl _persistentPairHandler;
 
     @BeforeEach
     void setUp() {
         _persistentPairHandler =
-                new PersistentPairHandler(PERSISTENT_VALUES_HANDLER, PAIR_FACTORY);
+                new PersistentPairHandlerImpl(PERSISTENT_VALUES_HANDLER, PAIR_FACTORY);
     }
 
     @Test

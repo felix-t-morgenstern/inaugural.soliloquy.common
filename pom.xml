@@ -100,11 +100,11 @@
         <artifactId>inaugural.soliloquy.tools</artifactId>
         <version>0.0.24</version>
     </dependency>
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.1.0</version>
-    </dependency>
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-engine</artifactId>
+          <version>5.1.0</version>
+      </dependency>
   </dependencies>
   <dependencyManagement>
       <dependencies>

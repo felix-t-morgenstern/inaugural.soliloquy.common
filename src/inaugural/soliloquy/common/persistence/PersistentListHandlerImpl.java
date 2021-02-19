@@ -5,18 +5,19 @@ import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.PersistentDataStructureWithOneGenericParamHandler;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.persistence.PersistentListHandler;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
 @SuppressWarnings("rawtypes")
-public class PersistentListHandler
+public class PersistentListHandlerImpl
         extends PersistentDataStructureWithOneGenericParamHandler<List>
-        implements soliloquy.specs.common.persistence.PersistentListHandler {
+        implements PersistentListHandler {
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final ListFactory LIST_FACTORY;
 
-    public PersistentListHandler(PersistentValuesHandler persistentValuesHandler,
-                                 ListFactory listFactory) {
+    public PersistentListHandlerImpl(PersistentValuesHandler persistentValuesHandler,
+                                     ListFactory listFactory) {
         PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler,
                 "persistentValuesHandler");
         LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
@@ -27,11 +28,11 @@ public class PersistentListHandler
     public List read(String valuesString) throws IllegalArgumentException {
         if (valuesString == null) {
             throw new IllegalArgumentException(
-                    "PersistentListHandler.read: valuesString must be non-null");
+                    "PersistentListHandlerImpl.read: valuesString must be non-null");
         }
         if (valuesString.equals("")) {
             throw new IllegalArgumentException(
-                    "PersistentListHandler.read: valuesString must be non-null");
+                    "PersistentListHandlerImpl.read: valuesString must be non-null");
         }
         ListDTO dto = new Gson().fromJson(valuesString, ListDTO.class);
         PersistentValueTypeHandler handler =
@@ -65,7 +66,7 @@ public class PersistentListHandler
     @Override
     public List generateArchetype(String valueType) throws IllegalArgumentException {
         String innerType = getInnerType(valueType, List.class,
-                "PersistentListHandler");
+                "PersistentListHandlerImpl");
 
         return LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(innerType));
     }
@@ -78,16 +79,16 @@ public class PersistentListHandler
 
     @Override
     public String toString() {
-        return PersistentListHandler.class.getCanonicalName();
+        return PersistentListHandlerImpl.class.getCanonicalName();
     }
 
     @Override
     public int hashCode() {
-        return PersistentListHandler.class.getCanonicalName().hashCode();
+        return PersistentListHandlerImpl.class.getCanonicalName().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof PersistentListHandler && obj.hashCode() == hashCode();
+        return obj instanceof PersistentListHandlerImpl && obj.hashCode() == hashCode();
     }
 }

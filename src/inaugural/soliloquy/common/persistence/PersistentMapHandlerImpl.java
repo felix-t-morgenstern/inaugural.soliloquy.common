@@ -4,15 +4,16 @@ import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistence.PersistentTypeHandlerWithTwoGenerics;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.persistence.PersistentMapHandler;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
-public class PersistentMapHandler extends PersistentTypeHandlerWithTwoGenerics<Map>
-        implements soliloquy.specs.common.persistence.PersistentMapHandler {
+public class PersistentMapHandlerImpl extends PersistentTypeHandlerWithTwoGenerics<Map>
+        implements PersistentMapHandler {
     private final MapFactory MAP_FACTORY;
 
-    public PersistentMapHandler(PersistentValuesHandler persistentValuesHandler,
-                                MapFactory mapFactory) {
+    public PersistentMapHandlerImpl(PersistentValuesHandler persistentValuesHandler,
+                                    MapFactory mapFactory) {
         super(persistentValuesHandler);
         MAP_FACTORY = mapFactory;
     }
@@ -24,7 +25,7 @@ public class PersistentMapHandler extends PersistentTypeHandlerWithTwoGenerics<M
 
     @Override
     public Map getArchetype() {
-        // NB: PersistentMapHandler should be selected by the PersistentValuesHandler through
+        // NB: PersistentMapHandlerImpl should be selected by the PersistentValuesHandler through
         // specific, manually-defined String pattern recognition, rather than via getArchetype.
         return null;
     }
@@ -50,7 +51,7 @@ public class PersistentMapHandler extends PersistentTypeHandlerWithTwoGenerics<M
     @Override
     public String write(Map map) {
         if (map == null) {
-            throw new IllegalArgumentException("PersistentMapHandler.write: map is null");
+            throw new IllegalArgumentException("PersistentMapHandlerImpl.write: map is null");
         }
         String keyValueType = getProperTypeName(map.getFirstArchetype());
         String valueValueType = getProperTypeName(map.getSecondArchetype());
@@ -86,16 +87,16 @@ public class PersistentMapHandler extends PersistentTypeHandlerWithTwoGenerics<M
 
     @Override
     public String toString() {
-        return PersistentMapHandler.class.getCanonicalName();
+        return PersistentMapHandlerImpl.class.getCanonicalName();
     }
 
     @Override
     public int hashCode() {
-        return PersistentMapHandler.class.getCanonicalName().hashCode();
+        return PersistentMapHandlerImpl.class.getCanonicalName().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof PersistentMapHandler && obj.hashCode() == hashCode();
+        return obj instanceof PersistentMapHandlerImpl && obj.hashCode() == hashCode();
     }
 }

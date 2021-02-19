@@ -1,16 +1,17 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
-import inaugural.soliloquy.common.persistence.PersistentListHandler;
+import inaugural.soliloquy.common.persistence.PersistentListHandlerImpl;
 import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.persistence.PersistentListHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersistentListHandlerTests {
+class PersistentListHandlerImplTests {
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER = new FakePersistentValuesHandler();
     private final ListFactory LIST_FACTORY = new FakeListFactory();
     private final Integer INTEGER_1 = 123;
@@ -21,20 +22,20 @@ class PersistentListHandlerTests {
                     Integer.class.getCanonicalName(),
                     INTEGER_1, INTEGER_2, INTEGER_3);
 
-    private PersistentListHandler _persistentListHandler;
+    private PersistentListHandlerImpl _persistentListHandler;
 
     @BeforeEach
     void setUp() {
-        _persistentListHandler = new PersistentListHandler(PERSISTENT_VALUES_HANDLER,
+        _persistentListHandler = new PersistentListHandlerImpl(PERSISTENT_VALUES_HANDLER,
                 LIST_FACTORY);
     }
 
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> new PersistentListHandler(null, LIST_FACTORY));
+                () -> new PersistentListHandlerImpl(null, LIST_FACTORY));
         assertThrows(IllegalArgumentException.class,
-                () -> new PersistentListHandler(PERSISTENT_VALUES_HANDLER, null));
+                () -> new PersistentListHandlerImpl(PERSISTENT_VALUES_HANDLER, null));
     }
 
     @Test
@@ -101,15 +102,15 @@ class PersistentListHandlerTests {
 
     @Test
     void testHashCode() {
-        assertEquals(PersistentListHandler.class.getCanonicalName().hashCode(),
+        assertEquals(PersistentListHandlerImpl.class.getCanonicalName().hashCode(),
                 _persistentListHandler.hashCode());
     }
 
     @Test
     void testEquals() {
-        soliloquy.specs.common.persistence.PersistentListHandler equalHandler =
-                new PersistentListHandler(PERSISTENT_VALUES_HANDLER, LIST_FACTORY);
-        soliloquy.specs.common.persistence.PersistentListHandler unequalHandler =
+        PersistentListHandler equalHandler =
+                new PersistentListHandlerImpl(PERSISTENT_VALUES_HANDLER, LIST_FACTORY);
+        PersistentListHandler unequalHandler =
                 new FakePersistentListHandler();
 
         assertEquals(_persistentListHandler, equalHandler);
@@ -119,7 +120,7 @@ class PersistentListHandlerTests {
 
     @Test
     void testToString() {
-        assertEquals(PersistentListHandler.class.getCanonicalName(),
+        assertEquals(PersistentListHandlerImpl.class.getCanonicalName(),
                 _persistentListHandler.toString());
     }
 }

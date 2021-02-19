@@ -1,16 +1,17 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
-import inaugural.soliloquy.common.persistence.PersistentMapHandler;
+import inaugural.soliloquy.common.persistence.PersistentMapHandlerImpl;
 import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.persistence.PersistentMapHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersistentMapHandlerTests {
+class PersistentMapHandlerImplTests {
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new FakePersistentValuesHandler();
     private final MapFactory MAP_FACTORY = new FakeMapFactory();
@@ -27,11 +28,11 @@ class PersistentMapHandlerTests {
             String.class.getCanonicalName(), Integer.class.getCanonicalName(),
             KEY_1, KEY_2, KEY_3, VALUE_1, VALUE_2, VALUE_3);
 
-    private PersistentMapHandler _persistentMapHandler;
+    private PersistentMapHandlerImpl _persistentMapHandler;
 
     @BeforeEach
     void setUp() {
-        _persistentMapHandler = new PersistentMapHandler(PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
+        _persistentMapHandler = new PersistentMapHandlerImpl(PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
     }
 
     @Test
@@ -103,17 +104,15 @@ class PersistentMapHandlerTests {
 
     @Test
     void testHashCode() {
-        assertEquals(PersistentMapHandler.class.getCanonicalName().hashCode(),
+        assertEquals(PersistentMapHandlerImpl.class.getCanonicalName().hashCode(),
                 _persistentMapHandler.hashCode());
     }
 
     @Test
     void testEquals() {
-        soliloquy.specs.common.persistence.PersistentMapHandler equalHandler =
-                new inaugural.soliloquy.common.persistence.PersistentMapHandler(
-                        PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
-        soliloquy.specs.common.persistence.PersistentMapHandler unequalHandler =
-                new FakePersistentMapHandler();
+        PersistentMapHandler equalHandler =
+                new PersistentMapHandlerImpl(PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
+        PersistentMapHandler unequalHandler = new FakePersistentMapHandler();
 
         assertEquals(_persistentMapHandler, equalHandler);
         assertNotEquals(_persistentMapHandler, unequalHandler);
@@ -122,7 +121,7 @@ class PersistentMapHandlerTests {
 
     @Test
     void testToString() {
-        assertEquals(PersistentMapHandler.class.getCanonicalName(),
+        assertEquals(PersistentMapHandlerImpl.class.getCanonicalName(),
                 _persistentMapHandler.toString());
     }
 }

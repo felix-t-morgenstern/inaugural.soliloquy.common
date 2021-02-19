@@ -31,7 +31,7 @@ public class FakePersistentListHandler implements PersistentListHandler {
         int closingCaret = valueType.lastIndexOf(">");
         if (!valueType.substring(0, openingCaret).equals(List.class.getCanonicalName())) {
             throw new IllegalArgumentException(
-                    "PersistentListHandler.generateArchetype: valueType is not a String representation of a Collection");
+                    "FakePersistentListHandler.generateArchetype: valueType is not a String representation of a Collection");
         }
         String innerType = valueType.substring(openingCaret + 1, closingCaret);
 

@@ -4,16 +4,17 @@ import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistence.PersistentTypeHandlerWithTwoGenerics;
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.Pair;
+import soliloquy.specs.common.persistence.PersistentPairHandler;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
-public class PersistentPairHandler extends PersistentTypeHandlerWithTwoGenerics<Pair>
-        implements soliloquy.specs.common.persistence.PersistentPairHandler {
+public class PersistentPairHandlerImpl extends PersistentTypeHandlerWithTwoGenerics<Pair>
+        implements PersistentPairHandler {
 
     private final PairFactory PAIR_FACTORY;
 
-    public PersistentPairHandler(PersistentValuesHandler persistentValuesHandler,
-                                 PairFactory pairFactory) {
+    public PersistentPairHandlerImpl(PersistentValuesHandler persistentValuesHandler,
+                                     PairFactory pairFactory) {
         super(persistentValuesHandler);
         PAIR_FACTORY = pairFactory;
     }
@@ -23,11 +24,11 @@ public class PersistentPairHandler extends PersistentTypeHandlerWithTwoGenerics<
     public Pair read(String valuesString) throws IllegalArgumentException {
         if (valuesString == null) {
             throw new IllegalArgumentException(
-                    "PersistentPairHandler.read: valuesString cannot be null");
+                    "PersistentPairHandlerImpl.read: valuesString cannot be null");
         }
         if (valuesString.equals("")) {
             throw new IllegalArgumentException(
-                    "PersistentPairHandler.read: valuesString cannot be empty");
+                    "PersistentPairHandlerImpl.read: valuesString cannot be empty");
         }
         PairDTO dto = new Gson().fromJson(valuesString, PairDTO.class);
         PersistentValueTypeHandler handler1 =
@@ -45,7 +46,7 @@ public class PersistentPairHandler extends PersistentTypeHandlerWithTwoGenerics<
     @Override
     public String write(Pair pair) {
         if(pair == null) {
-            throw new IllegalArgumentException("PersistentPairHandler.write: pair cannot be null");
+            throw new IllegalArgumentException("PersistentPairHandlerImpl.write: pair cannot be null");
         }
         PairDTO dto = new PairDTO();
         dto.valueType1 = getProperTypeName(pair.getFirstArchetype());
