@@ -82,6 +82,21 @@ public class PersistentRegistryHandlerImpl
         return new Gson().toJson(dto);
     }
 
+    @Override
+    public String toString() {
+        return PersistentRegistryHandlerImpl.class.getCanonicalName();
+    }
+
+    @Override
+    public int hashCode() {
+        return PersistentRegistryHandlerImpl.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentRegistryHandlerImpl && obj.hashCode() == hashCode();
+    }
+
     private class RegistryDTO {
         String typeName;
         String[] serializedValues;

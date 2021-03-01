@@ -4,29 +4,35 @@ import inaugural.soliloquy.common.persistence.PersistentRegistryHandlerImpl;
 import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.persistence.PersistentRegistryHandler;
+import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersistentRegistryHandlerImplTests {
+    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
+            new FakePersistentValuesHandler();
+    private final RegistryFactory REGISTRY_FACTORY = new FakeRegistryFactory();
+
     private PersistentRegistryHandler _persistentRegistryHandler;
 
     private final String DATA_STRING = "{\"typeName\":\"inaugural.soliloquy.common.test.fakes.FakeHasIdAndName\",\"serializedValues\":[\"{\\\"id\\\":\\\"id2\\\",\\\"name\\\":\\\"name2\\\"}\",\"{\\\"id\\\":\\\"id1\\\",\\\"name\\\":\\\"name1\\\"}\",\"{\\\"id\\\":\\\"id3\\\",\\\"name\\\":\\\"name3\\\"}\"]}";
 
     @BeforeEach
     void setup() {
-        _persistentRegistryHandler = new PersistentRegistryHandlerImpl(
-                new FakePersistentValuesHandler(), new FakeRegistryFactory());
+        _persistentRegistryHandler = new PersistentRegistryHandlerImpl(PERSISTENT_VALUES_HANDLER,
+                REGISTRY_FACTORY);
     }
 
     @SuppressWarnings("ConstantConditions")
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> new PersistentRegistryHandlerImpl(null, new FakeRegistryFactory()));
+                () -> new PersistentRegistryHandlerImpl(null, REGISTRY_FACTORY));
         assertThrows(IllegalArgumentException.class,
-                () -> new PersistentRegistryHandlerImpl(new FakePersistentValuesHandler(), null));
+                () -> new PersistentRegistryHandlerImpl(PERSISTENT_VALUES_HANDLER, null));
     }
 
     @Test
@@ -86,5 +92,29 @@ class PersistentRegistryHandlerImplTests {
     void testGetInterfaceName() {
         assertThrows(UnsupportedOperationException.class,
                 () -> _persistentRegistryHandler.getInterfaceName());
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(PersistentRegistryHandlerImpl.class.getCanonicalName().hashCode(),
+                _persistentRegistryHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        PersistentRegistryHandler equalHandler =
+                new PersistentRegistryHandlerImpl(PERSISTENT_VALUES_HANDLER, REGISTRY_FACTORY);
+        PersistentRegistryHandler unequalHandler =
+                new FakePersistentRegistryHandler();
+
+        assertEquals(_persistentRegistryHandler, equalHandler);
+        assertNotEquals(_persistentRegistryHandler, unequalHandler);
+        assertNotEquals(null, _persistentRegistryHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentRegistryHandlerImpl.class.getCanonicalName(),
+                _persistentRegistryHandler.toString());
     }
 }
