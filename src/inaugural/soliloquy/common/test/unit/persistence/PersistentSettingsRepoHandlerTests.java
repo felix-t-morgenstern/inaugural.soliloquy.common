@@ -1,11 +1,14 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.PersistentSettingsRepoHandler;
+import inaugural.soliloquy.common.test.fakes.FakePersistentSettingsRepoHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import inaugural.soliloquy.common.test.fakes.FakeSettingsRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.infrastructure.Setting;
+import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
@@ -83,5 +86,29 @@ class PersistentSettingsRepoHandlerTests {
                 () -> _persistentSettingsRepoHandler.read(null));
         assertThrows(IllegalArgumentException.class,
                 () -> _persistentSettingsRepoHandler.read(""));
+    }
+
+    @Test
+    void testHashCode() {
+        assertEquals(PersistentSettingsRepoHandler.class.getCanonicalName().hashCode(),
+                _persistentSettingsRepoHandler.hashCode());
+    }
+
+    @Test
+    void testEquals() {
+        PersistentValueTypeHandler<SettingsRepo> equalHandler =
+                new PersistentSettingsRepoHandler(PERSISTENT_VALUES_HANDLER, SETTINGS_REPO);
+        PersistentValueTypeHandler<SettingsRepo> unequalHandler =
+                new FakePersistentSettingsRepoHandler();
+
+        assertEquals(_persistentSettingsRepoHandler, equalHandler);
+        assertNotEquals(_persistentSettingsRepoHandler, unequalHandler);
+        assertNotEquals(null, _persistentSettingsRepoHandler);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals(PersistentSettingsRepoHandler.class.getCanonicalName(),
+                _persistentSettingsRepoHandler.toString());
     }
 }

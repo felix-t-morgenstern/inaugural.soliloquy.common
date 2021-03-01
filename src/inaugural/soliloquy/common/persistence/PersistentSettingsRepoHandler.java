@@ -76,6 +76,21 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<Setting
         return new Gson().toJson(dto);
     }
 
+    @Override
+    public String toString() {
+        return PersistentSettingsRepoHandler.class.getCanonicalName();
+    }
+
+    @Override
+    public int hashCode() {
+        return PersistentSettingsRepoHandler.class.getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PersistentSettingsRepoHandler && obj.hashCode() == hashCode();
+    }
+
     private class SettingDTO {
         String id;
         String serializedValue;
