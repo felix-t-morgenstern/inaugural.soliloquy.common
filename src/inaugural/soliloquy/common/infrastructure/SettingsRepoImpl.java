@@ -92,6 +92,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         return item;
     }
 
+    // TODO: Ensure that null is returned for invalid settingIds
     @SuppressWarnings("unchecked")
     @Override
     public <V> Setting<V> getSetting(String settingId) throws IllegalArgumentException    {
