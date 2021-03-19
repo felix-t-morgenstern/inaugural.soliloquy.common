@@ -65,12 +65,12 @@ public class PersistentListHandlerImpl
     @SuppressWarnings({"rawtypes", "ConstantConditions"})
     @Override
     public List generateArchetype(String valueType) throws IllegalArgumentException {
-        String innerType = getInnerType(valueType, List.class,
-                "PersistentListHandlerImpl");
+        String innerType = getInnerType(valueType, List.class);
 
         return LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(innerType));
     }
 
+    // TODO: Abbreviate DTO param names
     @SuppressWarnings("InnerClassMayBeStatic")
     private class ListDTO {
         String typeName;

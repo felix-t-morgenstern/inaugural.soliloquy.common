@@ -26,7 +26,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<Setting
         return ARCHETYPE;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public SettingsRepo read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null) {
@@ -53,7 +53,7 @@ public class PersistentSettingsRepoHandler extends PersistentTypeHandler<Setting
         return SETTINGS_REPO;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public String write(SettingsRepo settingsRepo) {
         if (settingsRepo == null) {

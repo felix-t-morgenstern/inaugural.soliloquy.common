@@ -11,13 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ArchetypesTests {
     @Test
-    void testCollectionValidatorFunctionArchetype() {
-        assertEquals(Function.class.getCanonicalName() + "<" + Integer.class.getCanonicalName() +
-                "," + String.class.getCanonicalName() + ">",
-                new CollectionValidatorFunctionArchetype<>(0).getInterfaceName());
-    }
-
-    @Test
     void testPairArchetype() {
         assertEquals(Pair.class.getCanonicalName() + "<" + String.class.getCanonicalName() + "," +
                 Integer.class.getCanonicalName() + ">",

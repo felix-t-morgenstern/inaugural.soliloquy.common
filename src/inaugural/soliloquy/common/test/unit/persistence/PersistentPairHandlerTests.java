@@ -35,12 +35,6 @@ class PersistentPairHandlerTests {
     }
 
     @Test
-    void testGetUnparameterizedInterfaceName() {
-        assertThrows(UnsupportedOperationException.class,
-                () -> _persistentPairHandler.getUnparameterizedInterfaceName());
-    }
-
-    @Test
     void testGetArchetype() {
         assertThrows(UnsupportedOperationException.class,
                 () -> _persistentPairHandler.getArchetype());
@@ -71,7 +65,7 @@ class PersistentPairHandlerTests {
         assertThrows(IllegalArgumentException.class, () -> _persistentPairHandler.read(""));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testGenerateArchetype() {
         final String valueType = Pair.class.getCanonicalName() + "<" +
@@ -87,6 +81,7 @@ class PersistentPairHandlerTests {
         assertNotNull(((List)archetype.getSecondArchetype()).getArchetype());
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     void testGenerateArchetypeWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,

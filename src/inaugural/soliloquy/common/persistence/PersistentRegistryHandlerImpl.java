@@ -9,6 +9,7 @@ import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;
 
+@SuppressWarnings("rawtypes")
 public class PersistentRegistryHandlerImpl
         extends PersistentDataStructureWithOneGenericParamHandler<Registry>
         implements PersistentRegistryHandler {
@@ -32,8 +33,7 @@ public class PersistentRegistryHandlerImpl
 
     @Override
     public Registry generateArchetype(String valueType) throws IllegalArgumentException {
-        String innerType = getInnerType(valueType, Registry.class,
-                "PersistentRegistryHandlerImpl");
+        String innerType = getInnerType(valueType, Registry.class);
 
         return REGISTRY_FACTORY.make(
                 (HasId) PERSISTENT_VALUES_HANDLER.generateArchetype(innerType));

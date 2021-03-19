@@ -86,6 +86,7 @@ class PersistentMapHandlerImplTests {
         assertNotNull(((List)archetype.getSecondArchetype()).getArchetype());
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     void testGenerateArchetypeWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,

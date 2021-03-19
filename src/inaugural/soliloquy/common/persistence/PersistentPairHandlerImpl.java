@@ -1,14 +1,16 @@
 package inaugural.soliloquy.common.persistence;
 
 import com.google.gson.Gson;
-import inaugural.soliloquy.tools.persistence.PersistentTypeHandlerWithTwoGenerics;
+import inaugural.soliloquy.tools.persistence.PersistentDataStructureWithTwoGenericParamsHandler;
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.persistence.PersistentPairHandler;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
-public class PersistentPairHandlerImpl extends PersistentTypeHandlerWithTwoGenerics<Pair>
+@SuppressWarnings("rawtypes")
+public class PersistentPairHandlerImpl
+        extends PersistentDataStructureWithTwoGenericParamsHandler<Pair>
         implements PersistentPairHandler {
 
     private final PairFactory PAIR_FACTORY;
@@ -58,21 +60,6 @@ public class PersistentPairHandlerImpl extends PersistentTypeHandlerWithTwoGener
         dto.serializedValue1 = handler1.write(pair.getItem1());
         dto.serializedValue2 = handler2.write(pair.getItem2());
         return new Gson().toJson(dto);
-    }
-
-    @Override
-    public Pair getArchetype() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String getUnparameterizedInterfaceName() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String getInterfaceName() {
-        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -12,12 +12,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> implements Registry<T> {
-    private final T ARCHETYPE;
     private final ListFactory LIST_FACTORY;
     private final HashMap<String,T> REGISTRY;
 
     public RegistryImpl(T archetype, ListFactory listFactory) {
-        ARCHETYPE = Check.ifNull(archetype, "archetype");
+        super(archetype);
         LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
         REGISTRY = new HashMap<>();
     }

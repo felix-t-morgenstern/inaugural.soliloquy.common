@@ -1,14 +1,16 @@
 package inaugural.soliloquy.common.persistence;
 
 import com.google.gson.Gson;
-import inaugural.soliloquy.tools.persistence.PersistentTypeHandlerWithTwoGenerics;
+import inaugural.soliloquy.tools.persistence.PersistentDataStructureWithTwoGenericParamsHandler;
 import soliloquy.specs.common.factories.MapFactory;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.persistence.PersistentMapHandler;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 
-public class PersistentMapHandlerImpl extends PersistentTypeHandlerWithTwoGenerics<Map>
+@SuppressWarnings("rawtypes")
+public class PersistentMapHandlerImpl
+        extends PersistentDataStructureWithTwoGenericParamsHandler<Map>
         implements PersistentMapHandler {
     private final MapFactory MAP_FACTORY;
 
@@ -18,19 +20,7 @@ public class PersistentMapHandlerImpl extends PersistentTypeHandlerWithTwoGeneri
         MAP_FACTORY = mapFactory;
     }
 
-    @Override
-    public String getInterfaceName() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Map getArchetype() {
-        // NB: PersistentMapHandlerImpl should be selected by the PersistentValuesHandler through
-        // specific, manually-defined String pattern recognition, rather than via getArchetype.
-        return null;
-    }
-
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked"})
     @Override
     public Map read(String valuesString) throws IllegalArgumentException {
         MapDTO dto = new Gson().fromJson(valuesString, MapDTO.class);
