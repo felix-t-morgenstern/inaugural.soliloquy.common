@@ -82,6 +82,12 @@ class PersistentListHandlerImplTests {
     }
 
     @Test
+    void testGetArchetype() {
+        assertThrows(UnsupportedOperationException.class,
+                () -> _persistentListHandler.getArchetype());
+    }
+
+    @Test
     void testGenerateArchetype() {
         assertEquals(FakePersistentStringHandler.ARCHETYPE,
                 _persistentListHandler.generateArchetype(

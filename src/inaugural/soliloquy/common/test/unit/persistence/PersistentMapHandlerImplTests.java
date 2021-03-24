@@ -70,6 +70,12 @@ class PersistentMapHandlerImplTests {
                 () -> _persistentMapHandler.getInterfaceName());
     }
 
+    @Test
+    void testGetArchetype() {
+        assertThrows(UnsupportedOperationException.class,
+                () -> _persistentMapHandler.getArchetype());
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testGenerateArchetype() {

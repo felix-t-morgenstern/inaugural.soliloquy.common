@@ -95,6 +95,12 @@ class PersistentRegistryHandlerImplTests {
     }
 
     @Test
+    void testGetArchetype() {
+        assertThrows(UnsupportedOperationException.class,
+                () -> _persistentRegistryHandler.getArchetype());
+    }
+
+    @Test
     void testHashCode() {
         assertEquals(PersistentRegistryHandlerImpl.class.getCanonicalName().hashCode(),
                 _persistentRegistryHandler.hashCode());
