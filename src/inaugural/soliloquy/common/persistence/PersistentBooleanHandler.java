@@ -1,10 +1,8 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.persistence.PersistentTypeHandler;
-import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 
-public class PersistentBooleanHandler extends PersistentTypeHandler<Boolean>
-        implements PersistentValueTypeHandler<Boolean> {
+public class PersistentBooleanHandler extends PersistentTypeHandler<Boolean> {
 
     @SuppressWarnings("ConstantConditions")
     @Override

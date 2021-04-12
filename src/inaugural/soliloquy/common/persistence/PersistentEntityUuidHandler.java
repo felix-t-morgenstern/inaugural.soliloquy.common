@@ -5,8 +5,7 @@ import soliloquy.specs.common.factories.EntityUuidFactory;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.EntityUuid;
 
-public class PersistentEntityUuidHandler extends PersistentTypeHandler<EntityUuid>
-        implements PersistentValueTypeHandler<EntityUuid> {
+public class PersistentEntityUuidHandler extends PersistentTypeHandler<EntityUuid> {
     private final EntityUuidFactory ENTITY_UUID_FACTORY;
     private final EntityUuid ARCHETYPE;
 

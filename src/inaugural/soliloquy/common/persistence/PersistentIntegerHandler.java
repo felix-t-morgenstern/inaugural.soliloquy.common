@@ -1,10 +1,8 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.persistence.PersistentTypeHandler;
-import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 
-public class PersistentIntegerHandler extends PersistentTypeHandler<Integer>
-        implements PersistentValueTypeHandler<Integer> {
+public class PersistentIntegerHandler extends PersistentTypeHandler<Integer> {
 
     @SuppressWarnings("ConstantConditions")
     @Override

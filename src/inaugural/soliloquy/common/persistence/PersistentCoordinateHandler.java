@@ -6,8 +6,7 @@ import soliloquy.specs.common.factories.CoordinateFactory;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate;
 
-public class PersistentCoordinateHandler extends PersistentTypeHandler<Coordinate>
-        implements PersistentValueTypeHandler<Coordinate> {
+public class PersistentCoordinateHandler extends PersistentTypeHandler<Coordinate> {
     private final Coordinate ARCHETYPE;
     private final CoordinateFactory COORDINATE_FACTORY;
 
