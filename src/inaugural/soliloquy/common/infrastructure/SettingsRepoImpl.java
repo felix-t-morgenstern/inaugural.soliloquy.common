@@ -58,7 +58,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<EntityGroupItem<Setting>> getAllGrouped() {
+    public List<EntityGroupItem<Setting>> getAllGroupedRepresentation() {
         List<EntityGroupItem<Setting>> allGrouped = LIST_FACTORY
                 .make(new SettingsRepoItem(SETTING_ARCHETYPE));
         Set<Integer> keysSet = ITEMS.keySet();
@@ -76,7 +76,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<Setting> getAllUngrouped() {
+    public List<Setting> getAllUngroupedRepresentation() {
         List<Setting> allSettingsUngrouped = LIST_FACTORY.make(SETTING_ARCHETYPE);
         addSettingsRecursively(allSettingsUngrouped);
         return allSettingsUngrouped;
@@ -200,7 +200,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @Override
     public int hashCode() {
         java.util.Map<String,Setting> settingsById = new HashMap<>();
-        getAllUngrouped().forEach(s -> settingsById.put(s.id(), s));
+        getAllUngroupedRepresentation().forEach(s -> settingsById.put(s.id(), s));
         return settingsById.hashCode();
     }
 

@@ -50,13 +50,13 @@ public class FakeSettingsRepo implements SettingsRepo {
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<EntityGroupItem<Setting>> getAllGrouped() {
+    public List<EntityGroupItem<Setting>> getAllGroupedRepresentation() {
         return null;
     }
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List<Setting> getAllUngrouped() {
+    public List<Setting> getAllUngroupedRepresentation() {
         List<Setting> settings = new FakeList<>();
         settings.add(SETTING_1);
         settings.add(SETTING_2);

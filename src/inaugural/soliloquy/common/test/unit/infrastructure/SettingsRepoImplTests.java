@@ -220,7 +220,7 @@ class SettingsRepoImplTests {
 
     @Test
     @SuppressWarnings("rawtypes")
-    void testGetAllGrouped() {
+    void testGetAllGroupedRepresentation() {
         Setting<Integer> setting1 =
                 new SettingStub<>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE
                 );
@@ -241,17 +241,20 @@ class SettingsRepoImplTests {
 
         _settingsRepo.addEntity(setting3, 0, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        List<EntityGroupItem<Setting>> topLevelGrouped = _settingsRepo.getAllGrouped();
+        List<EntityGroupItem<Setting>> topLevelGrouped =
+                _settingsRepo.getAllGroupedRepresentation();
 
         assertEquals(2, topLevelGrouped.size());
         assertEquals(topLevelGrouped.get(0).entity().getValue(), SETTING_1_VALUE);
 
-        List<EntityGroupItem<Setting>> midLevelGrouped = topLevelGrouped.get(1).group().getAllGrouped();
+        List<EntityGroupItem<Setting>> midLevelGrouped =
+                topLevelGrouped.get(1).group().getAllGroupedRepresentation();
 
         assertEquals(2, midLevelGrouped.size());
         assertEquals(midLevelGrouped.get(0).entity().getValue(), SETTING_2_VALUE);
 
-        List<EntityGroupItem<Setting>> bottomLevelGrouped = midLevelGrouped.get(1).group().getAllGrouped();
+        List<EntityGroupItem<Setting>> bottomLevelGrouped =
+                midLevelGrouped.get(1).group().getAllGroupedRepresentation();
 
         assertEquals(1, bottomLevelGrouped.size());
         assertEquals(bottomLevelGrouped.get(0).entity().getValue(), SETTING_3_VALUE);
@@ -259,7 +262,7 @@ class SettingsRepoImplTests {
 
     @Test
     @SuppressWarnings("rawtypes")
-    void testGetAllUngrouped() {
+    void testGetAllUngroupedRepresentation() {
         Setting<Integer> setting1 =
                 new SettingStub<>(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
         Setting<Double> setting2 =
@@ -277,7 +280,7 @@ class SettingsRepoImplTests {
 
         _settingsRepo.addEntity(setting3, 0, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        List<Setting> allSettingsUngrouped = _settingsRepo.getAllUngrouped();
+        List<Setting> allSettingsUngrouped = _settingsRepo.getAllUngroupedRepresentation();
 
         assertEquals(3, allSettingsUngrouped.size());
 

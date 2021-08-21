@@ -23,12 +23,12 @@ public class SettingsRepoArchetype implements SettingsRepo {
     }
 
     @Override
-    public List<EntityGroupItem<Setting>> getAllGrouped() {
+    public List<EntityGroupItem<Setting>> getAllGroupedRepresentation() {
         return null;
     }
 
     @Override
-    public List<Setting> getAllUngrouped() {
+    public List<Setting> getAllUngroupedRepresentation() {
         return null;
     }
 

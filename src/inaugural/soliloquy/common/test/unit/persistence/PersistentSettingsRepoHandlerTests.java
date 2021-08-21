@@ -56,7 +56,7 @@ class PersistentSettingsRepoHandlerTests {
 
         assertSame(SETTINGS_REPO, settingsRepo);
 
-        List<Setting> settings = SETTINGS_REPO.getAllUngrouped();
+        List<Setting> settings = SETTINGS_REPO.getAllUngroupedRepresentation();
         assertEquals(2, settings.size());
         for(Setting setting : settings) {
             switch(setting.getName()) {
