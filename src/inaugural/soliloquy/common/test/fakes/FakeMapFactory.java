@@ -5,16 +5,15 @@ import soliloquy.specs.common.infrastructure.Map;
 
 public class FakeMapFactory implements MapFactory {
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public <K, V> Map<K, V> make(K archetype1, V archetype2) {
-        return new FakeMap(archetype1, archetype2);
+        return new FakeMap<>(archetype1, archetype2);
     }
 
     @Override
-    public <K, V> Map<K, V> make(java.util.Map<K, V> map, K k, V v)
+    public <K, V> Map<K, V> make(java.util.Map<K, V> map, K archetype1, V archetype2)
             throws IllegalArgumentException {
-        return null;
+        return new FakeMap<>(map, archetype1, archetype2);
     }
 
     @Override
