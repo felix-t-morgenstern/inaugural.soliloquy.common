@@ -1,35 +1,20 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.VariableCacheFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
-import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.factories.VariableCacheFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VariableCacheFactoryImplTests {
-    private final ListFactory LIST_FACTORY = new FakeListFactory();
-    private final MapFactory MAP_FACTORY = new FakeMapFactory();
 
     private VariableCacheFactory _variableCacheFactory;
 
     @BeforeEach
     void setUp() {
-        _variableCacheFactory = new VariableCacheFactoryImpl(LIST_FACTORY,
-                MAP_FACTORY);
-    }
-
-    @Test
-    void testConstructorWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new VariableCacheFactoryImpl(null, MAP_FACTORY));
-        assertThrows(IllegalArgumentException.class,
-                () -> new VariableCacheFactoryImpl(LIST_FACTORY, null));
+        _variableCacheFactory = new VariableCacheFactoryImpl();
     }
 
     @Test
@@ -51,8 +36,7 @@ class VariableCacheFactoryImplTests {
 
     @Test
     void testEquals() {
-        VariableCacheFactory equalVariableCacheFactory =
-                new VariableCacheFactoryImpl(LIST_FACTORY, MAP_FACTORY);
+        VariableCacheFactory equalVariableCacheFactory = new VariableCacheFactoryImpl();
         VariableCacheFactory unequalVariableCacheFactory = new FakeVariableCacheFactory();
 
         assertEquals(_variableCacheFactory, equalVariableCacheFactory);

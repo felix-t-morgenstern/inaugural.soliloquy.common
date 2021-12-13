@@ -1,37 +1,21 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
-import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
+import inaugural.soliloquy.common.infrastructure.VariableCacheImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import inaugural.soliloquy.common.infrastructure.VariableCacheImpl;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.factories.MapFactory;
-import soliloquy.specs.common.infrastructure.List;
-import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.infrastructure.VariableCache;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class VariableCacheImplTests {
     private VariableCache _variableCache;
 
-    private final ListFactory LIST_FACTORY = new FakeListFactory();
-    private final MapFactory MAP_FACTORY = new FakeMapFactory();
-
     @BeforeEach
     void setUp() {
-        // archetype not necessary for test suite
-        _variableCache = new VariableCacheImpl(LIST_FACTORY, MAP_FACTORY);
-    }
-
-    @Test
-    void testConstructorWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new VariableCacheImpl(null, MAP_FACTORY));
-        assertThrows(IllegalArgumentException.class,
-                () -> new VariableCacheImpl(LIST_FACTORY, null));
+        _variableCache = new VariableCacheImpl();
     }
     
     @Test
@@ -116,8 +100,6 @@ class VariableCacheImplTests {
         Map<String,Object> variablesRepresentation = _variableCache.variablesRepresentation();
 
         assertNotNull(variablesRepresentation);
-        assertNotNull(variablesRepresentation.getFirstArchetype());
-        assertNotNull(variablesRepresentation.getSecondArchetype());
         assertEquals(3, variablesRepresentation.size());
         assertEquals("value1", variablesRepresentation.get("variable1"));
         assertEquals("value2", variablesRepresentation.get("variable2"));

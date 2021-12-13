@@ -1,28 +1,22 @@
 package inaugural.soliloquy.common.infrastructure;
 
 import inaugural.soliloquy.tools.Check;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.factories.MapFactory;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class VariableCacheImpl implements VariableCache {
-    private final ListFactory LIST_FACTORY;
-    private final MapFactory MAP_FACTORY;
     private final HashMap<String,Object> PERSISTENT_VARIABLES;
 
-    public VariableCacheImpl(ListFactory listFactory, MapFactory mapFactory) {
+    public VariableCacheImpl() {
         PERSISTENT_VARIABLES = new HashMap<>();
-        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
-        MAP_FACTORY = Check.ifNull(mapFactory, "mapFactory");
     }
 
     @SuppressWarnings("unchecked")
-    private VariableCacheImpl(ListFactory listFactory, MapFactory mapFactory,
-                              HashMap<String,Object> persistentVariables) {
-        LIST_FACTORY = listFactory;
-        MAP_FACTORY = mapFactory;
+    private VariableCacheImpl(HashMap<String,Object> persistentVariables) {
         PERSISTENT_VARIABLES = (HashMap<String, Object>) persistentVariables.clone();
     }
 
@@ -49,16 +43,12 @@ public class VariableCacheImpl implements VariableCache {
 
     @Override
     public Map<String,Object> variablesRepresentation() {
-        Map<String,Object> variablesMap = MAP_FACTORY.make("", new Object());
-        PERSISTENT_VARIABLES.forEach(variablesMap::put);
-        return variablesMap;
+        return new HashMap<>(PERSISTENT_VARIABLES);
     }
 
     @Override
     public List<String> namesRepresentation() {
-        List<String> names = LIST_FACTORY.make("");
-        names.addAll(PERSISTENT_VARIABLES.keySet());
-        return names;
+        return new ArrayList<>(PERSISTENT_VARIABLES.keySet());
     }
 
     @Override
@@ -74,6 +64,6 @@ public class VariableCacheImpl implements VariableCache {
 
     @Override
     public VariableCache makeClone() {
-        return new VariableCacheImpl(LIST_FACTORY, MAP_FACTORY, PERSISTENT_VARIABLES);
+        return new VariableCacheImpl(PERSISTENT_VARIABLES);
     }
 }

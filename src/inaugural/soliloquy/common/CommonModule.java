@@ -45,8 +45,7 @@ public class CommonModule extends AbstractModule {
         _registryFactory = new RegistryFactoryImpl(_listFactory);
 
 
-        _variableCacheFactory = new VariableCacheFactoryImpl(_listFactory,
-                _mapFactory);
+        _variableCacheFactory = new VariableCacheFactoryImpl();
 
         _persistentValuesHandler = new PersistentValuesHandlerImpl();
 

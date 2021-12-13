@@ -9,10 +9,11 @@ import inaugural.soliloquy.tools.persistence.PersistentTypeHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
-import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.infrastructure.VariableCache;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 

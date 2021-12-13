@@ -3,10 +3,11 @@ package inaugural.soliloquy.common.persistence;
 import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistence.PersistentTypeHandler;
 import soliloquy.specs.common.factories.VariableCacheFactory;
-import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.infrastructure.VariableCache;
+
+import java.util.List;
 
 public class PersistentVariableCacheHandler
         extends PersistentTypeHandler<VariableCache>
