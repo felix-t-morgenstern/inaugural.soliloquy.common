@@ -9,14 +9,8 @@ import soliloquy.specs.common.infrastructure.SettingsRepo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// TODO: Get rid of these and make them anonymous within implementations
 class ArchetypesTests {
-    @Test
-    void testPairArchetype() {
-        assertEquals(Pair.class.getCanonicalName() + "<" + String.class.getCanonicalName() + "," +
-                Integer.class.getCanonicalName() + ">",
-                new PairArchetype<>("",0).getInterfaceName());
-    }
-
     @Test
     void testSettingArchetype() {
         assertEquals(Setting.class.getCanonicalName(), new SettingArchetype().getInterfaceName());

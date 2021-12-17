@@ -3,20 +3,18 @@ package inaugural.soliloquy.common.test.unit.infrastructure;
 import inaugural.soliloquy.common.infrastructure.RegistryImpl;
 import inaugural.soliloquy.common.test.fakes.FakeList;
 import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Registry;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RegistryImplTests {
     private static FakeHasIdAndName ARCHETYPE = new FakeHasIdAndName("", "");
-    private static ListFactory LIST_FACTORY = new FakeListFactory();
     private static String ID = "id";
     private static String NAME = "name";
 
@@ -25,15 +23,13 @@ class RegistryImplTests {
 
     @BeforeEach
     void setUp() {
-        _registry = new RegistryImpl<>(ARCHETYPE, LIST_FACTORY);
+        _registry = new RegistryImpl<>(ARCHETYPE);
     }
 
     @Test
     void testConstructorWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry = new RegistryImpl<>(null, LIST_FACTORY));
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry = new RegistryImpl<>(ARCHETYPE, null));
+        assertThrows(IllegalArgumentException.class, () ->
+                _registry = new RegistryImpl<>(null));
     }
 
     @Test
@@ -89,10 +85,11 @@ class RegistryImplTests {
         FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
         FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
         FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
-        List<FakeHasIdAndName> toAdd = new FakeList<>();
-        toAdd.add(item1);
-        toAdd.add(item2);
-        toAdd.add(item3);
+        ArrayList<FakeHasIdAndName> toAdd = new ArrayList<>(){{
+            add(item1);
+            add(item2);
+            add(item3);
+        }};
 
         _registry.addAll(toAdd);
 

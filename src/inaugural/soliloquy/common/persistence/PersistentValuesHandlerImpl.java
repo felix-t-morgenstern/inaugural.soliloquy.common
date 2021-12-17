@@ -1,133 +1,111 @@
 package inaugural.soliloquy.common.persistence;
 
-import inaugural.soliloquy.common.infrastructure.ListImpl;
 import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.generic.CanGetInterfaceName;
-import soliloquy.specs.common.infrastructure.*;
-import soliloquy.specs.common.persistence.*;
-import soliloquy.specs.common.persistence.PersistentListHandler;
-import soliloquy.specs.common.persistence.PersistentMapHandler;
-import soliloquy.specs.common.persistence.PersistentPairHandler;
+import soliloquy.specs.common.persistence.PersistentValuesHandler;
+import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.persistence.TypeWithOneGenericParamHandler;
+import soliloquy.specs.common.persistence.TypeWithTwoGenericParamsHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         implements PersistentValuesHandler {
     @SuppressWarnings("rawtypes")
-    private HashMap<String, PersistentValueTypeHandler> _persistentValueTypeHandlers;
-    private soliloquy.specs.common.persistence.PersistentListHandler _persistentListHandler;
-    private soliloquy.specs.common.persistence.PersistentMapHandler _persistentMapHandler;
-    private soliloquy.specs.common.persistence.PersistentPairHandler _persistentPairHandler;
-    private PersistentRegistryHandler _persistentRegistryHandler;
-
-    private final String LIST_GENERIC_INTERFACE_NAME = List.class.getCanonicalName();
-    private final String MAP_GENERIC_INTERFACE_NAME = Map.class.getCanonicalName();
-    private final String PAIR_GENERIC_INTERFACE_NAME = Pair.class.getCanonicalName();
-    private final String REGISTRY_GENERIC_INTERFACE_NAME = Registry.class.getCanonicalName();
+    private HashMap<String, TypeHandler> _typeHandlers;
 
     public PersistentValuesHandlerImpl() {
-        _persistentValueTypeHandlers = new HashMap<>();
+        _typeHandlers = new HashMap<>();
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void addPersistentValueTypeHandler(
-            PersistentValueTypeHandler persistentValueTypeHandler)
-            throws IllegalArgumentException {
-        String persistentValueType = getProperTypeName(
-                Check.ifNull(persistentValueTypeHandler, "persistentValueTypeHandler")
-                        .getArchetype());
-        if (_persistentValueTypeHandlers.containsKey(persistentValueType)) {
+    public void addTypeHandler(TypeHandler typeHandler) throws IllegalArgumentException {
+        String typeHandlerInterfaceName =
+                Check.ifNull(typeHandler, "typeHandler").getInterfaceName();
+        String typeHandled = typeHandlerInterfaceName.substring(
+                typeHandlerInterfaceName.indexOf("<") + 1,
+                typeHandlerInterfaceName.length() - 1);
+
+        if (_typeHandlers.containsKey(typeHandled)) {
             throw new IllegalArgumentException(
-                    "PersistentValuesHandler.addPersistentValueTypeHandler: already has handler for "
-                            + persistentValueType);
+                    "PersistentValuesHandler.addTypeHandler: already has handler for "
+                            + typeHandled);
         }
-        _persistentValueTypeHandlers.put(persistentValueType, persistentValueTypeHandler);
+        _typeHandlers.put(typeHandled, typeHandler);
     }
 
     @Override
-    public boolean removePersistentValueTypeHandler(String persistentValueType) {
-        Check.ifNullOrEmpty(persistentValueType, "persistentValueType");
-        return _persistentValueTypeHandlers.remove(persistentValueType) != null;
+    public boolean removeTypeHandler(String type) {
+        return _typeHandlers.remove(Check.ifNullOrEmpty(type, "type")) != null;
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
-    public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(
-            String persistentValueType)
-            throws UnsupportedOperationException {
-        Check.ifNullOrEmpty(persistentValueType, "persistentValueType");
-        // TODO: Ensure that these tests work for read-only and read-write infrastructure
-        if (interfaceIsOfGenericType(persistentValueType, LIST_GENERIC_INTERFACE_NAME)) {
-            return (PersistentValueTypeHandler<T>) _persistentListHandler;
-        } else if (interfaceIsOfGenericType(persistentValueType, MAP_GENERIC_INTERFACE_NAME)) {
-            return (PersistentValueTypeHandler<T>) _persistentMapHandler;
-        } else if (interfaceIsOfGenericType(persistentValueType, PAIR_GENERIC_INTERFACE_NAME)) {
-            return (PersistentValueTypeHandler<T>) _persistentPairHandler;
-        } else if (interfaceIsOfGenericType(persistentValueType,
-                REGISTRY_GENERIC_INTERFACE_NAME)) {
-            return (PersistentValueTypeHandler<T>) _persistentRegistryHandler;
-        } else {
-            return (PersistentValueTypeHandler<T>)
-                    _persistentValueTypeHandlers.get(persistentValueType);
+    public <T> TypeHandler<T> getTypeHandler(String type) throws IllegalArgumentException {
+        Check.ifNullOrEmpty(type, "type");
+        int caretIndex = type.indexOf("<");
+        if (caretIndex > 0) {
+            type = type.substring(0, caretIndex);
         }
+        //noinspection unchecked
+        TypeHandler<T> typeHandler = _typeHandlers.get(type);
+        if (typeHandler == null) {
+            throw new IllegalArgumentException("PersistentValuesHandlerImpl.getTypeHandler: " +
+                    "no type handler found for type \"" + type + "\"");
+        }
+        return typeHandler;
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public Object generateArchetype(String valueType) throws IllegalArgumentException {
-        Check.ifNullOrEmpty(valueType, "valueType");
-        if (interfaceIsOfGenericType(valueType, LIST_GENERIC_INTERFACE_NAME)) {
-            return _persistentListHandler.generateArchetype(valueType);
-        } else if (interfaceIsOfGenericType(valueType, MAP_GENERIC_INTERFACE_NAME)) {
-            return _persistentMapHandler.generateArchetype(valueType);
-        } else if (interfaceIsOfGenericType(valueType, PAIR_GENERIC_INTERFACE_NAME)) {
-            return _persistentPairHandler.generateArchetype(valueType);
-        } else {
-            @SuppressWarnings("rawtypes") PersistentValueTypeHandler persistentValueTypeHandler =
-                    getPersistentValueTypeHandler(valueType);
-            return persistentValueTypeHandler.getArchetype();
+    public <TArchetype> TArchetype generateArchetype(String type) throws IllegalArgumentException {
+        Check.ifNullOrEmpty(type, "type");
+        // TODO: Implement!
+
+        if (type.contains("<")) {
+            int openingCaretIndex = type.indexOf("<");
+            int endingIndex = type.indexOf(">");
+            if (endingIndex < 0) {
+                throw new IllegalArgumentException(
+                        "PersistentValuesHandlerImpl.generateArchetype: type (\"" + type +
+                                "\") has opening caret with no closing caret");
+            }
+            String outerType = type.substring(0, openingCaretIndex);
+            if (type.contains(",")) {
+                int commaIndex = type.indexOf(",");
+                String innerType1 = type.substring(openingCaretIndex + 1, commaIndex);
+                String innerType2 = type.substring(commaIndex + 1, type.length() - 1);
+                //noinspection rawtypes
+                TypeWithTwoGenericParamsHandler typeHandler =
+                        (TypeWithTwoGenericParamsHandler) getTypeHandler(outerType);
+                //noinspection unchecked
+                return (TArchetype) typeHandler.generateArchetype(innerType1, innerType2);
+            }
+            else {
+                String innerType = type.substring(openingCaretIndex + 1, type.length() - 1);
+                //noinspection rawtypes
+                TypeWithOneGenericParamHandler typeHandler =
+                        (TypeWithOneGenericParamHandler) getTypeHandler(outerType);
+                //noinspection unchecked
+                return (TArchetype) typeHandler.generateArchetype(innerType);
+            }
+        }
+        else {
+            TypeHandler<TArchetype> typeHandler = getTypeHandler(type);
+            if (typeHandler instanceof TypeWithOneGenericParamHandler) {
+                throw new IllegalArgumentException(
+                        "PersistentValuesHandlerImpl.generateArchetype: type (\"" + type +
+                                "\") has one generic parameter which has not been specified");
+            }
+            return typeHandler.getArchetype();
         }
     }
 
-    private boolean interfaceIsOfGenericType(String valueType, String genericInterfaceName) {
-        return valueType.length() >= genericInterfaceName.length()
-                && valueType.substring(0, genericInterfaceName.length())
-                .equals(genericInterfaceName);
-    }
-
     @Override
-    public List<String> persistentValueTypesHandled() {
-        ListImpl<String> persistentValueTypesHandled = new ListImpl<>("");
-        for (String type : _persistentValueTypeHandlers.keySet()) {
-            persistentValueTypesHandled.add(type);
-        }
-        return persistentValueTypesHandled;
-    }
-
-    @Override
-    public void registerPersistentListHandler(PersistentListHandler persistentListHandler) {
-        _persistentListHandler =
-                Check.ifNull(persistentListHandler, "persistentListHandler");
-    }
-
-    @Override
-    public void registerPersistentMapHandler(PersistentMapHandler persistentMapHandler) {
-        _persistentMapHandler =
-                Check.ifNull(persistentMapHandler, "persistentMapHandler");
-    }
-
-    @Override
-    public void registerPersistentPairHandler(PersistentPairHandler persistentPairHandler) {
-        _persistentPairHandler =
-                Check.ifNull(persistentPairHandler, "persistentPairHandler");
-    }
-
-    @Override
-    public void registerPersistentRegistryHandler(
-            PersistentRegistryHandler persistentRegistryHandler) {
-        _persistentRegistryHandler =
-                Check.ifNull(persistentRegistryHandler, "persistentRegistryHandler");
+    public List<String> typesHandled() {
+        return new ArrayList<>(_typeHandlers.keySet());
     }
 
     @Override

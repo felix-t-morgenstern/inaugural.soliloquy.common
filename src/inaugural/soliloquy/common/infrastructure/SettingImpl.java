@@ -84,6 +84,6 @@ public class SettingImpl<T> implements Setting<T> {
     public String toString() {
         throw new UnsupportedOperationException(
                 "SettingImpl.toString: Operation not supported; use " +
-                        "PersistentSettingsRepoHandler.write instead");
+                        "SettingsRepoHandler.write instead");
     }
 }

@@ -493,67 +493,33 @@ class SettingsRepoImplTests {
     
     private static class PersistentValuesHandlerStub implements PersistentValuesHandler {
         @Override
-        public void addPersistentValueTypeHandler(PersistentValueTypeHandler<?> persistentValueTypeHandler)
-                throws IllegalArgumentException {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
+        public void addTypeHandler(TypeHandler<?> typeHandler) throws IllegalArgumentException {
+
         }
 
         @Override
-        public boolean removePersistentValueTypeHandler(String persistentValueType) {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
+        public boolean removeTypeHandler(String s) {
+            return false;
         }
 
         @Override
-        public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType)
-                throws UnsupportedOperationException {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
+        public <T> TypeHandler<T> getTypeHandler(String s) throws IllegalArgumentException {
+            return null;
         }
 
         @Override
-        public Object generateArchetype(String s) throws IllegalArgumentException {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
+        public <T> T generateArchetype(String s) throws IllegalArgumentException {
+            return null;
         }
 
         @Override
-        public List<String> persistentValueTypesHandled() {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void registerPersistentPairHandler(PersistentPairHandler persistentPairHandler) {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void registerPersistentRegistryHandler(
-                PersistentRegistryHandler persistentRegistryHandler) {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void registerPersistentListHandler(PersistentListHandler persistentListHandler) {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void registerPersistentMapHandler(PersistentMapHandler persistentMapHandler) {
-            // Stub class; no implementation needed
-            throw new UnsupportedOperationException();
+        public java.util.List<String> typesHandled() {
+            return null;
         }
 
         @Override
         public String getInterfaceName() {
-            // Stub method, unimplemented
-            throw new UnsupportedOperationException();
+            return null;
         }
-
     }
 }

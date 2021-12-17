@@ -5,14 +5,15 @@ import inaugural.soliloquy.common.archetypes.SettingArchetype;
 import inaugural.soliloquy.common.factories.*;
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
 import inaugural.soliloquy.common.persistence.*;
-import inaugural.soliloquy.common.persistence.PersistentListHandlerImpl;
-import inaugural.soliloquy.common.persistence.PersistentMapHandlerImpl;
-import inaugural.soliloquy.common.persistence.PersistentPairHandlerImpl;
+import inaugural.soliloquy.common.persistence.ListHandler;
+import inaugural.soliloquy.common.persistence.MapHandler;
+import inaugural.soliloquy.common.persistence.PairHandler;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.factories.*;
-import soliloquy.specs.common.persistence.PersistentRegistryHandler;
-import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
+import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.valueobjects.Coordinate;
+import soliloquy.specs.common.valueobjects.EntityUuid;
 
 public class CommonModule extends AbstractModule {
     private ListFactory _listFactory;
@@ -42,49 +43,48 @@ public class CommonModule extends AbstractModule {
         _settingFactory = new SettingFactoryImpl();
 
         _mapFactory = new MapFactoryImpl(_listFactory);
-        _registryFactory = new RegistryFactoryImpl(_listFactory);
+        _registryFactory = new RegistryFactoryImpl();
 
 
         _variableCacheFactory = new VariableCacheFactoryImpl();
 
         _persistentValuesHandler = new PersistentValuesHandlerImpl();
 
+        //noinspection rawtypes
         Setting settingArchetype = new SettingArchetype();
         _settingsRepo = new SettingsRepoImpl(_listFactory, _pairFactory,
                 _persistentValuesHandler, settingArchetype);
 
-        PersistentValueTypeHandler booleanHandler = new PersistentBooleanHandler();
-        PersistentValueTypeHandler coordinateHandler =
-                new PersistentCoordinateHandler(_coordinateFactory);
-        PersistentValueTypeHandler entityUuidHandler =
-                new PersistentEntityUuidHandler(_entityUuidFactory);
-        PersistentValueTypeHandler integerHandler = new PersistentIntegerHandler();
-        PersistentValueTypeHandler variableCachePersistenceHandler =
-                new PersistentVariableCacheHandler(_persistentValuesHandler,
-                        _variableCacheFactory);
-        PersistentValueTypeHandler settingsRepoHandler =
-                new PersistentSettingsRepoHandler(_persistentValuesHandler, _settingsRepo);
-        PersistentValueTypeHandler stringHandler = new PersistentStringHandler();
-        PersistentListHandlerImpl listHandler =
-                new PersistentListHandlerImpl(_persistentValuesHandler, _listFactory);
-        PersistentMapHandlerImpl mapHandler = new PersistentMapHandlerImpl(_persistentValuesHandler,
-                _mapFactory);
-        PersistentPairHandlerImpl pairHandler = new PersistentPairHandlerImpl(_persistentValuesHandler,
-                _pairFactory);
-        PersistentRegistryHandler registryHandler = new PersistentRegistryHandlerImpl(
+        TypeHandler<Boolean> booleanHandler = new BooleanHandler();
+        TypeHandler<Coordinate> coordinateHandler = new CoordinateHandler(_coordinateFactory);
+        TypeHandler<EntityUuid> entityUuidHandler = new EntityUuidHandler(_entityUuidFactory);
+        TypeHandler<Integer> integerHandler = new IntegerHandler();
+        TypeHandler<VariableCache> variableCacheHandler = new VariableCacheHandler(
+                _persistentValuesHandler, _variableCacheFactory);
+        TypeHandler<SettingsRepo> settingsRepoHandler = new SettingsRepoHandler(
+                _persistentValuesHandler, _settingsRepo);
+        TypeHandler<String> stringHandler = new StringHandler();
+        //noinspection rawtypes
+        TypeHandler<List> listHandler = new ListHandler(_persistentValuesHandler, _listFactory);
+        //noinspection rawtypes
+        TypeHandler<Map> mapHandler = new MapHandler(_persistentValuesHandler, _mapFactory);
+        //noinspection rawtypes
+        TypeHandler<Pair> pairHandler = new PairHandler(_persistentValuesHandler, _pairFactory);
+        //noinspection rawtypes
+        TypeHandler<Registry> registryHandler = new RegistryHandler(
                 _persistentValuesHandler, _registryFactory);
 
-        _persistentValuesHandler.addPersistentValueTypeHandler(booleanHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(coordinateHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(entityUuidHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(integerHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(variableCachePersistenceHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(settingsRepoHandler);
-        _persistentValuesHandler.addPersistentValueTypeHandler(stringHandler);
-        _persistentValuesHandler.registerPersistentListHandler(listHandler);
-        _persistentValuesHandler.registerPersistentMapHandler(mapHandler);
-        _persistentValuesHandler.registerPersistentPairHandler(pairHandler);
-        _persistentValuesHandler.registerPersistentRegistryHandler(registryHandler);
+        _persistentValuesHandler.addTypeHandler(booleanHandler);
+        _persistentValuesHandler.addTypeHandler(coordinateHandler);
+        _persistentValuesHandler.addTypeHandler(entityUuidHandler);
+        _persistentValuesHandler.addTypeHandler(integerHandler);
+        _persistentValuesHandler.addTypeHandler(variableCacheHandler);
+        _persistentValuesHandler.addTypeHandler(settingsRepoHandler);
+        _persistentValuesHandler.addTypeHandler(stringHandler);
+        _persistentValuesHandler.addTypeHandler(listHandler);
+        _persistentValuesHandler.addTypeHandler(mapHandler);
+        _persistentValuesHandler.addTypeHandler(pairHandler);
+        _persistentValuesHandler.addTypeHandler(registryHandler);
     }
 
     @Override

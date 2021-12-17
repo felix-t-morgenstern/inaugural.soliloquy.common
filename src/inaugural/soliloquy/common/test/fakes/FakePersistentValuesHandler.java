@@ -5,71 +5,45 @@ import soliloquy.specs.common.persistence.*;
 
 public class FakePersistentValuesHandler implements PersistentValuesHandler {
 
-    private final String COLLECTION_GENERIC_INTERFACE_NAME = List.class.getCanonicalName();
-
     @Override
-    public void addPersistentValueTypeHandler(PersistentValueTypeHandler<?> PersistentValueTypeHandler) throws IllegalArgumentException {
+    public void addTypeHandler(TypeHandler<?> typeHandler) throws IllegalArgumentException {
 
     }
 
     @Override
-    public boolean removePersistentValueTypeHandler(String s) {
+    public boolean removeTypeHandler(String s) {
         return false;
     }
 
     @Override
-    public <T> PersistentValueTypeHandler<T> getPersistentValueTypeHandler(String persistentValueType) throws UnsupportedOperationException {
-        if (interfaceIsOfGenericType(persistentValueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
-            return (PersistentValueTypeHandler<T>) new FakePersistentListHandler();
-        } else if (persistentValueType.equals(Integer.class.getCanonicalName())) {
-            return (PersistentValueTypeHandler<T>) new FakePersistentIntegerHandler();
-        } else if (persistentValueType.equals(String.class.getCanonicalName())) {
-            return (PersistentValueTypeHandler<T>) new FakePersistentStringHandler();
-        } else if (persistentValueType.equals(FakeHasIdAndName.class.getCanonicalName())) {
-            return (PersistentValueTypeHandler<T>) new PersistentHasIdAndNameHandler();
+    public <T> TypeHandler<T> getTypeHandler(String type)
+            throws UnsupportedOperationException {
+        if (type.equals(List.class.getName())) {
+            //noinspection unchecked
+            return (TypeHandler<T>) new FakeListHandler();
+        } else if (type.equals(Integer.class.getCanonicalName())) {
+            //noinspection unchecked
+            return (TypeHandler<T>) new FakeIntegerHandler();
+        } else if (type.equals(String.class.getCanonicalName())) {
+            //noinspection unchecked
+            return (TypeHandler<T>) new FakeStringHandler();
+        } else if (type.equals(FakeHasIdAndName.class.getCanonicalName())) {
+            //noinspection unchecked
+            return (TypeHandler<T>) new PersistentHasIdAndNameHandler();
         } else {
             return null;
         }
     }
 
-    private boolean interfaceIsOfGenericType(String valueType, String genericInterfaceName) {
-        return valueType.length() >= genericInterfaceName.length()
-                && valueType.substring(0, genericInterfaceName.length())
-                .equals(genericInterfaceName);
+    @Override
+    public <T> T generateArchetype(String valueType) throws IllegalArgumentException {
+        //noinspection unchecked
+        return (T)getTypeHandler(valueType).getArchetype();
     }
 
     @Override
-    public Object generateArchetype(String valueType) throws IllegalArgumentException {
-        if (interfaceIsOfGenericType(valueType, COLLECTION_GENERIC_INTERFACE_NAME)) {
-            return new FakePersistentListHandler().generateArchetype(valueType);
-        } else {
-            return getPersistentValueTypeHandler(valueType).getArchetype();
-        }
-    }
-
-    @Override
-    public List<String> persistentValueTypesHandled() {
+    public java.util.List<String> typesHandled() {
         return null;
-    }
-
-    @Override
-    public void registerPersistentPairHandler(PersistentPairHandler PersistentPairHandler) {
-
-    }
-
-    @Override
-    public void registerPersistentRegistryHandler(PersistentRegistryHandler persistentRegistryHandler) {
-
-    }
-
-    @Override
-    public void registerPersistentListHandler(PersistentListHandler persistentListHandler) {
-
-    }
-
-    @Override
-    public void registerPersistentMapHandler(PersistentMapHandler PersistentMapHandler) {
-
     }
 
     @Override

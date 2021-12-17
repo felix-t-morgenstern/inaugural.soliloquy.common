@@ -52,6 +52,6 @@ public class ListImpl<V> extends java.util.ArrayList<V> implements List<V> {
     @Override
     public String toString() {
         throw new UnsupportedOperationException("PairImpl.toString: Not supported; c.f. " +
-                "PersistentListHandlerImpl");
+                "ListHandler");
     }
 }

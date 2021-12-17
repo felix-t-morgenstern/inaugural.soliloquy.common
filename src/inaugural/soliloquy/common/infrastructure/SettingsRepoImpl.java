@@ -219,7 +219,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     public String toString() {
         throw new UnsupportedOperationException(
                 "SettingsRepoImpl.toString: Operation not supported; use " +
-                        "PersistentSettingsRepoHandler.write instead");
+                        "SettingsRepoHandler.write instead");
     }
 
     @SuppressWarnings("rawtypes")

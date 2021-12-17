@@ -1,23 +1,19 @@
 package inaugural.soliloquy.common.infrastructure;
 
 import inaugural.soliloquy.tools.Check;
-import inaugural.soliloquy.tools.generic.HasOneGenericParam;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.infrastructure.List;
+import inaugural.soliloquy.tools.generic.AbstractHasOneGenericParam;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
-public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> implements Registry<T> {
-    private final ListFactory LIST_FACTORY;
+public class RegistryImpl<T extends HasId>
+        extends AbstractHasOneGenericParam<T>
+        implements Registry<T> {
     private final HashMap<String,T> REGISTRY;
 
-    public RegistryImpl(T archetype, ListFactory listFactory) {
+    public RegistryImpl(T archetype) {
         super(archetype);
-        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
         REGISTRY = new HashMap<>();
     }
 
@@ -89,7 +85,7 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
 
     @Override
     public List<T> representation() {
-        return LIST_FACTORY.make(REGISTRY.values(), ARCHETYPE);
+        return new ArrayList<>(REGISTRY.values());
     }
 
     @Override
@@ -110,17 +106,12 @@ public class RegistryImpl<T extends HasId> extends HasOneGenericParam<T> impleme
     }
 
     @Override
-    public T getArchetype() {
-        return ARCHETYPE;
-    }
-
-    @Override
-    public String getUnparameterizedInterfaceName() {
-        return Registry.class.getCanonicalName();
-    }
-
-    @Override
     public Iterator<T> iterator() {
         return REGISTRY.values().iterator();
+    }
+
+    @Override
+    protected String getUnparameterizedInterfaceName() {
+        return Registry.class.getCanonicalName();
     }
 }

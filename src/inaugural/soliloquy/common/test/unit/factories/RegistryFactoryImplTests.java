@@ -13,7 +13,6 @@ import soliloquy.specs.common.infrastructure.Registry;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RegistryFactoryImplTests {
-    private static final ListFactory LIST_FACTORY = new FakeListFactory();
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final FakeHasIdAndName HAS_ID_AND_NAME = new FakeHasIdAndName(ID, NAME);
@@ -22,12 +21,7 @@ class RegistryFactoryImplTests {
 
     @BeforeEach
     void setUp() {
-        _registryFactory = new RegistryFactoryImpl(LIST_FACTORY);
-    }
-
-    @Test
-    void testConstructorWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class, () -> new RegistryFactoryImpl(null));
+        _registryFactory = new RegistryFactoryImpl();
     }
 
     @Test
@@ -59,7 +53,7 @@ class RegistryFactoryImplTests {
 
     @Test
     void testEquals() {
-        RegistryFactory equalRegistryFactory = new RegistryFactoryImpl(LIST_FACTORY);
+        RegistryFactory equalRegistryFactory = new RegistryFactoryImpl();
         RegistryFactory unequalRegistryFactory = new FakeRegistryFactory();
 
         assertEquals(equalRegistryFactory, _registryFactory);

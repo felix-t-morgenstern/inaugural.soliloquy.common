@@ -1,14 +1,19 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import com.google.gson.Gson;
-import inaugural.soliloquy.tools.persistence.PersistentTypeHandler;
-import soliloquy.specs.common.persistence.PersistentValueTypeHandler;
+import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
+import soliloquy.specs.common.persistence.TypeHandler;
 
-public class PersistentHasIdAndNameHandler extends PersistentTypeHandler<FakeHasIdAndName>
-        implements PersistentValueTypeHandler<FakeHasIdAndName> {
+// TODO: This is WAY too much of an implementation; refactor this away!
+public class PersistentHasIdAndNameHandler extends AbstractTypeHandler<FakeHasIdAndName>
+        implements TypeHandler<FakeHasIdAndName> {
     public final static String ARCHETYPE_ID = "ArchetypeId";
     public final static String ARCHETYPE_NAME = "ArchetypeName";
     public final static FakeHasIdAndName ARCHETYPE = new FakeHasIdAndName(ARCHETYPE_ID, ARCHETYPE_NAME);
+
+    public PersistentHasIdAndNameHandler() {
+        super(ARCHETYPE);
+    }
 
     @Override
     public FakeHasIdAndName read(String s) throws IllegalArgumentException {
@@ -29,7 +34,7 @@ public class PersistentHasIdAndNameHandler extends PersistentTypeHandler<FakeHas
         return ARCHETYPE;
     }
 
-    private class HasIdAndNameStubDTO
+    private static class HasIdAndNameStubDTO
     {
         String id;
         String name;
