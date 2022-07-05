@@ -5,6 +5,7 @@ target
 *.class
 *.kotlin_module
 .idea/inaugural.soliloquy.common.iml
+.idea/jarRepositories.xml
 .idea/libraries
 .idea/tasks.xml
 .idea/uiDesigner.xml
