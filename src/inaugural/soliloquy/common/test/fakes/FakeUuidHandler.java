@@ -1,21 +1,22 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.persistence.TypeHandler;
-import soliloquy.specs.common.valueobjects.EntityUuid;
 
-public class FakeEntityUuidHandler implements TypeHandler<EntityUuid> {
+import java.util.UUID;
+
+public class FakeUuidHandler implements TypeHandler<UUID> {
     @Override
-    public EntityUuid read(String s) throws IllegalArgumentException {
+    public UUID read(String s) throws IllegalArgumentException {
         return null;
     }
 
     @Override
-    public String write(EntityUuid entityUuid) {
+    public String write(UUID uuid) {
         return null;
     }
 
     @Override
-    public EntityUuid getArchetype() {
+    public UUID getArchetype() {
         return null;
     }
 

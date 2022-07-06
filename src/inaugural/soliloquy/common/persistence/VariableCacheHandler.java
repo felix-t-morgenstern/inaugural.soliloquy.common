@@ -1,10 +1,9 @@
 package inaugural.soliloquy.common.persistence;
 
-import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 import soliloquy.specs.common.factories.VariableCacheFactory;
-import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.infrastructure.VariableCache;
+import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 
 import java.util.List;
@@ -42,7 +41,7 @@ public class VariableCacheHandler
         }
         VariableCache VariableCache =
                 PERSISTENT_VARIABLE_CACHE_FACTORY.make();
-        PersistentVariableDTO[] dto = new Gson().fromJson(serializedValue,
+        PersistentVariableDTO[] dto = GSON.fromJson(serializedValue,
                 PersistentVariableDTO[].class);
         for(PersistentVariableDTO pVarDTO : dto) {
             TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(pVarDTO.typeName);
@@ -72,29 +71,12 @@ public class VariableCacheHandler
             pVarDTO.serializedValue = handler.write(pVarValue);
             dto[i] = pVarDTO;
         }
-        return new Gson().toJson(dto);
+        return GSON.toJson(dto);
     }
 
     private static class PersistentVariableDTO {
         String name;
         String typeName;
         String serializedValue;
-    }
-
-    @Override
-    public String toString() {
-        return TypeHandler.class.getCanonicalName() + "<" +
-                VariableCache.class.getCanonicalName() + ">";
-    }
-
-    @Override
-    public int hashCode() {
-        return (TypeHandler.class.getCanonicalName() + "<" +
-                VariableCache.class.getCanonicalName() + ">").hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof VariableCacheHandler && obj.hashCode() == hashCode();
     }
 }

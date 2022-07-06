@@ -20,6 +20,7 @@ public class ListHandler
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final ListFactory LIST_FACTORY;
 
+    @SuppressWarnings("ConstantConditions")
     public ListHandler(PersistentValuesHandler persistentValuesHandler,
                        ListFactory listFactory) {
         super(
@@ -43,7 +44,7 @@ public class ListHandler
             throw new IllegalArgumentException(
                     "ListHandler.read: valuesString must be non-null");
         }
-        ListDTO dto = new Gson().fromJson(valuesString, ListDTO.class);
+        ListDTO dto = GSON.fromJson(valuesString, ListDTO.class);
         TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
         List list =
                 LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
@@ -66,7 +67,7 @@ public class ListHandler
             serializedValues[i] = handler.write(list.get(i));
         }
         dto.serializedValues = serializedValues;
-        return new Gson().toJson(dto);
+        return GSON.toJson(dto);
     }
 
     // TODO: Abbreviate DTO param names
@@ -76,24 +77,7 @@ public class ListHandler
         String[] serializedValues;
     }
 
-    @Override
-    public String toString() {
-        return TypeHandler.class.getCanonicalName() + "<" + List.class.getCanonicalName() + ">";
-    }
-
-    @Override
-    public int hashCode() {
-        return toString().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof ListHandler;
-    }
-
-    @SuppressWarnings({"ConstantConditions", "Contract"})
     private static class ListArchetype implements List {
-
         @Override
         public int size() {
             return 0;

@@ -103,7 +103,8 @@ class RegistryHandlerTests {
 
     @Test
     void testHashCode() {
-        assertEquals(RegistryHandler.class.getCanonicalName().hashCode(),
+        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
+                        Registry.class.getCanonicalName() + ">").hashCode(),
                 _registryHandler.hashCode());
     }
 
@@ -122,7 +123,8 @@ class RegistryHandlerTests {
 
     @Test
     void testToString() {
-        assertEquals(RegistryHandler.class.getCanonicalName(),
+        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
+                        Registry.class.getCanonicalName() + ">",
                 _registryHandler.toString());
     }
 }

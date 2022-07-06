@@ -90,7 +90,8 @@ class SettingsRepoHandlerTests {
 
     @Test
     void testHashCode() {
-        assertEquals(SettingsRepoHandler.class.getCanonicalName().hashCode(),
+        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
+                        SettingsRepo.class.getCanonicalName() + ">").hashCode(),
                 _settingsRepoHandler.hashCode());
     }
 
@@ -107,7 +108,8 @@ class SettingsRepoHandlerTests {
 
     @Test
     void testToString() {
-        assertEquals(SettingsRepoHandler.class.getCanonicalName(),
+        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
+                        SettingsRepo.class.getCanonicalName() + ">",
                 _settingsRepoHandler.toString());
     }
 }

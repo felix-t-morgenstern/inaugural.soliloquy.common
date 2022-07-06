@@ -22,24 +22,4 @@ public class BooleanHandler extends AbstractTypeHandler<Boolean> {
     public String write(Boolean value) {
         return value.toString();
     }
-
-    @Override
-    public Boolean getArchetype() {
-        return Boolean.FALSE;
-    }
-
-    @Override
-    public int hashCode() {
-        return BooleanHandler.class.getCanonicalName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof BooleanHandler && obj.hashCode() == hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return BooleanHandler.class.getCanonicalName();
-    }
 }

@@ -42,7 +42,7 @@ public class RegistryHandler
             throw new IllegalArgumentException(
                     "RegistryHandler.read: valuesString must be non-empty");
         }
-        RegistryDTO dto = new Gson().fromJson(valuesString, RegistryDTO.class);
+        RegistryDTO dto = GSON.fromJson(valuesString, RegistryDTO.class);
         TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
         Registry registry = REGISTRY_FACTORY
                 .make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
@@ -52,7 +52,7 @@ public class RegistryHandler
         return registry;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
     public String write(Registry registry) {
         if (registry == null) {
@@ -68,22 +68,7 @@ public class RegistryHandler
         for (Object item : registry) {
             dto.serializedValues[index++] = handler.write(item);
         }
-        return new Gson().toJson(dto);
-    }
-
-    @Override
-    public String toString() {
-        return RegistryHandler.class.getCanonicalName();
-    }
-
-    @Override
-    public int hashCode() {
-        return RegistryHandler.class.getCanonicalName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof RegistryHandler && obj.hashCode() == hashCode();
+        return GSON.toJson(dto);
     }
 
     private static class RegistryDTO {
@@ -91,7 +76,6 @@ public class RegistryHandler
         String[] serializedValues;
     }
 
-    @SuppressWarnings("ConstantConditions")
     private static class RegistryArchetype implements Registry {
 
         @Override

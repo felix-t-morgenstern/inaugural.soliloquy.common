@@ -1,6 +1,5 @@
 package inaugural.soliloquy.common.persistence;
 
-import com.google.gson.Gson;
 import inaugural.soliloquy.common.archetypes.SettingsRepoArchetype;
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 import soliloquy.specs.common.infrastructure.Setting;
@@ -33,7 +32,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
             throw new IllegalArgumentException(
                     "SettingsRepoHandler.read: serializedValue must be non-empty");
         }
-        SettingDTO[] dto = new Gson().fromJson(serializedValue, SettingDTO[].class);
+        SettingDTO[] dto = GSON.fromJson(serializedValue, SettingDTO[].class);
         for(SettingDTO settingDTO : dto) {
             Setting setting = SETTINGS_REPO.getSetting(settingDTO.id);
             if (setting == null) {
@@ -67,22 +66,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
             dto[i] = settingDTO;
             i++;
         }
-        return new Gson().toJson(dto);
-    }
-
-    @Override
-    public String toString() {
-        return SettingsRepoHandler.class.getCanonicalName();
-    }
-
-    @Override
-    public int hashCode() {
-        return SettingsRepoHandler.class.getCanonicalName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof SettingsRepoHandler && obj.hashCode() == hashCode();
+        return GSON.toJson(dto);
     }
 
     private static class SettingDTO {

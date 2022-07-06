@@ -1,6 +1,5 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 
@@ -17,7 +16,7 @@ public class PersistentHasIdAndNameHandler extends AbstractTypeHandler<FakeHasId
 
     @Override
     public FakeHasIdAndName read(String s) throws IllegalArgumentException {
-        HasIdAndNameStubDTO dto = new Gson().fromJson(s, HasIdAndNameStubDTO.class);
+        HasIdAndNameStubDTO dto = GSON.fromJson(s, HasIdAndNameStubDTO.class);
         return new FakeHasIdAndName(dto.id, dto.name);
     }
 
@@ -26,7 +25,7 @@ public class PersistentHasIdAndNameHandler extends AbstractTypeHandler<FakeHasId
         HasIdAndNameStubDTO dto = new HasIdAndNameStubDTO();
         dto.id = hasIdAndNameStub.id();
         dto.name = hasIdAndNameStub.getName();
-        return new Gson().toJson(dto);
+        return GSON.toJson(dto);
     }
 
     @Override

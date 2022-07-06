@@ -22,27 +22,4 @@ public class IntegerHandler extends AbstractTypeHandler<Integer> {
         }
         return value.toString();
     }
-
-    @Override
-    public Integer getArchetype() {
-        return 0;
-    }
-
-    @Override
-    public String toString() {
-        return TypeHandler.class.getCanonicalName() + "<" +
-                Integer.class.getCanonicalName() + ">";
-    }
-
-    @Override
-    public int hashCode() {
-        return (TypeHandler.class.getCanonicalName() + "<" +
-                Integer.class.getCanonicalName() + ">").hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof IntegerHandler && obj.hashCode() == hashCode();
-    }
-
 }

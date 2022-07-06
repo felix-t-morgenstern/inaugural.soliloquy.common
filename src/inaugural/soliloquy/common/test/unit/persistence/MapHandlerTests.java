@@ -102,7 +102,8 @@ class MapHandlerTests {
 
     @Test
     void testHashCode() {
-        assertEquals(MapHandler.class.getCanonicalName().hashCode(),
+        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
+                        Map.class.getCanonicalName() + ">").hashCode(),
                 _mapHandler.hashCode());
     }
 
@@ -120,7 +121,8 @@ class MapHandlerTests {
 
     @Test
     void testToString() {
-        assertEquals(MapHandler.class.getCanonicalName(),
+        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
+                        Map.class.getCanonicalName() + ">",
                 _mapHandler.toString());
     }
 }

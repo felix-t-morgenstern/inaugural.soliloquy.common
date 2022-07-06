@@ -46,7 +46,8 @@ class BooleanHandlerTests {
 
     @Test
     void testHashCode() {
-        assertEquals(BooleanHandler.class.getCanonicalName().hashCode(),
+        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
+                        Boolean.class.getCanonicalName() + ">").hashCode(),
                 _booleanHandler.hashCode());
     }
 
@@ -62,7 +63,8 @@ class BooleanHandlerTests {
 
     @Test
     void testToString() {
-        assertEquals(BooleanHandler.class.getCanonicalName(),
+        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
+                        Boolean.class.getCanonicalName() + ">",
                 _booleanHandler.toString());
     }
 }

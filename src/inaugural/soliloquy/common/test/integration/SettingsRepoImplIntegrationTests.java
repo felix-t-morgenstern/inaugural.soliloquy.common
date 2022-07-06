@@ -11,17 +11,23 @@ import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.valueobjects.*;
 
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SettingsRepoImplIntegrationTests {
     private SettingsRepo _settingsRepo;
 
-    private EntityUuidFactory _entityUuidFactory;
     private MapFactory _mapFactory;
 
     private TypeHandler<SettingsRepo> _settingsRepoHandler;
 
-    private final String VALUES_STRING = "[{\"id\":\"booleanSetting\",\"serializedValue\":\"true\"},{\"id\":\"collectionOfIntsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"collectionOfMapsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"id\":\"coordinateSetting\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"id\":\"entityUuidSetting\",\"serializedValue\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"id\":\"integerSetting\",\"serializedValue\":\"123456789\"},{\"id\":\"mapOfStringsToIntsSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keySerializedValues\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueSerializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"mapOfIntsToMapsOfIntsToBooleansSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"id\":\"pairOfStringsSetting\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pairString2\\\"}\"},{\"id\":\"pairOfStringAndCollectionOfInts\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"stringValue\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.infrastructure.List\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"serializedValue2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"serializedValues\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\",\"serializedValue\":\"stringSettingValue\"}]";
+    private final Supplier<UUID> RANDOM_UUID_FACTORY = UUID::randomUUID;
+    private final Function<String, UUID> UUID_FACTORY_FROM_STRING = UUID::fromString;
+
+    private final String VALUES_STRING = "[{\"id\":\"booleanSetting\",\"serializedValue\":\"true\"},{\"id\":\"collectionOfIntsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\",\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"collectionOfMapsSetting\",\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"serializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"789\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"123\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"},{\"id\":\"coordinateSetting\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"},{\"id\":\"uuidSetting\",\"serializedValue\":\"0115d3a5-383a-46f5-92db-6d9c23bbf9b8\"},{\"id\":\"integerSetting\",\"serializedValue\":\"123456789\"},{\"id\":\"mapOfStringsToIntsSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.String\\\",\\\"valueValueType\\\":\\\"java.lang.Integer\\\",\\\"keySerializedValues\\\":[\\\"key1\\\",\\\"key2\\\",\\\"key3\\\"],\\\"valueSerializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"},{\"id\":\"mapOfIntsToMapsOfIntsToBooleansSetting\",\"serializedValue\":\"{\\\"keyValueType\\\":\\\"java.lang.Integer\\\",\\\"valueValueType\\\":\\\"soliloquy.specs.common.infrastructure.Map\\\\u003cjava.lang.Integer,java.lang.Boolean\\\\u003e\\\",\\\"keySerializedValues\\\":[\\\"789\\\",\\\"456\\\",\\\"123\\\"],\\\"valueSerializedValues\\\":[\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"7\\\\\\\",\\\\\\\"8\\\\\\\",\\\\\\\"9\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"4\\\\\\\",\\\\\\\"5\\\\\\\",\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\",\\\"{\\\\\\\"keyValueType\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"valueValueType\\\\\\\":\\\\\\\"java.lang.Boolean\\\\\\\",\\\\\\\"keySerializedValues\\\\\\\":[\\\\\\\"1\\\\\\\",\\\\\\\"2\\\\\\\",\\\\\\\"3\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"true\\\\\\\"]}\\\"]}\"},{\"id\":\"pairOfStringsSetting\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\",\\\"valueType2\\\":\\\"java.lang.String\\\",\\\"serializedValue2\\\":\\\"pairString2\\\"}\"},{\"id\":\"pairOfStringAndCollectionOfInts\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\",\\\"serializedValue1\\\":\\\"stringValue\\\",\\\"valueType2\\\":\\\"soliloquy.specs.common.infrastructure.List\\\\u003cjava.lang.Integer\\\\u003e\\\",\\\"serializedValue2\\\":\\\"{\\\\\\\"typeName\\\\\\\":\\\\\\\"java.lang.Integer\\\\\\\",\\\\\\\"serializedValues\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\",\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\",\"serializedValue\":\"stringSettingValue\"}]";
 
     @SuppressWarnings("rawtypes")
     @BeforeEach
@@ -31,7 +37,6 @@ class SettingsRepoImplIntegrationTests {
         _settingsRepo = commonInjector.getInstance(SettingsRepo.class);
         ListFactory listFactory = commonInjector.getInstance(ListFactory.class);
         CoordinateFactory _coordinateFactory = commonInjector.getInstance(CoordinateFactory.class);
-        _entityUuidFactory = commonInjector.getInstance(EntityUuidFactory.class);
         VariableCacheFactory _variableCacheFactory =
                 commonInjector.getInstance(VariableCacheFactory.class);
         _mapFactory = commonInjector.getInstance(MapFactory.class);
@@ -84,9 +89,9 @@ class SettingsRepoImplIntegrationTests {
                 _coordinateFactory.make(0,0), _variableCacheFactory.make());
         _settingsRepo.addEntity(coordinateSetting, 4, subgrouping1_2);
 
-        Setting entityUuidSetting = _settingFactory.make("entityUuidSetting", "EntityUuidSetting",
-                _entityUuidFactory.createRandomEntityUuid(), _variableCacheFactory.make());
-        _settingsRepo.addEntity(entityUuidSetting, 5, subgrouping1_3);
+        Setting uuidSetting = _settingFactory.make("uuidSetting", "uuidSetting",
+                RANDOM_UUID_FACTORY.get(), _variableCacheFactory.make());
+        _settingsRepo.addEntity(uuidSetting, 5, subgrouping1_3);
 
         Setting integerSetting = _settingFactory.make("integerSetting", "IntegerSetting", 0,
                 _variableCacheFactory.make());
@@ -148,9 +153,9 @@ class SettingsRepoImplIntegrationTests {
         ((Coordinate) coordinateSetting.getValue()).setX(123);
         ((Coordinate) coordinateSetting.getValue()).setY(456);
 
-        Setting entityUuidSetting = _settingsRepo.getSetting("entityUuidSetting");
-        entityUuidSetting.setValue(_entityUuidFactory
-                .createFromString("0115d3a5-383a-46f5-92db-6d9c23bbf9b8"));
+        Setting uuidSetting = _settingsRepo.getSetting("uuidSetting");
+        uuidSetting.setValue(UUID_FACTORY_FROM_STRING
+                .apply("0115d3a5-383a-46f5-92db-6d9c23bbf9b8"));
 
         Setting integerSetting = _settingsRepo.getSetting("integerSetting");
         integerSetting.setValue(123456789);
@@ -243,10 +248,10 @@ class SettingsRepoImplIntegrationTests {
         assertEquals(123, coordinate.getX());
         assertEquals(456, coordinate.getY());
 
-        Setting<EntityUuid> entityUuidSetting = _settingsRepo.getSetting("entityUuidSetting");
-        EntityUuid entityUuid = entityUuidSetting.getValue();
-        assertNotNull(entityUuid);
-        assertEquals("0115d3a5-383a-46f5-92db-6d9c23bbf9b8", entityUuid.toString());
+        Setting<UUID> uuidSetting = _settingsRepo.getSetting("uuidSetting");
+        UUID uuid = uuidSetting.getValue();
+        assertNotNull(uuid);
+        assertEquals("0115d3a5-383a-46f5-92db-6d9c23bbf9b8", uuid.toString());
 
         Setting<Integer> integerSetting = _settingsRepo.getSetting("integerSetting");
         Integer integer = integerSetting.getValue();

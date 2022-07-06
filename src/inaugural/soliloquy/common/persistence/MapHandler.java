@@ -31,7 +31,7 @@ public class MapHandler
     @SuppressWarnings({"unchecked"})
     @Override
     public Map read(String valuesString) throws IllegalArgumentException {
-        MapDTO dto = new Gson().fromJson(valuesString, MapDTO.class);
+        MapDTO dto = GSON.fromJson(valuesString, MapDTO.class);
         TypeHandler keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.keyValueType);
         TypeHandler valueHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueValueType);
         Map map = MAP_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.keyValueType),
@@ -64,7 +64,7 @@ public class MapHandler
             dto.valueSerializedValues[indexCounter] = valueHandler.write(map.get(key));
             indexCounter++;
         }
-        return new Gson().toJson(dto);
+        return GSON.toJson(dto);
     }
 
     private static class MapDTO {
@@ -72,21 +72,6 @@ public class MapHandler
         String valueValueType;
         String[] keySerializedValues;
         String[] valueSerializedValues;
-    }
-
-    @Override
-    public String toString() {
-        return MapHandler.class.getCanonicalName();
-    }
-
-    @Override
-    public int hashCode() {
-        return MapHandler.class.getCanonicalName().hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof MapHandler && obj.hashCode() == hashCode();
     }
 
     private static class MapArchetype implements Map {

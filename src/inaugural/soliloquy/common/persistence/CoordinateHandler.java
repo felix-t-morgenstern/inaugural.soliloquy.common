@@ -16,11 +16,6 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
         COORDINATE_FACTORY = coordinateFactory;
     }
 
-    @Override
-    public Coordinate getArchetype() {
-        return ARCHETYPE;
-    }
-
     @SuppressWarnings("ConstantConditions")
     @Override
     public Coordinate read(String serializedValue) throws IllegalArgumentException {
@@ -35,7 +30,7 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
         if (serializedValue.equals(NULL)){
             return null;
         } else {
-            CoordinateDTO dto = new Gson().fromJson(serializedValue, CoordinateDTO.class);
+            CoordinateDTO dto = GSON.fromJson(serializedValue, CoordinateDTO.class);
             return COORDINATE_FACTORY.make(dto.x, dto.y);
         }
     }
@@ -48,7 +43,7 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
             CoordinateDTO dto = new CoordinateDTO();
             dto.x = coordinate.getX();
             dto.y = coordinate.getY();
-            return new Gson().toJson(dto);
+            return GSON.toJson(dto);
         }
     }
 
@@ -56,22 +51,5 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
     private class CoordinateDTO {
         int x;
         int y;
-    }
-
-    @Override
-    public String toString() {
-        return TypeHandler.class.getCanonicalName() + "<" +
-                Coordinate.class.getCanonicalName() + ">";
-    }
-
-    @Override
-    public int hashCode() {
-        return (TypeHandler.class.getCanonicalName() + "<" +
-                Coordinate.class.getCanonicalName() + ">").hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof CoordinateHandler && obj.hashCode() == hashCode();
     }
 }
