@@ -1,6 +1,5 @@
 package inaugural.soliloquy.common.persistence;
 
-import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithTwoGenericParamsHandler;
 import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.Pair;
@@ -38,7 +37,7 @@ public class PairHandler
             throw new IllegalArgumentException(
                     "PairHandler.read: valuesString cannot be empty");
         }
-        PairDTO dto = GSON.fromJson(valuesString, PairDTO.class);
+        PairDTO dto = JSON.fromJson(valuesString, PairDTO.class);
         TypeHandler handler1 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType1);
         TypeHandler handler2 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType2);
         Pair pair = PAIR_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType1),
@@ -61,7 +60,7 @@ public class PairHandler
         TypeHandler handler2 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType2);
         dto.serializedValue1 = handler1.write(pair.getItem1());
         dto.serializedValue2 = handler2.write(pair.getItem2());
-        return GSON.toJson(dto);
+        return JSON.toJson(dto);
     }
 
     private static class PairDTO {

@@ -1,6 +1,5 @@
 package inaugural.soliloquy.common.persistence;
 
-import com.google.gson.Gson;
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithTwoGenericParamsHandler;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.List;
@@ -31,7 +30,7 @@ public class MapHandler
     @SuppressWarnings({"unchecked"})
     @Override
     public Map read(String valuesString) throws IllegalArgumentException {
-        MapDTO dto = GSON.fromJson(valuesString, MapDTO.class);
+        MapDTO dto = JSON.fromJson(valuesString, MapDTO.class);
         TypeHandler keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.keyValueType);
         TypeHandler valueHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueValueType);
         Map map = MAP_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.keyValueType),
@@ -64,7 +63,7 @@ public class MapHandler
             dto.valueSerializedValues[indexCounter] = valueHandler.write(map.get(key));
             indexCounter++;
         }
-        return GSON.toJson(dto);
+        return JSON.toJson(dto);
     }
 
     private static class MapDTO {

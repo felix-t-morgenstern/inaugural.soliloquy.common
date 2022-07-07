@@ -1,11 +1,10 @@
 package inaugural.soliloquy.common.persistence;
 
-import com.google.gson.Gson;
 import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithOneGenericParamHandler;
 import soliloquy.specs.common.factories.RegistryFactory;
-import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.infrastructure.Registry;
+import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.shared.HasId;
 
@@ -42,7 +41,7 @@ public class RegistryHandler
             throw new IllegalArgumentException(
                     "RegistryHandler.read: valuesString must be non-empty");
         }
-        RegistryDTO dto = GSON.fromJson(valuesString, RegistryDTO.class);
+        RegistryDTO dto = JSON.fromJson(valuesString, RegistryDTO.class);
         TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
         Registry registry = REGISTRY_FACTORY
                 .make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
@@ -68,7 +67,7 @@ public class RegistryHandler
         for (Object item : registry) {
             dto.serializedValues[index++] = handler.write(item);
         }
-        return GSON.toJson(dto);
+        return JSON.toJson(dto);
     }
 
     private static class RegistryDTO {

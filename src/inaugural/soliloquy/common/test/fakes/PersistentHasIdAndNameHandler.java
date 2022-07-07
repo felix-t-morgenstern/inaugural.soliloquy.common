@@ -16,7 +16,7 @@ public class PersistentHasIdAndNameHandler extends AbstractTypeHandler<FakeHasId
 
     @Override
     public FakeHasIdAndName read(String s) throws IllegalArgumentException {
-        HasIdAndNameStubDTO dto = GSON.fromJson(s, HasIdAndNameStubDTO.class);
+        HasIdAndNameStubDTO dto = JSON.fromJson(s, HasIdAndNameStubDTO.class);
         return new FakeHasIdAndName(dto.id, dto.name);
     }
 
@@ -25,7 +25,7 @@ public class PersistentHasIdAndNameHandler extends AbstractTypeHandler<FakeHasId
         HasIdAndNameStubDTO dto = new HasIdAndNameStubDTO();
         dto.id = hasIdAndNameStub.id();
         dto.name = hasIdAndNameStub.getName();
-        return GSON.toJson(dto);
+        return JSON.toJson(dto);
     }
 
     @Override

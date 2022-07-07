@@ -32,7 +32,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
             throw new IllegalArgumentException(
                     "SettingsRepoHandler.read: serializedValue must be non-empty");
         }
-        SettingDTO[] dto = GSON.fromJson(serializedValue, SettingDTO[].class);
+        SettingDTO[] dto = JSON.fromJson(serializedValue, SettingDTO[].class);
         for(SettingDTO settingDTO : dto) {
             Setting setting = SETTINGS_REPO.getSetting(settingDTO.id);
             if (setting == null) {
@@ -66,7 +66,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
             dto[i] = settingDTO;
             i++;
         }
-        return GSON.toJson(dto);
+        return JSON.toJson(dto);
     }
 
     private static class SettingDTO {

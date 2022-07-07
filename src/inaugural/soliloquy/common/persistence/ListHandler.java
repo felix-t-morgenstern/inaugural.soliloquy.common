@@ -1,6 +1,5 @@
 package inaugural.soliloquy.common.persistence;
 
-import com.google.gson.Gson;
 import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithOneGenericParamHandler;
 import soliloquy.specs.common.factories.ListFactory;
@@ -20,7 +19,6 @@ public class ListHandler
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final ListFactory LIST_FACTORY;
 
-    @SuppressWarnings("ConstantConditions")
     public ListHandler(PersistentValuesHandler persistentValuesHandler,
                        ListFactory listFactory) {
         super(
@@ -44,7 +42,7 @@ public class ListHandler
             throw new IllegalArgumentException(
                     "ListHandler.read: valuesString must be non-null");
         }
-        ListDTO dto = GSON.fromJson(valuesString, ListDTO.class);
+        ListDTO dto = JSON.fromJson(valuesString, ListDTO.class);
         TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
         List list =
                 LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
@@ -67,7 +65,7 @@ public class ListHandler
             serializedValues[i] = handler.write(list.get(i));
         }
         dto.serializedValues = serializedValues;
-        return GSON.toJson(dto);
+        return JSON.toJson(dto);
     }
 
     // TODO: Abbreviate DTO param names
