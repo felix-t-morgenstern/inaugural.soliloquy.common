@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.common.archetypes.SettingsRepoArchetype;
+import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
@@ -24,14 +25,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public SettingsRepo read(String serializedValue) throws IllegalArgumentException {
-        if (serializedValue == null) {
-            throw new IllegalArgumentException(
-                    "SettingsRepoHandler.read: serializedValue must be non-null");
-        }
-        if (serializedValue.equals("")) {
-            throw new IllegalArgumentException(
-                    "SettingsRepoHandler.read: serializedValue must be non-empty");
-        }
+        Check.ifNullOrEmpty(serializedValue, "serializedValue");
         SettingDTO[] dto = JSON.fromJson(serializedValue, SettingDTO[].class);
         for(SettingDTO settingDTO : dto) {
             Setting setting = SETTINGS_REPO.getSetting(settingDTO.id);

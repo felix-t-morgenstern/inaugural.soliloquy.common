@@ -2,7 +2,6 @@ package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
 import inaugural.soliloquy.common.test.fakes.FakeListFactory;
-import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +9,6 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.persistence.*;
 import soliloquy.specs.common.shared.EntityGroupItem;
@@ -22,8 +20,6 @@ class SettingsRepoImplTests {
     private SettingsRepoImpl _settingsRepo;
 
     private final ListFactory LIST_FACTORY = new FakeListFactory();
-
-    private final PairFactory PAIR_FACTORY = new FakePairFactory();
 
     private final PersistentValuesHandler SETTINGS_REPO_PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
@@ -51,20 +47,18 @@ class SettingsRepoImplTests {
 
     @BeforeEach
     void setUp()  {
-        _settingsRepo = new SettingsRepoImpl(LIST_FACTORY, PAIR_FACTORY,
+        _settingsRepo = new SettingsRepoImpl(LIST_FACTORY,
                 SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
 
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(null,
-                PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
+                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
         assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
-                null, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
+                null, SETTING_ARCHETYPE));
         assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
-                PAIR_FACTORY, null, SETTING_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
-                PAIR_FACTORY, SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, null));
+                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, null));
     }
 
     @Test
@@ -414,7 +408,7 @@ class SettingsRepoImplTests {
 
     @Test
     void testEquals() {
-        SettingsRepo settingsRepo2 = new SettingsRepoImpl(LIST_FACTORY, PAIR_FACTORY,
+        SettingsRepo settingsRepo2 = new SettingsRepoImpl(LIST_FACTORY,
                 SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
         _settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
         settingsRepo2.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");

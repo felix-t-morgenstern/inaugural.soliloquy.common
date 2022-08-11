@@ -40,7 +40,6 @@ class SettingsRepoImplIntegrationTests {
         VariableCacheFactory _variableCacheFactory =
                 commonInjector.getInstance(VariableCacheFactory.class);
         _mapFactory = commonInjector.getInstance(MapFactory.class);
-        PairFactory _pairFactory = commonInjector.getInstance(PairFactory.class);
         SettingFactory _settingFactory = commonInjector.getInstance(SettingFactory.class);
 
         _settingsRepoHandler = commonInjector.getInstance(PersistentValuesHandler.class)
@@ -110,14 +109,14 @@ class SettingsRepoImplIntegrationTests {
         _settingsRepo.addEntity(mapOfIntsToMapsOfIntsToBooleansSetting, 8, subgrouping2_2);
 
         Setting pairOfStringsSetting = _settingFactory.make("pairOfStringsSetting",
-                "PairOfStringsSetting", _pairFactory.make("", ""),
+                "PairOfStringsSetting", new Pair<>("", ""),
                 _variableCacheFactory.make());
         _settingsRepo.addEntity(pairOfStringsSetting, 9, subgrouping2_3);
 
         Setting pairOfStringAndCollectionOfInts =
                 _settingFactory.make("pairOfStringAndCollectionOfInts",
                         "PairOfStringAndCollectionOfInts",
-                        _pairFactory.make("", listFactory.make(0)),
+                        new Pair<>("", listFactory.make(0)),
                         _variableCacheFactory.make());
         _settingsRepo.addEntity(pairOfStringAndCollectionOfInts, 10, subgrouping3);
 
@@ -188,19 +187,19 @@ class SettingsRepoImplIntegrationTests {
         mapOfIntsToMapsOfIntsToBooleansSetting.setValue(mapOfIntsToMapsOfIntsToBooleans);
 
         Setting pairOfStringsSetting = _settingsRepo.getSetting("pairOfStringsSetting");
-        ((Pair<String,String>) pairOfStringsSetting.getValue()).setItem1("pairString1");
-        ((Pair<String,String>) pairOfStringsSetting.getValue()).setItem2("pairString2");
+        pairOfStringsSetting.setValue(new Pair<>("pairString1", "pairString2"));
 
         Setting pairOfStringAndCollectionOfIntsSetting =
                 _settingsRepo.getSetting("pairOfStringAndCollectionOfInts");
-        ((Pair<String,List<Integer>>) pairOfStringAndCollectionOfIntsSetting.getValue())
-                .setItem1("stringValue");
         List<Integer> collectionOfInts =
                 ((Pair<String,List<Integer>>) pairOfStringAndCollectionOfIntsSetting.getValue())
                         .getItem2();
         collectionOfInts.add(123);
         collectionOfInts.add(456);
         collectionOfInts.add(789);
+        pairOfStringAndCollectionOfIntsSetting.setValue(
+                new Pair<>("stringValue", collectionOfInts)
+        );
 
         Setting stringSetting = _settingsRepo.getSetting("stringSetting");
         stringSetting.setValue("stringSettingValue");

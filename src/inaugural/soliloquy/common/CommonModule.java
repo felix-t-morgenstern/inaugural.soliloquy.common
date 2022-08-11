@@ -20,7 +20,6 @@ public class CommonModule extends AbstractModule {
     private final ListFactory LIST_FACTORY;
     private final CoordinateFactory COORDINATE_FACTORY;
     private final MapFactory MAP_FACTORY;
-    private final PairFactory PAIR_FACTORY;
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final RegistryFactory REGISTRY_FACTORY;
     private final SettingFactory SETTING_FACTORY;
@@ -38,7 +37,6 @@ public class CommonModule extends AbstractModule {
     public CommonModule() {
         LIST_FACTORY = new ListFactoryImpl();
         COORDINATE_FACTORY = new CoordinateFactoryImpl();
-        PAIR_FACTORY = new PairFactoryImpl();
         SETTING_FACTORY = new SettingFactoryImpl();
 
         MAP_FACTORY = new MapFactoryImpl(LIST_FACTORY);
@@ -51,7 +49,7 @@ public class CommonModule extends AbstractModule {
 
         //noinspection rawtypes
         Setting settingArchetype = new SettingArchetype();
-        SETTINGS_REPO = new SettingsRepoImpl(LIST_FACTORY, PAIR_FACTORY,
+        SETTINGS_REPO = new SettingsRepoImpl(LIST_FACTORY,
                 PERSISTENT_VALUES_HANDLER, settingArchetype);
 
         TypeHandler<Boolean> booleanHandler = new BooleanHandler();
@@ -68,7 +66,7 @@ public class CommonModule extends AbstractModule {
         //noinspection rawtypes
         TypeHandler<Map> mapHandler = new MapHandler(PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
         //noinspection rawtypes
-        TypeHandler<Pair> pairHandler = new PairHandler(PERSISTENT_VALUES_HANDLER, PAIR_FACTORY);
+        TypeHandler<Pair> pairHandler = new PairHandler(PERSISTENT_VALUES_HANDLER);
         //noinspection rawtypes
         TypeHandler<Registry> registryHandler = new RegistryHandler(
                 PERSISTENT_VALUES_HANDLER, REGISTRY_FACTORY);
@@ -91,7 +89,6 @@ public class CommonModule extends AbstractModule {
         bind(CoordinateFactory.class).toInstance(COORDINATE_FACTORY);
         bind(ListFactory.class).toInstance(LIST_FACTORY);
         bind(MapFactory.class).toInstance(MAP_FACTORY);
-        bind(PairFactory.class).toInstance(PAIR_FACTORY);
         bind(PersistentValuesHandler.class).toInstance(PERSISTENT_VALUES_HANDLER);
         bind(VariableCacheFactory.class).toInstance(VARIABLE_CACHE_FACTORY);
         bind(RegistryFactory.class).toInstance(REGISTRY_FACTORY);

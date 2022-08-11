@@ -1,32 +1,26 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithTwoGenericParamsHandler;
-import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
-import soliloquy.specs.common.shared.Cloneable;
 
 @SuppressWarnings("rawtypes")
 public class PairHandler
         extends AbstractTypeWithTwoGenericParamsHandler<Pair>
         implements TypeHandler<Pair> {
-    private final PairFactory PAIR_FACTORY;
-
-    private static final PairArchetype ARCHETYPE = new PairArchetype();
+    private static final Pair<Object,Object> ARCHETYPE = new Pair<>(0, 0);
 
     // TODO: Implement null checks here
-    public PairHandler(PersistentValuesHandler persistentValuesHandler,
-                       PairFactory pairFactory) {
+    public PairHandler(PersistentValuesHandler persistentValuesHandler) {
         super(
                 ARCHETYPE,
                 persistentValuesHandler,
-                archetype1 -> archetype2 -> pairFactory.make(archetype1, archetype2)
+                archetype1 -> archetype2 -> new Pair<>(archetype1, archetype2)
         );
-        PAIR_FACTORY = pairFactory;
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
+    @SuppressWarnings("ConstantConditions")
     @Override
     public Pair read(String valuesString) throws IllegalArgumentException {
         if (valuesString == null) {
@@ -40,11 +34,12 @@ public class PairHandler
         PairDTO dto = JSON.fromJson(valuesString, PairDTO.class);
         TypeHandler handler1 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType1);
         TypeHandler handler2 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType2);
-        Pair pair = PAIR_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType1),
-                PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType2));
-        pair.setItem1(handler1.read(dto.serializedValue1));
-        pair.setItem2(handler2.read(dto.serializedValue2));
-        return pair;
+        return new Pair<>(
+                handler1.read(dto.serializedValue1),
+                handler2.read(dto.serializedValue2),
+                PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType1),
+                PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType2)
+        );
     }
 
     @SuppressWarnings({"unchecked", "ConstantConditions"})
@@ -68,48 +63,5 @@ public class PairHandler
         String serializedValue1;
         String valueType2;
         String serializedValue2;
-    }
-
-    private static class PairArchetype implements Pair {
-
-        @Override
-        public Object getItem1() {
-            return null;
-        }
-
-        @Override
-        public Object getItem2() {
-            return null;
-        }
-
-        @Override
-        public void setItem1(Object o) throws IllegalArgumentException {
-
-        }
-
-        @Override
-        public void setItem2(Object o) throws IllegalArgumentException {
-
-        }
-
-        @Override
-        public Cloneable makeClone() {
-            return null;
-        }
-
-        @Override
-        public Object getFirstArchetype() throws IllegalStateException {
-            return 0;
-        }
-
-        @Override
-        public Object getSecondArchetype() throws IllegalStateException {
-            return 0;
-        }
-
-        @Override
-        public String getInterfaceName() {
-            return Pair.class.getCanonicalName();
-        }
     }
 }

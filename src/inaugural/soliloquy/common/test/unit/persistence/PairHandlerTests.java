@@ -1,11 +1,9 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.PairHandler;
-import inaugural.soliloquy.common.test.fakes.FakePairFactory;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
@@ -13,7 +11,6 @@ import soliloquy.specs.common.persistence.TypeHandler;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PairHandlerTests {
-    private final PairFactory PAIR_FACTORY = new FakePairFactory();
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER =
             new FakePersistentValuesHandler();
     private final String VALUES_STRING =
@@ -24,7 +21,12 @@ class PairHandlerTests {
 
     @BeforeEach
     void setUp() {
-        _pairHandler = new PairHandler(PERSISTENT_VALUES_HANDLER, PAIR_FACTORY);
+        _pairHandler = new PairHandler(PERSISTENT_VALUES_HANDLER);
+    }
+
+    @Test
+    void testConstructorWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> new PairHandler(null));
     }
 
     @Test
@@ -43,7 +45,7 @@ class PairHandlerTests {
 
     @Test
     void testWrite() {
-        Pair<String,Integer> pair = PAIR_FACTORY.make("String",123);
+        Pair<String,Integer> pair = new Pair<>("String",123);
         assertEquals(VALUES_STRING, _pairHandler.write(pair));
     }
 

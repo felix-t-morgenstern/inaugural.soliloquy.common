@@ -3,7 +3,6 @@ package inaugural.soliloquy.common.infrastructure;
 import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.generic.CanGetInterfaceName;
 import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.factories.PairFactory;
 import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.shared.EntityGroup;
@@ -17,26 +16,25 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     private final HashMap<Integer,SettingsRepoItem> ITEMS;
     private final String ID;
     private final ListFactory LIST_FACTORY;
-    private final PairFactory PAIR_FACTORY;
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     @SuppressWarnings("rawtypes")
     private final Setting SETTING_ARCHETYPE;
 
     @SuppressWarnings("rawtypes")
-    public SettingsRepoImpl(ListFactory listFactory, PairFactory pairFactory,
-                            PersistentValuesHandler persistentValuesHandler, Setting settingArchetype) {
+    public SettingsRepoImpl(ListFactory listFactory,
+                            PersistentValuesHandler persistentValuesHandler,
+                            Setting settingArchetype) {
         ID = null;
         ITEMS = new HashMap<>();
 
         LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
-        PAIR_FACTORY = Check.ifNull(pairFactory, "pairFactory");
         PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler,
                 "persistentValuesHandler");
         SETTING_ARCHETYPE = Check.ifNull(settingArchetype, "settingArchetype");
     }
 
     @SuppressWarnings("rawtypes")
-    private SettingsRepoImpl(String id, ListFactory listFactory, PairFactory pairFactory,
+    private SettingsRepoImpl(String id, ListFactory listFactory,
                              PersistentValuesHandler persistentValuesHandler,
                              Setting settingArchetype) {
         if (id == null || id.equals("")) {
@@ -46,7 +44,6 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         ITEMS = new HashMap<>();
 
         LIST_FACTORY = listFactory;
-        PAIR_FACTORY = pairFactory;
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         SETTING_ARCHETYPE = settingArchetype;
     }
@@ -171,7 +168,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
             targetParentGrouping = (SettingsRepoImpl) getSubgrouping(parentGroupId);
         }
         targetParentGrouping.ITEMS.put(order,
-                new SettingsRepoItem(new SettingsRepoImpl(groupId, LIST_FACTORY, PAIR_FACTORY,
+                new SettingsRepoItem(new SettingsRepoImpl(groupId, LIST_FACTORY,
                         PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE)));
     }
 
@@ -274,11 +271,11 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
             SettingsRepoItem settingsRepoItem = ITEMS.get(order);
             if (!settingsRepoItem.isGroup()) {
                 if(settingsRepoItem.entity().id().equals(itemId)) {
-                    return PAIR_FACTORY.make(isTopLevel ? "" : ID, order);
+                    return new Pair<>(isTopLevel ? "" : ID, order);
                 }
             } else {
                 if(((SettingsRepoImpl) settingsRepoItem.group()).ID.equals(itemId)) {
-                    return PAIR_FACTORY.make(isTopLevel ? "" : ID, order);
+                    return new Pair<>(isTopLevel ? "" : ID, order);
                 }
                 Pair<String,Integer> groupingIdFromRecursiveSearch =
                         ((SettingsRepoImpl) settingsRepoItem.group()).getGroupingIdRecursively(itemId, false);
