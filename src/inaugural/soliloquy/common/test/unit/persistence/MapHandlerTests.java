@@ -1,11 +1,14 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.MapHandler;
-import inaugural.soliloquy.common.test.fakes.*;
+import inaugural.soliloquy.common.test.fakes.FakeMap;
+import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
+import inaugural.soliloquy.common.test.fakes.FakeMapHandler;
+import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.MapFactory;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 
@@ -37,7 +40,7 @@ class MapHandlerTests {
 
     @Test
     void testWrite() {
-        Map<String,Integer> map = new FakeMap<>("", 0);
+        Map<String, Integer> map = new FakeMap<>("", 0);
         map.put(KEY_1, VALUE_1);
         map.put(KEY_2, VALUE_2);
         map.put(KEY_3, VALUE_3);
@@ -54,7 +57,7 @@ class MapHandlerTests {
     @SuppressWarnings("unchecked")
     @Test
     void testRead() {
-        Map<String,Integer> map = _mapHandler.read(VALUES_STRING);
+        Map<String, Integer> map = _mapHandler.read(VALUES_STRING);
 
         assertEquals(3, map.size());
         assertEquals(VALUE_1, map.get(KEY_1));
@@ -67,7 +70,7 @@ class MapHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                Map.class.getCanonicalName() + ">",
+                        Map.class.getCanonicalName() + ">",
                 _mapHandler.getInterfaceName());
     }
 

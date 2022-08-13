@@ -15,13 +15,14 @@ public class MapFactoryImpl implements MapFactory {
     }
 
     // TODO: Test this method, incl whether archetypes' child archetypes are present
-    public <K, V> Map<K,V> make(K archetype1, V archetype2) {
+    public <K, V> Map<K, V> make(K archetype1, V archetype2) {
         return new MapImpl<>(LIST_FACTORY, archetype1, archetype2);
     }
 
     // TODO: Test this method, incl whether archetypes' child archetypes are present
     @Override
-    public <K, V> Map<K, V> make(java.util.Map<K, V> map, K k, V v) throws IllegalArgumentException {
+    public <K, V> Map<K, V> make(java.util.Map<K, V> map, K k, V v)
+            throws IllegalArgumentException {
         return new MapImpl<>(LIST_FACTORY, map, k, v);
     }
 

@@ -1,9 +1,8 @@
 package inaugural.soliloquy.common.test.archetypes;
 
-import inaugural.soliloquy.common.archetypes.*;
+import inaugural.soliloquy.common.archetypes.SettingArchetype;
+import inaugural.soliloquy.common.archetypes.SettingsRepoArchetype;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.entities.Function;
-import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 

@@ -27,7 +27,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
     public SettingsRepo read(String serializedValue) throws IllegalArgumentException {
         Check.ifNullOrEmpty(serializedValue, "serializedValue");
         SettingDTO[] dto = JSON.fromJson(serializedValue, SettingDTO[].class);
-        for(SettingDTO settingDTO : dto) {
+        for (SettingDTO settingDTO : dto) {
             Setting setting = SETTINGS_REPO.getSetting(settingDTO.id);
             if (setting == null) {
                 throw new IllegalArgumentException(
@@ -51,7 +51,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
         java.util.Collection<Setting> settings = settingsRepo.getAllUngroupedRepresentation();
         SettingDTO[] dto = new SettingDTO[settings.size()];
         int i = 0;
-        for(Setting setting : settings) {
+        for (Setting setting : settings) {
             String typeName = getProperTypeName(setting.getArchetype());
             TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(typeName);
             SettingDTO settingDTO = new SettingDTO();

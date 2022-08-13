@@ -9,7 +9,7 @@ import soliloquy.specs.common.persistence.TypeHandler;
 public class PairHandler
         extends AbstractTypeWithTwoGenericParamsHandler<Pair>
         implements TypeHandler<Pair> {
-    private static final Pair<Object,Object> ARCHETYPE = new Pair<>(0, 0);
+    private static final Pair<Object, Object> ARCHETYPE = new Pair<>(0, 0);
 
     // TODO: Implement null checks here
     public PairHandler(PersistentValuesHandler persistentValuesHandler) {
@@ -45,7 +45,7 @@ public class PairHandler
     @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
     public String write(Pair pair) {
-        if(pair == null) {
+        if (pair == null) {
             throw new IllegalArgumentException("PairHandler.write: pair cannot be null");
         }
         PairDTO dto = new PairDTO();

@@ -9,12 +9,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class FakeRegistry<T extends HasId> implements Registry<T> {
-    private HashMap<String,T> _registry = new HashMap<>();
+    private HashMap<String, T> _registry = new HashMap<>();
 
     private T _archetype;
 
-    public FakeRegistry(T archetype)
-    {
+    public FakeRegistry(T archetype) {
         _archetype = archetype;
     }
 
@@ -41,14 +40,14 @@ public class FakeRegistry<T extends HasId> implements Registry<T> {
     @SuppressWarnings("unchecked")
     @Override
     public void addAll(Object[] items) throws IllegalArgumentException {
-        for(Object item : items) {
-            add((T)item);
+        for (Object item : items) {
+            add((T) item);
         }
     }
 
     @Override
     public void addAll(T[] items) throws IllegalArgumentException {
-        for(T item : items) {
+        for (T item : items) {
             add(item);
         }
     }

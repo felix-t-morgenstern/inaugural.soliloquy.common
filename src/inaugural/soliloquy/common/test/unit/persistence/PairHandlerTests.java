@@ -32,7 +32,7 @@ class PairHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                Pair.class.getCanonicalName() + ">",
+                        Pair.class.getCanonicalName() + ">",
                 _pairHandler.getInterfaceName());
     }
 
@@ -45,7 +45,7 @@ class PairHandlerTests {
 
     @Test
     void testWrite() {
-        Pair<String,Integer> pair = new Pair<>("String",123);
+        Pair<String, Integer> pair = new Pair<>("String", 123);
         assertEquals(VALUES_STRING, _pairHandler.write(pair));
     }
 
@@ -57,7 +57,7 @@ class PairHandlerTests {
     @SuppressWarnings("unchecked")
     @Test
     void testRead() {
-        Pair<String,Integer> pair = _pairHandler.read(VALUES_STRING);
+        Pair<String, Integer> pair = _pairHandler.read(VALUES_STRING);
         assertEquals("String", pair.getItem1());
         assertEquals((Integer) 123, pair.getItem2());
     }

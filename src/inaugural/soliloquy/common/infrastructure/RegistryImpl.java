@@ -10,7 +10,7 @@ import java.util.*;
 public class RegistryImpl<T extends HasId>
         extends AbstractHasOneGenericParam<T>
         implements Registry<T> {
-    private final HashMap<String,T> REGISTRY;
+    private final HashMap<String, T> REGISTRY;
 
     public RegistryImpl(T archetype) {
         super(archetype);

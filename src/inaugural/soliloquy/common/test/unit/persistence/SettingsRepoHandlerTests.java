@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.SettingsRepoHandler;
-import inaugural.soliloquy.common.test.fakes.FakeSettingsRepoHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import inaugural.soliloquy.common.test.fakes.FakeSettingsRepo;
+import inaugural.soliloquy.common.test.fakes.FakeSettingsRepoHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.List;
@@ -34,7 +34,7 @@ class SettingsRepoHandlerTests {
     @Test
     void testGetInterface() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                SettingsRepo.class.getCanonicalName() + ">",
+                        SettingsRepo.class.getCanonicalName() + ">",
                 _settingsRepoHandler.getInterfaceName());
     }
 
@@ -58,8 +58,8 @@ class SettingsRepoHandlerTests {
 
         List<Setting> settings = SETTINGS_REPO.getAllUngroupedRepresentation();
         assertEquals(2, settings.size());
-        for(Setting setting : settings) {
-            switch(setting.getName()) {
+        for (Setting setting : settings) {
+            switch (setting.getName()) {
                 case FakeSettingsRepo.SETTING_1_NAME:
                     assertEquals(FakeSettingsRepo.SETTING_1_VALUE, setting.getValue());
                     break;
@@ -77,7 +77,7 @@ class SettingsRepoHandlerTests {
         assertThrows(IllegalArgumentException.class,
                 () -> _settingsRepoHandler.read(
                         "[{\"id\":\"InvalidName\",\"valueString\":\"setting1Value\"}," +
-                        "{\"id\":\"setting2Name\",\"valueString\":\"123123\"}]"));
+                                "{\"id\":\"setting2Name\",\"valueString\":\"123123\"}]"));
     }
 
     @Test

@@ -29,7 +29,7 @@ public class FakeListFactory implements ListFactory {
         if (NextListToReturn != null) {
             MakeCollectionInput = collection;
             MakeArchetypeInput = v;
-            return (List<V>)NextListToReturn;
+            return (List<V>) NextListToReturn;
         }
         return new FakeList<>(collection);
     }

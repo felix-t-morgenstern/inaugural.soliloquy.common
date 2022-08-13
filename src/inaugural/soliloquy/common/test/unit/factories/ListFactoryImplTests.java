@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
+import inaugural.soliloquy.common.factories.ListFactoryImpl;
 import inaugural.soliloquy.common.test.fakes.FakeList;
 import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import inaugural.soliloquy.common.factories.ListFactoryImpl;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
 
@@ -39,7 +39,7 @@ class ListFactoryImplTests {
         String string1 = "STRING1";
         String string2 = "STRING2";
         String string3 = "STRING3";
-        List<String> collection = _listFactory.make(new String[] {string1, string2, string3}, "");
+        List<String> collection = _listFactory.make(new String[]{string1, string2, string3}, "");
 
         assertEquals(3, collection.size());
         assertSame(collection.get(0), string1);
@@ -51,7 +51,7 @@ class ListFactoryImplTests {
     @SuppressWarnings("unchecked")
     @Test
     void testArchetypeWithNullArchetype() {
-        List<String> archetype = new FakeList<>((String)null);
+        List<String> archetype = new FakeList<>((String) null);
 
         assertThrows(IllegalArgumentException.class, () -> _listFactory.make(archetype));
     }

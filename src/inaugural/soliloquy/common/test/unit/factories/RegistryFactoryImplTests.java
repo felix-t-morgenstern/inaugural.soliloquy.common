@@ -1,12 +1,10 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.RegistryFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
 import inaugural.soliloquy.common.test.fakes.FakeRegistryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 

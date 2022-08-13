@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
-import soliloquy.specs.common.persistence.TypeHandler;
 
 public class IntegerHandler extends AbstractTypeHandler<Integer> {
 

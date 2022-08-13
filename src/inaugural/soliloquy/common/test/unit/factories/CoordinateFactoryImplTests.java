@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
+import inaugural.soliloquy.common.factories.CoordinateFactoryImpl;
 import inaugural.soliloquy.common.test.fakes.FakeCoordinateFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import inaugural.soliloquy.common.factories.CoordinateFactoryImpl;
 import soliloquy.specs.common.factories.CoordinateFactory;
 import soliloquy.specs.common.valueobjects.Coordinate;
 
@@ -19,7 +19,7 @@ class CoordinateFactoryImplTests {
 
     @Test
     void testMake() {
-        Coordinate coordinate = _coordinateFactory.make(0,0);
+        Coordinate coordinate = _coordinateFactory.make(0, 0);
         assertNotNull(coordinate);
 
         coordinate.setX(10);

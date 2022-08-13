@@ -58,7 +58,7 @@ public class MapHandler
         dto.keySerializedValues = new String[map.size()];
         dto.valueSerializedValues = new String[map.size()];
         int indexCounter = 0;
-        for(Object key : map.keySet()) {
+        for (Object key : map.keySet()) {
             dto.keySerializedValues[indexCounter] = keyHandler.write(key);
             dto.valueSerializedValues[indexCounter] = valueHandler.write(map.get(key));
             indexCounter++;

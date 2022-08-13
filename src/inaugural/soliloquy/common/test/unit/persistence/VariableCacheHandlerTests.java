@@ -2,9 +2,9 @@ package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.VariableCacheHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
-import inaugural.soliloquy.common.test.fakes.FakeVariableCacheHandler;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
+import inaugural.soliloquy.common.test.fakes.FakeVariableCacheHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
@@ -25,16 +25,18 @@ class VariableCacheHandlerTests {
             new FakeVariableCache();
 
     private final String VALUES_STRING =
-            "[{\"name\":\"variable1\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"456456\"}," +
-                    "{\"name\":\"variable2\",\"typeName\":\"java.lang.String\",\"serializedValue\":\"variable2value\"}]";
+            "[{\"name\":\"variable1\",\"typeName\":\"java.lang.Integer\"," +
+                    "\"serializedValue\":\"456456\"}," +
+                    "{\"name\":\"variable2\",\"typeName\":\"java.lang.String\"," +
+                    "\"serializedValue\":\"variable2value\"}]";
 
     private TypeHandler<VariableCache> _variableCacheHandler;
 
     @BeforeEach
     void setUp() {
         _variableCacheHandler = new VariableCacheHandler(
-                        PERSISTENT_VALUES_HANDLER,
-                        VARIABLE_CACHE_FACTORY);
+                PERSISTENT_VALUES_HANDLER,
+                VARIABLE_CACHE_FACTORY);
     }
 
     // TODO: Test constructor with invalid params
@@ -42,7 +44,7 @@ class VariableCacheHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                VariableCache.class.getCanonicalName() + ">",
+                        VariableCache.class.getCanonicalName() + ">",
                 _variableCacheHandler.getInterfaceName());
     }
 
@@ -64,7 +66,7 @@ class VariableCacheHandlerTests {
 
         assertNotNull(pVarCache);
         assertEquals(2, pVarCache.size());
-        Map<String,Object> representation = pVarCache.variablesRepresentation();
+        Map<String, Object> representation = pVarCache.variablesRepresentation();
         assertEquals(FakeVariableCache.VARIABLE_1_VALUE,
                 representation.get(FakeVariableCache.VARIABLE_1_NAME));
         assertEquals(FakeVariableCache.VARIABLE_2_VALUE,

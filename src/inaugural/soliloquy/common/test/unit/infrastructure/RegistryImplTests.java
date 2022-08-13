@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.RegistryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeList;
 import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
+import inaugural.soliloquy.common.test.fakes.FakeList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.Registry;
@@ -40,7 +40,7 @@ class RegistryImplTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(Registry.class.getCanonicalName() + "<" +
-                FakeHasIdAndName.class.getCanonicalName() + ">",
+                        FakeHasIdAndName.class.getCanonicalName() + ">",
                 _registry.getInterfaceName());
     }
 
@@ -85,7 +85,7 @@ class RegistryImplTests {
         FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
         FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
         FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
-        ArrayList<FakeHasIdAndName> toAdd = new ArrayList<>(){{
+        ArrayList<FakeHasIdAndName> toAdd = new ArrayList<>() {{
             add(item1);
             add(item2);
             add(item3);
@@ -101,18 +101,18 @@ class RegistryImplTests {
     @Test
     void testAddAllFromCollectionWithNull() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll((Collection<FakeHasIdAndName>)null));
+                () -> _registry.addAll((Collection<FakeHasIdAndName>) null));
     }
 
     @Test
     void testAddAllFromTypedArrayWithNull() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll((FakeHasIdAndName[])null));
+                () -> _registry.addAll((FakeHasIdAndName[]) null));
     }
 
     @Test
     void testAddAllFromUntypedArrayWithNull() {
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll((Object[])null));
+        assertThrows(IllegalArgumentException.class, () -> _registry.addAll((Object[]) null));
     }
 
     @Test
@@ -169,7 +169,7 @@ class RegistryImplTests {
     @Test
     void testAddAllFromArrayWithNull() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll((FakeHasIdAndName[])null));
+                () -> _registry.addAll((FakeHasIdAndName[]) null));
     }
 
     @Test
@@ -237,7 +237,7 @@ class RegistryImplTests {
     @Test
     void testRemoveAndContainsWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.remove(((FakeHasIdAndName)null)));
+                () -> _registry.remove(((FakeHasIdAndName) null)));
         assertThrows(IllegalArgumentException.class,
                 () -> _registry.remove(new FakeHasIdAndName(null, "name")));
         assertThrows(IllegalArgumentException.class,
@@ -245,7 +245,7 @@ class RegistryImplTests {
         assertThrows(IllegalArgumentException.class, () -> _registry.remove((String) null));
         assertThrows(IllegalArgumentException.class, () -> _registry.remove(""));
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.contains((FakeHasIdAndName)null));
+                () -> _registry.contains((FakeHasIdAndName) null));
         assertThrows(IllegalArgumentException.class, () -> _registry.contains((String) null));
         assertThrows(IllegalArgumentException.class, () -> _registry.contains(""));
     }

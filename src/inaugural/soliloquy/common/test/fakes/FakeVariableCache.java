@@ -1,9 +1,11 @@
 package inaugural.soliloquy.common.test.fakes;
 
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.infrastructure.Map;
+import soliloquy.specs.common.infrastructure.VariableCache;
 
 public class FakeVariableCache implements VariableCache {
-    private final Map<String,Object> PERSISTENT_VARIABLES = new FakeMap<>();
+    private final Map<String, Object> PERSISTENT_VARIABLES = new FakeMap<>();
 
     public final static String VARIABLE_1_NAME = "variable1";
     public final static Integer VARIABLE_1_VALUE = 456456;
@@ -11,7 +13,7 @@ public class FakeVariableCache implements VariableCache {
     public final static String VARIABLE_2_NAME = "variable2";
     public final static String VARIABLE_2_VALUE = "variable2value";
 
-    private final Map<String,Object> P_VARS = new FakeMap<>();
+    private final Map<String, Object> P_VARS = new FakeMap<>();
 
     public FakeVariableCache() {
         PERSISTENT_VARIABLES.put(VARIABLE_1_NAME, VARIABLE_1_VALUE);
@@ -37,20 +39,22 @@ public class FakeVariableCache implements VariableCache {
     public List<String> namesRepresentation() {
         if (!P_VARS.isEmpty()) {
             List<String> representation = new FakeList<>();
-            P_VARS.forEach((k,v) -> representation.add(k));
+            P_VARS.forEach((k, v) -> representation.add(k));
             return representation;
-        } else {
+        }
+        else {
             List<String> representation = new FakeList<>();
-            PERSISTENT_VARIABLES.forEach((k,v) -> representation.add(k));
+            PERSISTENT_VARIABLES.forEach((k, v) -> representation.add(k));
             return representation;
         }
     }
 
     @Override
-    public Map<String,Object> variablesRepresentation() {
+    public Map<String, Object> variablesRepresentation() {
         if (!P_VARS.isEmpty()) {
             return P_VARS;
-        } else {
+        }
+        else {
             return PERSISTENT_VARIABLES;
         }
     }
@@ -65,7 +69,8 @@ public class FakeVariableCache implements VariableCache {
     public <T> T getVariable(String name) {
         if (!P_VARS.isEmpty()) {
             return (T) P_VARS.get(name);
-        } else {
+        }
+        else {
             return (T) PERSISTENT_VARIABLES.get(name);
         }
     }

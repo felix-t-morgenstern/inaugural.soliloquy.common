@@ -43,7 +43,7 @@ public class VariableCacheHandler
                 PERSISTENT_VARIABLE_CACHE_FACTORY.make();
         PersistentVariableDTO[] dto = JSON.fromJson(serializedValue,
                 PersistentVariableDTO[].class);
-        for(PersistentVariableDTO pVarDTO : dto) {
+        for (PersistentVariableDTO pVarDTO : dto) {
             TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(pVarDTO.typeName);
             VariableCache.setVariable(pVarDTO.name,
                     handler.read(pVarDTO.serializedValue));
@@ -61,7 +61,7 @@ public class VariableCacheHandler
         }
         List<String> pVarNames = VariableCache.namesRepresentation();
         PersistentVariableDTO[] dto = new PersistentVariableDTO[pVarNames.size()];
-        for(int i = 0; i < pVarNames.size(); i++) {
+        for (int i = 0; i < pVarNames.size(); i++) {
             String pVarName = pVarNames.get(i);
             PersistentVariableDTO pVarDTO = new PersistentVariableDTO();
             pVarDTO.name = pVarName;

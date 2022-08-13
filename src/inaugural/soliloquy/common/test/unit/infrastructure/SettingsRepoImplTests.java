@@ -2,19 +2,20 @@ package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
 import inaugural.soliloquy.common.test.fakes.FakeListFactory;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.*;
-import soliloquy.specs.common.persistence.*;
+import soliloquy.specs.common.persistence.PersistentValuesHandler;
+import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.shared.EntityGroupItem;
 
 import java.util.Objects;
 import java.util.TreeMap;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SettingsRepoImplTests {
     private SettingsRepoImpl _settingsRepo;
@@ -41,12 +42,12 @@ class SettingsRepoImplTests {
 
     private final Integer SETTING_1_VALUE_ALT = 789;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private final Setting SETTING_ARCHETYPE = new SettingStub(SETTING_1_ID, SETTING_1_NAME,
             SETTING_1_VALUE);
 
     @BeforeEach
-    void setUp()  {
+    void setUp() {
         _settingsRepo = new SettingsRepoImpl(LIST_FACTORY,
                 SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
@@ -358,18 +359,18 @@ class SettingsRepoImplTests {
 
         _settingsRepo.addEntity(setting3, 789, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        Pair<String,Integer> setting1GroupingIdAndOrder =
+        Pair<String, Integer> setting1GroupingIdAndOrder =
                 _settingsRepo.getGroupingIdAndOrder(SETTING_1_ID);
         assertTrue(setting1GroupingIdAndOrder.getItem1() == null ||
                 setting1GroupingIdAndOrder.getItem1().equals(""));
         assertEquals(123, (int) setting1GroupingIdAndOrder.getItem2());
 
-        Pair<String,Integer> setting2GroupingIdAndOrder =
+        Pair<String, Integer> setting2GroupingIdAndOrder =
                 _settingsRepo.getGroupingIdAndOrder(SETTING_2_ID);
         assertEquals(setting2GroupingIdAndOrder.getItem1(), SETTINGS_REPO_SUBGROUP_1_ID);
         assertEquals(456, (int) setting2GroupingIdAndOrder.getItem2());
 
-        Pair<String,Integer> setting3GroupingIdAndOrder =
+        Pair<String, Integer> setting3GroupingIdAndOrder =
                 _settingsRepo.getGroupingIdAndOrder(SETTING_3_ID);
         assertEquals(setting3GroupingIdAndOrder.getItem1(), SETTINGS_REPO_SUBGROUP_1_1_ID);
         assertEquals(789, (int) setting3GroupingIdAndOrder.getItem2());
@@ -395,7 +396,7 @@ class SettingsRepoImplTests {
         Setting setting2 = new SettingStub(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
 
         // NB: TreeMap is chosen to contrast against the implementation, which uses HashMap
-        java.util.Map<String,Setting> comparand = new TreeMap<>();
+        java.util.Map<String, Setting> comparand = new TreeMap<>();
         comparand.put(SETTING_1_ID, setting1);
         comparand.put(SETTING_2_ID, setting2);
 
@@ -426,7 +427,7 @@ class SettingsRepoImplTests {
     void testToString() {
         assertThrows(UnsupportedOperationException.class, _settingsRepo::toString);
     }
-    
+
     private static class SettingStub<T> implements Setting<T> {
         private final String ID;
 
@@ -484,7 +485,7 @@ class SettingsRepoImplTests {
             return Objects.hash(ID, _name, _value);
         }
     }
-    
+
     private static class PersistentValuesHandlerStub implements PersistentValuesHandler {
         @Override
         public void addTypeHandler(TypeHandler<?> typeHandler) throws IllegalArgumentException {

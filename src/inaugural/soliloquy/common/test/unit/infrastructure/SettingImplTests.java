@@ -1,10 +1,9 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
+import inaugural.soliloquy.common.infrastructure.SettingImpl;
 import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import inaugural.soliloquy.common.infrastructure.SettingImpl;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
@@ -66,7 +65,7 @@ class SettingImplTests {
                         SETTING_ARCHETYPE,
                         null));
     }
-    
+
     @Test
     void testId() {
         assertEquals(_setting.id(), SETTING_ID);

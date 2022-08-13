@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 public class VariableCacheImpl implements VariableCache {
-    private final HashMap<String,Object> PERSISTENT_VARIABLES;
+    private final HashMap<String, Object> PERSISTENT_VARIABLES;
 
     public VariableCacheImpl() {
         PERSISTENT_VARIABLES = new HashMap<>();
     }
 
     @SuppressWarnings("unchecked")
-    private VariableCacheImpl(HashMap<String,Object> persistentVariables) {
+    private VariableCacheImpl(HashMap<String, Object> persistentVariables) {
         PERSISTENT_VARIABLES = (HashMap<String, Object>) persistentVariables.clone();
     }
 
@@ -42,7 +42,7 @@ public class VariableCacheImpl implements VariableCache {
     }
 
     @Override
-    public Map<String,Object> variablesRepresentation() {
+    public Map<String, Object> variablesRepresentation() {
         return new HashMap<>(PERSISTENT_VARIABLES);
     }
 

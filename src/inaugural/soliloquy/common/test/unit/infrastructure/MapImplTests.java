@@ -22,7 +22,7 @@ class MapImplTests {
     private final String KEY_ARCHETYPE = "FIRST_ARCHETYPE";
     private final String VALUE_ARCHETYPE = "SECOND_ARCHETYPE";
 
-    private MapImpl<String,String> _map;
+    private MapImpl<String, String> _map;
 
     @BeforeEach
     void setUp() {
@@ -90,7 +90,7 @@ class MapImplTests {
         _map.put(PAIR_1_KEY, PAIR_1_VALUE);
         _map.put(PAIR_2_KEY, PAIR_2_VALUE);
 
-        Map<String,String> clonedMap = _map.makeClone();
+        Map<String, String> clonedMap = _map.makeClone();
         assertNotNull(clonedMap);
         assertNotSame(_map, clonedMap);
         assertEquals(_map, clonedMap);

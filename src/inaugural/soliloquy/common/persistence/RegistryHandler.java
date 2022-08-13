@@ -24,9 +24,10 @@ public class RegistryHandler
         super(
                 new RegistryArchetype(),
                 persistentValuesHandler,
-                archetype -> registryFactory.make((HasId)archetype)
+                archetype -> registryFactory.make((HasId) archetype)
         );
-        PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler, "persistentValuesHandler");
+        PERSISTENT_VALUES_HANDLER =
+                Check.ifNull(persistentValuesHandler, "persistentValuesHandler");
         REGISTRY_FACTORY = Check.ifNull(registryFactory, "registryFactory");
     }
 
@@ -46,7 +47,7 @@ public class RegistryHandler
         Registry registry = REGISTRY_FACTORY
                 .make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
         for (String serializedValue : dto.serializedValues) {
-            registry.add((HasId)handler.read(serializedValue));
+            registry.add((HasId) handler.read(serializedValue));
         }
         return registry;
     }

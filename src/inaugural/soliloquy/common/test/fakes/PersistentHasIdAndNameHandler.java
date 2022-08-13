@@ -8,7 +8,8 @@ public class PersistentHasIdAndNameHandler extends AbstractTypeHandler<FakeHasId
         implements TypeHandler<FakeHasIdAndName> {
     public final static String ARCHETYPE_ID = "ArchetypeId";
     public final static String ARCHETYPE_NAME = "ArchetypeName";
-    public final static FakeHasIdAndName ARCHETYPE = new FakeHasIdAndName(ARCHETYPE_ID, ARCHETYPE_NAME);
+    public final static FakeHasIdAndName ARCHETYPE =
+            new FakeHasIdAndName(ARCHETYPE_ID, ARCHETYPE_NAME);
 
     public PersistentHasIdAndNameHandler() {
         super(ARCHETYPE);
@@ -33,8 +34,7 @@ public class PersistentHasIdAndNameHandler extends AbstractTypeHandler<FakeHasId
         return ARCHETYPE;
     }
 
-    private static class HasIdAndNameStubDTO
-    {
+    private static class HasIdAndNameStubDTO {
         String id;
         String name;
     }

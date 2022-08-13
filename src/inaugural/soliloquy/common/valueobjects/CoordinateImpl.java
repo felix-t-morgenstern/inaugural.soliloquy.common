@@ -36,9 +36,9 @@ public class CoordinateImpl implements Coordinate {
         return coordinateCount(this) - coordinateCount(arg0);
     }
 
-    private int coordinateCount(Coordinate coordinate)    {
+    private int coordinateCount(Coordinate coordinate) {
         int digitsSum = (coordinate.getX() + coordinate.getY());
-        int coordinatesHitherto = (digitsSum * (digitsSum + 1))/2;
+        int coordinatesHitherto = (digitsSum * (digitsSum + 1)) / 2;
         return 1 + coordinatesHitherto + coordinate.getX();
     }
 

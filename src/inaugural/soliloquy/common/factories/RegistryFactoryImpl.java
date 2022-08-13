@@ -2,7 +2,6 @@ package inaugural.soliloquy.common.factories;
 
 import inaugural.soliloquy.common.infrastructure.RegistryImpl;
 import inaugural.soliloquy.tools.Check;
-import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;

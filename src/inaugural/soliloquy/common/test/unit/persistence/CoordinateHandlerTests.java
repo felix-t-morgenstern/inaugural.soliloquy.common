@@ -92,7 +92,7 @@ class CoordinateHandlerTests {
     @Test
     void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                Coordinate.class.getCanonicalName() + ">",
+                        Coordinate.class.getCanonicalName() + ">",
                 _coordinateHandler.toString());
     }
 }

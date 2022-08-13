@@ -17,7 +17,7 @@ class VariableCacheImplTests {
     void setUp() {
         _variableCache = new VariableCacheImpl();
     }
-    
+
     @Test
     void testPutAndSize() {
         _variableCache.setVariable("variable1", "value1");
@@ -97,7 +97,7 @@ class VariableCacheImplTests {
         _variableCache.setVariable("variable2", "value2");
         _variableCache.setVariable("variable3", "value3");
 
-        Map<String,Object> variablesRepresentation = _variableCache.variablesRepresentation();
+        Map<String, Object> variablesRepresentation = _variableCache.variablesRepresentation();
 
         assertNotNull(variablesRepresentation);
         assertEquals(3, variablesRepresentation.size());

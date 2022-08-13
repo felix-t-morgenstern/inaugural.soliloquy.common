@@ -31,7 +31,7 @@ class MapFactoryImplTests {
 
     @Test
     void testMake() {
-        Map<String,Integer> map = _mapFactory.make("",0);
+        Map<String, Integer> map = _mapFactory.make("", 0);
         assertNotNull(map);
         assertNotNull(map.getFirstArchetype());
         assertNotNull(map.getSecondArchetype());
@@ -39,12 +39,12 @@ class MapFactoryImplTests {
         map.put("String1", 123);
         assertEquals(123, (int) map.get("String1"));
     }
-    
+
     @SuppressWarnings("unused")
     @Test
     void testMakeWithNullArchetypes() {
-        assertThrows(IllegalArgumentException.class, () -> _mapFactory.make("",null));
-        assertThrows(IllegalArgumentException.class, () -> _mapFactory.make(null,0));
+        assertThrows(IllegalArgumentException.class, () -> _mapFactory.make("", null));
+        assertThrows(IllegalArgumentException.class, () -> _mapFactory.make(null, 0));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

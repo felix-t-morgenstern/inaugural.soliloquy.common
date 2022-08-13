@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class FakeSettingsRepo implements SettingsRepo {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static final HashMap<String,Object> SETTINGS = new HashMap<>();
+    private static final HashMap<String, Object> SETTINGS = new HashMap<>();
 
     private static final String SETTING_1_ID = "setting1Id";
     public static final String SETTING_1_NAME = "setting1Name";
@@ -22,17 +22,18 @@ public class FakeSettingsRepo implements SettingsRepo {
 
     private static final Setting<String> SETTING_1 = new FakeSetting<>(SETTING_1_ID, SETTING_1_NAME,
             SETTING_1_VALUE);
-    private static final Setting<Integer> SETTING_2 = new FakeSetting<>(SETTING_2_ID, SETTING_2_NAME,
-            SETTING_2_VALUE);
+    private static final Setting<Integer> SETTING_2 =
+            new FakeSetting<>(SETTING_2_ID, SETTING_2_NAME,
+                    SETTING_2_VALUE);
 
     @SuppressWarnings("unchecked")
     @Override
     public <V> Setting<V> getSetting(String name) throws IllegalArgumentException {
         switch (name) {
             case SETTING_1_ID:
-                return (Setting<V>)SETTING_1;
+                return (Setting<V>) SETTING_1;
             case SETTING_2_ID:
-                return (Setting<V>)SETTING_2;
+                return (Setting<V>) SETTING_2;
             default:
                 return null;
         }

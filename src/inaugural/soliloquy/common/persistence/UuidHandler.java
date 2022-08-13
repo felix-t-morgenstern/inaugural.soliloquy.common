@@ -13,7 +13,8 @@ public class UuidHandler extends AbstractTypeHandler<UUID> {
     public UUID read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null || serializedValue.equals("")) {
             return null;
-        } else {
+        }
+        else {
             return UUID.fromString(serializedValue);
         }
     }
@@ -22,7 +23,8 @@ public class UuidHandler extends AbstractTypeHandler<UUID> {
     public String write(UUID uuid) {
         if (uuid == null) {
             return "";
-        } else {
+        }
+        else {
             return uuid.toString();
         }
     }

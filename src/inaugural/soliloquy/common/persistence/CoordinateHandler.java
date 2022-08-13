@@ -10,7 +10,7 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
     private static final String NULL = "NULL";
 
     public CoordinateHandler(CoordinateFactory coordinateFactory) {
-        super(coordinateFactory.make(0,0));
+        super(coordinateFactory.make(0, 0));
         COORDINATE_FACTORY = coordinateFactory;
     }
 
@@ -25,9 +25,10 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
             throw new IllegalArgumentException(
                     "CoordinateHandler.read: serializedValue must be non-empty");
         }
-        if (serializedValue.equals(NULL)){
+        if (serializedValue.equals(NULL)) {
             return null;
-        } else {
+        }
+        else {
             CoordinateDTO dto = JSON.fromJson(serializedValue, CoordinateDTO.class);
             return COORDINATE_FACTORY.make(dto.x, dto.y);
         }
@@ -37,7 +38,8 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
     public String write(Coordinate coordinate) {
         if (coordinate == null) {
             return NULL;
-        } else {
+        }
+        else {
             CoordinateDTO dto = new CoordinateDTO();
             dto.x = coordinate.getX();
             dto.y = coordinate.getY();

@@ -29,7 +29,7 @@ class UuidHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                UUID.class.getCanonicalName() + ">",
+                        UUID.class.getCanonicalName() + ">",
                 _uuidHandler.getInterfaceName());
     }
 

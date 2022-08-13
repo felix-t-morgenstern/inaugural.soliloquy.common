@@ -18,7 +18,12 @@ class RegistryHandlerTests {
 
     private RegistryHandler _registryHandler;
 
-    private final String DATA_STRING = "{\"typeName\":\"inaugural.soliloquy.common.test.fakes.FakeHasIdAndName\",\"serializedValues\":[\"{\\\"id\\\":\\\"id2\\\",\\\"name\\\":\\\"name2\\\"}\",\"{\\\"id\\\":\\\"id1\\\",\\\"name\\\":\\\"name1\\\"}\",\"{\\\"id\\\":\\\"id3\\\",\\\"name\\\":\\\"name3\\\"}\"]}";
+    private final String DATA_STRING =
+            "{\"typeName\":\"inaugural.soliloquy.common.test.fakes.FakeHasIdAndName\"," +
+                    "\"serializedValues\":[\"{\\\"id\\\":\\\"id2\\\"," +
+                    "\\\"name\\\":\\\"name2\\\"}\",\"{\\\"id\\\":\\\"id1\\\"," +
+                    "\\\"name\\\":\\\"name1\\\"}\",\"{\\\"id\\\":\\\"id3\\\"," +
+                    "\\\"name\\\":\\\"name3\\\"}\"]}";
 
     @BeforeEach
     void setup() {
@@ -90,7 +95,7 @@ class RegistryHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                Registry.class.getCanonicalName() + ">",
+                        Registry.class.getCanonicalName() + ">",
                 _registryHandler.getInterfaceName());
     }
 

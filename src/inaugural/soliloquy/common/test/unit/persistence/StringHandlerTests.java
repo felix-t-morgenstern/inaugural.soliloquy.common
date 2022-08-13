@@ -3,14 +3,13 @@ package inaugural.soliloquy.common.test.unit.persistence;
 import inaugural.soliloquy.common.persistence.StringHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import soliloquy.specs.common.persistence.TypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StringHandlerTests {
     private StringHandler _stringHandler;
-    
+
     @BeforeEach
     protected void setUp() {
         _stringHandler = new StringHandler();
@@ -26,9 +25,11 @@ public class StringHandlerTests {
         try {
             _stringHandler.read(null);
             fail("Should fail on invalid value");
-        } catch(IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             assertTrue(true);
-        } catch(Exception e) {
+        }
+        catch (Exception e) {
             fail("Should throw correct exception");
         }
     }

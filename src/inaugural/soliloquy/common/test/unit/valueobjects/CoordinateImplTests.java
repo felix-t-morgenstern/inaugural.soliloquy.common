@@ -12,7 +12,7 @@ class CoordinateImplTests {
 
     @BeforeEach
     void setUp() {
-        _coordinate = new CoordinateImpl(0,0);
+        _coordinate = new CoordinateImpl(0, 0);
     }
 
     @Test
@@ -28,7 +28,7 @@ class CoordinateImplTests {
         _coordinate.setX(0);
         _coordinate.setY(0);
 
-        CoordinateImpl otherCoordinate = new CoordinateImpl(0,0);
+        CoordinateImpl otherCoordinate = new CoordinateImpl(0, 0);
 
         assertEquals(0, _coordinate.compareTo(otherCoordinate));
 

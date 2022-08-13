@@ -80,7 +80,7 @@ class ListHandlerTests {
     @Test
     void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                List.class.getCanonicalName() + ">",
+                        List.class.getCanonicalName() + ">",
                 _listHandler.getInterfaceName());
     }
 

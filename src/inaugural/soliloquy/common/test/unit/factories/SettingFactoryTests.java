@@ -20,7 +20,7 @@ class SettingFactoryTests {
     void setUp() {
         _settingFactory = new SettingFactoryImpl();
     }
-    
+
     @Test
     void testMake() {
         VariableCache settingControlParams = new FakeVariableCache();
@@ -42,7 +42,7 @@ class SettingFactoryTests {
 
     @Test
     void testArchetypeWithNullArchetype() {
-        List<String> archetype = new FakeList<>((String)null);
+        List<String> archetype = new FakeList<>((String) null);
 
         assertThrows(IllegalArgumentException.class, () -> _settingFactory.make("settingId",
                 "settingName", archetype, new FakeVariableCache()));

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IntegerHandlerTests {
     private IntegerHandler _integerHandler;
-    
+
     @BeforeEach
     void setUp() {
         _integerHandler = new IntegerHandler();
