@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.test.fakes;
 
 import soliloquy.specs.common.infrastructure.List;
-import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.shared.EntityGroupItem;
+import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.HashMap;
 

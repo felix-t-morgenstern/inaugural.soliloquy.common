@@ -4,12 +4,12 @@ import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.generic.CanGetInterfaceName;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
-import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.shared.EntityGroup;
 import soliloquy.specs.common.shared.EntityGroupItem;
+import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.Arrays;
 import java.util.HashMap;

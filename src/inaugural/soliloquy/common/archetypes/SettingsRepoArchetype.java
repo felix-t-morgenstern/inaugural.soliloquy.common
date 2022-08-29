@@ -1,10 +1,10 @@
 package inaugural.soliloquy.common.archetypes;
 
 import soliloquy.specs.common.infrastructure.List;
-import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.shared.EntityGroupItem;
+import soliloquy.specs.common.valueobjects.Pair;
 
 public class SettingsRepoArchetype implements SettingsRepo {
     @Override
@@ -22,16 +22,19 @@ public class SettingsRepoArchetype implements SettingsRepo {
 
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public List<EntityGroupItem<Setting>> getAllGroupedRepresentation() {
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public List<Setting> getAllUngroupedRepresentation() {
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public EntityGroupItem<Setting> getItemByOrder(int i) throws IllegalArgumentException {
         return null;

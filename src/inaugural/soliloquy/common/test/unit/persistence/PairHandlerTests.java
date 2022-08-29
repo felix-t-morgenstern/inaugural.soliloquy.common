@@ -4,9 +4,9 @@ import inaugural.soliloquy.common.persistence.PairHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.valueobjects.Pair;
 
 import static org.junit.jupiter.api.Assertions.*;
 

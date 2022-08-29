@@ -10,6 +10,7 @@ import soliloquy.specs.common.infrastructure.*;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate;
+import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.UUID;
 import java.util.function.Function;

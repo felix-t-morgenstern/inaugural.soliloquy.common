@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithTwoGenericParamsHandler;
-import soliloquy.specs.common.infrastructure.Pair;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.valueobjects.Pair;
 
 @SuppressWarnings("rawtypes")
 public class PairHandler
