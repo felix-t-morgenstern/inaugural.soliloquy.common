@@ -37,7 +37,7 @@ public class CommonModule extends AbstractModule {
         COORDINATE_FACTORY = new CoordinateFactoryImpl();
         SETTING_FACTORY = new SettingFactoryImpl();
 
-        MAP_FACTORY = new MapFactoryImpl(LIST_FACTORY);
+        MAP_FACTORY = new MapFactoryImpl();
         REGISTRY_FACTORY = new RegistryFactoryImpl();
 
 

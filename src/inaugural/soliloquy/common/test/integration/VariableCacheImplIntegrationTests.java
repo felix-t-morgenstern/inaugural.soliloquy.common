@@ -87,8 +87,8 @@ class VariableCacheImplIntegrationTests {
                     "\\\\\\\"6\\\\\\\"],\\\\\\\"valueSerializedValues\\\\\\\":[\\\\\\\"false" +
                     "\\\\\\\",\\\\\\\"true\\\\\\\",\\\\\\\"false\\\\\\\"]}\\\"]}\"}," +
                     "{\"name\":\"pairOfStrings\",\"typeName\":\"soliloquy.specs.common" +
-                    ".infrastructure.Pair\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java" +
-                    ".lang.String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\"," +
+                    ".valueobjects.Pair\",\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang" +
+                    ".String\\\",\\\"serializedValue1\\\":\\\"pairString1\\\"," +
                     "\\\"valueType2\\\":\\\"java.lang.String\\\"," +
                     "\\\"serializedValue2\\\":\\\"pairString2\\\"}\"}," +
                     "{\"name\":\"mapOfStringsToInts\",\"typeName\":\"soliloquy.specs.common" +
@@ -107,7 +107,7 @@ class VariableCacheImplIntegrationTests {
                     "\"serializedValue\":\"{\\\"typeName\\\":\\\"java.lang.Integer\\\"," +
                     "\\\"serializedValues\\\":[\\\"123\\\",\\\"456\\\",\\\"789\\\"]}\"}," +
                     "{\"name\":\"pairOfStringAndCollectionOfInts\",\"typeName\":\"soliloquy.specs" +
-                    ".common.infrastructure.Pair\"," +
+                    ".common.valueobjects.Pair\"," +
                     "\"serializedValue\":\"{\\\"valueType1\\\":\\\"java.lang.String\\\"," +
                     "\\\"serializedValue1\\\":\\\"item1\\\",\\\"valueType2\\\":\\\"soliloquy" +
                     ".specs.common.infrastructure.List\\\\u003cjava.lang.Integer\\\\u003e\\\"," +

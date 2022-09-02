@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>disorg.soliloquy</groupId>
   <artifactId>inaugural.soliloquy.common</artifactId>
-  <version>0.0.15</version>
+  <version>0.0.16</version>
   <name>Inaugural Engine Common Component</name>
   <description>Classes implementing common functionality, accessed across all (or virtually all) other components</description>
   <build>
@@ -86,7 +86,7 @@
     <dependency>
         <groupId>disorg.soliloquy</groupId>
         <artifactId>soliloquy.specs</artifactId>
-        <version>0.0.344</version>
+        <version>0.0.354</version>
     </dependency>
     <dependency>
         <groupId>disorg.soliloquy</groupId>

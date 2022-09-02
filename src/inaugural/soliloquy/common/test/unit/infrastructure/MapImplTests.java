@@ -1,11 +1,8 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.MapImpl;
-import inaugural.soliloquy.common.test.fakes.FakeList;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Map;
 
 import java.util.HashMap;
@@ -14,7 +11,6 @@ import java.util.TreeMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapImplTests {
-    private final FakeListFactory LIST_FACTORY = new FakeListFactory();
     private final String PAIR_1_KEY = "Key1";
     private final String PAIR_1_VALUE = "Value1";
     private final String PAIR_2_KEY = "Key2";
@@ -26,29 +22,22 @@ class MapImplTests {
 
     @BeforeEach
     void setUp() {
-        LIST_FACTORY.NextListToReturn = null;
-        LIST_FACTORY.MakeCollectionInput = null;
-        LIST_FACTORY.MakeArchetypeInput = null;
-        _map = new MapImpl<>(LIST_FACTORY, KEY_ARCHETYPE, VALUE_ARCHETYPE);
+        _map = new MapImpl<>(KEY_ARCHETYPE, VALUE_ARCHETYPE);
     }
 
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> new MapImpl<>(null, new HashMap<>(), KEY_ARCHETYPE, VALUE_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class,
-                () -> new MapImpl<>(LIST_FACTORY, null, KEY_ARCHETYPE, VALUE_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class,
-                () -> new MapImpl<>(LIST_FACTORY, new HashMap<>(), null, VALUE_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class,
-                () -> new MapImpl<>(LIST_FACTORY, new HashMap<>(), KEY_ARCHETYPE, null));
-
-        assertThrows(IllegalArgumentException.class,
                 () -> new MapImpl<>(null, KEY_ARCHETYPE, VALUE_ARCHETYPE));
         assertThrows(IllegalArgumentException.class,
-                () -> new MapImpl<>(LIST_FACTORY, null, VALUE_ARCHETYPE));
+                () -> new MapImpl<>(new HashMap<>(), null, VALUE_ARCHETYPE));
         assertThrows(IllegalArgumentException.class,
-                () -> new MapImpl<>(LIST_FACTORY, KEY_ARCHETYPE, null));
+                () -> new MapImpl<>(new HashMap<>(), KEY_ARCHETYPE, null));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new MapImpl<>(null, VALUE_ARCHETYPE));
+        assertThrows(IllegalArgumentException.class,
+                () -> new MapImpl<>(KEY_ARCHETYPE, null));
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -98,19 +87,6 @@ class MapImplTests {
         assertNotNull(clonedMap.getSecondArchetype());
         assertSame(clonedMap.getFirstArchetype(), _map.getFirstArchetype());
         assertSame(clonedMap.getSecondArchetype(), _map.getSecondArchetype());
-    }
-
-    @Test
-    void getValuesList() {
-        _map.put(PAIR_1_KEY, PAIR_1_VALUE);
-        _map.put(PAIR_2_KEY, PAIR_2_VALUE);
-        LIST_FACTORY.NextListToReturn = new FakeList<String>();
-
-        List<String> valuesList = _map.getValuesList();
-
-        assertSame(LIST_FACTORY.NextListToReturn, valuesList);
-        assertEquals(_map.values(), LIST_FACTORY.MakeCollectionInput);
-        assertSame(_map.getSecondArchetype(), LIST_FACTORY.MakeArchetypeInput);
     }
 
     @Test

@@ -6,11 +6,12 @@ import inaugural.soliloquy.common.test.fakes.FakeSettingsRepo;
 import inaugural.soliloquy.common.test.fakes.FakeSettingsRepoHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

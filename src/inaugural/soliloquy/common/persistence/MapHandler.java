@@ -2,7 +2,6 @@ package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithTwoGenericParamsHandler;
 import soliloquy.specs.common.factories.MapFactory;
-import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
@@ -74,11 +73,6 @@ public class MapHandler
     }
 
     private static class MapArchetype implements Map {
-
-        @Override
-        public List getValuesList() {
-            return null;
-        }
 
         @Override
         public int size() {

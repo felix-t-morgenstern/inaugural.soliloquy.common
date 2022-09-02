@@ -1,32 +1,21 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.MapFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import inaugural.soliloquy.common.test.fakes.FakeMap;
 import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MapFactoryImplTests {
-    private final ListFactory LIST_FACTORY = new FakeListFactory();
-
     private MapFactoryImpl _mapFactory;
 
     @BeforeEach
     void setUp() {
-        // (No need to test PairFactory functionality in this suite)
-        // TODO: Revisit the assumption that PairFactory needn't be tested here
-        _mapFactory = new MapFactoryImpl(LIST_FACTORY);
-    }
-
-    @Test
-    void testConstructorWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class, () -> new MapFactoryImpl(null));
+        _mapFactory = new MapFactoryImpl();
     }
 
     @Test
@@ -66,7 +55,7 @@ class MapFactoryImplTests {
 
     @Test
     void testEquals() {
-        MapFactory equalMapFactory = new MapFactoryImpl(LIST_FACTORY);
+        MapFactory equalMapFactory = new MapFactoryImpl();
         MapFactory unequalMapFactory = new FakeMapFactory();
 
         assertEquals(_mapFactory, equalMapFactory);
