@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
+import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
 import inaugural.soliloquy.common.persistence.RegistryHandler;
 import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;

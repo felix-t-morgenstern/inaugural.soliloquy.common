@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
+import inaugural.soliloquy.common.test.fakes.FakeMapHandler;
 import inaugural.soliloquy.common.persistence.MapHandler;
 import inaugural.soliloquy.common.test.fakes.FakeMap;
 import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
-import inaugural.soliloquy.common.test.fakes.FakeMapHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

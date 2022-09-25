@@ -14,13 +14,12 @@ import java.util.List;
 public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         implements PersistentValuesHandler {
     @SuppressWarnings("rawtypes")
-    private HashMap<String, TypeHandler> _typeHandlers;
+    private final HashMap<String, TypeHandler> TYPE_HANDLERS;
 
     public PersistentValuesHandlerImpl() {
-        _typeHandlers = new HashMap<>();
+        TYPE_HANDLERS = new HashMap<>();
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void addTypeHandler(TypeHandler typeHandler) throws IllegalArgumentException {
         String typeHandlerInterfaceName =
@@ -29,17 +28,17 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
                 typeHandlerInterfaceName.indexOf("<") + 1,
                 typeHandlerInterfaceName.length() - 1);
 
-        if (_typeHandlers.containsKey(typeHandled)) {
+        if (TYPE_HANDLERS.containsKey(typeHandled)) {
             throw new IllegalArgumentException(
                     "PersistentValuesHandler.addTypeHandler: already has handler for "
                             + typeHandled);
         }
-        _typeHandlers.put(typeHandled, typeHandler);
+        TYPE_HANDLERS.put(typeHandled, typeHandler);
     }
 
     @Override
     public boolean removeTypeHandler(String type) {
-        return _typeHandlers.remove(Check.ifNullOrEmpty(type, "type")) != null;
+        return TYPE_HANDLERS.remove(Check.ifNullOrEmpty(type, "type")) != null;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
             type = type.substring(0, caretIndex);
         }
         //noinspection unchecked
-        TypeHandler<T> typeHandler = _typeHandlers.get(type);
+        TypeHandler<T> typeHandler = TYPE_HANDLERS.get(type);
         if (typeHandler == null) {
             throw new IllegalArgumentException("PersistentValuesHandlerImpl.getTypeHandler: " +
                     "no type handler found for type \"" + type + "\"");
@@ -58,7 +57,6 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         return typeHandler;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public <TArchetype> TArchetype generateArchetype(String type) throws IllegalArgumentException {
         Check.ifNullOrEmpty(type, "type");
@@ -105,7 +103,7 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
 
     @Override
     public List<String> typesHandled() {
-        return new ArrayList<>(_typeHandlers.keySet());
+        return new ArrayList<>(TYPE_HANDLERS.keySet());
     }
 
     @Override

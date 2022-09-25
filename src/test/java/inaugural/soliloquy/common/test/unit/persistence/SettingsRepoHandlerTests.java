@@ -1,9 +1,9 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
-import inaugural.soliloquy.common.persistence.SettingsRepoHandler;
 import inaugural.soliloquy.common.test.fakes.FakePersistentValuesHandler;
 import inaugural.soliloquy.common.test.fakes.FakeSettingsRepo;
 import inaugural.soliloquy.common.test.fakes.FakeSettingsRepoHandler;
+import inaugural.soliloquy.common.persistence.SettingsRepoHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.Setting;

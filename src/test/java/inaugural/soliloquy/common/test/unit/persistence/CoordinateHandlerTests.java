@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
-import inaugural.soliloquy.common.persistence.CoordinateHandler;
 import inaugural.soliloquy.common.test.fakes.FakeCoordinate;
 import inaugural.soliloquy.common.test.fakes.FakeCoordinateFactory;
+import inaugural.soliloquy.common.persistence.CoordinateHandler;
 import inaugural.soliloquy.common.test.fakes.FakeCoordinateHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
