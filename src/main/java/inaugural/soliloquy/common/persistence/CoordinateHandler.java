@@ -1,20 +1,17 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
-import soliloquy.specs.common.factories.CoordinateFactory;
 import soliloquy.specs.common.valueobjects.Coordinate;
 
-public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
-    private final CoordinateFactory COORDINATE_FACTORY;
+import static inaugural.soliloquy.tools.generic.Archetypes.generateSimpleArchetype;
 
+public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
     private static final String NULL = "NULL";
 
-    public CoordinateHandler(CoordinateFactory coordinateFactory) {
-        super(coordinateFactory.make(0, 0));
-        COORDINATE_FACTORY = coordinateFactory;
+    public CoordinateHandler() {
+        super(generateSimpleArchetype(Coordinate.class));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public Coordinate read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null) {
@@ -30,7 +27,7 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
         }
         else {
             CoordinateDTO dto = JSON.fromJson(serializedValue, CoordinateDTO.class);
-            return COORDINATE_FACTORY.make(dto.x, dto.y);
+            return Coordinate.of(dto.x, dto.y);
         }
     }
 
@@ -41,14 +38,13 @@ public class CoordinateHandler extends AbstractTypeHandler<Coordinate> {
         }
         else {
             CoordinateDTO dto = new CoordinateDTO();
-            dto.x = coordinate.getX();
-            dto.y = coordinate.getY();
+            dto.x = coordinate.x();
+            dto.y = coordinate.y();
             return JSON.toJson(dto);
         }
     }
 
-    @SuppressWarnings("InnerClassMayBeStatic")
-    private class CoordinateDTO {
+    private static class CoordinateDTO {
         int x;
         int y;
     }

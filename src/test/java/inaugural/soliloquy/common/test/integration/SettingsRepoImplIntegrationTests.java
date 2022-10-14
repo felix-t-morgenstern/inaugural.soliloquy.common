@@ -19,6 +19,9 @@ import java.util.function.Supplier;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SettingsRepoImplIntegrationTests {
+    private final int COORDINATE_SETTING_X = 123;
+    private final int COORDINATE_SETTING_Y = 456;
+
     private SettingsRepo _settingsRepo;
 
     private MapFactory _mapFactory;
@@ -100,7 +103,6 @@ class SettingsRepoImplIntegrationTests {
 
         _settingsRepo = commonInjector.getInstance(SettingsRepo.class);
         ListFactory listFactory = commonInjector.getInstance(ListFactory.class);
-        CoordinateFactory _coordinateFactory = commonInjector.getInstance(CoordinateFactory.class);
         VariableCacheFactory _variableCacheFactory =
                 commonInjector.getInstance(VariableCacheFactory.class);
         _mapFactory = commonInjector.getInstance(MapFactory.class);
@@ -149,7 +151,8 @@ class SettingsRepoImplIntegrationTests {
         _settingsRepo.addEntity(collectionOfMapsSetting, 3, subgrouping1_1);
 
         Setting coordinateSetting = _settingFactory.make("coordinateSetting", "CoordinateSetting",
-                _coordinateFactory.make(0, 0), _variableCacheFactory.make());
+                Coordinate.of(COORDINATE_SETTING_X, COORDINATE_SETTING_Y),
+                _variableCacheFactory.make());
         _settingsRepo.addEntity(coordinateSetting, 4, subgrouping1_2);
 
         Setting uuidSetting = _settingFactory.make("uuidSetting", "uuidSetting",
@@ -211,10 +214,6 @@ class SettingsRepoImplIntegrationTests {
         collectionOfMapsMap2.put(789, false);
         ((List<Map>) collectionOfMapsSetting.getValue()).add(collectionOfMapsMap1);
         ((List<Map>) collectionOfMapsSetting.getValue()).add(collectionOfMapsMap2);
-
-        Setting coordinateSetting = _settingsRepo.getSetting("coordinateSetting");
-        ((Coordinate) coordinateSetting.getValue()).setX(123);
-        ((Coordinate) coordinateSetting.getValue()).setY(456);
 
         Setting uuidSetting = _settingsRepo.getSetting("uuidSetting");
         uuidSetting.setValue(UUID_FACTORY_FROM_STRING
@@ -308,8 +307,8 @@ class SettingsRepoImplIntegrationTests {
         Setting<Coordinate> coordinateSetting = _settingsRepo.getSetting("coordinateSetting");
         Coordinate coordinate = coordinateSetting.getValue();
         assertNotNull(coordinate);
-        assertEquals(123, coordinate.getX());
-        assertEquals(456, coordinate.getY());
+        assertEquals(COORDINATE_SETTING_X, coordinate.x());
+        assertEquals(COORDINATE_SETTING_Y, coordinate.y());
 
         Setting<UUID> uuidSetting = _settingsRepo.getSetting("uuidSetting");
         UUID uuid = uuidSetting.getValue();

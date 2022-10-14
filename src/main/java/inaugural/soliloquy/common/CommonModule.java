@@ -16,7 +16,6 @@ import java.util.UUID;
 
 public class CommonModule extends AbstractModule {
     private final ListFactory LIST_FACTORY;
-    private final CoordinateFactory COORDINATE_FACTORY;
     private final MapFactory MAP_FACTORY;
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     private final RegistryFactory REGISTRY_FACTORY;
@@ -34,7 +33,6 @@ public class CommonModule extends AbstractModule {
     //     [Source: https://github.com/google/guice/issues/1133]
     public CommonModule() {
         LIST_FACTORY = new ListFactoryImpl();
-        COORDINATE_FACTORY = new CoordinateFactoryImpl();
         SETTING_FACTORY = new SettingFactoryImpl();
 
         MAP_FACTORY = new MapFactoryImpl();
@@ -51,7 +49,7 @@ public class CommonModule extends AbstractModule {
                 PERSISTENT_VALUES_HANDLER, settingArchetype);
 
         TypeHandler<Boolean> booleanHandler = new BooleanHandler();
-        TypeHandler<Coordinate> coordinateHandler = new CoordinateHandler(COORDINATE_FACTORY);
+        TypeHandler<Coordinate> coordinateHandler = new CoordinateHandler();
         TypeHandler<UUID> uuidHandler = new UuidHandler();
         TypeHandler<Integer> integerHandler = new IntegerHandler();
         TypeHandler<VariableCache> variableCacheHandler = new VariableCacheHandler(
@@ -84,7 +82,6 @@ public class CommonModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(CoordinateFactory.class).toInstance(COORDINATE_FACTORY);
         bind(ListFactory.class).toInstance(LIST_FACTORY);
         bind(MapFactory.class).toInstance(MAP_FACTORY);
         bind(PersistentValuesHandler.class).toInstance(PERSISTENT_VALUES_HANDLER);

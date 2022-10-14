@@ -23,7 +23,6 @@ class VariableCacheImplIntegrationTests {
     private VariableCache _variableCache;
 
     private ListFactory _listFactory;
-    private CoordinateFactory _coordinateFactory;
     private MapFactory _mapFactory;
     private RegistryFactory _registryFactory;
 
@@ -123,7 +122,6 @@ class VariableCacheImplIntegrationTests {
                 commonInjector.getInstance(VariableCacheFactory.class).make();
 
         _listFactory = commonInjector.getInstance(ListFactory.class);
-        _coordinateFactory = commonInjector.getInstance(CoordinateFactory.class);
         _mapFactory = commonInjector.getInstance(MapFactory.class);
         _registryFactory = commonInjector.getInstance(RegistryFactory.class);
 
@@ -158,7 +156,7 @@ class VariableCacheImplIntegrationTests {
         collectionOfMaps.add(mapInCollection2);
         _variableCache.setVariable("collectionOfMaps", collectionOfMaps);
 
-        Coordinate coordinate = _coordinateFactory.make(123, 456);
+        Coordinate coordinate = Coordinate.of(123, 456);
         _variableCache.setVariable("coordinate", coordinate);
 
         UUID uuid = UUID_FACTORY_FROM_STRING.apply("0115d3a5-383a-46f5-92db-6d9c23bbf9b8");
@@ -249,8 +247,8 @@ class VariableCacheImplIntegrationTests {
 
         Coordinate coordinate = _variableCache.getVariable("coordinate");
         assertNotNull(coordinate);
-        assertEquals(123, coordinate.getX());
-        assertEquals(456, coordinate.getY());
+        assertEquals(123, coordinate.x());
+        assertEquals(456, coordinate.y());
 
         UUID uuid = _variableCache.getVariable("uuid");
         assertNotNull(uuid);
