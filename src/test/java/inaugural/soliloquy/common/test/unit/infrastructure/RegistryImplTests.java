@@ -1,191 +1,205 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.RegistryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
-import inaugural.soliloquy.common.test.fakes.FakeList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.Registry;
+import soliloquy.specs.common.shared.HasId;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class RegistryImplTests {
-    private static FakeHasIdAndName ARCHETYPE = new FakeHasIdAndName("", "");
-    private static String ID = "id";
-    private static String NAME = "name";
+    private final String ID = randomString();
+    private final String ID_1 = randomString();
+    private final String ID_2 = randomString();
+    private final String ID_3 = randomString();
+    private final String TYPE = randomString();
 
-    private Registry<FakeHasIdAndName> _registry;
-    private FakeHasIdAndName _hasIdAndStub = new FakeHasIdAndName(ID, NAME);
+    private final HasId MOCK_HAS_ID = generateMockHasId(ID);
+    private final HasId ITEM_1 = generateMockHasId(ID_1);
+    private final HasId ITEM_2 = generateMockHasId(ID_2);
+    private final HasId ITEM_3 = generateMockHasId(ID_3);
+
+    private HasId archetype;
+
+    private Registry<HasId> registry;
 
     @BeforeEach
     void setUp() {
-        _registry = new RegistryImpl<>(ARCHETYPE);
+        archetype = mock(HasId.class);
+        when(archetype.getInterfaceName()).thenReturn(TYPE);
+
+        registry = new RegistryImpl<>(archetype);
     }
 
     @Test
     void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () ->
-                _registry = new RegistryImpl<>(null));
+                registry = new RegistryImpl<>(null));
     }
 
     @Test
     void testArchetype() {
-        assertSame(ARCHETYPE, _registry.getArchetype());
+        assertSame(archetype, registry.getArchetype());
     }
 
     @Test
     void testGetInterfaceName() {
-        assertEquals(Registry.class.getCanonicalName() + "<" +
-                        FakeHasIdAndName.class.getCanonicalName() + ">",
-                _registry.getInterfaceName());
+        assertEquals(Registry.class.getCanonicalName() + "<" + TYPE + ">",
+                registry.getInterfaceName());
     }
 
     @Test
     void testAddAndGet() {
-        _registry.add(_hasIdAndStub);
+        registry.add(MOCK_HAS_ID);
 
-        assertSame(_hasIdAndStub, _registry.get(ID));
+        assertSame(MOCK_HAS_ID, registry.get(ID));
     }
 
     @Test
     void testContainsItem() {
-        _registry.add(_hasIdAndStub);
+        registry.add(MOCK_HAS_ID);
 
-        assertTrue(_registry.contains(_hasIdAndStub));
+        assertTrue(registry.contains(MOCK_HAS_ID));
     }
 
     @Test
     void testContainsId() {
-        assertFalse(_registry.contains(ID));
+        assertFalse(registry.contains(ID));
 
-        _registry.add(_hasIdAndStub);
+        registry.add(MOCK_HAS_ID);
 
-        assertTrue(_registry.contains(ID));
+        assertTrue(registry.contains(ID));
     }
 
     @Test
     void testAddNull() {
-        assertThrows(IllegalArgumentException.class, () -> _registry.add(null));
+        assertThrows(IllegalArgumentException.class, () -> registry.add(null));
     }
 
     @Test
     void testAddWithInvalidIds() {
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.add(new FakeHasIdAndName(null, NAME)));
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.add(new FakeHasIdAndName("", NAME)));
+        HasId nullId = generateMockHasId(null);
+        HasId emptyId = generateMockHasId("");
+
+        assertThrows(IllegalArgumentException.class, () -> registry.add(nullId));
+        assertThrows(IllegalArgumentException.class, () -> registry.add(emptyId));
     }
 
     @Test
     void testAddAllFromCollection() {
-        FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
-        FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
-        FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
-        ArrayList<FakeHasIdAndName> toAdd = new ArrayList<>() {{
-            add(item1);
-            add(item2);
-            add(item3);
+        String id1 = randomString();
+        String id2 = randomString();
+        String id3 = randomString();
+        HasId hasId1 = generateMockHasId(id1);
+        HasId hasId2 = generateMockHasId(id2);
+        HasId hasId3 = generateMockHasId(id3);
+        ArrayList<HasId> toAdd = new ArrayList<>() {{
+            add(hasId1);
+            add(hasId2);
+            add(hasId3);
         }};
 
-        _registry.addAll(toAdd);
+        registry.addAll(toAdd);
 
-        assertTrue(_registry.contains(item1));
-        assertTrue(_registry.contains(item2));
-        assertTrue(_registry.contains(item3));
+        assertTrue(registry.contains(hasId1));
+        assertTrue(registry.contains(hasId2));
+        assertTrue(registry.contains(hasId3));
     }
 
     @Test
     void testAddAllFromCollectionWithNull() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll((Collection<FakeHasIdAndName>) null));
+                () -> registry.addAll((Collection<HasId>) null));
     }
 
     @Test
     void testAddAllFromTypedArrayWithNull() {
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll((FakeHasIdAndName[]) null));
+                () -> registry.addAll((HasId[]) null));
     }
 
     @Test
     void testAddAllFromUntypedArrayWithNull() {
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll((Object[]) null));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll((Object[]) null));
     }
 
     @Test
     void testAddAllFromCollectionWithInvalidEntries() {
-        Collection<FakeHasIdAndName> collectionWithNull = new FakeList<>();
-        collectionWithNull.add(null);
+        Collection<HasId> collectionWithNull = new ArrayList<>() {{
+            add(null);
+        }};
 
-        Collection<FakeHasIdAndName> collectionWithNullId = new FakeList<>();
-        collectionWithNullId.add(new FakeHasIdAndName(null, "name"));
+        Collection<HasId> collectionWithNullId = new ArrayList<>() {{
+            add(generateMockHasId(null));
+        }};
 
-        Collection<FakeHasIdAndName> collectionWithEmptyId = new FakeList<>();
-        collectionWithEmptyId.add(new FakeHasIdAndName("", "name"));
+        Collection<HasId> collectionWithEmptyId = new ArrayList<>() {{
+            add(generateMockHasId(""));
+        }};
 
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll(collectionWithNull));
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll(collectionWithNullId));
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll(collectionWithEmptyId));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll(collectionWithNull));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll(collectionWithNullId));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll(collectionWithEmptyId));
     }
 
     @Test
     void testAddAllFromUntypedArray() {
-        FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
-        FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
-        FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
         Object[] array = new Object[3];
-        array[0] = item1;
-        array[1] = item2;
-        array[2] = item3;
+        array[0] = ITEM_1;
+        array[1] = ITEM_2;
+        array[2] = ITEM_3;
 
-        _registry.addAll(array);
+        registry.addAll(array);
 
-        assertTrue(_registry.contains(item1));
-        assertTrue(_registry.contains(item2));
-        assertTrue(_registry.contains(item3));
+        assertTrue(registry.contains(ITEM_1));
+        assertTrue(registry.contains(ITEM_2));
+        assertTrue(registry.contains(ITEM_3));
     }
 
     @Test
     void testAddAllFromTypedArray() {
-        FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
-        FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
-        FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
-        FakeHasIdAndName[] array = new FakeHasIdAndName[3];
+        HasId item1 = generateMockHasId("id1");
+        HasId item2 = generateMockHasId("id2");
+        HasId item3 = generateMockHasId("id3");
+        HasId[] array = new HasId[3];
         array[0] = item1;
         array[1] = item2;
         array[2] = item3;
 
-        _registry.addAll(array);
+        registry.addAll(array);
 
-        assertTrue(_registry.contains(item1));
-        assertTrue(_registry.contains(item2));
-        assertTrue(_registry.contains(item3));
+        assertTrue(registry.contains(item1));
+        assertTrue(registry.contains(item2));
+        assertTrue(registry.contains(item3));
     }
 
     @Test
     void testAddAllFromArrayWithNull() {
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.addAll((FakeHasIdAndName[]) null));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll((HasId[]) null));
     }
 
     @Test
     void testAddAllFromTypedArrayWithInvalidEntries() {
-        FakeHasIdAndName[] arrayWithNull = new FakeHasIdAndName[1];
+        HasId[] arrayWithNull = new HasId[1];
         arrayWithNull[0] = null;
 
-        FakeHasIdAndName[] arrayWithNullId = new FakeHasIdAndName[1];
-        arrayWithNullId[0] = new FakeHasIdAndName(null, "name");
+        HasId[] arrayWithNullId = new HasId[1];
+        arrayWithNullId[0] = generateMockHasId(null);
 
-        FakeHasIdAndName[] arrayWithEmptyId = new FakeHasIdAndName[1];
-        arrayWithEmptyId[0] = new FakeHasIdAndName("", "name");
+        HasId[] arrayWithEmptyId = new HasId[1];
+        arrayWithEmptyId[0] = generateMockHasId("");
 
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll(arrayWithNull));
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll(arrayWithNullId));
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll(arrayWithEmptyId));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll(arrayWithNull));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll(arrayWithNullId));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll(arrayWithEmptyId));
     }
 
     @Test
@@ -193,110 +207,105 @@ class RegistryImplTests {
         Object[] untypedArray = new Object[1];
         untypedArray[0] = 123;
 
-        assertThrows(IllegalArgumentException.class, () -> _registry.addAll(untypedArray));
+        assertThrows(IllegalArgumentException.class, () -> registry.addAll(untypedArray));
     }
 
     @Test
     void testClear() {
-        FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
-        FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
-        FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
-        _registry.add(item1);
-        _registry.add(item2);
-        _registry.add(item3);
+        registry.add(ITEM_1);
+        registry.add(ITEM_2);
+        registry.add(ITEM_3);
 
-        _registry.clear();
+        registry.clear();
 
-        assertEquals(0, _registry.size());
-        assertFalse(_registry.contains(item1));
-        assertFalse(_registry.contains(item2));
-        assertFalse(_registry.contains(item3));
+        assertEquals(0, registry.size());
+        assertFalse(registry.contains(ITEM_1));
+        assertFalse(registry.contains(ITEM_2));
+        assertFalse(registry.contains(ITEM_3));
     }
 
     @Test
     void testRemoveById() {
-        assertFalse(_registry.contains(ID));
+        assertFalse(registry.contains(ID));
 
-        _registry.add(_hasIdAndStub);
+        registry.add(MOCK_HAS_ID);
 
-        assertTrue(_registry.remove(ID));
-        assertFalse(_registry.remove(ID));
-        assertFalse(_registry.contains(ID));
+        assertTrue(registry.remove(ID));
+        assertFalse(registry.remove(ID));
+        assertFalse(registry.contains(ID));
     }
 
     @Test
     void testRemoveByItem() {
-        assertFalse(_registry.remove(_hasIdAndStub));
+        assertFalse(registry.remove(MOCK_HAS_ID));
 
-        _registry.add(_hasIdAndStub);
+        registry.add(MOCK_HAS_ID);
 
-        assertTrue(_registry.remove(_hasIdAndStub));
-        assertFalse(_registry.remove(_hasIdAndStub));
+        assertTrue(registry.remove(MOCK_HAS_ID));
+        assertFalse(registry.remove(MOCK_HAS_ID));
     }
 
     @Test
     void testRemoveAndContainsWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> registry.remove(((HasId) null)));
         assertThrows(IllegalArgumentException.class,
-                () -> _registry.remove(((FakeHasIdAndName) null)));
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.remove(new FakeHasIdAndName(null, "name")));
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.remove(new FakeHasIdAndName("", "name")));
-        assertThrows(IllegalArgumentException.class, () -> _registry.remove((String) null));
-        assertThrows(IllegalArgumentException.class, () -> _registry.remove(""));
-        assertThrows(IllegalArgumentException.class,
-                () -> _registry.contains((FakeHasIdAndName) null));
-        assertThrows(IllegalArgumentException.class, () -> _registry.contains((String) null));
-        assertThrows(IllegalArgumentException.class, () -> _registry.contains(""));
+                () -> registry.remove(generateMockHasId(null)));
+        assertThrows(IllegalArgumentException.class, () -> registry.remove(generateMockHasId("")));
+        assertThrows(IllegalArgumentException.class, () -> registry.remove((String) null));
+        assertThrows(IllegalArgumentException.class, () -> registry.remove(""));
+        assertThrows(IllegalArgumentException.class, () -> registry.contains((HasId) null));
+        assertThrows(IllegalArgumentException.class, () -> registry.contains((String) null));
+        assertThrows(IllegalArgumentException.class, () -> registry.contains(""));
     }
 
     @Test
     void testRepresentation() {
-        FakeHasIdAndName item1 = new FakeHasIdAndName("id1", "name1");
-        FakeHasIdAndName item2 = new FakeHasIdAndName("id2", "name2");
-        FakeHasIdAndName item3 = new FakeHasIdAndName("id3", "name3");
-        _registry.add(item1);
-        _registry.add(item2);
-        _registry.add(item3);
+        registry.add(ITEM_1);
+        registry.add(ITEM_2);
+        registry.add(ITEM_3);
 
-        List<FakeHasIdAndName> representation = _registry.representation();
+        List<HasId> representation = registry.representation();
 
         assertNotNull(representation);
         assertEquals(3, representation.size());
-        assertTrue(representation.contains(item1));
-        assertTrue(representation.contains(item2));
-        assertTrue(representation.contains(item3));
+        assertTrue(representation.contains(ITEM_1));
+        assertTrue(representation.contains(ITEM_2));
+        assertTrue(representation.contains(ITEM_3));
     }
 
     @Test
     void testSize() {
-        _registry.add(new FakeHasIdAndName("id1", "name1"));
-        _registry.add(new FakeHasIdAndName("id2", "name2"));
-        _registry.add(new FakeHasIdAndName("id3", "name3"));
+        registry.add(ITEM_1);
+        registry.add(ITEM_2);
+        registry.add(ITEM_3);
 
-        assertEquals(3, _registry.size());
+        assertEquals(3, registry.size());
     }
 
     @Test
     void testIterator() {
-        _registry.add(new FakeHasIdAndName("id1", "name1"));
-        _registry.add(new FakeHasIdAndName("id2", "name2"));
-        _registry.add(new FakeHasIdAndName("id3", "name3"));
+        registry.add(ITEM_1);
+        registry.add(ITEM_2);
+        registry.add(ITEM_3);
 
-        for (FakeHasIdAndName hasIdAndNameStub : _registry) {
-            switch (hasIdAndNameStub.id()) {
-                case "id1":
-                    assertEquals("name1", hasIdAndNameStub.getName());
-                    break;
-                case "id2":
-                    assertEquals("name2", hasIdAndNameStub.getName());
-                    break;
-                case "id3":
-                    assertEquals("name3", hasIdAndNameStub.getName());
-                    break;
-                default:
-                    fail("Invalid id");
+        // NB: I'm aware this is a very awkward test condition, it's an arbitrary condition to
+        // test the iterator.
+        for (HasId hasId : registry) {
+            if (hasId.id().equals(ID_1)) {
+                assertSame(ITEM_1, hasId);
+            }
+            if (hasId.id().equals(ID_2)) {
+                assertSame(ITEM_2, hasId);
+            }
+            if (hasId.id().equals(ID_3)) {
+                assertSame(ITEM_3, hasId);
             }
         }
+    }
+
+    private static HasId generateMockHasId(String id) {
+        HasId mock = mock(HasId.class);
+        when(mock.id()).thenReturn(id);
+        return mock;
     }
 }

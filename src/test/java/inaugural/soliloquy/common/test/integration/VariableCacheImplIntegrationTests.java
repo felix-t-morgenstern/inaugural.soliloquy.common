@@ -3,47 +3,52 @@ package inaugural.soliloquy.common.test.integration;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import inaugural.soliloquy.common.CommonModule;
-import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
-import inaugural.soliloquy.common.test.fakes.PersistentHasIdAndNameHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.*;
-import soliloquy.specs.common.infrastructure.*;
+import org.mockito.Mock;
+import soliloquy.specs.common.factories.ListFactory;
+import soliloquy.specs.common.factories.MapFactory;
+import soliloquy.specs.common.factories.RegistryFactory;
+import soliloquy.specs.common.factories.VariableCacheFactory;
+import soliloquy.specs.common.infrastructure.List;
+import soliloquy.specs.common.infrastructure.Map;
+import soliloquy.specs.common.infrastructure.Registry;
+import soliloquy.specs.common.infrastructure.VariableCache;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.shared.HasId;
 import soliloquy.specs.common.valueobjects.Coordinate;
 import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.UUID;
-import java.util.function.Function;
 
+import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class VariableCacheImplIntegrationTests {
-    private VariableCache _variableCache;
+    private final String HAS_ID_TYPE = HasId.class.getCanonicalName();
 
-    private ListFactory _listFactory;
-    private MapFactory _mapFactory;
-    private RegistryFactory _registryFactory;
+    private VariableCache variableCache;
 
-    private TypeHandler<VariableCache> _varCacheHandler;
+    private ListFactory listFactory;
+    private MapFactory mapFactory;
+    private RegistryFactory registryFactory;
 
-    private final Function<String, UUID> UUID_FACTORY_FROM_STRING = UUID::fromString;
+    private TypeHandler<VariableCache> variableCacheHandler;
+
+    @Mock private HasId mockHasId;
+    /** @noinspection rawtypes*/
+    @Mock private TypeHandler mockHasIdHandler;
 
     private final String VALUES_STRING =
             "[{\"name\":\"stringVariableName\",\"typeName\":\"java.lang.String\"," +
                     "\"serializedValue\":\"stringVariableValue\"},{\"name\":\"registry\"," +
                     "\"typeName\":\"soliloquy.specs.common.infrastructure" +
-                    ".Registry\\u003cinaugural.soliloquy.common.test.fakes" +
-                    ".FakeHasIdAndName\\u003e\"," +
-                    "\"serializedValue\":\"{\\\"typeName\\\":\\\"inaugural.soliloquy.common.test" +
-                    ".fakes.FakeHasIdAndName\\\"," +
-                    "\\\"serializedValues\\\":[\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id2\\\\\\\"," +
-                    "\\\\\\\"name\\\\\\\":\\\\\\\"name2\\\\\\\"}\\\"," +
-                    "\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id1\\\\\\\"," +
-                    "\\\\\\\"name\\\\\\\":\\\\\\\"name1\\\\\\\"}\\\"," +
-                    "\\\"{\\\\\\\"id\\\\\\\":\\\\\\\"id3\\\\\\\"," +
-                    "\\\\\\\"name\\\\\\\":\\\\\\\"name3\\\\\\\"}\\\"]}\"}," +
+                    ".Registry\\u003csoliloquy.specs.common.shared.HasId\\u003e\"," +
+                    "\"serializedValue\":\"{\\\"typeName\\\":\\\"soliloquy.specs.common.shared" +
+                    ".HasId\\\",\\\"serializedValues\\\":[\\\"hasIdValue\\\"]}\"}," +
                     "{\"name\":\"coordinate\",\"typeName\":\"soliloquy.specs.common.valueobjects" +
                     ".Coordinate\",\"serializedValue\":\"{\\\"x\\\":123,\\\"y\\\":456}\"}," +
                     "{\"name\":\"mapOfIntsToMapsOfIntsToBooleans\",\"typeName\":\"soliloquy.specs" +
@@ -118,114 +123,126 @@ class VariableCacheImplIntegrationTests {
     void setUp() {
         Injector commonInjector = Guice.createInjector(new CommonModule());
 
-        _variableCache =
+        variableCache =
                 commonInjector.getInstance(VariableCacheFactory.class).make();
 
-        _listFactory = commonInjector.getInstance(ListFactory.class);
-        _mapFactory = commonInjector.getInstance(MapFactory.class);
-        _registryFactory = commonInjector.getInstance(RegistryFactory.class);
+        listFactory = commonInjector.getInstance(ListFactory.class);
+        mapFactory = commonInjector.getInstance(MapFactory.class);
+        registryFactory = commonInjector.getInstance(RegistryFactory.class);
+
+        mockHasId = mock(HasId.class);
+        when(mockHasId.id()).thenReturn(randomString());
+
+        mockHasIdHandler = mock(TypeHandler.class);
+        when(mockHasIdHandler.getInterfaceName()).thenReturn("<" + HAS_ID_TYPE + ">");
+        HasId mockHasIdArchetype = mock(HasId.class);
+        when(mockHasIdArchetype.getInterfaceName()).thenReturn(HAS_ID_TYPE);
+        when(mockHasIdHandler.getArchetype()).thenReturn(mockHasIdArchetype);
+        String hasIdValue = "hasIdValue";
+        //noinspection unchecked
+        when(mockHasIdHandler.write(mockHasId)).thenReturn(hasIdValue);
+        when(mockHasIdHandler.read(hasIdValue)).thenReturn(mockHasId);
 
         PersistentValuesHandler persistentValuesHandler =
                 commonInjector.getInstance(PersistentValuesHandler.class);
-        persistentValuesHandler.addTypeHandler(new PersistentHasIdAndNameHandler());
-        _varCacheHandler = persistentValuesHandler
+        persistentValuesHandler.addTypeHandler(mockHasIdHandler);
+        variableCacheHandler = persistentValuesHandler
                 .getTypeHandler(VariableCache.class.getCanonicalName());
     }
 
     @Test
     void testWrite() {
-        _variableCache.setVariable("booleanVariable", true);
+        variableCache.setVariable("booleanVariable", true);
 
-        List<Integer> collectionOfInts1 = _listFactory.make(0);
+        List<Integer> collectionOfInts1 = listFactory.make(0);
         collectionOfInts1.add(123);
         collectionOfInts1.add(456);
         collectionOfInts1.add(789);
-        _variableCache.setVariable("collectionOfInts1", collectionOfInts1);
+        variableCache.setVariable("collectionOfInts1", collectionOfInts1);
 
         List<Map<Integer, Boolean>> collectionOfMaps =
-                _listFactory.make(_mapFactory.make(0, false));
-        Map<Integer, Boolean> mapInCollection1 = _mapFactory.make(0, false);
+                listFactory.make(mapFactory.make(0, false));
+        Map<Integer, Boolean> mapInCollection1 = mapFactory.make(0, false);
         mapInCollection1.put(1, false);
         mapInCollection1.put(2, true);
         mapInCollection1.put(3, true);
-        Map<Integer, Boolean> mapInCollection2 = _mapFactory.make(0, false);
+        Map<Integer, Boolean> mapInCollection2 = mapFactory.make(0, false);
         mapInCollection2.put(4, false);
         mapInCollection2.put(5, true);
         mapInCollection2.put(6, false);
         collectionOfMaps.add(mapInCollection1);
         collectionOfMaps.add(mapInCollection2);
-        _variableCache.setVariable("collectionOfMaps", collectionOfMaps);
+        variableCache.setVariable("collectionOfMaps", collectionOfMaps);
 
         Coordinate coordinate = Coordinate.of(123, 456);
-        _variableCache.setVariable("coordinate", coordinate);
+        variableCache.setVariable("coordinate", coordinate);
 
-        UUID uuid = UUID_FACTORY_FROM_STRING.apply("0115d3a5-383a-46f5-92db-6d9c23bbf9b8");
-        _variableCache.setVariable("uuid", uuid);
+        UUID uuid = UUID.fromString("0115d3a5-383a-46f5-92db-6d9c23bbf9b8");
+        variableCache.setVariable("uuid", uuid);
 
         Integer integer = 123456789;
-        _variableCache.setVariable("integer", integer);
+        variableCache.setVariable("integer", integer);
 
-        Map<String, Integer> mapOfStringsToInts = _mapFactory.make("", 0);
+        Map<String, Integer> mapOfStringsToInts = mapFactory.make("", 0);
         mapOfStringsToInts.put("key1", 123);
         mapOfStringsToInts.put("key2", 456);
         mapOfStringsToInts.put("key3", 789);
-        _variableCache.setVariable("mapOfStringsToInts", mapOfStringsToInts);
+        variableCache.setVariable("mapOfStringsToInts", mapOfStringsToInts);
 
-        Map<Integer, Boolean> mapOfIntsToBooleans1 = _mapFactory.make(0, true);
+        Map<Integer, Boolean> mapOfIntsToBooleans1 = mapFactory.make(0, true);
         mapOfIntsToBooleans1.put(1, false);
         mapOfIntsToBooleans1.put(2, true);
         mapOfIntsToBooleans1.put(3, true);
-        Map<Integer, Boolean> mapOfIntsToBooleans2 = _mapFactory.make(0, true);
+        Map<Integer, Boolean> mapOfIntsToBooleans2 = mapFactory.make(0, true);
         mapOfIntsToBooleans2.put(4, false);
         mapOfIntsToBooleans2.put(5, true);
         mapOfIntsToBooleans2.put(6, false);
-        Map<Integer, Boolean> mapOfIntsToBooleans3 = _mapFactory.make(0, true);
+        Map<Integer, Boolean> mapOfIntsToBooleans3 = mapFactory.make(0, true);
         mapOfIntsToBooleans3.put(7, true);
         mapOfIntsToBooleans3.put(8, false);
         mapOfIntsToBooleans3.put(9, false);
         Map<Integer, Map<Integer, Boolean>> mapOfIntsToMapsOfIntsToBooleans =
-                _mapFactory.make(0, _mapFactory.make(0, false));
+                mapFactory.make(0, mapFactory.make(0, false));
         mapOfIntsToMapsOfIntsToBooleans.put(123, mapOfIntsToBooleans1);
         mapOfIntsToMapsOfIntsToBooleans.put(456, mapOfIntsToBooleans2);
         mapOfIntsToMapsOfIntsToBooleans.put(789, mapOfIntsToBooleans3);
-        _variableCache.setVariable("mapOfIntsToMapsOfIntsToBooleans",
+        variableCache.setVariable("mapOfIntsToMapsOfIntsToBooleans",
                 mapOfIntsToMapsOfIntsToBooleans);
 
         Pair<String, String> pairOfStrings = new Pair<>("pairString1", "pairString2");
-        _variableCache.setVariable("pairOfStrings", pairOfStrings);
+        variableCache.setVariable("pairOfStrings", pairOfStrings);
 
-        List<Integer> collectionOfInts2 = _listFactory.make(0);
+        List<Integer> collectionOfInts2 = listFactory.make(0);
         collectionOfInts2.add(123);
         collectionOfInts2.add(456);
         collectionOfInts2.add(789);
         Pair<String, List<Integer>> pairOfStringAndCollectionOfInts =
                 new Pair<>("item1", collectionOfInts2);
-        _variableCache.setVariable("pairOfStringAndCollectionOfInts",
+        variableCache.setVariable("pairOfStringAndCollectionOfInts",
                 pairOfStringAndCollectionOfInts);
 
-        Registry<FakeHasIdAndName> registry = _registryFactory.make(
-                PersistentHasIdAndNameHandler.ARCHETYPE);
-        registry.add(new FakeHasIdAndName("id1", "name1"));
-        registry.add(new FakeHasIdAndName("id2", "name2"));
-        registry.add(new FakeHasIdAndName("id3", "name3"));
-        _variableCache.setVariable("registry", registry);
+        HasId mockHasIdArchetype = mock(HasId.class);
+        when(mockHasIdArchetype.getInterfaceName()).thenReturn(HAS_ID_TYPE);
+        Registry<HasId> registry = registryFactory.make(mockHasIdArchetype);
+        registry.add(mockHasId);
+        variableCache.setVariable("registry", registry);
 
-        _variableCache.setVariable("stringVariableName", "stringVariableValue");
+        variableCache.setVariable("stringVariableName", "stringVariableValue");
 
-        assertEquals(VALUES_STRING, _varCacheHandler.write(_variableCache));
+        assertEquals(VALUES_STRING, variableCacheHandler.write(variableCache));
     }
 
     @Test
     void testRead() {
-        _variableCache = _varCacheHandler.read(VALUES_STRING);
+        variableCache = variableCacheHandler.read(VALUES_STRING);
 
-        assertNotNull(_variableCache);
-        assertEquals(12, _variableCache.size());
+        assertNotNull(variableCache);
+        assertEquals(12, variableCache.size());
 
-        assertTrue((boolean) _variableCache.getVariable("booleanVariable"));
+        assertTrue((boolean) variableCache.getVariable("booleanVariable"));
 
         List<Integer> collectionOfInts =
-                _variableCache.getVariable("collectionOfInts1");
+                variableCache.getVariable("collectionOfInts1");
         assertNotNull(collectionOfInts);
         assertEquals(3, collectionOfInts.size());
         assertTrue(collectionOfInts.contains(123));
@@ -233,7 +250,7 @@ class VariableCacheImplIntegrationTests {
         assertTrue(collectionOfInts.contains(789));
 
         List<Map<Integer, Boolean>> collectionOfMaps =
-                _variableCache.getVariable("collectionOfMaps");
+                variableCache.getVariable("collectionOfMaps");
         assertNotNull(collectionOfMaps);
         assertEquals(2, collectionOfMaps.size());
         Map<Integer, Boolean> mapOfIntegersToBooleans1 = collectionOfMaps.get(0);
@@ -245,21 +262,21 @@ class VariableCacheImplIntegrationTests {
         assertTrue(mapOfIntegersToBooleans2.get(5));
         assertFalse(mapOfIntegersToBooleans2.get(6));
 
-        Coordinate coordinate = _variableCache.getVariable("coordinate");
+        Coordinate coordinate = variableCache.getVariable("coordinate");
         assertNotNull(coordinate);
         assertEquals(123, coordinate.x());
         assertEquals(456, coordinate.y());
 
-        UUID uuid = _variableCache.getVariable("uuid");
+        UUID uuid = variableCache.getVariable("uuid");
         assertNotNull(uuid);
         assertEquals("0115d3a5-383a-46f5-92db-6d9c23bbf9b8", uuid.toString());
 
-        Integer integer = _variableCache.getVariable("integer");
+        Integer integer = variableCache.getVariable("integer");
         assertNotNull(integer);
         assertEquals((Integer) 123456789, integer);
 
         Map<Integer, Map<Integer, Boolean>> mapOfIntsToMapsOfIntsToBooleans =
-                _variableCache.getVariable("mapOfIntsToMapsOfIntsToBooleans");
+                variableCache.getVariable("mapOfIntsToMapsOfIntsToBooleans");
         assertNotNull(mapOfIntsToMapsOfIntsToBooleans);
         assertEquals(3, mapOfIntsToMapsOfIntsToBooleans.size());
         Map<Integer, Boolean> map1 = mapOfIntsToMapsOfIntsToBooleans.get(123);
@@ -278,13 +295,13 @@ class VariableCacheImplIntegrationTests {
         assertFalse(map3.get(8));
         assertFalse(map3.get(9));
 
-        Pair<String, String> pairOfStrings = _variableCache.getVariable("pairOfStrings");
+        Pair<String, String> pairOfStrings = variableCache.getVariable("pairOfStrings");
         assertNotNull(pairOfStrings);
         assertEquals("pairString1", pairOfStrings.getItem1());
         assertEquals("pairString2", pairOfStrings.getItem2());
 
         Pair<String, List<Integer>> pairOfStringAndCollectionOfInts =
-                _variableCache.getVariable("pairOfStringAndCollectionOfInts");
+                variableCache.getVariable("pairOfStringAndCollectionOfInts");
         assertNotNull(pairOfStringAndCollectionOfInts);
         assertEquals("item1", pairOfStringAndCollectionOfInts.getItem1());
         assertEquals(3, pairOfStringAndCollectionOfInts.getItem2().size());
@@ -292,13 +309,12 @@ class VariableCacheImplIntegrationTests {
         assertTrue(pairOfStringAndCollectionOfInts.getItem2().contains(456));
         assertTrue(pairOfStringAndCollectionOfInts.getItem2().contains(789));
 
-        Registry<FakeHasIdAndName> registry = _variableCache.getVariable("registry");
+        Registry<HasId> registry = variableCache.getVariable("registry");
         assertNotNull(registry);
-        assertEquals("name1", registry.get("id1").getName());
-        assertEquals("name2", registry.get("id2").getName());
-        assertEquals("name3", registry.get("id3").getName());
+        assertEquals(1, registry.size());
+        assertTrue(registry.contains(mockHasId));
 
         assertEquals("stringVariableValue",
-                _variableCache.getVariable("stringVariableName"));
+                variableCache.getVariable("stringVariableName"));
     }
 }

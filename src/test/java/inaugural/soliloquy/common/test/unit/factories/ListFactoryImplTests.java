@@ -1,14 +1,14 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.ListFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeList;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ListFactoryImplTests {
     private ListFactoryImpl _listFactory;
@@ -48,10 +48,11 @@ class ListFactoryImplTests {
         assertNotNull(collection.getArchetype());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     void testArchetypeWithNullArchetype() {
-        List<String> archetype = new FakeList<>((String) null);
+        //noinspection unchecked
+        List<String> archetype = mock(List.class);
+        when(archetype.getArchetype()).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class, () -> _listFactory.make(archetype));
     }
@@ -66,7 +67,7 @@ class ListFactoryImplTests {
     @Test
     void testEquals() {
         ListFactory equalCollectionFactory = new ListFactoryImpl();
-        ListFactory unequalCollectionFactory = new FakeListFactory();
+        ListFactory unequalCollectionFactory = mock(ListFactory.class);
 
         assertTrue(_listFactory.equals(equalCollectionFactory));
         assertFalse(_listFactory.equals(unequalCollectionFactory));

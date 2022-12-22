@@ -1,67 +1,71 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.RegistryFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeHasIdAndName;
-import inaugural.soliloquy.common.test.fakes.FakeRegistryFactory;
+import inaugural.soliloquy.common.infrastructure.RegistryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
+import soliloquy.specs.common.shared.HasId;
 
+import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class RegistryFactoryImplTests {
-    private static final String ID = "id";
-    private static final String NAME = "name";
-    private static final FakeHasIdAndName HAS_ID_AND_NAME = new FakeHasIdAndName(ID, NAME);
+    @Mock private HasId archetype;
 
-    private RegistryFactory _registryFactory;
+    private RegistryFactory registryFactory;
 
     @BeforeEach
     void setUp() {
-        _registryFactory = new RegistryFactoryImpl();
+        archetype = mock(HasId.class);
+        when(archetype.id()).thenReturn(randomString());
+
+        registryFactory = new RegistryFactoryImpl();
     }
 
     @Test
     void testGetInterfaceName() {
         assertEquals(RegistryFactory.class.getCanonicalName(),
-                _registryFactory.getInterfaceName());
+                registryFactory.getInterfaceName());
     }
 
     @Test
     void testMake() {
-        Registry<FakeHasIdAndName> registry = _registryFactory.make(HAS_ID_AND_NAME);
+        Registry<HasId> registry = registryFactory.make(archetype);
 
         assertNotNull(registry);
-        FakeHasIdAndName archetype = registry.getArchetype();
-        assertNotNull(archetype);
-        assertEquals(FakeHasIdAndName.class.getCanonicalName(), archetype.getInterfaceName());
+        assertTrue(registry instanceof RegistryImpl);
+        assertSame(archetype, registry.getArchetype());
     }
 
     @Test
     void testMakeWithNullArchetype() {
-        assertThrows(IllegalArgumentException.class, () -> _registryFactory.make(null));
+        assertThrows(IllegalArgumentException.class, () -> registryFactory.make(null));
     }
 
     @Test
     void testHashCode() {
         assertEquals(RegistryFactoryImpl.class.getCanonicalName().hashCode(),
-                _registryFactory.hashCode());
+                registryFactory.hashCode());
     }
 
     @Test
     void testEquals() {
         RegistryFactory equalRegistryFactory = new RegistryFactoryImpl();
-        RegistryFactory unequalRegistryFactory = new FakeRegistryFactory();
+        RegistryFactory unequalRegistryFactory = mock(RegistryFactory.class);
 
-        assertEquals(equalRegistryFactory, _registryFactory);
-        assertNotEquals(unequalRegistryFactory, _registryFactory);
-        assertNotEquals(null, _registryFactory);
+        assertEquals(equalRegistryFactory, registryFactory);
+        assertNotEquals(unequalRegistryFactory, registryFactory);
+        assertNotEquals(null, registryFactory);
     }
 
     @Test
     void testToString() {
         assertEquals(RegistryFactoryImpl.class.getCanonicalName(),
-                _registryFactory.toString());
+                registryFactory.toString());
     }
 }

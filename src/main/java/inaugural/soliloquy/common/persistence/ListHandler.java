@@ -31,28 +31,20 @@ public class ListHandler
         LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions", "rawtypes"})
     @Override
     public List read(String valuesString) throws IllegalArgumentException {
-        if (valuesString == null) {
-            throw new IllegalArgumentException(
-                    "ListHandler.read: valuesString must be non-null");
-        }
-        if (valuesString.equals("")) {
-            throw new IllegalArgumentException(
-                    "ListHandler.read: valuesString must be non-null");
-        }
+        Check.ifNullOrEmpty(valuesString, "valuesString");
         ListDTO dto = JSON.fromJson(valuesString, ListDTO.class);
         TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
         List list =
                 LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
         for (int i = 0; i < dto.serializedValues.length; i++) {
+            //noinspection unchecked
             list.add(handler.read(dto.serializedValues[i]));
         }
         return list;
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions", "rawtypes"})
     @Override
     public String write(List list) {
         Check.ifNull(list, "list");
@@ -62,6 +54,7 @@ public class ListHandler
         dto.typeName = internalType;
         String[] serializedValues = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
+            //noinspection unchecked
             serializedValues[i] = handler.write(list.get(i));
         }
         dto.serializedValues = serializedValues;

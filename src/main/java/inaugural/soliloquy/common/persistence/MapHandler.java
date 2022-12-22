@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.persistence;
 
+import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithTwoGenericParamsHandler;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
@@ -29,6 +30,7 @@ public class MapHandler
     @SuppressWarnings({"unchecked"})
     @Override
     public Map read(String valuesString) throws IllegalArgumentException {
+        Check.ifNullOrEmpty(valuesString, "valuesString");
         MapDTO dto = JSON.fromJson(valuesString, MapDTO.class);
         TypeHandler keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.keyValueType);
         TypeHandler valueHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueValueType);
@@ -41,12 +43,9 @@ public class MapHandler
         return map;
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
     public String write(Map map) {
-        if (map == null) {
-            throw new IllegalArgumentException("MapHandler.write: map is null");
-        }
+        Check.ifNull(map, "map");
         String keyValueType = getProperTypeName(map.getFirstArchetype());
         String valueValueType = getProperTypeName(map.getSecondArchetype());
         TypeHandler keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(keyValueType);
@@ -58,7 +57,9 @@ public class MapHandler
         dto.valueSerializedValues = new String[map.size()];
         int indexCounter = 0;
         for (Object key : map.keySet()) {
+            //noinspection unchecked
             dto.keySerializedValues[indexCounter] = keyHandler.write(key);
+            //noinspection unchecked
             dto.valueSerializedValues[indexCounter] = valueHandler.write(map.get(key));
             indexCounter++;
         }

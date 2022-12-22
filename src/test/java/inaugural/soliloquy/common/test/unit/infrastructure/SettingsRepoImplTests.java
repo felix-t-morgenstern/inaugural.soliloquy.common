@@ -1,10 +1,8 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
-import inaugural.soliloquy.common.test.fakes.FakeListFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.infrastructure.VariableCache;
@@ -23,8 +21,6 @@ import static org.mockito.Mockito.when;
 
 class SettingsRepoImplTests {
     private SettingsRepoImpl _settingsRepo;
-
-    private final ListFactory LIST_FACTORY = new FakeListFactory();
 
     private final PersistentValuesHandler SETTINGS_REPO_PERSISTENT_VALUES_HANDLER =
             new PersistentValuesHandlerStub();
@@ -52,18 +48,16 @@ class SettingsRepoImplTests {
 
     @BeforeEach
     void setUp() {
-        _settingsRepo = new SettingsRepoImpl(LIST_FACTORY,
-                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
+        _settingsRepo =
+                new SettingsRepoImpl(SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
     }
 
     @Test
     void testConstructorWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(null,
-                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
-                null, SETTING_ARCHETYPE));
-        assertThrows(IllegalArgumentException.class, () -> new SettingsRepoImpl(LIST_FACTORY,
-                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, null));
+        assertThrows(IllegalArgumentException.class,
+                () -> new SettingsRepoImpl(null, SETTING_ARCHETYPE));
+        assertThrows(IllegalArgumentException.class,
+                () -> new SettingsRepoImpl(SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, null));
     }
 
     @Test
@@ -413,8 +407,8 @@ class SettingsRepoImplTests {
 
     @Test
     void testEquals() {
-        SettingsRepo settingsRepo2 = new SettingsRepoImpl(LIST_FACTORY,
-                SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
+        SettingsRepo settingsRepo2 =
+                new SettingsRepoImpl(SETTINGS_REPO_PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE);
         _settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
         settingsRepo2.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
 

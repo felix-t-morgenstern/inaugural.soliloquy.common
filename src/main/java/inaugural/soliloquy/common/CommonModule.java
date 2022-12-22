@@ -45,8 +45,7 @@ public class CommonModule extends AbstractModule {
 
         //noinspection rawtypes
         Setting settingArchetype = new SettingArchetype();
-        SETTINGS_REPO = new SettingsRepoImpl(LIST_FACTORY,
-                PERSISTENT_VALUES_HANDLER, settingArchetype);
+        SETTINGS_REPO = new SettingsRepoImpl(PERSISTENT_VALUES_HANDLER, settingArchetype);
 
         TypeHandler<Boolean> booleanHandler = new BooleanHandler();
         TypeHandler<Coordinate> coordinateHandler = new CoordinateHandler();

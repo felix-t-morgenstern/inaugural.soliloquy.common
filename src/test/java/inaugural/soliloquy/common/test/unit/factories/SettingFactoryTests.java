@@ -1,9 +1,6 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.SettingFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeList;
-import inaugural.soliloquy.common.test.fakes.FakeSettingFactory;
-import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.SettingFactory;
@@ -11,23 +8,26 @@ import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
+import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SettingFactoryTests {
-    private SettingFactoryImpl _settingFactory;
+    private SettingFactoryImpl settingFactory;
 
     @BeforeEach
     void setUp() {
-        _settingFactory = new SettingFactoryImpl();
+        settingFactory = new SettingFactoryImpl();
     }
 
     @Test
     void testMake() {
-        VariableCache settingControlParams = new FakeVariableCache();
+        VariableCache settingControlParams = mock(VariableCache.class);
         Integer settingValue = 123;
         String settingName = "SettingName";
         String settingId = "SettingId";
-        Setting<Integer> setting = _settingFactory.make(settingId, settingName, settingValue,
+        Setting<Integer> setting = settingFactory.make(settingId, settingName, settingValue,
                 settingControlParams);
         assertEquals(setting.id(), settingId);
         assertEquals(setting.getName(), settingName);
@@ -37,36 +37,38 @@ class SettingFactoryTests {
 
     @Test
     void testGetInterfaceName() {
-        assertEquals(SettingFactory.class.getCanonicalName(), _settingFactory.getInterfaceName());
+        assertEquals(SettingFactory.class.getCanonicalName(), settingFactory.getInterfaceName());
     }
 
     @Test
     void testArchetypeWithNullArchetype() {
-        List<String> archetype = new FakeList<>((String) null);
+        //noinspection unchecked
+        List<String> archetype = mock(List.class);
+        when(archetype.getArchetype()).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> _settingFactory.make("settingId",
-                "settingName", archetype, new FakeVariableCache()));
+        assertThrows(IllegalArgumentException.class, () -> settingFactory
+                .make(randomString(), randomString(), archetype, mock(VariableCache.class)));
     }
 
     @Test
     void testHashCode() {
         assertEquals(SettingFactoryImpl.class.getCanonicalName().hashCode(),
-                _settingFactory.hashCode());
+                settingFactory.hashCode());
     }
 
     @Test
     void testEquals() {
         SettingFactory equalSettingFactory = new SettingFactoryImpl();
-        SettingFactory unequalSettingFactory = new FakeSettingFactory();
+        SettingFactory unequalSettingFactory = mock(SettingFactory.class);
 
-        assertEquals(equalSettingFactory, _settingFactory);
-        assertNotEquals(unequalSettingFactory, _settingFactory);
-        assertNotEquals(null, _settingFactory);
+        assertEquals(equalSettingFactory, settingFactory);
+        assertNotEquals(unequalSettingFactory, settingFactory);
+        assertNotEquals(null, settingFactory);
     }
 
     @Test
     void testToString() {
         assertEquals(SettingFactoryImpl.class.getCanonicalName(),
-                _settingFactory.toString());
+                settingFactory.toString());
     }
 }

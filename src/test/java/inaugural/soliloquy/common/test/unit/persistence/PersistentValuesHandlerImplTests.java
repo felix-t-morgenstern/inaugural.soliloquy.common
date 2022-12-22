@@ -1,180 +1,205 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.PersistentValuesHandlerImpl;
-import inaugural.soliloquy.common.test.fakes.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
+import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.persistence.TypeWithOneGenericParamHandler;
+import soliloquy.specs.common.persistence.TypeWithTwoGenericParamsHandler;
 
+import static inaugural.soliloquy.tools.random.Random.randomInt;
+import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 class PersistentValuesHandlerImplTests {
-    private final FakeIntegerHandler INTEGER_HANDLER = new FakeIntegerHandler();
-    private final FakeStringHandler STRING_HANDLER = new FakeStringHandler();
-    private final FakeListHandler LIST_HANDLER = new FakeListHandler();
-    private final FakeMapHandler MAP_HANDLER = new FakeMapHandler();
+    @Mock @SuppressWarnings("rawtypes") private TypeHandler mockIntegerHandler;
+    @Mock @SuppressWarnings("rawtypes") private TypeHandler mockStringHandler;
+    @Mock @SuppressWarnings("rawtypes") private TypeWithOneGenericParamHandler mockListHandler;
+    @Mock @SuppressWarnings("rawtypes") private TypeWithTwoGenericParamsHandler mockMapHandler;
 
-    private PersistentValuesHandlerImpl _persistentValuesHandler;
+    private PersistentValuesHandlerImpl persistentValuesHandler;
 
     @BeforeEach
     void setUp() {
-        _persistentValuesHandler = new PersistentValuesHandlerImpl();
+        mockIntegerHandler = mock(TypeHandler.class);
+        when(mockIntegerHandler.getInterfaceName())
+                .thenReturn("<" + Integer.class.getCanonicalName() + ">");
+
+        mockStringHandler = mock(TypeHandler.class);
+        when(mockStringHandler.getInterfaceName())
+                .thenReturn("<" + String.class.getCanonicalName() + ">");
+
+        mockListHandler = mock(TypeWithOneGenericParamHandler.class);
+        when(mockListHandler.getInterfaceName())
+                .thenReturn("<" + List.class.getCanonicalName() + ">");
+
+        mockMapHandler = mock(TypeWithTwoGenericParamsHandler.class);
+        when(mockMapHandler.getInterfaceName())
+                .thenReturn("<" + Map.class.getCanonicalName() + ">");
+
+        persistentValuesHandler = new PersistentValuesHandlerImpl();
     }
 
     @Test
     void testAddAndGetTypeHandler() {
-        _persistentValuesHandler.addTypeHandler(INTEGER_HANDLER);
+        persistentValuesHandler.addTypeHandler(mockIntegerHandler);
 
-        assertSame(_persistentValuesHandler.<Integer>getTypeHandler(
-                Integer.class.getCanonicalName()),
-                INTEGER_HANDLER);
+        assertSame(mockIntegerHandler,
+                persistentValuesHandler.getTypeHandler(Integer.class.getCanonicalName()));
     }
 
     @Test
     void testAddAndGetTypeHandlerWithTypeParameters() {
-        _persistentValuesHandler.addTypeHandler(LIST_HANDLER);
+        persistentValuesHandler.addTypeHandler(mockListHandler);
 
-        assertSame(LIST_HANDLER,
-                _persistentValuesHandler.getTypeHandler(List.class.getCanonicalName() +
-                        "<irrelevant>"));
+        assertSame(mockListHandler, persistentValuesHandler
+                .getTypeHandler(List.class.getCanonicalName() + "<" + randomString() + ">"));
     }
 
     @Test
     void testGetTypeHandlerWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.getTypeHandler(null));
+                persistentValuesHandler.getTypeHandler(null));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.getTypeHandler(""));
+                persistentValuesHandler.getTypeHandler(""));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.getTypeHandler(Integer.class.getCanonicalName()));
+                persistentValuesHandler.getTypeHandler(Integer.class.getCanonicalName()));
     }
 
     @Test
     void testAddTypeHandlerTwiceException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            _persistentValuesHandler.addTypeHandler(INTEGER_HANDLER);
-            _persistentValuesHandler.addTypeHandler(INTEGER_HANDLER);
+            persistentValuesHandler.addTypeHandler(mockIntegerHandler);
+            persistentValuesHandler.addTypeHandler(mockIntegerHandler);
         });
     }
 
     @Test
     void testRemoveTypeHandler() {
-        assertFalse(_persistentValuesHandler.removeTypeHandler(Integer.class.getCanonicalName()));
-        _persistentValuesHandler.addTypeHandler(INTEGER_HANDLER);
-        assertSame(_persistentValuesHandler.<Integer>getTypeHandler(
+        assertFalse(persistentValuesHandler.removeTypeHandler(Integer.class.getCanonicalName()));
+        persistentValuesHandler.addTypeHandler(mockIntegerHandler);
+        assertSame(persistentValuesHandler.<Integer>getTypeHandler(
                 Integer.class.getCanonicalName()),
-                INTEGER_HANDLER);
-        assertTrue(_persistentValuesHandler.removeTypeHandler(Integer.class.getCanonicalName()));
+                mockIntegerHandler);
+        assertTrue(persistentValuesHandler.removeTypeHandler(Integer.class.getCanonicalName()));
     }
 
     @Test
     void testAddGetAndRemoveTypeHandlerWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentValuesHandler.addTypeHandler(null));
+                () -> persistentValuesHandler.addTypeHandler(null));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentValuesHandler.removeTypeHandler(null));
+                () -> persistentValuesHandler.removeTypeHandler(null));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentValuesHandler.removeTypeHandler(""));
+                () -> persistentValuesHandler.removeTypeHandler(""));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentValuesHandler.getTypeHandler(null));
+                () -> persistentValuesHandler.getTypeHandler(null));
         assertThrows(IllegalArgumentException.class,
-                () -> _persistentValuesHandler.getTypeHandler(""));
+                () -> persistentValuesHandler.getTypeHandler(""));
     }
 
     @Test
     void testTypesHandled() {
-        assertTrue(_persistentValuesHandler.typesHandled().isEmpty());
-        _persistentValuesHandler.addTypeHandler(INTEGER_HANDLER);
-        _persistentValuesHandler.addTypeHandler(STRING_HANDLER);
-        assertEquals(2, _persistentValuesHandler.typesHandled().size());
-        assertTrue(_persistentValuesHandler.typesHandled()
+        assertTrue(persistentValuesHandler.typesHandled().isEmpty());
+        persistentValuesHandler.addTypeHandler(mockIntegerHandler);
+        persistentValuesHandler.addTypeHandler(mockStringHandler);
+        assertEquals(2, persistentValuesHandler.typesHandled().size());
+        assertTrue(persistentValuesHandler.typesHandled()
                 .contains(Integer.class.getCanonicalName()));
-        assertTrue(_persistentValuesHandler.typesHandled()
+        assertTrue(persistentValuesHandler.typesHandled()
                 .contains(String.class.getCanonicalName()));
     }
 
     @Test
     void testGenerateArchetype() {
-        _persistentValuesHandler.addTypeHandler(INTEGER_HANDLER);
+        persistentValuesHandler.addTypeHandler(mockIntegerHandler);
+        Integer archetypeFromTypeHandler = randomInt();
+        when(mockIntegerHandler.getArchetype()).thenReturn(archetypeFromTypeHandler);
 
-        assertNotNull(_persistentValuesHandler
-                .generateArchetype(Integer.class.getCanonicalName()));
+        Integer generatedArchetype = persistentValuesHandler.generateArchetype(Integer.class.getCanonicalName());
+
+        assertNotNull(generatedArchetype);
+        assertEquals(archetypeFromTypeHandler, generatedArchetype);
     }
 
     @Test
     void testGenerateArchetypeWithOneGenericParameter() {
-        String innerType = "innerType";
+        String innerType = randomString();
         //noinspection rawtypes
-        FakeList generatedArchetypeOutput = new FakeList();
-        LIST_HANDLER.GenerateArchetypeOutput = generatedArchetypeOutput;
-        _persistentValuesHandler.addTypeHandler(LIST_HANDLER);
+        List generatedArchetypeOutput = mock(List.class);
+        when(mockListHandler.generateArchetype(anyString())).thenReturn(generatedArchetypeOutput);
+        persistentValuesHandler.addTypeHandler(mockListHandler);
 
         //noinspection rawtypes
-        List generatedArchetype = _persistentValuesHandler
+        List generatedArchetype = persistentValuesHandler
                 .generateArchetype(List.class.getCanonicalName() + "<" + innerType + ">");
 
         assertSame(generatedArchetypeOutput, generatedArchetype);
-        assertEquals(innerType, LIST_HANDLER.GenerateArchetypeInput);
+        verify(mockListHandler, times(1)).generateArchetype(innerType);
     }
 
     @Test
     void testGenerateArchetypeWithTwoGenericParameters() {
-        String innerType1 = "innerType1";
-        String innerType2 = "innerType2";
+        String innerType1 = randomString();
+        String innerType2 = randomString();
         //noinspection rawtypes
-        FakeMap generatedArchetypeOutput = new FakeMap();
-        MAP_HANDLER.GenerateArchetypeOutput = generatedArchetypeOutput;
-        _persistentValuesHandler.addTypeHandler(MAP_HANDLER);
+        Map generatedArchetypeOutput = mock(Map.class);
+        when(mockMapHandler.generateArchetype(anyString(), anyString()))
+                .thenReturn(generatedArchetypeOutput);
+        persistentValuesHandler.addTypeHandler(mockMapHandler);
 
         //noinspection rawtypes
-        Map generatedArchetype = _persistentValuesHandler.generateArchetype(
+        Map generatedArchetype = persistentValuesHandler.generateArchetype(
                 Map.class.getCanonicalName() + "<" + innerType1 + "," + innerType2 + ">");
 
         assertSame(generatedArchetypeOutput, generatedArchetype);
-        assertEquals(innerType1, MAP_HANDLER.GenerateArchetypeInput1);
-        assertEquals(innerType2, MAP_HANDLER.GenerateArchetypeInput2);
+        verify(mockMapHandler, times(1)).generateArchetype(innerType1, innerType2);
     }
 
     @Test
     void testGenerateArchetypeWithInvalidParams() {
-        _persistentValuesHandler.addTypeHandler(INTEGER_HANDLER);
-        _persistentValuesHandler.addTypeHandler(LIST_HANDLER);
-        _persistentValuesHandler.addTypeHandler(MAP_HANDLER);
+        persistentValuesHandler.addTypeHandler(mockIntegerHandler);
+        persistentValuesHandler.addTypeHandler(mockListHandler);
+        persistentValuesHandler.addTypeHandler(mockMapHandler);
 
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(null));
+                persistentValuesHandler.generateArchetype(null));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(""));
+                persistentValuesHandler.generateArchetype(""));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype("not a valid class"));
+                persistentValuesHandler.generateArchetype("not a valid class"));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(List.class.getCanonicalName()));
+                persistentValuesHandler.generateArchetype(List.class.getCanonicalName()));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(List.class.getCanonicalName() + "<"));
+                persistentValuesHandler.generateArchetype(List.class.getCanonicalName() + "<"));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(List.class.getCanonicalName() +
+                persistentValuesHandler.generateArchetype(List.class.getCanonicalName() +
                         "<not a valid class"));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(List.class.getCanonicalName() +
+                persistentValuesHandler.generateArchetype(List.class.getCanonicalName() +
                         "<" + Integer.class.getCanonicalName()));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() + "<"));
+                persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() + "<"));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
+                persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
                         "<not a valid class"));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
+                persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
                         "<" + Integer.class.getCanonicalName()));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
+                persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
                         "<" + Integer.class.getCanonicalName() + ","));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
+                persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
                         "<" + Integer.class.getCanonicalName() + ",not a valid class"));
         assertThrows(IllegalArgumentException.class, () ->
-                _persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
+                persistentValuesHandler.generateArchetype(Map.class.getCanonicalName() +
                         "<" + Integer.class.getCanonicalName() + "," +
                         Integer.class.getCanonicalName()));
     }
@@ -182,22 +207,22 @@ class PersistentValuesHandlerImplTests {
     @Test
     void testHashCode() {
         assertEquals(PersistentValuesHandlerImpl.class.getCanonicalName().hashCode(),
-                _persistentValuesHandler.hashCode());
+                persistentValuesHandler.hashCode());
     }
 
     @Test
     void testEquals() {
         PersistentValuesHandler equalPersistentValuesHandler = new PersistentValuesHandlerImpl();
-        PersistentValuesHandler unequalPersistentValuesHandler = new FakePersistentValuesHandler();
+        PersistentValuesHandler unequalPersistentValuesHandler = mock(PersistentValuesHandler.class);
 
-        assertEquals(_persistentValuesHandler, equalPersistentValuesHandler);
-        assertNotEquals(_persistentValuesHandler, unequalPersistentValuesHandler);
-        assertNotEquals(null, _persistentValuesHandler);
+        assertEquals(persistentValuesHandler, equalPersistentValuesHandler);
+        assertNotEquals(persistentValuesHandler, unequalPersistentValuesHandler);
+        assertNotEquals(null, persistentValuesHandler);
     }
 
     @Test
     void testToString() {
         assertEquals(PersistentValuesHandlerImpl.class.getCanonicalName(),
-                _persistentValuesHandler.toString());
+                persistentValuesHandler.toString());
     }
 }

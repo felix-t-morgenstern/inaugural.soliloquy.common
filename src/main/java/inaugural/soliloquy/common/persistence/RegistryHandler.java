@@ -34,14 +34,7 @@ public class RegistryHandler
     @SuppressWarnings("unchecked")
     @Override
     public Registry read(String valuesString) throws IllegalArgumentException {
-        if (valuesString == null) {
-            throw new IllegalArgumentException(
-                    "RegistryHandler.read: valuesString must be non-null");
-        }
-        if (valuesString.equals("")) {
-            throw new IllegalArgumentException(
-                    "RegistryHandler.read: valuesString must be non-empty");
-        }
+        Check.ifNullOrEmpty(valuesString, "valuesString");
         RegistryDTO dto = JSON.fromJson(valuesString, RegistryDTO.class);
         TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
         Registry registry = REGISTRY_FACTORY
@@ -52,13 +45,9 @@ public class RegistryHandler
         return registry;
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
     public String write(Registry registry) {
-        if (registry == null) {
-            throw new IllegalArgumentException(
-                    "RegistryHandler.write: registry is null");
-        }
+        Check.ifNull(registry, "registry");
         String internalType = getProperTypeName(registry.getArchetype());
         TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(internalType);
         RegistryDTO dto = new RegistryDTO();
@@ -66,6 +55,7 @@ public class RegistryHandler
         dto.serializedValues = new String[registry.size()];
         int index = 0;
         for (Object item : registry) {
+            //noinspection unchecked
             dto.serializedValues[index++] = handler.write(item);
         }
         return JSON.toJson(dto);

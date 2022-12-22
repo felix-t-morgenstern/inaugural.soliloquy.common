@@ -22,7 +22,6 @@ public class RegistryImpl<T extends HasId>
         return REGISTRY.containsKey(Check.ifNullOrEmpty(id, "id"));
     }
 
-    // TODO: Test and implement
     @Override
     public boolean contains(T item) throws IllegalArgumentException {
         Check.ifNull(item, "item");
@@ -40,7 +39,6 @@ public class RegistryImpl<T extends HasId>
         REGISTRY.put(Check.ifNullOrEmpty(Check.ifNull(item, "item").id(), "item.id"), item);
     }
 
-    // TODO: Test and implement
     @SuppressWarnings("unchecked")
     @Override
     public void addAll(Object[] items) throws IllegalArgumentException {
@@ -60,7 +58,6 @@ public class RegistryImpl<T extends HasId>
         }
     }
 
-    // TODO: Test and implement
     @Override
     public void addAll(T[] items) throws IllegalArgumentException {
         Check.ifNull(items, "items");
@@ -93,7 +90,6 @@ public class RegistryImpl<T extends HasId>
         return REGISTRY.remove(Check.ifNullOrEmpty(id, "id")) != null;
     }
 
-    // TODO: Test to ensure no null input
     @Override
     public boolean remove(T item) throws IllegalArgumentException {
         Check.ifNull(item, "item");

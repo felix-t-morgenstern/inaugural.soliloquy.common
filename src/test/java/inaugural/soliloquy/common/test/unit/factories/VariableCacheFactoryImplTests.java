@@ -1,12 +1,12 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.VariableCacheFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class VariableCacheFactoryImplTests {
 
@@ -37,7 +37,7 @@ class VariableCacheFactoryImplTests {
     @Test
     void testEquals() {
         VariableCacheFactory equalVariableCacheFactory = new VariableCacheFactoryImpl();
-        VariableCacheFactory unequalVariableCacheFactory = new FakeVariableCacheFactory();
+        VariableCacheFactory unequalVariableCacheFactory = mock(VariableCacheFactory.class);
 
         assertEquals(_variableCacheFactory, equalVariableCacheFactory);
         assertNotEquals(_variableCacheFactory, unequalVariableCacheFactory);

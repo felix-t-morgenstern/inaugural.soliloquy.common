@@ -44,10 +44,7 @@ public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public String write(SettingsRepo settingsRepo) {
-        if (settingsRepo == null) {
-            throw new IllegalArgumentException(
-                    "SettingsRepoHandler.write: settingsRepo must be non-null");
-        }
+        Check.ifNull(settingsRepo, "settingsRepo");
         java.util.Collection<Setting> settings = settingsRepo.getAllUngroupedRepresentation();
         SettingDTO[] dto = new SettingDTO[settings.size()];
         int i = 0;

@@ -2,8 +2,6 @@ package inaugural.soliloquy.common.infrastructure;
 
 import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.generic.CanGetInterfaceName;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -11,42 +9,33 @@ import soliloquy.specs.common.shared.EntityGroup;
 import soliloquy.specs.common.shared.EntityGroupItem;
 import soliloquy.specs.common.valueobjects.Pair;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRepo {
     private final HashMap<Integer, SettingsRepoItem> ITEMS;
     private final String ID;
-    private final ListFactory LIST_FACTORY;
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     @SuppressWarnings("rawtypes")
     private final Setting SETTING_ARCHETYPE;
 
     @SuppressWarnings("rawtypes")
-    public SettingsRepoImpl(ListFactory listFactory,
-                            PersistentValuesHandler persistentValuesHandler,
+    public SettingsRepoImpl(PersistentValuesHandler persistentValuesHandler,
                             Setting settingArchetype) {
         ID = null;
         ITEMS = new HashMap<>();
 
-        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
         PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler,
                 "persistentValuesHandler");
         SETTING_ARCHETYPE = Check.ifNull(settingArchetype, "settingArchetype");
     }
 
     @SuppressWarnings("rawtypes")
-    private SettingsRepoImpl(String id, ListFactory listFactory,
+    private SettingsRepoImpl(String id,
                              PersistentValuesHandler persistentValuesHandler,
                              Setting settingArchetype) {
-        if (id == null || id.equals("")) {
-            throw new IllegalArgumentException("SettingsRepo: called with null or empty id");
-        }
-        ID = id;
+        ID = Check.ifNullOrEmpty(id, "id");
         ITEMS = new HashMap<>();
 
-        LIST_FACTORY = listFactory;
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         SETTING_ARCHETYPE = settingArchetype;
     }
@@ -59,8 +48,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("rawtypes")
     @Override
     public List<EntityGroupItem<Setting>> getAllGroupedRepresentation() {
-        List<EntityGroupItem<Setting>> allGrouped = LIST_FACTORY
-                .make(new SettingsRepoItem(SETTING_ARCHETYPE));
+        ArrayList<EntityGroupItem<Setting>> allGrouped = new ArrayList<>();
         Set<Integer> keysSet = ITEMS.keySet();
         int[] keysArray = new int[keysSet.size()];
         int cursor = 0;
@@ -77,7 +65,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("rawtypes")
     @Override
     public List<Setting> getAllUngroupedRepresentation() {
-        List<Setting> allSettingsUngrouped = LIST_FACTORY.make(SETTING_ARCHETYPE);
+        ArrayList<Setting> allSettingsUngrouped = new ArrayList<>();
         addSettingsRecursively(allSettingsUngrouped);
         return allSettingsUngrouped;
     }
@@ -177,8 +165,8 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
             targetParentGrouping = (SettingsRepoImpl) getSubgrouping(parentGroupId);
         }
         targetParentGrouping.ITEMS.put(order,
-                new SettingsRepoItem(new SettingsRepoImpl(groupId, LIST_FACTORY,
-                        PERSISTENT_VALUES_HANDLER, SETTING_ARCHETYPE)));
+                new SettingsRepoItem(new SettingsRepoImpl(groupId, PERSISTENT_VALUES_HANDLER,
+                        SETTING_ARCHETYPE)));
     }
 
     @Override

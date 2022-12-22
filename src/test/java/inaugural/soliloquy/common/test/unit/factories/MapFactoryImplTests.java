@@ -1,14 +1,16 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.MapFactoryImpl;
-import inaugural.soliloquy.common.test.fakes.FakeMap;
-import inaugural.soliloquy.common.test.fakes.FakeMapFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
 
+import static inaugural.soliloquy.tools.random.Random.randomInt;
+import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class MapFactoryImplTests {
     private MapFactoryImpl _mapFactory;
@@ -36,15 +38,26 @@ class MapFactoryImplTests {
         assertThrows(IllegalArgumentException.class, () -> _mapFactory.make(null, 0));
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     void testArchetypeWithNullArchetype() {
-        FakeMap archetype = new FakeMap(null, null);
+        //noinspection unchecked
+        Map<String, Integer> mockMapWithNullKeyArchetype = mock(Map.class);
+        when(mockMapWithNullKeyArchetype.getFirstArchetype()).thenReturn(null);
+        when(mockMapWithNullKeyArchetype.getSecondArchetype()).thenReturn(randomInt());
+
+        //noinspection unchecked
+        Map<String, Integer> mockMapWithNullValueArchetype = mock(Map.class);
+        when(mockMapWithNullValueArchetype.getFirstArchetype()).thenReturn(randomString());
+        when(mockMapWithNullValueArchetype.getSecondArchetype()).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class,
-                () -> _mapFactory.make(archetype, 123));
+                () -> _mapFactory.make(mockMapWithNullKeyArchetype, 123));
         assertThrows(IllegalArgumentException.class,
-                () -> _mapFactory.make(123, archetype));
+                () -> _mapFactory.make(mockMapWithNullValueArchetype, 123));
+        assertThrows(IllegalArgumentException.class,
+                () -> _mapFactory.make(123, mockMapWithNullKeyArchetype));
+        assertThrows(IllegalArgumentException.class,
+                () -> _mapFactory.make(123, mockMapWithNullValueArchetype));
     }
 
     @Test
@@ -56,7 +69,7 @@ class MapFactoryImplTests {
     @Test
     void testEquals() {
         MapFactory equalMapFactory = new MapFactoryImpl();
-        MapFactory unequalMapFactory = new FakeMapFactory();
+        MapFactory unequalMapFactory = mock(MapFactory.class);
 
         assertEquals(_mapFactory, equalMapFactory);
         assertNotEquals(_mapFactory, unequalMapFactory);

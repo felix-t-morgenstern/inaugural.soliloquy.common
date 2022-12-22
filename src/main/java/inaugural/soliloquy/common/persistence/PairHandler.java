@@ -1,5 +1,6 @@
 package inaugural.soliloquy.common.persistence;
 
+import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.AbstractTypeWithTwoGenericParamsHandler;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
@@ -20,17 +21,9 @@ public class PairHandler
         );
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public Pair read(String valuesString) throws IllegalArgumentException {
-        if (valuesString == null) {
-            throw new IllegalArgumentException(
-                    "PairHandler.read: valuesString cannot be null");
-        }
-        if (valuesString.equals("")) {
-            throw new IllegalArgumentException(
-                    "PairHandler.read: valuesString cannot be empty");
-        }
+        Check.ifNullOrEmpty(valuesString, "valuesString");
         PairDTO dto = JSON.fromJson(valuesString, PairDTO.class);
         TypeHandler handler1 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType1);
         TypeHandler handler2 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType2);
@@ -42,18 +35,17 @@ public class PairHandler
         );
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
     public String write(Pair pair) {
-        if (pair == null) {
-            throw new IllegalArgumentException("PairHandler.write: pair cannot be null");
-        }
+        Check.ifNull(pair, "pair");
         PairDTO dto = new PairDTO();
         dto.valueType1 = getProperTypeName(pair.getFirstArchetype());
         dto.valueType2 = getProperTypeName(pair.getSecondArchetype());
         TypeHandler handler1 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType1);
         TypeHandler handler2 = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType2);
+        //noinspection unchecked
         dto.serializedValue1 = handler1.write(pair.getItem1());
+        //noinspection unchecked
         dto.serializedValue2 = handler2.write(pair.getItem2());
         return JSON.toJson(dto);
     }

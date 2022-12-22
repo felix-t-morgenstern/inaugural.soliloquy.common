@@ -1,29 +1,35 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.SettingImpl;
-import inaugural.soliloquy.common.test.fakes.FakeVariableCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
 import java.util.Objects;
 
+import static inaugural.soliloquy.tools.random.Random.randomInt;
+import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class SettingImplTests {
-    private final String SETTING_ID = "SettingId";
-    private final String SETTING_NAME_1 = "SettingName1";
-    private final Integer SETTING_VALUE_1 = 123;
-    private final Integer SETTING_ARCHETYPE = 789;
-    private final VariableCache _settingControlParams = new FakeVariableCache();
+    private final String SETTING_ID = randomString();
+    private final String SETTING_NAME_1 = randomString();
+    private final Integer SETTING_VALUE_1 = randomInt();
+    private final Integer SETTING_ARCHETYPE = randomInt();
 
-    private SettingImpl<Integer> _setting;
+    @Mock private VariableCache settingControlParams;
+
+    private SettingImpl<Integer> setting;
 
     @BeforeEach
     void setUp() {
-        _setting = new SettingImpl<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
-                SETTING_ARCHETYPE, _settingControlParams);
+        settingControlParams = mock(VariableCache.class);
+
+        setting = new SettingImpl<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
+                SETTING_ARCHETYPE, settingControlParams);
     }
 
     @Test
@@ -33,31 +39,31 @@ class SettingImplTests {
                         SETTING_NAME_1,
                         SETTING_VALUE_1,
                         SETTING_ARCHETYPE,
-                        _settingControlParams));
+                        settingControlParams));
         assertThrows(IllegalArgumentException.class,
                 () -> new SettingImpl<>("",
                         SETTING_NAME_1,
                         SETTING_VALUE_1,
                         SETTING_ARCHETYPE,
-                        _settingControlParams));
+                        settingControlParams));
         assertThrows(IllegalArgumentException.class,
                 () -> new SettingImpl<>(SETTING_ID,
                         null,
                         SETTING_VALUE_1,
                         SETTING_ARCHETYPE,
-                        _settingControlParams));
+                        settingControlParams));
         assertThrows(IllegalArgumentException.class,
                 () -> new SettingImpl<>(SETTING_ID,
                         "",
                         SETTING_VALUE_1,
                         SETTING_ARCHETYPE,
-                        _settingControlParams));
+                        settingControlParams));
         assertThrows(IllegalArgumentException.class,
                 () -> new SettingImpl<>(SETTING_ID,
                         SETTING_NAME_1,
                         SETTING_VALUE_1,
                         null,
-                        _settingControlParams));
+                        settingControlParams));
         assertThrows(IllegalArgumentException.class,
                 () -> new SettingImpl<>(SETTING_ID,
                         SETTING_NAME_1,
@@ -68,69 +74,69 @@ class SettingImplTests {
 
     @Test
     void testId() {
-        assertEquals(_setting.id(), SETTING_ID);
+        assertEquals(setting.id(), SETTING_ID);
     }
 
     @Test
     void testName() {
-        assertEquals(_setting.getName(), SETTING_NAME_1);
+        assertEquals(setting.getName(), SETTING_NAME_1);
         String settingName2 = "settingName2";
-        _setting.setName(settingName2);
-        assertEquals(_setting.getName(), settingName2);
+        setting.setName(settingName2);
+        assertEquals(setting.getName(), settingName2);
     }
 
     @Test
     void testSetNameWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class, () -> _setting.setName(null));
-        assertThrows(IllegalArgumentException.class, () -> _setting.setName(""));
+        assertThrows(IllegalArgumentException.class, () -> setting.setName(null));
+        assertThrows(IllegalArgumentException.class, () -> setting.setName(""));
     }
 
     @Test
     void testGetArchetype() {
-        assertSame(_setting.getArchetype(), SETTING_ARCHETYPE);
+        assertSame(setting.getArchetype(), SETTING_ARCHETYPE);
     }
 
     @Test
     void testGetInterfaceName() {
-        assertEquals(Setting.class.getCanonicalName(), _setting.getInterfaceName());
+        assertEquals(Setting.class.getCanonicalName(), setting.getInterfaceName());
     }
 
     @Test
     void testGetValue() {
-        assertSame(_setting.getValue(), SETTING_VALUE_1);
+        assertSame(setting.getValue(), SETTING_VALUE_1);
     }
 
     @Test
     void testSetValue() {
         Integer settingValue2 = 456;
-        _setting.setValue(settingValue2);
-        assertSame(_setting.getValue(), settingValue2);
+        setting.setValue(settingValue2);
+        assertSame(setting.getValue(), settingValue2);
     }
 
     @Test
     void testControlParams() {
-        assertSame(_setting.controlParams(), _settingControlParams);
+        assertSame(setting.controlParams(), settingControlParams);
     }
 
     @Test
     void testHashCode() {
         assertEquals(Objects.hash(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
-                _settingControlParams),
-                _setting.hashCode());
+                settingControlParams),
+                setting.hashCode());
     }
 
     @SuppressWarnings("rawtypes")
     @Test
     void testEquals() {
         Setting setting2 = new SettingImpl<>(SETTING_ID, SETTING_NAME_1, SETTING_VALUE_1,
-                SETTING_ARCHETYPE, _settingControlParams);
+                SETTING_ARCHETYPE, settingControlParams);
 
-        assertEquals(_setting, setting2);
+        assertEquals(setting, setting2);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
     void testToString() {
-        assertThrows(UnsupportedOperationException.class, _setting::toString);
+        assertThrows(UnsupportedOperationException.class, setting::toString);
     }
 }

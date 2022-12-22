@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.UuidHandler;
-import inaugural.soliloquy.common.test.fakes.FakeUuidHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
@@ -9,6 +8,7 @@ import soliloquy.specs.common.persistence.TypeHandler;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class UuidHandlerTests {
     private final String ENTITY_UUID_STRING = "5ab46602-2493-4dbd-831c-6e63a6e6094b";
@@ -63,7 +63,8 @@ class UuidHandlerTests {
     @Test
     void testEquals() {
         TypeHandler<UUID> equalHandler = new UuidHandler();
-        TypeHandler<UUID> unequalHandler = new FakeUuidHandler();
+        //noinspection unchecked
+        TypeHandler<UUID> unequalHandler = mock(TypeHandler.class);
 
         assertEquals(_uuidHandler, equalHandler);
         assertNotEquals(_uuidHandler, unequalHandler);

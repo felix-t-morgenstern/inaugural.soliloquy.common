@@ -1,13 +1,12 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.BooleanHandler;
-import inaugural.soliloquy.common.test.fakes.FakeVariableCacheFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import soliloquy.specs.common.factories.VariableCacheFactory;
 import soliloquy.specs.common.persistence.TypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class BooleanHandlerTests {
     private BooleanHandler _booleanHandler;
@@ -54,7 +53,8 @@ class BooleanHandlerTests {
     @Test
     void testEquals() {
         TypeHandler<Boolean> equalPersistentBooleanHandler = new BooleanHandler();
-        VariableCacheFactory unequalPersistentBooleanHandler = new FakeVariableCacheFactory();
+        //noinspection unchecked
+        TypeHandler<Boolean> unequalPersistentBooleanHandler = mock(TypeHandler.class);
 
         assertEquals(_booleanHandler, equalPersistentBooleanHandler);
         assertNotEquals(_booleanHandler, unequalPersistentBooleanHandler);

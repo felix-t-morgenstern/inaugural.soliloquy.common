@@ -1,12 +1,12 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.IntegerHandler;
-import inaugural.soliloquy.common.test.fakes.FakeIntegerHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class IntegerHandlerTests {
     private IntegerHandler _integerHandler;
@@ -46,7 +46,8 @@ class IntegerHandlerTests {
     @Test
     void testEquals() {
         TypeHandler<Integer> equalHandler = new IntegerHandler();
-        TypeHandler<Integer> unequalHandler = new FakeIntegerHandler();
+        //noinspection unchecked
+        TypeHandler<Integer> unequalHandler = mock(TypeHandler.class);
 
         assertEquals(_integerHandler, equalHandler);
         assertNotEquals(_integerHandler, unequalHandler);
