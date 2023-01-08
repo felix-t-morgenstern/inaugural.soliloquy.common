@@ -20,13 +20,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SettingsRepoHandlerTests {
-    private static final String SETTING_1_ID = randomString();
-    public static final String SETTING_1_NAME = randomString();
-    public static final String SETTING_1_VALUE = randomString();
+    private final String SETTING_1_ID = randomString();
+    private final String SETTING_1_NAME = randomString();
+    private final String SETTING_1_VALUE = randomString();
 
-    private static final String SETTING_2_ID = randomString();
-    public static final String SETTING_2_NAME = randomString();
-    public static final Integer SETTING_2_VALUE = randomInt();
+    private final String SETTING_2_ID = randomString();
+    private final String SETTING_2_NAME = randomString();
+    private final Integer SETTING_2_VALUE = randomInt();
+
+    private final String SETTINGS_REPO_INTERFACE_NAME = randomString();
 
     @SuppressWarnings("rawtypes")
     private final Pair<PersistentValuesHandler, Map<String, TypeHandler>>
@@ -77,6 +79,7 @@ class SettingsRepoHandlerTests {
         when(mockSettingsRepo.getSetting(SETTING_1_ID)).thenReturn(mockSetting1);
         //noinspection unchecked
         when(mockSettingsRepo.getSetting(SETTING_2_ID)).thenReturn(mockSetting2);
+        when(mockSettingsRepo.getInterfaceName()).thenReturn(SETTINGS_REPO_INTERFACE_NAME);
 
         settingsRepoHandler =
                 new SettingsRepoHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockSettingsRepo);
@@ -85,7 +88,7 @@ class SettingsRepoHandlerTests {
     @Test
     void testGetInterface() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        SettingsRepo.class.getCanonicalName() + ">",
+                        SETTINGS_REPO_INTERFACE_NAME + ">",
                 settingsRepoHandler.getInterfaceName());
     }
 
@@ -142,7 +145,7 @@ class SettingsRepoHandlerTests {
     @Test
     void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
-                        SettingsRepo.class.getCanonicalName() + ">").hashCode(),
+                        SETTINGS_REPO_INTERFACE_NAME + ">").hashCode(),
                 settingsRepoHandler.hashCode());
     }
 
@@ -161,7 +164,7 @@ class SettingsRepoHandlerTests {
     @Test
     void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        SettingsRepo.class.getCanonicalName() + ">",
+                        SETTINGS_REPO_INTERFACE_NAME + ">",
                 settingsRepoHandler.toString());
     }
 }

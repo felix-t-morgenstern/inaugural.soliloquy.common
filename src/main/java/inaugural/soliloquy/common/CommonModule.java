@@ -1,7 +1,6 @@
 package inaugural.soliloquy.common;
 
 import com.google.inject.AbstractModule;
-import inaugural.soliloquy.common.archetypes.SettingArchetype;
 import inaugural.soliloquy.common.factories.*;
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
 import inaugural.soliloquy.common.persistence.*;
@@ -43,9 +42,7 @@ public class CommonModule extends AbstractModule {
 
         PERSISTENT_VALUES_HANDLER = new PersistentValuesHandlerImpl();
 
-        //noinspection rawtypes
-        Setting settingArchetype = new SettingArchetype();
-        SETTINGS_REPO = new SettingsRepoImpl(PERSISTENT_VALUES_HANDLER, settingArchetype);
+        SETTINGS_REPO = new SettingsRepoImpl(PERSISTENT_VALUES_HANDLER);
 
         TypeHandler<Boolean> booleanHandler = new BooleanHandler();
         TypeHandler<Coordinate> coordinateHandler = new CoordinateHandler();

@@ -11,6 +11,8 @@ import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.*;
 
+import static inaugural.soliloquy.tools.generic.Archetypes.generateSimpleArchetype;
+
 public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRepo {
     private final HashMap<Integer, SettingsRepoItem> ITEMS;
     private final String ID;
@@ -18,15 +20,13 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("rawtypes")
     private final Setting SETTING_ARCHETYPE;
 
-    @SuppressWarnings("rawtypes")
-    public SettingsRepoImpl(PersistentValuesHandler persistentValuesHandler,
-                            Setting settingArchetype) {
+    public SettingsRepoImpl(PersistentValuesHandler persistentValuesHandler) {
         ID = null;
         ITEMS = new HashMap<>();
 
         PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler,
                 "persistentValuesHandler");
-        SETTING_ARCHETYPE = Check.ifNull(settingArchetype, "settingArchetype");
+        SETTING_ARCHETYPE = generateSimpleArchetype(Setting.class);
     }
 
     @SuppressWarnings("rawtypes")
@@ -349,7 +349,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
 
         @Override
         public String getInterfaceName() {
-            // Stub method
+            // Class only used internally; method not required
             throw new UnsupportedOperationException();
         }
     }

@@ -1,6 +1,5 @@
 package inaugural.soliloquy.common.persistence;
 
-import inaugural.soliloquy.common.archetypes.SettingsRepoArchetype;
 import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 import soliloquy.specs.common.infrastructure.Setting;
@@ -10,14 +9,12 @@ import soliloquy.specs.common.persistence.TypeHandler;
 
 public class SettingsRepoHandler extends AbstractTypeHandler<SettingsRepo>
         implements TypeHandler<SettingsRepo> {
-    private final static SettingsRepo ARCHETYPE = new SettingsRepoArchetype();
-
     private final SettingsRepo SETTINGS_REPO;
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
 
     public SettingsRepoHandler(PersistentValuesHandler persistentValuesHandler,
                                SettingsRepo settingsRepo) {
-        super(ARCHETYPE);
+        super(settingsRepo);
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         SETTINGS_REPO = settingsRepo;
     }
