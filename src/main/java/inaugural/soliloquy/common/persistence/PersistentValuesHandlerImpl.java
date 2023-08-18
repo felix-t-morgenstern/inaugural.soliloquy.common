@@ -7,24 +7,25 @@ import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.persistence.TypeWithOneGenericParamHandler;
 import soliloquy.specs.common.persistence.TypeWithTwoGenericParamsHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
+import static inaugural.soliloquy.tools.collections.Collections.mapOf;
 
 public class PersistentValuesHandlerImpl extends CanGetInterfaceName
         implements PersistentValuesHandler {
     @SuppressWarnings("rawtypes")
-    private final HashMap<String, TypeHandler> TYPE_HANDLERS;
+    private final Map<String, TypeHandler> TYPE_HANDLERS;
 
     public PersistentValuesHandlerImpl() {
-        TYPE_HANDLERS = new HashMap<>();
+        TYPE_HANDLERS = mapOf();
     }
 
     @Override
     public void addTypeHandler(TypeHandler typeHandler) throws IllegalArgumentException {
-        String typeHandlerInterfaceName =
-                Check.ifNull(typeHandler, "typeHandler").getInterfaceName();
-        String typeHandled = typeHandlerInterfaceName.substring(
+        var typeHandlerInterfaceName = Check.ifNull(typeHandler, "typeHandler").getInterfaceName();
+        var typeHandled = typeHandlerInterfaceName.substring(
                 typeHandlerInterfaceName.indexOf("<") + 1,
                 typeHandlerInterfaceName.length() - 1);
 
@@ -44,7 +45,7 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
     @Override
     public <T> TypeHandler<T> getTypeHandler(String type) throws IllegalArgumentException {
         Check.ifNullOrEmpty(type, "type");
-        int caretIndex = type.indexOf("<");
+        var caretIndex = type.indexOf("<");
         if (caretIndex > 0) {
             type = type.substring(0, caretIndex);
         }
@@ -60,50 +61,47 @@ public class PersistentValuesHandlerImpl extends CanGetInterfaceName
     @Override
     public <TArchetype> TArchetype generateArchetype(String type) throws IllegalArgumentException {
         Check.ifNullOrEmpty(type, "type");
-        // TODO: Implement!
 
         if (type.contains("<")) {
-            int openingCaretIndex = type.indexOf("<");
-            int endingIndex = type.indexOf(">");
+            var openingCaretIndex = type.indexOf("<");
+            var endingIndex = type.indexOf(">");
             if (endingIndex < 0) {
                 throw new IllegalArgumentException(
                         "PersistentValuesHandlerImpl.generateArchetype: type (\"" + type +
                                 "\") has opening caret with no closing caret");
             }
-            String outerType = type.substring(0, openingCaretIndex);
+            var outerType = type.substring(0, openingCaretIndex);
             if (type.contains(",")) {
-                int commaIndex = type.indexOf(",");
-                String innerType1 = type.substring(openingCaretIndex + 1, commaIndex);
-                String innerType2 = type.substring(commaIndex + 1, type.length() - 1);
+                var commaIndex = type.indexOf(",");
+                var innerType1 = type.substring(openingCaretIndex + 1, commaIndex);
+                var innerType2 = type.substring(commaIndex + 1, type.length() - 1);
                 //noinspection rawtypes
-                TypeWithTwoGenericParamsHandler typeHandler =
-                        (TypeWithTwoGenericParamsHandler) getTypeHandler(outerType);
+                var handler = (TypeWithTwoGenericParamsHandler) getTypeHandler(outerType);
                 //noinspection unchecked
-                return (TArchetype) typeHandler.generateArchetype(innerType1, innerType2);
+                return (TArchetype) handler.generateArchetype(innerType1, innerType2);
             }
             else {
-                String innerType = type.substring(openingCaretIndex + 1, type.length() - 1);
+                var innerType = type.substring(openingCaretIndex + 1, type.length() - 1);
                 //noinspection rawtypes
-                TypeWithOneGenericParamHandler typeHandler =
-                        (TypeWithOneGenericParamHandler) getTypeHandler(outerType);
+                var handler = (TypeWithOneGenericParamHandler) getTypeHandler(outerType);
                 //noinspection unchecked
-                return (TArchetype) typeHandler.generateArchetype(innerType);
+                return (TArchetype) handler.generateArchetype(innerType);
             }
         }
         else {
-            TypeHandler<TArchetype> typeHandler = getTypeHandler(type);
-            if (typeHandler instanceof TypeWithOneGenericParamHandler) {
+            TypeHandler<TArchetype> handler = getTypeHandler(type);
+            if (handler instanceof TypeWithOneGenericParamHandler) {
                 throw new IllegalArgumentException(
                         "PersistentValuesHandlerImpl.generateArchetype: type (\"" + type +
                                 "\") has one generic parameter which has not been specified");
             }
-            return typeHandler.getArchetype();
+            return handler.archetype();
         }
     }
 
     @Override
     public List<String> typesHandled() {
-        return new ArrayList<>(TYPE_HANDLERS.keySet());
+        return listOf(TYPE_HANDLERS.keySet());
     }
 
     @Override

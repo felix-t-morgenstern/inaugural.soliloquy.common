@@ -3,21 +3,21 @@ package inaugural.soliloquy.common.infrastructure;
 import inaugural.soliloquy.tools.Check;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
+import static inaugural.soliloquy.tools.collections.Collections.mapOf;
+
 public class VariableCacheImpl implements VariableCache {
-    private final HashMap<String, Object> PERSISTENT_VARIABLES;
+    private final Map<String, Object> PERSISTENT_VARIABLES;
 
     public VariableCacheImpl() {
-        PERSISTENT_VARIABLES = new HashMap<>();
+        PERSISTENT_VARIABLES = mapOf();
     }
 
-    @SuppressWarnings("unchecked")
-    private VariableCacheImpl(HashMap<String, Object> persistentVariables) {
-        PERSISTENT_VARIABLES = (HashMap<String, Object>) persistentVariables.clone();
+    private VariableCacheImpl(Map<String, Object> persistentVariables) {
+        PERSISTENT_VARIABLES = mapOf(persistentVariables);
     }
 
     @Override
@@ -43,12 +43,12 @@ public class VariableCacheImpl implements VariableCache {
 
     @Override
     public Map<String, Object> variablesRepresentation() {
-        return new HashMap<>(PERSISTENT_VARIABLES);
+        return mapOf(PERSISTENT_VARIABLES);
     }
 
     @Override
     public List<String> namesRepresentation() {
-        return new ArrayList<>(PERSISTENT_VARIABLES.keySet());
+        return listOf(PERSISTENT_VARIABLES.keySet());
     }
 
     @Override

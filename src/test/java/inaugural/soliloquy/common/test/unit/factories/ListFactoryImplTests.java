@@ -1,82 +1,87 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.ListFactoryImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
+import static inaugural.soliloquy.tools.random.Random.randomString;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ListFactoryImplTests {
-    private ListFactoryImpl _listFactory;
+public class ListFactoryImplTests {
+    private ListFactory factory;
 
-    @BeforeEach
-    void setUp() {
-        _listFactory = new ListFactoryImpl();
+    @Before
+    public void setUp() {
+        factory = new ListFactoryImpl();
     }
 
     @Test
-    void testMake() {
-        List<String> collection = _listFactory.make("Hello");
-        assertNotNull(collection);
-        assertNotNull(collection.getArchetype());
+    public void testMake() {
+        var archetype = randomString();
+        var value = randomString();
 
-        collection.add("Hello");
-        assertTrue(collection.contains("Hello"));
-        assertEquals("Hello", collection.getArchetype());
+        var list = factory.make(archetype);
+        list.add(value);
+
+        assertNotNull(list);
+        assertTrue(list.contains(value));
+        assertNotNull(list.archetype());
+        assertEquals(archetype, list.archetype());
     }
 
     @Test
-    void testMakeWithNullArchetype() {
-        assertThrows(IllegalArgumentException.class, () -> _listFactory.make(null));
+    public void testMakeWithNullArchetype() {
+        assertThrows(IllegalArgumentException.class, () -> factory.make(null));
     }
 
     @Test
-    void testMakeFromArray() {
-        String string1 = "STRING1";
-        String string2 = "STRING2";
-        String string3 = "STRING3";
-        List<String> collection = _listFactory.make(new String[]{string1, string2, string3}, "");
+    public void testMakeFromArray() {
+        var string1 = randomString();
+        var string2 = randomString();
+        var string3 = randomString();
+        var list = factory.make(arrayOf(string1, string2, string3), "");
 
-        assertEquals(3, collection.size());
-        assertSame(collection.get(0), string1);
-        assertSame(collection.get(1), string2);
-        assertSame(collection.get(2), string3);
-        assertNotNull(collection.getArchetype());
+        assertEquals(3, list.size());
+        assertSame(list.get(0), string1);
+        assertSame(list.get(1), string2);
+        assertSame(list.get(2), string3);
+        assertNotNull(list.archetype());
     }
 
     @Test
-    void testArchetypeWithNullArchetype() {
+    public void testArchetypeWithNullArchetype() {
         //noinspection unchecked
         List<String> archetype = mock(List.class);
-        when(archetype.getArchetype()).thenReturn(null);
+        when(archetype.archetype()).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> _listFactory.make(archetype));
+        assertThrows(IllegalArgumentException.class, () -> factory.make(archetype));
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals(ListFactoryImpl.class.getCanonicalName().hashCode(),
-                _listFactory.hashCode());
+                factory.hashCode());
     }
 
     @SuppressWarnings({"SimplifiableJUnitAssertion", "ConstantConditions"})
     @Test
-    void testEquals() {
-        ListFactory equalCollectionFactory = new ListFactoryImpl();
-        ListFactory unequalCollectionFactory = mock(ListFactory.class);
+    public void testEquals() {
+        var equalFactory = new ListFactoryImpl();
+        var unequalFactory = mock(ListFactory.class);
 
-        assertTrue(_listFactory.equals(equalCollectionFactory));
-        assertFalse(_listFactory.equals(unequalCollectionFactory));
-        assertFalse(_listFactory.equals(null));
+        assertTrue(factory.equals(equalFactory));
+        assertFalse(factory.equals(unequalFactory));
+        assertFalse(factory.equals(null));
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(ListFactoryImpl.class.getCanonicalName(),
-                _listFactory.toString());
+                factory.toString());
     }
 }

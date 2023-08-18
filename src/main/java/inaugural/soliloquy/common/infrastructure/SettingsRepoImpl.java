@@ -9,12 +9,20 @@ import soliloquy.specs.common.shared.EntityGroup;
 import soliloquy.specs.common.shared.EntityGroupItem;
 import soliloquy.specs.common.valueobjects.Pair;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
+import static inaugural.soliloquy.tools.collections.Collections.mapOf;
 import static inaugural.soliloquy.tools.generic.Archetypes.generateSimpleArchetype;
+import static inaugural.soliloquy.tools.valueobjects.Pair.pairOf;
 
 public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRepo {
-    private final HashMap<Integer, SettingsRepoItem> ITEMS;
+    private final String ITEM_ID = "itemId";
+    
+    private final Map<Integer, SettingsRepoItem> ITEMS;
     private final String ID;
     private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
     @SuppressWarnings("rawtypes")
@@ -22,7 +30,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
 
     public SettingsRepoImpl(PersistentValuesHandler persistentValuesHandler) {
         ID = null;
-        ITEMS = new HashMap<>();
+        ITEMS = mapOf();
 
         PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler,
                 "persistentValuesHandler");
@@ -34,7 +42,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
                              PersistentValuesHandler persistentValuesHandler,
                              Setting settingArchetype) {
         ID = Check.ifNullOrEmpty(id, "id");
-        ITEMS = new HashMap<>();
+        ITEMS = mapOf();
 
         PERSISTENT_VALUES_HANDLER = persistentValuesHandler;
         SETTING_ARCHETYPE = settingArchetype;
@@ -48,11 +56,11 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("rawtypes")
     @Override
     public List<EntityGroupItem<Setting>> getAllGroupedRepresentation() {
-        ArrayList<EntityGroupItem<Setting>> allGrouped = new ArrayList<>();
+        List<EntityGroupItem<Setting>> allGrouped = listOf();
         Set<Integer> keysSet = ITEMS.keySet();
-        int[] keysArray = new int[keysSet.size()];
-        int cursor = 0;
-        for (Integer key : keysSet) {
+        var keysArray = new int[keysSet.size()];
+        var cursor = 0;
+        for (var key : keysSet) {
             keysArray[cursor++] = key;
         }
         Arrays.sort(keysArray);
@@ -65,7 +73,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("rawtypes")
     @Override
     public List<Setting> getAllUngroupedRepresentation() {
-        ArrayList<Setting> allSettingsUngrouped = new ArrayList<>();
+        List<Setting> allSettingsUngrouped = listOf();
         addSettingsRecursively(allSettingsUngrouped);
         return allSettingsUngrouped;
     }
@@ -73,7 +81,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("rawtypes")
     @Override
     public EntityGroupItem<Setting> getItemByOrder(int order) throws IllegalArgumentException {
-        EntityGroupItem<Setting> item = ITEMS.get(order);
+        var item = ITEMS.get(order);
         if (item == null) {
             throw new IllegalArgumentException(
                     "SettingsRepo.getItemByOrder: No item found at this order");
@@ -85,26 +93,20 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("unchecked")
     @Override
     public <V> Setting<V> getSetting(String settingId) throws IllegalArgumentException {
-        if (settingId == null) {
-            throw new IllegalArgumentException("SettingsRepo.getSetting: settingId cannot be null");
-        }
-        if (settingId.equals("")) {
-            throw new IllegalArgumentException(
-                    "SettingsRepo.getSetting: settingId cannot be blank");
-        }
+        Check.ifNullOrEmpty(settingId, "settingId");
         return getSettingRecursively(settingId);
     }
 
     @Override
     public SettingsRepo getSubgrouping(String groupId) {
-        for (SettingsRepoItem settingsRepoItem : ITEMS.values()) {
+        for (var settingsRepoItem : ITEMS.values()) {
             if (settingsRepoItem.isGroup()) {
-                SettingsRepoImpl settingsRepo = (SettingsRepoImpl) settingsRepoItem.group();
+                var settingsRepo = (SettingsRepoImpl) settingsRepoItem.group();
                 if (settingsRepo.id().equals(groupId)) {
                     return settingsRepo;
                 }
                 else {
-                    SettingsRepo childrenResult = settingsRepo.getSubgrouping(groupId);
+                    var childrenResult = settingsRepo.getSubgrouping(groupId);
                     if (childrenResult != null) {
                         return childrenResult;
                     }
@@ -131,7 +133,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
             throw new IllegalArgumentException("SettingsRepo.addEntity: Setting with Id of "
                     + setting.id() + " already present in SettingsRepo");
         }
-        SettingsRepoImpl targetedGrouping = this;
+        var targetedGrouping = this;
         if (groupId != null && !groupId.equals("")) {
             targetedGrouping = (SettingsRepoImpl) getSubgrouping(groupId);
             if (targetedGrouping == null) {
@@ -140,7 +142,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
             }
         }
         if (targetedGrouping.ITEMS.get(order) != null) {
-            String group = "top-level grouping";
+            var group = "top-level grouping";
             if (groupId == null || groupId.equals("")) {
                 group = "group " + groupId;
             }
@@ -171,14 +173,14 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
 
     @Override
     public boolean removeItem(String itemId) throws IllegalArgumentException {
-        return removeItemRecursively(Check.ifNullOrEmpty(itemId, "itemId"));
+        return removeItemRecursively(Check.ifNullOrEmpty(itemId, ITEM_ID));
     }
 
     @Override
     public Pair<String, Integer> getGroupingIdAndOrder(String itemId)
             throws IllegalArgumentException {
-        Pair<String, Integer> groupingIdAndOrderNumber =
-                getGroupingIdRecursively(Check.ifNullOrEmpty(itemId, "itemId"), true);
+        var groupingIdAndOrderNumber =
+                getGroupingIdRecursively(Check.ifNullOrEmpty(itemId, ITEM_ID), true);
         if (groupingIdAndOrderNumber == null) {
             throw new IllegalArgumentException("SettingsRepo.getGroupingId: No item with itemId " +
                     "of " + itemId + " found");
@@ -194,7 +196,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     @SuppressWarnings("rawtypes")
     @Override
     public int hashCode() {
-        java.util.Map<String, Setting> settingsById = new HashMap<>();
+        java.util.Map<String, Setting> settingsById = mapOf();
         getAllUngroupedRepresentation().forEach(s -> settingsById.put(s.id(), s));
         return settingsById.hashCode();
     }
@@ -219,15 +221,15 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
 
     @SuppressWarnings("rawtypes")
     private Setting getSettingRecursively(String settingId) {
-        for (SettingsRepoItem settingsRepoItem : ITEMS.values()) {
+        for (var settingsRepoItem : ITEMS.values()) {
             if (!settingsRepoItem.isGroup()) {
                 if (settingsRepoItem.entity().id().equals(settingId)) {
                     return settingsRepoItem.entity();
                 }
             }
             else {
-                SettingsRepoImpl settingsRepo = (SettingsRepoImpl) settingsRepoItem.group();
-                Setting setting = settingsRepo.getSettingRecursively(settingId);
+                var settingsRepo = (SettingsRepoImpl) settingsRepoItem.group();
+                var setting = settingsRepo.getSettingRecursively(settingId);
                 if (setting != null) {
                     return setting;
                 }
@@ -238,7 +240,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
 
     @SuppressWarnings("rawtypes")
     private void addSettingsRecursively(List<Setting> allSettingsUngrouped) {
-        for (SettingsRepoItem settingsRepoItem : ITEMS.values()) {
+        for (var settingsRepoItem : ITEMS.values()) {
             if (!settingsRepoItem.isGroup()) {
                 allSettingsUngrouped.add(settingsRepoItem.entity());
             }
@@ -249,10 +251,9 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         }
     }
 
-    @SuppressWarnings("rawtypes")
     private boolean removeItemRecursively(String settingId) {
-        for (Integer order : ITEMS.keySet()) {
-            EntityGroupItem<Setting> item = ITEMS.get(order);
+        for (var order : ITEMS.keySet()) {
+            var item = ITEMS.get(order);
             if (!item.isGroup()) {
                 if (item.entity().id().equals(settingId)) {
                     ITEMS.remove(order);
@@ -269,16 +270,17 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
     }
 
     private Pair<String, Integer> getGroupingIdRecursively(String itemId, boolean isTopLevel) {
-        for (Integer order : ITEMS.keySet()) {
-            SettingsRepoItem settingsRepoItem = ITEMS.get(order);
+        for (var order : ITEMS.keySet()) {
+            var settingsRepoItem = ITEMS.get(order);
+            var id = isTopLevel ? "" : ID;
             if (!settingsRepoItem.isGroup()) {
                 if (settingsRepoItem.entity().id().equals(itemId)) {
-                    return new Pair<>(isTopLevel ? "" : ID, order);
+                    return pairOf(id, order);
                 }
             }
             else {
                 if (((SettingsRepoImpl) settingsRepoItem.group()).ID.equals(itemId)) {
-                    return new Pair<>(isTopLevel ? "" : ID, order);
+                    return pairOf(id, order);
                 }
                 Pair<String, Integer> groupingIdFromRecursiveSearch =
                         ((SettingsRepoImpl) settingsRepoItem.group())
@@ -342,7 +344,7 @@ public class SettingsRepoImpl extends CanGetInterfaceName implements SettingsRep
         }
 
         @Override
-        public Setting getArchetype() {
+        public Setting archetype() {
             // Class only used internally; method not required
             throw new UnsupportedOperationException();
         }

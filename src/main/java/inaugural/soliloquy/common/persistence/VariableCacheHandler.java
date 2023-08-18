@@ -26,48 +26,43 @@ public class VariableCacheHandler
     }
 
     @Override
-    public VariableCache getArchetype() {
+    public VariableCache archetype() {
         return ARCHETYPE;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public VariableCache read(String serializedValue) throws IllegalArgumentException {
         Check.ifNullOrEmpty(serializedValue, "serializedValue");
-        VariableCache VariableCache =
-                PERSISTENT_VARIABLE_CACHE_FACTORY.make();
-        PersistentVariableDTO[] dto = JSON.fromJson(serializedValue,
-                PersistentVariableDTO[].class);
-        for (PersistentVariableDTO pVarDTO : dto) {
-            TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(pVarDTO.typeName);
-            VariableCache.setVariable(pVarDTO.name,
-                    handler.read(pVarDTO.serializedValue));
+        var VariableCache = PERSISTENT_VARIABLE_CACHE_FACTORY.make();
+        var dto = JSON.fromJson(serializedValue, DTO[].class);
+        for (var pVarDTO : dto) {
+            var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(pVarDTO.type);
+            VariableCache.setVariable(pVarDTO.name, handler.read(pVarDTO.value));
         }
         return VariableCache;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public String write(VariableCache variableCache) {
         Check.ifNull(variableCache, "variableCache");
-        List<String> pVarNames = variableCache.namesRepresentation();
-        PersistentVariableDTO[] dto = new PersistentVariableDTO[pVarNames.size()];
-        for (int i = 0; i < pVarNames.size(); i++) {
-            String pVarName = pVarNames.get(i);
-            PersistentVariableDTO pVarDTO = new PersistentVariableDTO();
+        var pVarNames = variableCache.namesRepresentation();
+        var dto = new DTO[pVarNames.size()];
+        for (var i = 0; i < pVarNames.size(); i++) {
+            var pVarName = pVarNames.get(i);
+            var pVarDTO = new DTO();
             pVarDTO.name = pVarName;
-            Object pVarValue = variableCache.getVariable(pVarName);
-            pVarDTO.typeName = getProperTypeName(pVarValue);
-            TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(pVarDTO.typeName);
-            pVarDTO.serializedValue = handler.write(pVarValue);
+            var pVarValue = variableCache.getVariable(pVarName);
+            pVarDTO.type = getProperTypeName(pVarValue);
+            var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(pVarDTO.type);
+            pVarDTO.value = handler.write(pVarValue);
             dto[i] = pVarDTO;
         }
         return JSON.toJson(dto);
     }
 
-    private static class PersistentVariableDTO {
+    private static class DTO {
         String name;
-        String typeName;
-        String serializedValue;
+        String type;
+        String value;
     }
 }

@@ -1,58 +1,59 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.VariableCacheHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import soliloquy.specs.common.factories.VariableCacheFactory;
 import soliloquy.specs.common.infrastructure.VariableCache;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.valueobjects.Pair;
 
-import java.util.ArrayList;
 import java.util.Map;
 
+import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
 import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-class VariableCacheHandlerTests {
+@RunWith(MockitoJUnitRunner.class)
+public class VariableCacheHandlerTests {
     private final String VARIABLE_1_NAME = randomString();
     private final Integer VARIABLE_1_VALUE = randomInt();
     private final String VARIABLE_2_NAME = randomString();
     private final String VARIABLE_2_VALUE = randomString();
     private final String VALUES_STRING = String.format(
-            "[{\"name\":\"%s\",\"typeName\":\"java.lang.Integer\",\"serializedValue\":\"%d\"}," +
-                    "{\"name\":\"%s\",\"typeName\":\"java.lang.String\"," +
-                    "\"serializedValue\":\"%s\"}]",
+            "[{\"name\":\"%s\",\"type\":\"java.lang.Integer\",\"value\":\"%d\"},{\"name\":\"%s\"," +
+                    "\"type\":\"java.lang.String\",\"value\":\"%s\"}]",
             VARIABLE_1_NAME, VARIABLE_1_VALUE, VARIABLE_2_NAME, VARIABLE_2_VALUE);
 
     @SuppressWarnings("rawtypes")
     private final Pair<PersistentValuesHandler, Map<String, TypeHandler>>
             MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS =
             generateMockPersistentValuesHandlerWithSimpleHandlers(
-                    new Integer[]{VARIABLE_1_VALUE},
-                    new String[]{VARIABLE_2_VALUE});
+                    arrayOf(VARIABLE_1_VALUE),
+                    arrayOf(VARIABLE_2_VALUE));
     private final PersistentValuesHandler MOCK_PERSISTENT_VALUES_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem1();
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item1();
     @SuppressWarnings("rawtypes") private final TypeHandler MOCK_STRING_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem2()
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
                     .get(String.class.getCanonicalName());
     @SuppressWarnings("rawtypes") private final TypeHandler MOCK_INTEGER_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem2()
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
                     .get(Integer.class.getCanonicalName());
     @Mock private VariableCache mockVariableCache;
     @Mock private VariableCacheFactory mockVariableCacheFactory;
 
     private TypeHandler<VariableCache> variableCacheHandler;
 
-    @BeforeEach
-    void setUp() {
-        mockVariableCache = mock(VariableCache.class);
-        mockVariableCacheFactory = mock(VariableCacheFactory.class);
+    @Before
+    public void setUp() {
         when(mockVariableCacheFactory.make()).thenReturn(mockVariableCache);
 
         variableCacheHandler = new VariableCacheHandler(
@@ -61,7 +62,7 @@ class VariableCacheHandlerTests {
     }
 
     @Test
-    void testConstructorWithInvalidParams() {
+    public void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> new VariableCacheHandler(null, mockVariableCacheFactory));
         assertThrows(IllegalArgumentException.class,
@@ -69,23 +70,21 @@ class VariableCacheHandlerTests {
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         VariableCache.class.getCanonicalName() + ">",
                 variableCacheHandler.getInterfaceName());
     }
 
     @Test
-    void testWrite() {
-        VariableCache variableCache = mock(VariableCache.class);
-        when(variableCache.namesRepresentation()).thenReturn(new ArrayList<>() {{
-            add(VARIABLE_1_NAME);
-            add(VARIABLE_2_NAME);
-        }});
+    public void testWrite() {
+        var variableCache = mock(VariableCache.class);
+        when(variableCache.namesRepresentation()).thenReturn(
+                listOf(VARIABLE_1_NAME, VARIABLE_2_NAME));
         when(variableCache.getVariable(VARIABLE_1_NAME)).thenReturn(VARIABLE_1_VALUE);
         when(variableCache.getVariable(VARIABLE_2_NAME)).thenReturn(VARIABLE_2_VALUE);
 
-        String output = variableCacheHandler.write(variableCache);
+        var output = variableCacheHandler.write(variableCache);
 
         assertEquals(VALUES_STRING, output);
         verify(variableCache, times(1)).namesRepresentation();
@@ -102,14 +101,14 @@ class VariableCacheHandlerTests {
     }
 
     @Test
-    void testWriteWithInvalidParams() {
+    public void testWriteWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> variableCacheHandler.write(null));
     }
 
     @Test
-    void testRead() {
-        VariableCache readValue = variableCacheHandler.read(VALUES_STRING);
+    public void testRead() {
+        var readValue = variableCacheHandler.read(VALUES_STRING);
 
         assertNotNull(readValue);
         assertSame(mockVariableCache, readValue);
@@ -125,16 +124,15 @@ class VariableCacheHandlerTests {
     }
 
     @Test
-    void testReadEmptyCache() {
-        VariableCache pVarCache =
-                variableCacheHandler.read("[]");
+    public void testReadEmptyCache() {
+        var pVarCache = variableCacheHandler.read("[]");
 
         assertNotNull(pVarCache);
         assertEquals(0, pVarCache.size());
     }
 
     @Test
-    void testReadWithInvalidParams() {
+    public void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> variableCacheHandler.read(null));
         assertThrows(IllegalArgumentException.class,
@@ -142,16 +140,16 @@ class VariableCacheHandlerTests {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         VariableCache.class.getCanonicalName() + ">").hashCode(),
                 variableCacheHandler.hashCode());
     }
 
     @Test
-    void testEquals() {
-        TypeHandler<VariableCache> equalHandler = new VariableCacheHandler(
-                MOCK_PERSISTENT_VALUES_HANDLER, mockVariableCacheFactory);
+    public void testEquals() {
+        var equalHandler =
+                new VariableCacheHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockVariableCacheFactory);
         //noinspection unchecked
         TypeHandler<VariableCache> unequalHandler = mock(TypeHandler.class);
 
@@ -161,7 +159,7 @@ class VariableCacheHandlerTests {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         VariableCache.class.getCanonicalName() + ">",
                 variableCacheHandler.toString());

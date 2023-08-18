@@ -46,12 +46,12 @@ public class MapImpl<K, V> extends HashMap<K, V> implements Map<K, V> {
     }
 
     @Override
-    public K getFirstArchetype() throws IllegalStateException {
+    public K firstArchetype() throws IllegalStateException {
         return KEY_ARCHETYPE;
     }
 
     @Override
-    public V getSecondArchetype() throws IllegalStateException {
+    public V secondArchetype() throws IllegalStateException {
         return VALUE_ARCHETYPE;
     }
 

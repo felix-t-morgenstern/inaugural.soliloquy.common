@@ -9,8 +9,5 @@
         <module name="inaugural.soliloquy.common" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="inaugural.soliloquy.common" target="9" />
-    </bytecodeTargetLevel>
   </component>
 </project>

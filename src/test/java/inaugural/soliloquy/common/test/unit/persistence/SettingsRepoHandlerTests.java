@@ -1,25 +1,29 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.SettingsRepoHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.valueobjects.Pair;
 
-import java.util.ArrayList;
 import java.util.Map;
 
+import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
 import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-class SettingsRepoHandlerTests {
+@RunWith(MockitoJUnitRunner.class)
+public class SettingsRepoHandlerTests {
     private final String SETTING_1_ID = randomString();
     private final String SETTING_1_NAME = randomString();
     private final String SETTING_1_VALUE = randomString();
@@ -34,15 +38,15 @@ class SettingsRepoHandlerTests {
     private final Pair<PersistentValuesHandler, Map<String, TypeHandler>>
             MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS =
             generateMockPersistentValuesHandlerWithSimpleHandlers(
-                    new String[]{SETTING_1_VALUE},
-                    new Integer[]{SETTING_2_VALUE});
+                    arrayOf(SETTING_1_VALUE),
+                    arrayOf(SETTING_2_VALUE));
     private final PersistentValuesHandler MOCK_PERSISTENT_VALUES_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem1();
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item1();
     @SuppressWarnings("rawtypes") private final TypeHandler MOCK_STRING_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem2()
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
                     .get(String.class.getCanonicalName());
     @SuppressWarnings("rawtypes") private final TypeHandler MOCK_INTEGER_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem2()
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
                     .get(Integer.class.getCanonicalName());
 
     @SuppressWarnings("rawtypes") @Mock private Setting mockSetting1;
@@ -50,31 +54,24 @@ class SettingsRepoHandlerTests {
     @Mock private SettingsRepo mockSettingsRepo;
 
     private final String VALUES_STRING = String.format(
-            "[{\"id\":\"%s\",\"serializedValue\":\"%s\"},{\"id\":\"%s\"," +
-                    "\"serializedValue\":\"%d\"}]",
+            "[{\"id\":\"%s\",\"value\":\"%s\"},{\"id\":\"%s\",\"value\":\"%d\"}]",
             SETTING_1_ID, SETTING_1_VALUE, SETTING_2_ID, SETTING_2_VALUE);
 
     private TypeHandler<SettingsRepo> settingsRepoHandler;
 
-    @BeforeEach
-    void setUp() {
-        mockSetting1 = mock(Setting.class);
+    @Before
+    public void setUp() {
         when(mockSetting1.id()).thenReturn(SETTING_1_ID);
-        when(mockSetting1.getName()).thenReturn(SETTING_1_NAME);
         when(mockSetting1.getValue()).thenReturn(SETTING_1_VALUE);
-        when(mockSetting1.getArchetype()).thenReturn(randomString());
+        when(mockSetting1.archetype()).thenReturn(randomString());
 
-        mockSetting2 = mock(Setting.class);
         when(mockSetting2.id()).thenReturn(SETTING_2_ID);
-        when(mockSetting2.getName()).thenReturn(SETTING_2_NAME);
         when(mockSetting2.getValue()).thenReturn(SETTING_2_VALUE);
-        when(mockSetting2.getArchetype()).thenReturn(randomInt());
+        when(mockSetting2.archetype()).thenReturn(randomInt());
 
         mockSettingsRepo = mock(SettingsRepo.class);
-        when(mockSettingsRepo.getAllUngroupedRepresentation()).thenReturn(new ArrayList<>() {{
-            add(mockSetting1);
-            add(mockSetting2);
-        }});
+        when(mockSettingsRepo.getAllUngroupedRepresentation()).thenReturn(
+                listOf(mockSetting1, mockSetting2));
         //noinspection unchecked
         when(mockSettingsRepo.getSetting(SETTING_1_ID)).thenReturn(mockSetting1);
         //noinspection unchecked
@@ -86,15 +83,15 @@ class SettingsRepoHandlerTests {
     }
 
     @Test
-    void testGetInterface() {
+    public void testGetInterface() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         SETTINGS_REPO_INTERFACE_NAME + ">",
                 settingsRepoHandler.getInterfaceName());
     }
 
     @Test
-    void testWrite() {
-        String output = settingsRepoHandler.write(mockSettingsRepo);
+    public void testWrite() {
+        var output = settingsRepoHandler.write(mockSettingsRepo);
 
         assertEquals(VALUES_STRING, output);
         verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
@@ -108,14 +105,14 @@ class SettingsRepoHandlerTests {
     }
 
     @Test
-    void testWriteWithInvalidParameters() {
+    public void testWriteWithInvalidParameters() {
         assertThrows(IllegalArgumentException.class,
                 () -> settingsRepoHandler.write(null));
     }
 
     @Test
-    void testRead() {
-        SettingsRepo settingsRepo = settingsRepoHandler.read(VALUES_STRING);
+    public void testRead() {
+        var settingsRepo = settingsRepoHandler.read(VALUES_STRING);
 
         assertSame(mockSettingsRepo, settingsRepo);
         verify(MOCK_STRING_HANDLER, times(1)).read(SETTING_1_VALUE);
@@ -127,7 +124,7 @@ class SettingsRepoHandlerTests {
     }
 
     @Test
-    void testReadForNonexistentSetting() {
+    public void testReadForNonexistentSetting() {
         assertThrows(IllegalArgumentException.class,
                 () -> settingsRepoHandler.read(
                         "[{\"id\":\"InvalidName\",\"valueString\":\"setting1Value\"}," +
@@ -135,7 +132,7 @@ class SettingsRepoHandlerTests {
     }
 
     @Test
-    void testReadWithInvalidParams() {
+    public void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> settingsRepoHandler.read(null));
         assertThrows(IllegalArgumentException.class,
@@ -143,15 +140,15 @@ class SettingsRepoHandlerTests {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         SETTINGS_REPO_INTERFACE_NAME + ">").hashCode(),
                 settingsRepoHandler.hashCode());
     }
 
     @Test
-    void testEquals() {
-        TypeHandler<SettingsRepo> equalHandler =
+    public void testEquals() {
+        var equalHandler =
                 new SettingsRepoHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockSettingsRepo);
         //noinspection unchecked
         TypeHandler<SettingsRepo> unequalHandler = mock(TypeHandler.class);
@@ -162,7 +159,7 @@ class SettingsRepoHandlerTests {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         SETTINGS_REPO_INTERFACE_NAME + ">",
                 settingsRepoHandler.toString());

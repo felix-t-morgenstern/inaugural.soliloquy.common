@@ -1,52 +1,54 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.VariableCacheFactoryImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import inaugural.soliloquy.common.infrastructure.VariableCacheImpl;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-class VariableCacheFactoryImplTests {
+public class VariableCacheFactoryImplTests {
 
-    private VariableCacheFactory _variableCacheFactory;
+    private VariableCacheFactory factory;
 
-    @BeforeEach
-    void setUp() {
-        _variableCacheFactory = new VariableCacheFactoryImpl();
+    @Before
+    public void setUp() {
+        factory = new VariableCacheFactoryImpl();
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(VariableCacheFactory.class.getCanonicalName(),
-                _variableCacheFactory.getInterfaceName());
+                factory.getInterfaceName());
     }
 
     @Test
-    void testMake() {
-        assertNotNull(_variableCacheFactory.make());
+    public void testMake() {
+        var output = factory.make();
+
+        assertNotNull(output);
+        assertTrue(output instanceof VariableCacheImpl);
     }
 
     @Test
-    void testHashCode() {
-        assertEquals(VariableCacheFactoryImpl.class.getCanonicalName().hashCode(),
-                _variableCacheFactory.hashCode());
+    public void testHashCode() {
+        assertEquals(VariableCacheFactoryImpl.class.getCanonicalName().hashCode(), factory.hashCode());
     }
 
     @Test
-    void testEquals() {
+    public void testEquals() {
         VariableCacheFactory equalVariableCacheFactory = new VariableCacheFactoryImpl();
         VariableCacheFactory unequalVariableCacheFactory = mock(VariableCacheFactory.class);
 
-        assertEquals(_variableCacheFactory, equalVariableCacheFactory);
-        assertNotEquals(_variableCacheFactory, unequalVariableCacheFactory);
-        assertNotEquals(null, _variableCacheFactory);
+        assertEquals(factory, equalVariableCacheFactory);
+        assertNotEquals(factory, unequalVariableCacheFactory);
+        assertNotEquals(null, factory);
     }
 
     @Test
-    void testToString() {
-        assertEquals(VariableCacheFactoryImpl.class.getCanonicalName(),
-                _variableCacheFactory.toString());
+    public void testToString() {
+        assertEquals(VariableCacheFactoryImpl.class.getCanonicalName(), factory.toString());
     }
 }

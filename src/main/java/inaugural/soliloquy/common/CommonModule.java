@@ -5,13 +5,8 @@ import inaugural.soliloquy.common.factories.*;
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
 import inaugural.soliloquy.common.persistence.*;
 import soliloquy.specs.common.factories.*;
-import soliloquy.specs.common.infrastructure.*;
+import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
-import soliloquy.specs.common.persistence.TypeHandler;
-import soliloquy.specs.common.valueobjects.Coordinate;
-import soliloquy.specs.common.valueobjects.Pair;
-
-import java.util.UUID;
 
 public class CommonModule extends AbstractModule {
     private final ListFactory LIST_FACTORY;
@@ -44,27 +39,23 @@ public class CommonModule extends AbstractModule {
 
         SETTINGS_REPO = new SettingsRepoImpl(PERSISTENT_VALUES_HANDLER);
 
-        TypeHandler<Boolean> booleanHandler = new BooleanHandler();
-        TypeHandler<Coordinate> coordinateHandler = new CoordinateHandler();
-        TypeHandler<UUID> uuidHandler = new UuidHandler();
-        TypeHandler<Integer> integerHandler = new IntegerHandler();
-        TypeHandler<VariableCache> variableCacheHandler = new VariableCacheHandler(
-                PERSISTENT_VALUES_HANDLER, VARIABLE_CACHE_FACTORY);
-        TypeHandler<SettingsRepo> settingsRepoHandler = new SettingsRepoHandler(
-                PERSISTENT_VALUES_HANDLER, SETTINGS_REPO);
-        TypeHandler<String> stringHandler = new StringHandler();
-        //noinspection rawtypes
-        TypeHandler<List> listHandler = new ListHandler(PERSISTENT_VALUES_HANDLER, LIST_FACTORY);
-        //noinspection rawtypes
-        TypeHandler<Map> mapHandler = new MapHandler(PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
-        //noinspection rawtypes
-        TypeHandler<Pair> pairHandler = new PairHandler(PERSISTENT_VALUES_HANDLER);
-        //noinspection rawtypes
-        TypeHandler<Registry> registryHandler = new RegistryHandler(
-                PERSISTENT_VALUES_HANDLER, REGISTRY_FACTORY);
+        var booleanHandler = new BooleanHandler();
+        var coordinate2dHandler = new Coordinate2dHandler();
+        var coordinate3dHandler = new Coordinate3dHandler();
+        var uuidHandler = new UuidHandler();
+        var integerHandler = new IntegerHandler();
+        var variableCacheHandler =
+                new VariableCacheHandler(PERSISTENT_VALUES_HANDLER, VARIABLE_CACHE_FACTORY);
+        var settingsRepoHandler = new SettingsRepoHandler(PERSISTENT_VALUES_HANDLER, SETTINGS_REPO);
+        var stringHandler = new StringHandler();
+        var listHandler = new ListHandler(PERSISTENT_VALUES_HANDLER, LIST_FACTORY);
+        var mapHandler = new MapHandler(PERSISTENT_VALUES_HANDLER, MAP_FACTORY);
+        var pairHandler = new PairHandler(PERSISTENT_VALUES_HANDLER);
+        var registryHandler = new RegistryHandler(PERSISTENT_VALUES_HANDLER, REGISTRY_FACTORY);
 
         PERSISTENT_VALUES_HANDLER.addTypeHandler(booleanHandler);
-        PERSISTENT_VALUES_HANDLER.addTypeHandler(coordinateHandler);
+        PERSISTENT_VALUES_HANDLER.addTypeHandler(coordinate2dHandler);
+        PERSISTENT_VALUES_HANDLER.addTypeHandler(coordinate3dHandler);
         PERSISTENT_VALUES_HANDLER.addTypeHandler(uuidHandler);
         PERSISTENT_VALUES_HANDLER.addTypeHandler(integerHandler);
         PERSISTENT_VALUES_HANDLER.addTypeHandler(variableCacheHandler);

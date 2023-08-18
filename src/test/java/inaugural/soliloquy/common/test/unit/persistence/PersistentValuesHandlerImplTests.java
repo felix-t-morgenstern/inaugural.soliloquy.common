@@ -1,9 +1,11 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.PersistentValuesHandlerImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -13,11 +15,12 @@ import soliloquy.specs.common.persistence.TypeWithTwoGenericParamsHandler;
 
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-class PersistentValuesHandlerImplTests {
+@RunWith(MockitoJUnitRunner.class)
+public class PersistentValuesHandlerImplTests {
     @Mock @SuppressWarnings("rawtypes") private TypeHandler mockIntegerHandler;
     @Mock @SuppressWarnings("rawtypes") private TypeHandler mockStringHandler;
     @Mock @SuppressWarnings("rawtypes") private TypeWithOneGenericParamHandler mockListHandler;
@@ -25,21 +28,17 @@ class PersistentValuesHandlerImplTests {
 
     private PersistentValuesHandlerImpl persistentValuesHandler;
 
-    @BeforeEach
-    void setUp() {
-        mockIntegerHandler = mock(TypeHandler.class);
+    @Before
+    public void setUp() {
         when(mockIntegerHandler.getInterfaceName())
                 .thenReturn("<" + Integer.class.getCanonicalName() + ">");
 
-        mockStringHandler = mock(TypeHandler.class);
         when(mockStringHandler.getInterfaceName())
                 .thenReturn("<" + String.class.getCanonicalName() + ">");
 
-        mockListHandler = mock(TypeWithOneGenericParamHandler.class);
         when(mockListHandler.getInterfaceName())
                 .thenReturn("<" + List.class.getCanonicalName() + ">");
 
-        mockMapHandler = mock(TypeWithTwoGenericParamsHandler.class);
         when(mockMapHandler.getInterfaceName())
                 .thenReturn("<" + Map.class.getCanonicalName() + ">");
 
@@ -47,7 +46,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testAddAndGetTypeHandler() {
+    public void testAddAndGetTypeHandler() {
         persistentValuesHandler.addTypeHandler(mockIntegerHandler);
 
         assertSame(mockIntegerHandler,
@@ -55,7 +54,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testAddAndGetTypeHandlerWithTypeParameters() {
+    public void testAddAndGetTypeHandlerWithTypeParameters() {
         persistentValuesHandler.addTypeHandler(mockListHandler);
 
         assertSame(mockListHandler, persistentValuesHandler
@@ -63,7 +62,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testGetTypeHandlerWithInvalidParams() {
+    public void testGetTypeHandlerWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () ->
                 persistentValuesHandler.getTypeHandler(null));
         assertThrows(IllegalArgumentException.class, () ->
@@ -73,7 +72,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testAddTypeHandlerTwiceException() {
+    public void testAddTypeHandlerTwiceException() {
         assertThrows(IllegalArgumentException.class, () -> {
             persistentValuesHandler.addTypeHandler(mockIntegerHandler);
             persistentValuesHandler.addTypeHandler(mockIntegerHandler);
@@ -81,7 +80,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testRemoveTypeHandler() {
+    public void testRemoveTypeHandler() {
         assertFalse(persistentValuesHandler.removeTypeHandler(Integer.class.getCanonicalName()));
         persistentValuesHandler.addTypeHandler(mockIntegerHandler);
         assertSame(persistentValuesHandler.<Integer>getTypeHandler(
@@ -91,7 +90,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testAddGetAndRemoveTypeHandlerWithInvalidParams() {
+    public void testAddGetAndRemoveTypeHandlerWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> persistentValuesHandler.addTypeHandler(null));
         assertThrows(IllegalArgumentException.class,
@@ -105,10 +104,12 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testTypesHandled() {
+    public void testTypesHandled() {
         assertTrue(persistentValuesHandler.typesHandled().isEmpty());
+
         persistentValuesHandler.addTypeHandler(mockIntegerHandler);
         persistentValuesHandler.addTypeHandler(mockStringHandler);
+
         assertEquals(2, persistentValuesHandler.typesHandled().size());
         assertTrue(persistentValuesHandler.typesHandled()
                 .contains(Integer.class.getCanonicalName()));
@@ -117,10 +118,10 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testGenerateArchetype() {
+    public void testGenerateArchetype() {
         persistentValuesHandler.addTypeHandler(mockIntegerHandler);
         Integer archetypeFromTypeHandler = randomInt();
-        when(mockIntegerHandler.getArchetype()).thenReturn(archetypeFromTypeHandler);
+        when(mockIntegerHandler.archetype()).thenReturn(archetypeFromTypeHandler);
 
         Integer generatedArchetype = persistentValuesHandler.generateArchetype(Integer.class.getCanonicalName());
 
@@ -129,15 +130,13 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testGenerateArchetypeWithOneGenericParameter() {
-        String innerType = randomString();
-        //noinspection rawtypes
-        List generatedArchetypeOutput = mock(List.class);
+    public void testGenerateArchetypeWithOneGenericParameter() {
+        var innerType = randomString();
+        var generatedArchetypeOutput = mock(List.class);
         when(mockListHandler.generateArchetype(anyString())).thenReturn(generatedArchetypeOutput);
         persistentValuesHandler.addTypeHandler(mockListHandler);
 
-        //noinspection rawtypes
-        List generatedArchetype = persistentValuesHandler
+        var generatedArchetype = persistentValuesHandler
                 .generateArchetype(List.class.getCanonicalName() + "<" + innerType + ">");
 
         assertSame(generatedArchetypeOutput, generatedArchetype);
@@ -145,17 +144,15 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testGenerateArchetypeWithTwoGenericParameters() {
-        String innerType1 = randomString();
-        String innerType2 = randomString();
-        //noinspection rawtypes
-        Map generatedArchetypeOutput = mock(Map.class);
+    public void testGenerateArchetypeWithTwoGenericParameters() {
+        var innerType1 = randomString();
+        var innerType2 = randomString();
+        var generatedArchetypeOutput = mock(Map.class);
         when(mockMapHandler.generateArchetype(anyString(), anyString()))
                 .thenReturn(generatedArchetypeOutput);
         persistentValuesHandler.addTypeHandler(mockMapHandler);
 
-        //noinspection rawtypes
-        Map generatedArchetype = persistentValuesHandler.generateArchetype(
+        var generatedArchetype = persistentValuesHandler.generateArchetype(
                 Map.class.getCanonicalName() + "<" + innerType1 + "," + innerType2 + ">");
 
         assertSame(generatedArchetypeOutput, generatedArchetype);
@@ -163,7 +160,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testGenerateArchetypeWithInvalidParams() {
+    public void testGenerateArchetypeWithInvalidParams() {
         persistentValuesHandler.addTypeHandler(mockIntegerHandler);
         persistentValuesHandler.addTypeHandler(mockListHandler);
         persistentValuesHandler.addTypeHandler(mockMapHandler);
@@ -205,15 +202,15 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals(PersistentValuesHandlerImpl.class.getCanonicalName().hashCode(),
                 persistentValuesHandler.hashCode());
     }
 
     @Test
-    void testEquals() {
-        PersistentValuesHandler equalPersistentValuesHandler = new PersistentValuesHandlerImpl();
-        PersistentValuesHandler unequalPersistentValuesHandler = mock(PersistentValuesHandler.class);
+    public void testEquals() {
+        var equalPersistentValuesHandler = new PersistentValuesHandlerImpl();
+        var unequalPersistentValuesHandler = mock(PersistentValuesHandler.class);
 
         assertEquals(persistentValuesHandler, equalPersistentValuesHandler);
         assertNotEquals(persistentValuesHandler, unequalPersistentValuesHandler);
@@ -221,7 +218,7 @@ class PersistentValuesHandlerImplTests {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(PersistentValuesHandlerImpl.class.getCanonicalName(),
                 persistentValuesHandler.toString());
     }

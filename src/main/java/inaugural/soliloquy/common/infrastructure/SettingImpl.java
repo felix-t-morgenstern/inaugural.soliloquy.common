@@ -39,7 +39,7 @@ public class SettingImpl<T> implements Setting<T> {
     }
 
     @Override
-    public T getArchetype() {
+    public T archetype() {
         return ARCHETYPE;
     }
 

@@ -1,84 +1,91 @@
 package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.MapFactoryImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
 
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class MapFactoryImplTests {
-    private MapFactoryImpl _mapFactory;
+public class MapFactoryImplTests {
+    private final String KEY = randomString();
+    private final Integer VALUE = randomInt();
+    private final String KEY_ARCHETYPE = randomString();
+    private final Integer VALUE_ARCHETYPE = randomInt();
 
-    @BeforeEach
-    void setUp() {
-        _mapFactory = new MapFactoryImpl();
+    private MapFactory factory;
+
+    @Before
+    public void setUp() {
+        factory = new MapFactoryImpl();
     }
 
     @Test
-    void testMake() {
-        Map<String, Integer> map = _mapFactory.make("", 0);
-        assertNotNull(map);
-        assertNotNull(map.getFirstArchetype());
-        assertNotNull(map.getSecondArchetype());
+    public void testMake() {
+        var map = factory.make(KEY_ARCHETYPE, VALUE_ARCHETYPE);
+        map.put(KEY, VALUE);
 
-        map.put("String1", 123);
-        assertEquals(123, (int) map.get("String1"));
+        assertNotNull(map);
+        assertNotNull(map.firstArchetype());
+        assertEquals(KEY_ARCHETYPE, map.firstArchetype());
+        assertNotNull(map.secondArchetype());
+        assertEquals(VALUE_ARCHETYPE, map.secondArchetype());
+        assertEquals(VALUE, map.get(KEY));
     }
 
     @SuppressWarnings("unused")
     @Test
-    void testMakeWithNullArchetypes() {
-        assertThrows(IllegalArgumentException.class, () -> _mapFactory.make("", null));
-        assertThrows(IllegalArgumentException.class, () -> _mapFactory.make(null, 0));
+    public void testMakeWithNullArchetypes() {
+        assertThrows(IllegalArgumentException.class, () -> factory.make(KEY_ARCHETYPE, null));
+        assertThrows(IllegalArgumentException.class, () -> factory.make(null, VALUE_ARCHETYPE));
     }
 
     @Test
-    void testArchetypeWithNullArchetype() {
+    public void testArchetypeWithNullArchetype() {
         //noinspection unchecked
         Map<String, Integer> mockMapWithNullKeyArchetype = mock(Map.class);
-        when(mockMapWithNullKeyArchetype.getFirstArchetype()).thenReturn(null);
-        when(mockMapWithNullKeyArchetype.getSecondArchetype()).thenReturn(randomInt());
+        when(mockMapWithNullKeyArchetype.firstArchetype()).thenReturn(null);
+        when(mockMapWithNullKeyArchetype.secondArchetype()).thenReturn(randomInt());
 
         //noinspection unchecked
         Map<String, Integer> mockMapWithNullValueArchetype = mock(Map.class);
-        when(mockMapWithNullValueArchetype.getFirstArchetype()).thenReturn(randomString());
-        when(mockMapWithNullValueArchetype.getSecondArchetype()).thenReturn(null);
+        when(mockMapWithNullValueArchetype.firstArchetype()).thenReturn(randomString());
+        when(mockMapWithNullValueArchetype.secondArchetype()).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class,
-                () -> _mapFactory.make(mockMapWithNullKeyArchetype, 123));
+                () -> factory.make(mockMapWithNullKeyArchetype, VALUE));
         assertThrows(IllegalArgumentException.class,
-                () -> _mapFactory.make(mockMapWithNullValueArchetype, 123));
+                () -> factory.make(mockMapWithNullValueArchetype, VALUE));
         assertThrows(IllegalArgumentException.class,
-                () -> _mapFactory.make(123, mockMapWithNullKeyArchetype));
+                () -> factory.make(VALUE, mockMapWithNullKeyArchetype));
         assertThrows(IllegalArgumentException.class,
-                () -> _mapFactory.make(123, mockMapWithNullValueArchetype));
+                () -> factory.make(VALUE, mockMapWithNullValueArchetype));
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals(MapFactoryImpl.class.getCanonicalName().hashCode(),
-                _mapFactory.hashCode());
+                factory.hashCode());
     }
 
     @Test
-    void testEquals() {
-        MapFactory equalMapFactory = new MapFactoryImpl();
-        MapFactory unequalMapFactory = mock(MapFactory.class);
+    public void testEquals() {
+        var equalMapFactory = new MapFactoryImpl();
+        var unequalMapFactory = mock(MapFactory.class);
 
-        assertEquals(_mapFactory, equalMapFactory);
-        assertNotEquals(_mapFactory, unequalMapFactory);
-        assertNotEquals(null, _mapFactory);
+        assertEquals(factory, equalMapFactory);
+        assertNotEquals(factory, unequalMapFactory);
+        assertNotEquals(null, factory);
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(MapFactoryImpl.class.getCanonicalName(),
-                _mapFactory.toString());
+                factory.toString());
     }
 }

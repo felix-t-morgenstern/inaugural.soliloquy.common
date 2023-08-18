@@ -1,23 +1,20 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
-import soliloquy.specs.common.shared.EntityGroupItem;
-import soliloquy.specs.common.valueobjects.Pair;
 
-import java.util.List;
 import java.util.TreeMap;
 
 import static inaugural.soliloquy.tools.random.Random.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-class SettingsRepoImplTests {
+public class SettingsRepoImplTests {
     private final String SETTING_1_ID = randomString();
     private final String SETTING_2_ID = randomString();
     private final String SETTING_3_ID = randomString();
@@ -43,30 +40,30 @@ class SettingsRepoImplTests {
 
     private SettingsRepoImpl settingsRepo;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         mockPersistentValuesHandler = mock(PersistentValuesHandler.class);
 
         settingsRepo = new SettingsRepoImpl(mockPersistentValuesHandler);
     }
 
     @Test
-    void testConstructorWithInvalidParams() {
+    public void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () ->
                 new SettingsRepoImpl(null));
     }
 
     @Test
-    void testId() {
+    public void testId() {
         settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
 
-        SettingsRepo settingsRepo = this.settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
+        var settingsRepo = this.settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
 
         assertEquals(SETTINGS_REPO_SUBGROUP_1_ID, settingsRepo.id());
     }
 
     @Test
-    void testNewSubgroupingWithInvalidParams() {
+    public void testNewSubgroupingWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> settingsRepo.newSubgrouping(-1, SETTINGS_REPO_SUBGROUP_1_ID, null));
         assertThrows(IllegalArgumentException.class,
@@ -76,9 +73,8 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
-    void testAddItemToTopLevel() {
-        Setting setting = mock(Setting.class);
+    public void testAddItemToTopLevel() {
+        var setting = mock(Setting.class);
         when(setting.id()).thenReturn(SETTING_1_ID);
         when(setting.getValue()).thenReturn(SETTING_1_VALUE);
 
@@ -88,13 +84,12 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
-    void testAddTwoItemsToTopLevelWithSameId() {
-        Setting setting1 = mock(Setting.class);
+    public void testAddTwoItemsToTopLevelWithSameId() {
+        var setting1 = mock(Setting.class);
         when(setting1.id()).thenReturn(SETTING_1_ID);
         when(setting1.getValue()).thenReturn(SETTING_1_VALUE);
 
-        Setting setting2 = mock(Setting.class);
+        var setting2 = mock(Setting.class);
         when(setting2.id()).thenReturn(SETTING_1_ID);
         when(setting2.getValue()).thenReturn(SETTING_2_VALUE);
 
@@ -105,13 +100,12 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
-    void testAddTwoItemsToTopLevelWithSameOrder() {
-        Setting setting1 = mock(Setting.class);
+    public void testAddTwoItemsToTopLevelWithSameOrder() {
+        var setting1 = mock(Setting.class);
         when(setting1.id()).thenReturn(SETTING_1_ID);
         when(setting1.getValue()).thenReturn(SETTING_1_VALUE);
 
-        Setting setting2 = mock(Setting.class);
+        var setting2 = mock(Setting.class);
         when(setting2.id()).thenReturn(SETTING_2_ID);
         when(setting2.getValue()).thenReturn(SETTING_2_VALUE);
 
@@ -122,9 +116,8 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
-    void testAddItemToNonexistentSubGrouping() {
-        Setting setting1 = mock(Setting.class);
+    public void testAddItemToNonexistentSubGrouping() {
+        var setting1 = mock(Setting.class);
         when(setting1.id()).thenReturn(SETTING_1_ID);
         when(setting1.getValue()).thenReturn(SETTING_1_VALUE);
 
@@ -133,42 +126,40 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
-    void testAddItemToExistentSubGrouping() {
+    public void testAddItemToExistentSubGrouping() {
         settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
 
-        Setting setting1 = mock(Setting.class);
+        var setting1 = mock(Setting.class);
         when(setting1.id()).thenReturn(SETTING_1_ID);
         when(setting1.getValue()).thenReturn(SETTING_1_VALUE);
 
         settingsRepo.addEntity(setting1, 0, SETTINGS_REPO_SUBGROUP_1_ID);
 
-        Setting getResult = settingsRepo.getSetting(SETTING_1_ID);
+        var getResult = settingsRepo.getSetting(SETTING_1_ID);
 
         assertEquals(getResult.getValue(), SETTING_1_VALUE);
     }
 
     @Test
-    void testSetNonexistentSetting() {
+    public void testSetNonexistentSetting() {
         assertThrows(IllegalArgumentException.class,
                 () -> settingsRepo.setSetting(SETTING_1_ID, SETTING_1_VALUE));
     }
 
     @Test
-    void testGetSettingWithBlankId() {
+    public void testGetSettingWithBlankId() {
         assertThrows(IllegalArgumentException.class, () -> settingsRepo.getSetting(""));
     }
 
     @Test
-    void testSetSettingWithBlankId() {
+    public void testSetSettingWithBlankId() {
         assertThrows(IllegalArgumentException.class,
                 () -> settingsRepo.setSetting("", SETTING_1_VALUE));
     }
 
     @Test
-    void testAddSetAndGetSetting() {
-        Setting<Integer> setting =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+    public void testAddSetAndGetSetting() {
+        var setting = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
         settingsRepo.addEntity(setting, 0, null);
 
         settingsRepo.setSetting(SETTING_1_ID, SETTING_1_VALUE_ALT);
@@ -177,9 +168,8 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    void testAddSetAndGetSettingInSubgrouping() {
-        Setting<Integer> setting =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+    public void testAddSetAndGetSettingInSubgrouping() {
+        var setting = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
         settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, null);
         settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_1_ID, SETTINGS_REPO_SUBGROUP_1_ID);
 
@@ -192,30 +182,22 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    void testGetItemByOrder() {
-        Setting<Integer> setting =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+    public void testGetItemByOrder() {
+        var setting = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
         settingsRepo.addEntity(setting, 123, null);
         assertEquals(settingsRepo.getItemByOrder(123).entity().getValue(), SETTING_1_VALUE);
     }
 
     @Test
-    void testGetNonexistentItemByOrder() {
+    public void testGetNonexistentItemByOrder() {
         assertThrows(IllegalArgumentException.class, () -> settingsRepo.getItemByOrder(123));
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
-    void testGetAllGroupedRepresentation() {
-        Setting<Integer> setting1 =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE
-                );
-        Setting<Double> setting2 =
-                generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE
-                );
-        Setting<String> setting3 =
-                generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE
-                );
+    public void testGetAllGroupedRepresentation() {
+        var setting1 = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+        var setting2 = generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
+        var setting3 = generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE);
 
         settingsRepo.addEntity(setting1, 0, null);
 
@@ -227,34 +209,27 @@ class SettingsRepoImplTests {
 
         settingsRepo.addEntity(setting3, 0, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        List<EntityGroupItem<Setting>> topLevelGrouped =
-                settingsRepo.getAllGroupedRepresentation();
+        var topLevelGrouped = settingsRepo.getAllGroupedRepresentation();
 
         assertEquals(2, topLevelGrouped.size());
         assertEquals(topLevelGrouped.get(0).entity().getValue(), SETTING_1_VALUE);
 
-        List<EntityGroupItem<Setting>> midLevelGrouped =
-                topLevelGrouped.get(1).group().getAllGroupedRepresentation();
+        var midLevelGrouped = topLevelGrouped.get(1).group().getAllGroupedRepresentation();
 
         assertEquals(2, midLevelGrouped.size());
         assertEquals(midLevelGrouped.get(0).entity().getValue(), SETTING_2_VALUE);
 
-        List<EntityGroupItem<Setting>> bottomLevelGrouped =
-                midLevelGrouped.get(1).group().getAllGroupedRepresentation();
+        var bottomLevelGrouped = midLevelGrouped.get(1).group().getAllGroupedRepresentation();
 
         assertEquals(1, bottomLevelGrouped.size());
         assertEquals(bottomLevelGrouped.get(0).entity().getValue(), SETTING_3_VALUE);
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
-    void testGetAllUngroupedRepresentation() {
-        Setting<Integer> setting1 =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
-        Setting<Double> setting2 =
-                generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
-        Setting<String> setting3 =
-                generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE);
+    public void testGetAllUngroupedRepresentation() {
+        var setting1 = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+        var setting2 = generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
+        var setting3 = generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE);
 
         settingsRepo.addEntity(setting1, 0, null);
 
@@ -266,14 +241,14 @@ class SettingsRepoImplTests {
 
         settingsRepo.addEntity(setting3, 0, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        List<Setting> allSettingsUngrouped = settingsRepo.getAllUngroupedRepresentation();
+        var allSettingsUngrouped = settingsRepo.getAllUngroupedRepresentation();
 
         assertEquals(3, allSettingsUngrouped.size());
 
-        boolean setting1Used = false;
-        boolean setting2Used = false;
-        boolean setting3Used = false;
-        for (Setting setting : allSettingsUngrouped) {
+        var setting1Used = false;
+        var setting2Used = false;
+        var setting3Used = false;
+        for (var setting : allSettingsUngrouped) {
             if (setting.id().equals(setting1.id())
                     && setting.getName().equals(setting1.getName())
                     && setting.getValue().equals(setting1.getValue())) {
@@ -296,13 +271,10 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    void testRemoveItem() {
-        Setting<Integer> setting1 =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
-        Setting<Double> setting2 =
-                generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
-        Setting<String> setting3 =
-                generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE);
+    public void testRemoveItem() {
+        var setting1 = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+        var setting2 = generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
+        var setting3 = generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE);
 
         settingsRepo.addEntity(setting1, 0, null);
 
@@ -322,19 +294,16 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    void testRemoveItemWithNullOrBlankId() {
+    public void testRemoveItemWithNullOrBlankId() {
         assertThrows(IllegalArgumentException.class, () -> settingsRepo.removeItem(null));
         assertThrows(IllegalArgumentException.class, () -> settingsRepo.removeItem(""));
     }
 
     @Test
-    void testGetGroupingIdAndOrder() {
-        Setting<Integer> setting1 =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
-        Setting<Double> setting2 =
-                generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
-        Setting<String> setting3 =
-                generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE);
+    public void testGetGroupingIdAndOrder() {
+        var setting1 = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+        var setting2 = generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
+        var setting3 = generateMockSetting(SETTING_3_ID, SETTING_3_NAME, SETTING_3_VALUE);
 
         settingsRepo.addEntity(setting1, SETTING_1_ORDER, null);
 
@@ -347,21 +316,18 @@ class SettingsRepoImplTests {
 
         settingsRepo.addEntity(setting3, SETTING_3_ORDER, SETTINGS_REPO_SUBGROUP_1_1_ID);
 
-        Pair<String, Integer> setting1GroupingIdAndOrder =
-                settingsRepo.getGroupingIdAndOrder(SETTING_1_ID);
-        assertTrue(setting1GroupingIdAndOrder.getItem1() == null ||
-                setting1GroupingIdAndOrder.getItem1().equals(""));
-        assertEquals(SETTING_1_ORDER, (int) setting1GroupingIdAndOrder.getItem2());
+        var setting1GroupingIdAndOrder = settingsRepo.getGroupingIdAndOrder(SETTING_1_ID);
+        assertTrue(setting1GroupingIdAndOrder.item1() == null ||
+                setting1GroupingIdAndOrder.item1().equals(""));
+        assertEquals(SETTING_1_ORDER, (int) setting1GroupingIdAndOrder.item2());
 
-        Pair<String, Integer> setting2GroupingIdAndOrder =
-                settingsRepo.getGroupingIdAndOrder(SETTING_2_ID);
-        assertEquals(setting2GroupingIdAndOrder.getItem1(), SETTINGS_REPO_SUBGROUP_1_ID);
-        assertEquals(SETTING_2_ORDER, (int) setting2GroupingIdAndOrder.getItem2());
+        var setting2GroupingIdAndOrder = settingsRepo.getGroupingIdAndOrder(SETTING_2_ID);
+        assertEquals(setting2GroupingIdAndOrder.item1(), SETTINGS_REPO_SUBGROUP_1_ID);
+        assertEquals(SETTING_2_ORDER, (int) setting2GroupingIdAndOrder.item2());
 
-        Pair<String, Integer> setting3GroupingIdAndOrder =
-                settingsRepo.getGroupingIdAndOrder(SETTING_3_ID);
-        assertEquals(setting3GroupingIdAndOrder.getItem1(), SETTINGS_REPO_SUBGROUP_1_1_ID);
-        assertEquals(SETTING_3_ORDER, (int) setting3GroupingIdAndOrder.getItem2());
+        var setting3GroupingIdAndOrder = settingsRepo.getGroupingIdAndOrder(SETTING_3_ID);
+        assertEquals(setting3GroupingIdAndOrder.item1(), SETTINGS_REPO_SUBGROUP_1_1_ID);
+        assertEquals(SETTING_3_ORDER, (int) setting3GroupingIdAndOrder.item2());
 
         assertThrows(IllegalArgumentException.class,
                 () -> settingsRepo.getGroupingIdAndOrder("ThisIsNotAnId"));
@@ -370,16 +336,14 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(SettingsRepo.class.getCanonicalName(), settingsRepo.getInterfaceName());
     }
 
     @Test
-    void testHashCode() {
-        Setting<Integer> setting1 =
-                generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
-        Setting<Double> setting2 =
-                generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
+    public void testHashCode() {
+        var setting1 = generateMockSetting(SETTING_1_ID, SETTING_1_NAME, SETTING_1_VALUE);
+        var setting2 = generateMockSetting(SETTING_2_ID, SETTING_2_NAME, SETTING_2_VALUE);
 
         // NB: TreeMap is chosen to contrast against the implementation, which uses HashMap
         //noinspection rawtypes
@@ -395,28 +359,27 @@ class SettingsRepoImplTests {
     }
 
     @Test
-    void testEquals() {
-        SettingsRepo settingsRepo2 = new SettingsRepoImpl(mockPersistentValuesHandler);
+    public void testEquals() {
+        var settingsRepo2 = new SettingsRepoImpl(mockPersistentValuesHandler);
         settingsRepo.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
         settingsRepo2.newSubgrouping(0, SETTINGS_REPO_SUBGROUP_1_ID, "");
 
-        SettingsRepo settingsRepoSubgrouping =
+        var settingsRepoSubgrouping =
                 settingsRepo.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
-        SettingsRepo settingsRepo2Subgrouping =
+        var settingsRepo2Subgrouping =
                 settingsRepo2.getSubgrouping(SETTINGS_REPO_SUBGROUP_1_ID);
 
         assertEquals(settingsRepoSubgrouping, settingsRepo2Subgrouping);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
-    void testToString() {
+    public void testToString() {
         assertThrows(UnsupportedOperationException.class, settingsRepo::toString);
     }
 
     private <T> Setting<T> generateMockSetting(String id, String name, T value) {
         //noinspection unchecked
-        Setting<T> mockSetting = (Setting<T>) mock(Setting.class);
+        var mockSetting = (Setting<T>) mock(Setting.class);
 
         when(mockSetting.id()).thenReturn(id);
         when(mockSetting.getName()).thenReturn(name);

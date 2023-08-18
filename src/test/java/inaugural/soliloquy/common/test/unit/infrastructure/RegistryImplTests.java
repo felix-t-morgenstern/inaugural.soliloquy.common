@@ -1,21 +1,25 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.RegistryImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
+import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class RegistryImplTests {
+@RunWith(MockitoJUnitRunner.class)
+public class RegistryImplTests {
     private final String ID = randomString();
     private final String ID_1 = randomString();
     private final String ID_2 = randomString();
@@ -27,51 +31,50 @@ class RegistryImplTests {
     private final HasId ITEM_2 = generateMockHasId(ID_2);
     private final HasId ITEM_3 = generateMockHasId(ID_3);
 
-    private HasId archetype;
+    @Mock private HasId mockArchetype;
 
     private Registry<HasId> registry;
 
-    @BeforeEach
-    void setUp() {
-        archetype = mock(HasId.class);
-        when(archetype.getInterfaceName()).thenReturn(TYPE);
+    @Before
+    public void setUp() {
+        when(mockArchetype.getInterfaceName()).thenReturn(TYPE);
 
-        registry = new RegistryImpl<>(archetype);
+        registry = new RegistryImpl<>(mockArchetype);
     }
 
     @Test
-    void testConstructorWithInvalidParams() {
+    public void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () ->
                 registry = new RegistryImpl<>(null));
     }
 
     @Test
-    void testArchetype() {
-        assertSame(archetype, registry.getArchetype());
+    public void testArchetype() {
+        assertSame(mockArchetype, registry.archetype());
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(Registry.class.getCanonicalName() + "<" + TYPE + ">",
                 registry.getInterfaceName());
     }
 
     @Test
-    void testAddAndGet() {
+    public void testAddAndGet() {
         registry.add(MOCK_HAS_ID);
 
         assertSame(MOCK_HAS_ID, registry.get(ID));
     }
 
     @Test
-    void testContainsItem() {
+    public void testContainsItem() {
         registry.add(MOCK_HAS_ID);
 
         assertTrue(registry.contains(MOCK_HAS_ID));
     }
 
     @Test
-    void testContainsId() {
+    public void testContainsId() {
         assertFalse(registry.contains(ID));
 
         registry.add(MOCK_HAS_ID);
@@ -80,32 +83,28 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddNull() {
+    public void testAddNull() {
         assertThrows(IllegalArgumentException.class, () -> registry.add(null));
     }
 
     @Test
-    void testAddWithInvalidIds() {
-        HasId nullId = generateMockHasId(null);
-        HasId emptyId = generateMockHasId("");
+    public void testAddWithInvalidIds() {
+        var nullId = generateMockHasId(null);
+        var emptyId = generateMockHasId("");
 
         assertThrows(IllegalArgumentException.class, () -> registry.add(nullId));
         assertThrows(IllegalArgumentException.class, () -> registry.add(emptyId));
     }
 
     @Test
-    void testAddAllFromCollection() {
-        String id1 = randomString();
-        String id2 = randomString();
-        String id3 = randomString();
-        HasId hasId1 = generateMockHasId(id1);
-        HasId hasId2 = generateMockHasId(id2);
-        HasId hasId3 = generateMockHasId(id3);
-        ArrayList<HasId> toAdd = new ArrayList<>() {{
-            add(hasId1);
-            add(hasId2);
-            add(hasId3);
-        }};
+    public void testAddAllFromCollection() {
+        var id1 = randomString();
+        var id2 = randomString();
+        var id3 = randomString();
+        var hasId1 = generateMockHasId(id1);
+        var hasId2 = generateMockHasId(id2);
+        var hasId3 = generateMockHasId(id3);
+        var toAdd = listOf(hasId1, hasId2, hasId3);
 
         registry.addAll(toAdd);
 
@@ -115,35 +114,27 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddAllFromCollectionWithNull() {
+    public void testAddAllFromCollectionWithNull() {
         assertThrows(IllegalArgumentException.class,
                 () -> registry.addAll((Collection<HasId>) null));
     }
 
     @Test
-    void testAddAllFromTypedArrayWithNull() {
+    public void testAddAllFromTypedArrayWithNull() {
         assertThrows(IllegalArgumentException.class,
                 () -> registry.addAll((HasId[]) null));
     }
 
     @Test
-    void testAddAllFromUntypedArrayWithNull() {
+    public void testAddAllFromUntypedArrayWithNull() {
         assertThrows(IllegalArgumentException.class, () -> registry.addAll((Object[]) null));
     }
 
     @Test
-    void testAddAllFromCollectionWithInvalidEntries() {
-        Collection<HasId> collectionWithNull = new ArrayList<>() {{
-            add(null);
-        }};
-
-        Collection<HasId> collectionWithNullId = new ArrayList<>() {{
-            add(generateMockHasId(null));
-        }};
-
-        Collection<HasId> collectionWithEmptyId = new ArrayList<>() {{
-            add(generateMockHasId(""));
-        }};
+    public void testAddAllFromCollectionWithInvalidEntries() {
+        Collection<HasId> collectionWithNull = listOf((HasId) null);
+        Collection<HasId> collectionWithNullId = listOf(generateMockHasId(null));
+        Collection<HasId> collectionWithEmptyId = listOf(generateMockHasId(""));
 
         assertThrows(IllegalArgumentException.class, () -> registry.addAll(collectionWithNull));
         assertThrows(IllegalArgumentException.class, () -> registry.addAll(collectionWithNullId));
@@ -151,8 +142,8 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddAllFromUntypedArray() {
-        Object[] array = new Object[3];
+    public void testAddAllFromUntypedArray() {
+        var array = new Object[3];
         array[0] = ITEM_1;
         array[1] = ITEM_2;
         array[2] = ITEM_3;
@@ -165,11 +156,11 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddAllFromTypedArray() {
-        HasId item1 = generateMockHasId("id1");
-        HasId item2 = generateMockHasId("id2");
-        HasId item3 = generateMockHasId("id3");
-        HasId[] array = new HasId[3];
+    public void testAddAllFromTypedArray() {
+        var item1 = generateMockHasId("id1");
+        var item2 = generateMockHasId("id2");
+        var item3 = generateMockHasId("id3");
+        var array = new HasId[3];
         array[0] = item1;
         array[1] = item2;
         array[2] = item3;
@@ -182,19 +173,19 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddAllFromArrayWithNull() {
+    public void testAddAllFromArrayWithNull() {
         assertThrows(IllegalArgumentException.class, () -> registry.addAll((HasId[]) null));
     }
 
     @Test
-    void testAddAllFromTypedArrayWithInvalidEntries() {
-        HasId[] arrayWithNull = new HasId[1];
+    public void testAddAllFromTypedArrayWithInvalidEntries() {
+        var arrayWithNull = new HasId[1];
         arrayWithNull[0] = null;
 
-        HasId[] arrayWithNullId = new HasId[1];
+        var arrayWithNullId = new HasId[1];
         arrayWithNullId[0] = generateMockHasId(null);
 
-        HasId[] arrayWithEmptyId = new HasId[1];
+        var arrayWithEmptyId = new HasId[1];
         arrayWithEmptyId[0] = generateMockHasId("");
 
         assertThrows(IllegalArgumentException.class, () -> registry.addAll(arrayWithNull));
@@ -203,15 +194,15 @@ class RegistryImplTests {
     }
 
     @Test
-    void testAddAllFromUntypedArrayWithInvalidEntries() {
-        Object[] untypedArray = new Object[1];
-        untypedArray[0] = 123;
+    public void testAddAllFromUntypedArrayWithInvalidEntries() {
+        var untypedArray = new Object[1];
+        untypedArray[0] = randomInt();
 
         assertThrows(IllegalArgumentException.class, () -> registry.addAll(untypedArray));
     }
 
     @Test
-    void testClear() {
+    public void testClear() {
         registry.add(ITEM_1);
         registry.add(ITEM_2);
         registry.add(ITEM_3);
@@ -225,7 +216,7 @@ class RegistryImplTests {
     }
 
     @Test
-    void testRemoveById() {
+    public void testRemoveById() {
         assertFalse(registry.contains(ID));
 
         registry.add(MOCK_HAS_ID);
@@ -236,7 +227,7 @@ class RegistryImplTests {
     }
 
     @Test
-    void testRemoveByItem() {
+    public void testRemoveByItem() {
         assertFalse(registry.remove(MOCK_HAS_ID));
 
         registry.add(MOCK_HAS_ID);
@@ -246,7 +237,7 @@ class RegistryImplTests {
     }
 
     @Test
-    void testRemoveAndContainsWithInvalidParams() {
+    public void testRemoveAndContainsWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> registry.remove(((HasId) null)));
         assertThrows(IllegalArgumentException.class,
                 () -> registry.remove(generateMockHasId(null)));
@@ -259,12 +250,12 @@ class RegistryImplTests {
     }
 
     @Test
-    void testRepresentation() {
+    public void testRepresentation() {
         registry.add(ITEM_1);
         registry.add(ITEM_2);
         registry.add(ITEM_3);
 
-        List<HasId> representation = registry.representation();
+        var representation = registry.representation();
 
         assertNotNull(representation);
         assertEquals(3, representation.size());
@@ -274,7 +265,7 @@ class RegistryImplTests {
     }
 
     @Test
-    void testSize() {
+    public void testSize() {
         registry.add(ITEM_1);
         registry.add(ITEM_2);
         registry.add(ITEM_3);
@@ -283,14 +274,14 @@ class RegistryImplTests {
     }
 
     @Test
-    void testIterator() {
+    public void testIterator() {
         registry.add(ITEM_1);
         registry.add(ITEM_2);
         registry.add(ITEM_3);
 
         // NB: I'm aware this is a very awkward test condition, it's an arbitrary condition to
         // test the iterator.
-        for (HasId hasId : registry) {
+        for (var hasId : registry) {
             if (hasId.id().equals(ID_1)) {
                 assertSame(ITEM_1, hasId);
             }
@@ -304,7 +295,7 @@ class RegistryImplTests {
     }
 
     private static HasId generateMockHasId(String id) {
-        HasId mock = mock(HasId.class);
+        var mock = mock(HasId.class);
         when(mock.id()).thenReturn(id);
         return mock;
     }

@@ -1,70 +1,70 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.BooleanHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-class BooleanHandlerTests {
-    private BooleanHandler _booleanHandler;
+public class BooleanHandlerTests {
+    private BooleanHandler booleanHandler;
 
-    @BeforeEach
-    void setUp() {
-        _booleanHandler = new BooleanHandler();
+    @Before
+    public void setUp() {
+        booleanHandler = new BooleanHandler();
     }
 
     @Test
-    void testRead() {
-        assertEquals(true, _booleanHandler.read("true"));
+    public void testRead() {
+        assertEquals(true, booleanHandler.read("true"));
     }
 
     @Test
-    void testReadNull() {
-        assertThrows(IllegalArgumentException.class, () -> _booleanHandler.read(null));
+    public void testReadNull() {
+        assertThrows(IllegalArgumentException.class, () -> booleanHandler.read(null));
     }
 
     @Test
-    void testWrite() {
-        assertEquals("true", _booleanHandler.write(true));
+    public void testWrite() {
+        assertEquals("true", booleanHandler.write(true));
     }
 
     @Test
-    void testGetArchetype() {
-        assertNotNull(_booleanHandler.getArchetype());
+    public void testArchetype() {
+        assertNotNull(booleanHandler.archetype());
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Boolean.class.getCanonicalName() + ">",
-                _booleanHandler.getInterfaceName());
+                booleanHandler.getInterfaceName());
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         Boolean.class.getCanonicalName() + ">").hashCode(),
-                _booleanHandler.hashCode());
+                booleanHandler.hashCode());
     }
 
     @Test
-    void testEquals() {
-        TypeHandler<Boolean> equalPersistentBooleanHandler = new BooleanHandler();
+    public void testEquals() {
+        var equalHandler = new BooleanHandler();
         //noinspection unchecked
-        TypeHandler<Boolean> unequalPersistentBooleanHandler = mock(TypeHandler.class);
+        TypeHandler<Boolean> unequalHandler = mock(TypeHandler.class);
 
-        assertEquals(_booleanHandler, equalPersistentBooleanHandler);
-        assertNotEquals(_booleanHandler, unequalPersistentBooleanHandler);
-        assertNotEquals(null, _booleanHandler);
+        assertEquals(booleanHandler, equalHandler);
+        assertNotEquals(booleanHandler, unequalHandler);
+        assertNotEquals(null, booleanHandler);
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Boolean.class.getCanonicalName() + ">",
-                _booleanHandler.toString());
+                booleanHandler.toString());
     }
 }

@@ -34,13 +34,11 @@ public class ListHandler
     @Override
     public List read(String valuesString) throws IllegalArgumentException {
         Check.ifNullOrEmpty(valuesString, "valuesString");
-        ListDTO dto = JSON.fromJson(valuesString, ListDTO.class);
-        TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
-        List list =
-                LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
-        for (int i = 0; i < dto.serializedValues.length; i++) {
-            //noinspection unchecked
-            list.add(handler.read(dto.serializedValues[i]));
+        var dto = JSON.fromJson(valuesString, DTO.class);
+        var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.type);
+        var list = LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.type));
+        for (var i = 0; i < dto.values.length; i++) {
+            list.add(handler.read(dto.values[i]));
         }
         return list;
     }
@@ -48,24 +46,23 @@ public class ListHandler
     @Override
     public String write(List list) {
         Check.ifNull(list, "list");
-        String internalType = getProperTypeName(list.getArchetype());
-        TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(internalType);
-        ListDTO dto = new ListDTO();
-        dto.typeName = internalType;
-        String[] serializedValues = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            //noinspection unchecked
+        var internalType = getProperTypeName(list.archetype());
+        var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(internalType);
+        var dto = new DTO();
+        dto.type = internalType;
+        var serializedValues = new String[list.size()];
+        for (var i = 0; i < list.size(); i++) {
             serializedValues[i] = handler.write(list.get(i));
         }
-        dto.serializedValues = serializedValues;
+        dto.values = serializedValues;
         return JSON.toJson(dto);
     }
 
     // TODO: Abbreviate DTO param names
     @SuppressWarnings("InnerClassMayBeStatic")
-    private class ListDTO {
-        String typeName;
-        String[] serializedValues;
+    private class DTO {
+        String type;
+        String[] values;
     }
 
     private static class ListArchetype implements List {
@@ -190,7 +187,7 @@ public class ListHandler
         }
 
         @Override
-        public Object getArchetype() {
+        public Object archetype() {
             return 0;
         }
 

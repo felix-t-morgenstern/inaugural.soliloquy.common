@@ -1,75 +1,79 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.IntegerHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static inaugural.soliloquy.tools.random.Random.randomInt;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-class IntegerHandlerTests {
-    private IntegerHandler _integerHandler;
+public class IntegerHandlerTests {
+    private final Integer VALUE = randomInt();
+    private final String WRITTEN_VALUE = VALUE.toString();
 
-    @BeforeEach
-    void setUp() {
-        _integerHandler = new IntegerHandler();
+    private IntegerHandler handler;
+
+    @Before
+    public void setUp() {
+        handler = new IntegerHandler();
     }
 
     @Test
-    void testRead() {
-        assertEquals(123, (int) _integerHandler.read("123"));
+    public void testRead() {
+        assertEquals(VALUE, handler.read(WRITTEN_VALUE));
     }
 
     @Test
-    void testReadNull() {
-        assertThrows(IllegalArgumentException.class, () -> _integerHandler.read(null));
+    public void testReadNull() {
+        assertThrows(IllegalArgumentException.class, () -> handler.read(null));
     }
 
     @Test
-    void testWrite() {
-        assertEquals("123", _integerHandler.write(123));
+    public void testWrite() {
+        assertEquals(WRITTEN_VALUE, handler.write(VALUE));
     }
 
     @Test
-    void testWriteWhenNull() {
-        assertEquals("", _integerHandler.write(null));
+    public void testWriteWhenNull() {
+        assertEquals("", handler.write(null));
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         Integer.class.getCanonicalName() + ">").hashCode(),
-                _integerHandler.hashCode());
+                handler.hashCode());
     }
 
     @Test
-    void testEquals() {
-        TypeHandler<Integer> equalHandler = new IntegerHandler();
+    public void testEquals() {
+        var equalHandler = new IntegerHandler();
         //noinspection unchecked
         TypeHandler<Integer> unequalHandler = mock(TypeHandler.class);
 
-        assertEquals(_integerHandler, equalHandler);
-        assertNotEquals(_integerHandler, unequalHandler);
-        assertNotEquals(null, _integerHandler);
+        assertEquals(handler, equalHandler);
+        assertNotEquals(handler, unequalHandler);
+        assertNotEquals(null, handler);
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Integer.class.getCanonicalName() + ">",
-                _integerHandler.toString());
+                handler.toString());
     }
 
     @Test
-    void testGetArchetype() {
-        assertNotNull(_integerHandler.getArchetype());
+    public void testArchetype() {
+        assertNotNull(handler.archetype());
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Integer.class.getCanonicalName() + ">",
-                _integerHandler.getInterfaceName());
+                handler.getInterfaceName());
     }
 }

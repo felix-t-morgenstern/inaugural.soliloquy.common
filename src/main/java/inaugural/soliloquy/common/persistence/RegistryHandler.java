@@ -31,15 +31,13 @@ public class RegistryHandler
         REGISTRY_FACTORY = Check.ifNull(registryFactory, "registryFactory");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Registry read(String valuesString) throws IllegalArgumentException {
         Check.ifNullOrEmpty(valuesString, "valuesString");
-        RegistryDTO dto = JSON.fromJson(valuesString, RegistryDTO.class);
-        TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.typeName);
-        Registry registry = REGISTRY_FACTORY
-                .make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.typeName));
-        for (String serializedValue : dto.serializedValues) {
+        var dto = JSON.fromJson(valuesString, DTO.class);
+        var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.type);
+        var registry = REGISTRY_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.type));
+        for (var serializedValue : dto.values) {
             registry.add((HasId) handler.read(serializedValue));
         }
         return registry;
@@ -48,22 +46,21 @@ public class RegistryHandler
     @Override
     public String write(Registry registry) {
         Check.ifNull(registry, "registry");
-        String internalType = getProperTypeName(registry.getArchetype());
-        TypeHandler handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(internalType);
-        RegistryDTO dto = new RegistryDTO();
-        dto.typeName = internalType;
-        dto.serializedValues = new String[registry.size()];
-        int index = 0;
-        for (Object item : registry) {
-            //noinspection unchecked
-            dto.serializedValues[index++] = handler.write(item);
+        var internalType = getProperTypeName(registry.archetype());
+        var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(internalType);
+        var dto = new DTO();
+        dto.type = internalType;
+        dto.values = new String[registry.size()];
+        var index = 0;
+        for (var item : registry) {
+            dto.values[index++] = handler.write(item);
         }
         return JSON.toJson(dto);
     }
 
-    private static class RegistryDTO {
-        String typeName;
-        String[] serializedValues;
+    private static class DTO {
+        String type;
+        String[] values;
     }
 
     private static class RegistryArchetype implements Registry {
@@ -134,7 +131,7 @@ public class RegistryHandler
         }
 
         @Override
-        public Object getArchetype() {
+        public Object archetype() {
             return 0;
         }
 

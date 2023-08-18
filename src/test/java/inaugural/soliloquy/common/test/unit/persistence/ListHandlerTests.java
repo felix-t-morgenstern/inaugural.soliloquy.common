@@ -1,9 +1,11 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.ListHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -12,18 +14,20 @@ import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.Map;
 
+import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-class ListHandlerTests {
+@RunWith(MockitoJUnitRunner.class)
+public class ListHandlerTests {
     private final Integer INTEGER_1 = randomInt();
     private final Integer INTEGER_2 = randomInt();
     private final Integer INTEGER_3 = randomInt();
     private final String VALUES_STRING =
-            String.format("{\"typeName\":\"%s\",\"serializedValues\":[\"%d\",\"%d\",\"%d\"]}",
+            String.format("{\"type\":\"%s\",\"values\":[\"%d\",\"%d\",\"%d\"]}",
                     Integer.class.getCanonicalName(),
                     INTEGER_1, INTEGER_2, INTEGER_3);
     private final Integer GENERATED_ARCHETYPE = randomInt();
@@ -31,22 +35,21 @@ class ListHandlerTests {
     private final Pair<PersistentValuesHandler, Map<String, TypeHandler>>
             MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS =
             generateMockPersistentValuesHandlerWithSimpleHandlers(
-                    new Integer[]{INTEGER_1, INTEGER_2, INTEGER_3});
+                    arrayOf(INTEGER_1, INTEGER_2, INTEGER_3));
     @SuppressWarnings("rawtypes") private final TypeHandler MOCK_INTEGER_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem2()
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
                     .get(Integer.class.getCanonicalName());
     private final PersistentValuesHandler MOCK_PERSISTENT_VALUES_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem1();
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item1();
 
     @SuppressWarnings("rawtypes") @Mock private List mockList;
     @Mock private ListFactory mockListFactory;
 
     private ListHandler listHandler;
 
-    @BeforeEach
-    void setUp() {
-        mockList = mock(List.class);
-        when(mockList.getArchetype()).thenReturn(new Object());
+    @Before
+    public void setUp() {
+        when(mockList.archetype()).thenReturn(new Object());
 
         mockListFactory = mock(ListFactory.class);
         //noinspection unchecked
@@ -59,7 +62,7 @@ class ListHandlerTests {
     }
 
     @Test
-    void testConstructorWithInvalidParams() {
+    public void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> new ListHandler(null, mockListFactory));
         assertThrows(IllegalArgumentException.class,
@@ -67,14 +70,14 @@ class ListHandlerTests {
     }
 
     @Test
-    void testWrite() {
+    public void testWrite() {
         when(mockList.size()).thenReturn(3);
         when(mockList.get(0)).thenReturn(INTEGER_1);
         when(mockList.get(1)).thenReturn(INTEGER_2);
         when(mockList.get(2)).thenReturn(INTEGER_3);
-        when(mockList.getArchetype()).thenReturn(randomInt());
+        when(mockList.archetype()).thenReturn(randomInt());
 
-        String output = listHandler.write(mockList);
+        var output = listHandler.write(mockList);
 
         assertEquals(VALUES_STRING, output);
         verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
@@ -88,15 +91,15 @@ class ListHandlerTests {
     }
 
     @Test
-    void testWriteNull() {
+    public void testWriteNull() {
         assertThrows(IllegalArgumentException.class,
                 () -> listHandler.write(null));
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    void testRead() {
-        List<Integer> list = listHandler.read(VALUES_STRING);
+    public void testRead() {
+        var list = listHandler.read(VALUES_STRING);
 
         assertNotNull(list);
         assertSame(mockList, list);
@@ -113,7 +116,7 @@ class ListHandlerTests {
     }
 
     @Test
-    void testReadInvalidValues() {
+    public void testReadInvalidValues() {
         assertThrows(IllegalArgumentException.class,
                 () -> listHandler.read(null));
         assertThrows(IllegalArgumentException.class,
@@ -121,31 +124,29 @@ class ListHandlerTests {
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         List.class.getCanonicalName() + ">",
                 listHandler.getInterfaceName());
     }
 
     @Test
-    void testGetArchetype() {
-        assertNotNull(listHandler.getArchetype());
+    public void testArchetype() {
+        assertNotNull(listHandler.archetype());
         assertEquals(List.class.getCanonicalName(),
-                listHandler.getArchetype().getInterfaceName());
+                listHandler.archetype().getInterfaceName());
     }
 
     @Test
-    void testGenerateArchetype() {
-        //noinspection unchecked
-        List<Integer> generatedArchetype = listHandler.generateArchetype(
-                Integer.class.getCanonicalName());
+    public void testGenerateArchetype() {
+        var generatedArchetype = listHandler.generateArchetype(Integer.class.getCanonicalName());
 
         assertNotNull(generatedArchetype);
-        assertNotNull(generatedArchetype.getArchetype());
+        assertNotNull(generatedArchetype.archetype());
     }
 
     @Test
-    void testGenerateArchetypeWithInvalidInputs() {
+    public void testGenerateArchetypeWithInvalidInputs() {
         assertThrows(IllegalArgumentException.class, () ->
                 listHandler.generateArchetype(null));
         assertThrows(IllegalArgumentException.class, () ->
@@ -153,7 +154,7 @@ class ListHandlerTests {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         List.class.getCanonicalName() + ">").hashCode(),
                 listHandler.hashCode());
@@ -161,9 +162,8 @@ class ListHandlerTests {
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Test
-    void testEquals() {
-        TypeHandler<List> equalHandler =
-                new ListHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockListFactory);
+    public void testEquals() {
+        var equalHandler = new ListHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockListFactory);
         TypeHandler<List> unequalHandler = mock(TypeHandler.class);
 
         assertEquals(listHandler, equalHandler);
@@ -172,7 +172,7 @@ class ListHandlerTests {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         List.class.getCanonicalName() + ">",
                 listHandler.toString());

@@ -1,123 +1,128 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.VariableCacheImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
-import java.util.List;
-import java.util.Map;
+import static inaugural.soliloquy.tools.random.Random.randomString;
+import static org.junit.Assert.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class VariableCacheImplTests {
+    private final String VARIABLE_1 = randomString();
+    private final String VARIABLE_2 = randomString();
+    private final String VARIABLE_3 = randomString();
+    private final String VALUE_1 = randomString();
+    private final String VALUE_2 = randomString();
+    private final String VALUE_3 = randomString();
 
-class VariableCacheImplTests {
-    private VariableCache _variableCache;
+    private VariableCache variableCache;
 
-    @BeforeEach
-    void setUp() {
-        _variableCache = new VariableCacheImpl();
+    @Before
+    public void setUp() {
+        variableCache = new VariableCacheImpl();
     }
 
     @Test
-    void testPutAndSize() {
-        _variableCache.setVariable("variable1", "value1");
-        _variableCache.setVariable("variable2", "value2");
-        _variableCache.setVariable("variable3", "value3");
+    public void testPutAndSize() {
+        variableCache.setVariable(VARIABLE_1, VALUE_1);
+        variableCache.setVariable(VARIABLE_2, VALUE_2);
+        variableCache.setVariable(VARIABLE_3, VALUE_3);
 
-        assertEquals(3, _variableCache.size());
+        assertEquals(3, variableCache.size());
     }
 
     @Test
-    void testPutAndGet() {
-        assertNull(_variableCache.getVariable("variable1"));
+    public void testPutAndGet() {
+        assertNull(variableCache.getVariable(VARIABLE_1));
 
-        _variableCache.setVariable("variable1", "value1");
+        variableCache.setVariable(VARIABLE_1, VALUE_1);
 
-        assertEquals("value1", _variableCache.getVariable("variable1"));
+        assertEquals(VALUE_1, variableCache.getVariable(VARIABLE_1));
     }
 
     @Test
-    void testSetGetAndRemoveWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class, () -> _variableCache.setVariable(null, 0));
-        assertThrows(IllegalArgumentException.class, () -> _variableCache.setVariable("", 0));
+    public void testSetGetAndRemoveWithInvalidParams() {
+        assertThrows(IllegalArgumentException.class, () -> variableCache.setVariable(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> variableCache.setVariable("", 0));
         assertThrows(IllegalArgumentException.class,
-                () -> _variableCache.setVariable("variable", null));
+                () -> variableCache.setVariable(randomString(), null));
         assertThrows(IllegalArgumentException.class,
-                () -> _variableCache.setVariable("variable", ""));
-        assertThrows(IllegalArgumentException.class, () -> _variableCache.getVariable(null));
-        assertThrows(IllegalArgumentException.class, () -> _variableCache.getVariable(""));
-        assertThrows(IllegalArgumentException.class, () -> _variableCache.remove(null));
-        assertThrows(IllegalArgumentException.class, () -> _variableCache.remove(""));
+                () -> variableCache.setVariable(randomString(), ""));
+        assertThrows(IllegalArgumentException.class, () -> variableCache.getVariable(null));
+        assertThrows(IllegalArgumentException.class, () -> variableCache.getVariable(""));
+        assertThrows(IllegalArgumentException.class, () -> variableCache.remove(null));
+        assertThrows(IllegalArgumentException.class, () -> variableCache.remove(""));
     }
 
     @Test
-    void testNamesRepresentation() {
-        _variableCache.setVariable("variable1", "value1");
-        _variableCache.setVariable("variable2", "value2");
-        _variableCache.setVariable("variable3", "value3");
+    public void testNamesRepresentation() {
+        variableCache.setVariable(VARIABLE_1, VALUE_1);
+        variableCache.setVariable(VARIABLE_2, VALUE_2);
+        variableCache.setVariable(VARIABLE_3, VALUE_3);
 
-        List<String> namesRepresentation = _variableCache.namesRepresentation();
+        var namesRepresentation = variableCache.namesRepresentation();
 
         assertNotNull(namesRepresentation);
         assertEquals(3, namesRepresentation.size());
-        assertTrue(namesRepresentation.contains("variable1"));
-        assertTrue(namesRepresentation.contains("variable2"));
-        assertTrue(namesRepresentation.contains("variable3"));
+        assertTrue(namesRepresentation.contains(VARIABLE_1));
+        assertTrue(namesRepresentation.contains(VARIABLE_2));
+        assertTrue(namesRepresentation.contains(VARIABLE_3));
     }
 
     @Test
-    void testRemove() {
-        assertFalse(_variableCache.remove("variable1"));
+    public void testRemove() {
+        assertFalse(variableCache.remove(VARIABLE_1));
 
-        _variableCache.setVariable("variable1", "value1");
+        variableCache.setVariable(VARIABLE_1, VALUE_1);
 
-        assertTrue(_variableCache.remove("variable1"));
-        assertFalse(_variableCache.remove("variable1"));
-        assertEquals(0, _variableCache.size());
+        assertTrue(variableCache.remove(VARIABLE_1));
+        assertFalse(variableCache.remove(VARIABLE_1));
+        assertEquals(0, variableCache.size());
     }
 
     @Test
-    void testClear() {
-        assertEquals(0, _variableCache.size());
+    public void testClear() {
+        assertEquals(0, variableCache.size());
 
-        _variableCache.setVariable("variable1", "value1");
-        _variableCache.setVariable("variable2", "value2");
-        _variableCache.setVariable("variable3", "value3");
+        variableCache.setVariable(VARIABLE_1, VALUE_1);
+        variableCache.setVariable(VARIABLE_2, VALUE_2);
+        variableCache.setVariable(VARIABLE_3, VALUE_3);
 
-        assertEquals(3, _variableCache.size());
+        assertEquals(3, variableCache.size());
 
-        _variableCache.clear();
+        variableCache.clear();
 
-        assertEquals(0, _variableCache.size());
+        assertEquals(0, variableCache.size());
     }
 
     @Test
-    void testVariablesRepresentation() {
-        _variableCache.setVariable("variable1", "value1");
-        _variableCache.setVariable("variable2", "value2");
-        _variableCache.setVariable("variable3", "value3");
+    public void testVariablesRepresentation() {
+        variableCache.setVariable(VARIABLE_1, VALUE_1);
+        variableCache.setVariable(VARIABLE_2, VALUE_2);
+        variableCache.setVariable(VARIABLE_3, VALUE_3);
 
-        Map<String, Object> variablesRepresentation = _variableCache.variablesRepresentation();
+        var variablesRepresentation = variableCache.variablesRepresentation();
 
         assertNotNull(variablesRepresentation);
         assertEquals(3, variablesRepresentation.size());
-        assertEquals("value1", variablesRepresentation.get("variable1"));
-        assertEquals("value2", variablesRepresentation.get("variable2"));
-        assertEquals("value3", variablesRepresentation.get("variable3"));
+        assertEquals(VALUE_1, variablesRepresentation.get(VARIABLE_1));
+        assertEquals(VALUE_2, variablesRepresentation.get(VARIABLE_2));
+        assertEquals(VALUE_3, variablesRepresentation.get(VARIABLE_3));
     }
 
     @Test
-    void testMakeClone() {
-        _variableCache.setVariable("variable1", "value1");
-        _variableCache.setVariable("variable2", "value2");
-        _variableCache.setVariable("variable3", "value3");
+    public void testMakeClone() {
+        variableCache.setVariable(VARIABLE_1, VALUE_1);
+        variableCache.setVariable(VARIABLE_2, VALUE_2);
+        variableCache.setVariable(VARIABLE_3, VALUE_3);
 
-        VariableCache clone = _variableCache.makeClone();
-        _variableCache.setVariable("variable1", "value4");
+        var clone = variableCache.makeClone();
+        variableCache.setVariable(VARIABLE_1, randomString());
 
         assertNotNull(clone);
-        assertEquals("value1", clone.getVariable("variable1"));
-        assertEquals("value2", clone.getVariable("variable2"));
-        assertEquals("value3", clone.getVariable("variable3"));
+        assertEquals(VALUE_1, clone.getVariable(VARIABLE_1));
+        assertEquals(VALUE_2, clone.getVariable(VARIABLE_2));
+        assertEquals(VALUE_3, clone.getVariable(VARIABLE_3));
     }
 }

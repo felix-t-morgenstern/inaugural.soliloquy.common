@@ -1,9 +1,11 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.MapHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -13,14 +15,17 @@ import soliloquy.specs.common.valueobjects.Pair;
 import java.util.ArrayList;
 import java.util.Set;
 
+import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
 import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class MapHandlerTests {
+@RunWith(MockitoJUnitRunner.class)
+public class MapHandlerTests {
     private final String KEY_1 = randomString();
     private final String KEY_2 = randomString();
     private final String KEY_3 = randomString();
@@ -33,20 +38,19 @@ class MapHandlerTests {
     private final Pair<PersistentValuesHandler, java.util.Map<String, TypeHandler>>
             MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS =
             generateMockPersistentValuesHandlerWithSimpleHandlers(
-                    new String[]{KEY_1, KEY_2, KEY_3},
-                    new Integer[]{VALUE_1, VALUE_2, VALUE_3});
+                    arrayOf(KEY_1, KEY_2, KEY_3),
+                    arrayOf(VALUE_1, VALUE_2, VALUE_3));
     private final PersistentValuesHandler MOCK_PERSISTENT_VALUES_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem1();
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item1();
     @SuppressWarnings("rawtypes") private final TypeHandler MOCK_STRING_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem2()
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
                     .get(String.class.getCanonicalName());
     @SuppressWarnings("rawtypes") private final TypeHandler MOCK_INTEGER_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.getItem2()
+            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
                     .get(Integer.class.getCanonicalName());
     private final String VALUES_STRING = String.format(
-            "{\"keyValueType\":\"%s\",\"valueValueType\":\"%s\"," +
-                    "\"keySerializedValues\":[\"%s\",\"%s\",\"%s\"]," +
-                    "\"valueSerializedValues\":[\"%d\",\"%d\",\"%d\"]}",
+            "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\",\"%s\",\"%s\"]," +
+                    "\"values\":[\"%d\",\"%d\",\"%d\"]}",
             String.class.getCanonicalName(), Integer.class.getCanonicalName(),
             KEY_1, KEY_2, KEY_3, VALUE_1, VALUE_2, VALUE_3);
 
@@ -55,11 +59,8 @@ class MapHandlerTests {
 
     private MapHandler mapHandler;
 
-    @BeforeEach
-    void setUp() {
-        mockMap = mock(Map.class);
-
-        mockMapFactory = mock(MapFactory.class);
+    @Before
+    public void setUp() {
         //noinspection unchecked
         when(mockMapFactory.make(any(), any())).thenReturn(mockMap);
 
@@ -72,17 +73,13 @@ class MapHandlerTests {
     }
 
     @Test
-    void testWrite() {
-        when(mockMap.getFirstArchetype()).thenReturn(KEY_ARCHETYPE);
-        when(mockMap.getSecondArchetype()).thenReturn(VALUE_ARCHETYPE);
+    public void testWrite() {
+        when(mockMap.firstArchetype()).thenReturn(KEY_ARCHETYPE);
+        when(mockMap.secondArchetype()).thenReturn(VALUE_ARCHETYPE);
         when(mockMap.size()).thenReturn(3);
         // NB: Making a list just to get its iterator is done to ensure that the keys are read in
         // order to guarantee an output that matches VALUES_STRING; Set iterators are indeterminate
-        ArrayList<String> keyList = new ArrayList<>() {{
-            add(KEY_1);
-            add(KEY_2);
-            add(KEY_3);
-        }};
+        var keyList = listOf(KEY_1, KEY_2, KEY_3);
         //noinspection unchecked
         Set<String> mockKeySet = mock(Set.class);
         when(mockKeySet.iterator()).thenReturn(keyList.iterator());
@@ -91,7 +88,7 @@ class MapHandlerTests {
         when(mockMap.get(KEY_2)).thenReturn(VALUE_2);
         when(mockMap.get(KEY_3)).thenReturn(VALUE_3);
 
-        String output = mapHandler.write(mockMap);
+        var output = mapHandler.write(mockMap);
 
         assertEquals(VALUES_STRING, output);
         verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
@@ -113,14 +110,13 @@ class MapHandlerTests {
     }
 
     @Test
-    void testWriteNull() {
-        assertThrows(IllegalArgumentException.class,
-                () -> mapHandler.write(null));
+    public void testWriteNull() {
+        assertThrows(IllegalArgumentException.class, () -> mapHandler.write(null));
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    void testRead() {
+    public void testRead() {
         Map<String, Integer> map = mapHandler.read(VALUES_STRING);
 
         assertSame(mockMap, map);
@@ -145,26 +141,26 @@ class MapHandlerTests {
     }
 
     @Test
-    void testReadWithInvalidParams() {
+    public void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> mapHandler.read(null));
         assertThrows(IllegalArgumentException.class, () -> mapHandler.read(""));
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Map.class.getCanonicalName() + ">",
                 mapHandler.getInterfaceName());
     }
 
     @Test
-    void testGetArchetype() {
-        assertNotNull(mapHandler.getArchetype());
-        assertEquals(Map.class.getCanonicalName(), mapHandler.getArchetype().getInterfaceName());
+    public void testArchetype() {
+        assertNotNull(mapHandler.archetype());
+        assertEquals(Map.class.getCanonicalName(), mapHandler.archetype().getInterfaceName());
     }
 
     @Test
-    void testGenerateArchetype() {
+    public void testGenerateArchetype() {
         //noinspection unchecked
         Map<String, Integer> generatedArchetype = mapHandler.generateArchetype(
                 String.class.getCanonicalName(), Integer.class.getCanonicalName());
@@ -175,7 +171,7 @@ class MapHandlerTests {
     }
 
     @Test
-    void testGenerateArchetypeWithInvalidParams() {
+    public void testGenerateArchetypeWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () ->
                 mapHandler.generateArchetype(null, Integer.class.getCanonicalName()));
         assertThrows(IllegalArgumentException.class, () ->
@@ -187,7 +183,7 @@ class MapHandlerTests {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         Map.class.getCanonicalName() + ">").hashCode(),
                 mapHandler.hashCode());
@@ -195,9 +191,8 @@ class MapHandlerTests {
 
     @SuppressWarnings("rawtypes")
     @Test
-    void testEquals() {
-        TypeHandler<Map> equalHandler =
-                new MapHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockMapFactory);
+    public void testEquals() {
+        var equalHandler = new MapHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockMapFactory);
         @SuppressWarnings("unchecked") TypeHandler<Map> unequalHandler = mock(TypeHandler.class);
 
         assertEquals(mapHandler, equalHandler);
@@ -206,7 +201,7 @@ class MapHandlerTests {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Map.class.getCanonicalName() + ">",
                 mapHandler.toString());

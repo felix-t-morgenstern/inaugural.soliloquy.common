@@ -1,80 +1,79 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.UuidHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-class UuidHandlerTests {
-    private final String ENTITY_UUID_STRING = "5ab46602-2493-4dbd-831c-6e63a6e6094b";
-    private final UUID GUID = UUID.fromString(ENTITY_UUID_STRING);
+public class UuidHandlerTests {
+    private final UUID UUID = java.util.UUID.randomUUID();
 
-    private TypeHandler<UUID> _uuidHandler;
+    private TypeHandler<UUID> handler;
 
-    @BeforeEach
-    void setUp() {
-        _uuidHandler = new UuidHandler();
+    @Before
+    public void setUp() {
+        handler = new UuidHandler();
     }
 
     @Test
-    void testGetArchetype() {
-        assertNotNull(_uuidHandler.getArchetype());
+    public void testArchetype() {
+        assertNotNull(handler.archetype());
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         UUID.class.getCanonicalName() + ">",
-                _uuidHandler.getInterfaceName());
+                handler.getInterfaceName());
     }
 
     @Test
-    void testRead() {
-        assertEquals(GUID, _uuidHandler.read(ENTITY_UUID_STRING));
+    public void testRead() {
+        assertEquals(UUID, handler.read(UUID.toString()));
     }
 
     @Test
-    void testReadNull() {
-        assertNull(_uuidHandler.read(""));
+    public void testReadNull() {
+        assertNull(handler.read(""));
     }
 
     @Test
-    void testWrite() {
-        assertEquals(ENTITY_UUID_STRING, _uuidHandler.write(GUID));
+    public void testWrite() {
+        assertEquals(UUID.toString(), handler.write(UUID));
     }
 
     @Test
-    void testWriteNull() {
-        assertEquals("", _uuidHandler.write(null));
+    public void testWriteNull() {
+        assertEquals("", handler.write(null));
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         UUID.class.getCanonicalName() + ">").hashCode(),
-                _uuidHandler.hashCode());
+                handler.hashCode());
     }
 
     @Test
-    void testEquals() {
-        TypeHandler<UUID> equalHandler = new UuidHandler();
+    public void testEquals() {
+        var equalHandler = new UuidHandler();
         //noinspection unchecked
         TypeHandler<UUID> unequalHandler = mock(TypeHandler.class);
 
-        assertEquals(_uuidHandler, equalHandler);
-        assertNotEquals(_uuidHandler, unequalHandler);
-        assertNotEquals(null, _uuidHandler);
+        assertEquals(handler, equalHandler);
+        assertNotEquals(handler, unequalHandler);
+        assertNotEquals(null, handler);
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         UUID.class.getCanonicalName() + ">",
-                _uuidHandler.toString());
+                handler.toString());
     }
 }

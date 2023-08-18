@@ -1,23 +1,25 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.RegistryHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.shared.HasId;
 
-import java.util.ArrayList;
-
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class RegistryHandlerTests {
+@RunWith(MockitoJUnitRunner.class)
+public class RegistryHandlerTests {
     private final String VALUE_1 = randomString();
     private final String VALUE_2 = randomString();
     private final String VALUE_3 = randomString();
@@ -35,27 +37,24 @@ class RegistryHandlerTests {
     private RegistryHandler registryHandler;
 
     private final String DATA_STRING =
-            String.format("{\"typeName\":\"%s\",\"serializedValues\":[\"%s\",\"%s\",\"%s\"]}",
+            String.format("{\"type\":\"%s\",\"values\":[\"%s\",\"%s\",\"%s\"]}",
                     INTERNAL_TYPE, VALUE_1, VALUE_2, VALUE_3);
 
-    @BeforeEach
-    void setup() {
-        mockRegistry = mock(Registry.class);
-        HasId archetype = mock(HasId.class);
+    @Before
+    public void setup() {
+        var archetype = mock(HasId.class);
         when(archetype.getInterfaceName()).thenReturn(INTERNAL_TYPE);
-        when(mockRegistry.getArchetype()).thenReturn(archetype);
-        when(mockRegistry.iterator()).thenReturn(new ArrayList<>() {{
-            add(mockHasId1 = mock(HasId.class));
-            add(mockHasId2 = mock(HasId.class));
-            add(mockHasId3 = mock(HasId.class));
-        }}.iterator());
+        when(mockRegistry.archetype()).thenReturn(archetype);
+        when(mockRegistry.iterator()).thenReturn(listOf(
+            mockHasId1 = mock(HasId.class),
+            mockHasId2 = mock(HasId.class),
+            mockHasId3 = mock(HasId.class)
+        ).iterator());
         when(mockRegistry.size()).thenReturn(3);
 
-        mockRegistryFactory = mock(RegistryFactory.class);
         //noinspection unchecked
         when(mockRegistryFactory.make(any())).thenReturn(mockRegistry);
 
-        mockHasIdHandler = mock(TypeHandler.class);
         //noinspection unchecked
         when(mockHasIdHandler.write(mockHasId1)).thenReturn(VALUE_1);
         //noinspection unchecked
@@ -66,9 +65,6 @@ class RegistryHandlerTests {
         when(mockHasIdHandler.read(VALUE_2)).thenReturn(mockHasId2);
         when(mockHasIdHandler.read(VALUE_3)).thenReturn(mockHasId3);
 
-        mockGeneratedArchetype = mock(HasId.class);
-
-        mockPersistentValuesHandler = mock(PersistentValuesHandler.class);
         //noinspection unchecked
         when(mockPersistentValuesHandler.getTypeHandler(INTERNAL_TYPE))
                 .thenReturn(mockHasIdHandler);
@@ -79,7 +75,7 @@ class RegistryHandlerTests {
     }
 
     @Test
-    void testConstructorWithInvalidParams() {
+    public void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class,
                 () -> new RegistryHandler(null, mockRegistryFactory));
         assertThrows(IllegalArgumentException.class,
@@ -87,13 +83,13 @@ class RegistryHandlerTests {
     }
 
     @Test
-    void testWriteWithInvalidParams() {
+    public void testWriteWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> registryHandler.write(null));
     }
 
     @Test
-    void testWrite() {
-        String output = registryHandler.write(mockRegistry);
+    public void testWrite() {
+        var output = registryHandler.write(mockRegistry);
 
         assertEquals(DATA_STRING, output);
         verify(mockPersistentValuesHandler, times(1)).getTypeHandler(INTERNAL_TYPE);
@@ -106,14 +102,14 @@ class RegistryHandlerTests {
     }
 
     @Test
-    void testReadWithInvalidParams() {
+    public void testReadWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> registryHandler.read(null));
         assertThrows(IllegalArgumentException.class, () -> registryHandler.read(""));
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    void testRead() {
+    public void testRead() {
         Registry<HasId> readValue = registryHandler.read(DATA_STRING);
 
         assertNotNull(readValue);
@@ -130,7 +126,7 @@ class RegistryHandlerTests {
     }
 
     @Test
-    void testGenerateArchetypeWithInvalidParams() {
+    public void testGenerateArchetypeWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () ->
                 registryHandler.generateArchetype(null));
         assertThrows(IllegalArgumentException.class, () ->
@@ -138,7 +134,7 @@ class RegistryHandlerTests {
     }
 
     @Test
-    void testGenerateArchetype() {
+    public void testGenerateArchetype() {
         //noinspection unchecked
         Registry<HasId> generatedArchetype = registryHandler.generateArchetype(INTERNAL_TYPE);
 
@@ -149,21 +145,21 @@ class RegistryHandlerTests {
     }
 
     @Test
-    void testGetInterfaceName() {
+    public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Registry.class.getCanonicalName() + ">",
                 registryHandler.getInterfaceName());
     }
 
     @Test
-    void testGetArchetype() {
-        assertNotNull(registryHandler.getArchetype());
+    public void testArchetype() {
+        assertNotNull(registryHandler.archetype());
         assertEquals(Registry.class.getCanonicalName(),
-                registryHandler.getArchetype().getInterfaceName());
+                registryHandler.archetype().getInterfaceName());
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         assertEquals((TypeHandler.class.getCanonicalName() + "<" +
                         Registry.class.getCanonicalName() + ">").hashCode(),
                 registryHandler.hashCode());
@@ -171,9 +167,8 @@ class RegistryHandlerTests {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
-    void testEquals() {
-        TypeHandler<Registry> equalHandler =
-                new RegistryHandler(mockPersistentValuesHandler, mockRegistryFactory);
+    public void testEquals() {
+        var equalHandler = new RegistryHandler(mockPersistentValuesHandler, mockRegistryFactory);
         TypeHandler<Registry> unequalHandler = mock(TypeHandler.class);
 
         assertEquals(registryHandler, equalHandler);
@@ -182,7 +177,7 @@ class RegistryHandlerTests {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         Registry.class.getCanonicalName() + ">",
                 registryHandler.toString());

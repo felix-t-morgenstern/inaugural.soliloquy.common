@@ -1,33 +1,36 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.StringHandler;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static inaugural.soliloquy.tools.random.Random.randomString;
+import static org.junit.Assert.*;
 
 public class StringHandlerTests {
-    private StringHandler _stringHandler;
+    private final String VALUE = randomString();
 
-    @BeforeEach
-    protected void setUp() {
-        _stringHandler = new StringHandler();
+    private StringHandler handler;
+
+    @Before
+    public void setUp() {
+        handler = new StringHandler();
     }
 
     @Test
     public void testRead() {
-        assertEquals("This Value!", _stringHandler.read("This Value!"));
+        assertEquals(VALUE, handler.read(VALUE));
     }
 
     @Test
     public void testReadNull() {
+        //noinspection CatchMayIgnoreException
         try {
-            _stringHandler.read(null);
+            handler.read(null);
             fail("Should fail on invalid value");
         }
         catch (IllegalArgumentException e) {
-            assertTrue(true);
         }
         catch (Exception e) {
             fail("Should throw correct exception");
@@ -36,18 +39,18 @@ public class StringHandlerTests {
 
     @Test
     public void testWrite() {
-        assertEquals("This Value!", _stringHandler.write("This Value!"));
+        assertEquals(VALUE, handler.write(VALUE));
     }
 
     @Test
-    public void testGetArchetype() {
-        assertNotNull(_stringHandler.getArchetype());
+    public void testArchetype() {
+        assertNotNull(handler.archetype());
     }
 
     @Test
     public void testGetInterfaceName() {
         assertEquals(TypeHandler.class.getCanonicalName() + "<" +
                         String.class.getCanonicalName() + ">",
-                _stringHandler.getInterfaceName());
+                handler.getInterfaceName());
     }
 }

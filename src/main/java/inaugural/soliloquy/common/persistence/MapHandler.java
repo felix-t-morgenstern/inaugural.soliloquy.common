@@ -31,14 +31,14 @@ public class MapHandler
     @Override
     public Map read(String valuesString) throws IllegalArgumentException {
         Check.ifNullOrEmpty(valuesString, "valuesString");
-        MapDTO dto = JSON.fromJson(valuesString, MapDTO.class);
-        TypeHandler keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.keyValueType);
-        TypeHandler valueHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueValueType);
-        Map map = MAP_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.keyValueType),
-                PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueValueType));
-        for (int i = 0; i < dto.keySerializedValues.length; i++) {
-            map.put(keyHandler.read(dto.keySerializedValues[i]),
-                    valueHandler.read(dto.valueSerializedValues[i]));
+        var dto = JSON.fromJson(valuesString, DTO.class);
+        var keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.keyType);
+        var valueHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.valueType);
+        Map map = MAP_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.keyType),
+                PERSISTENT_VALUES_HANDLER.generateArchetype(dto.valueType));
+        for (int i = 0; i < dto.keys.length; i++) {
+            map.put(keyHandler.read(dto.keys[i]),
+                    valueHandler.read(dto.values[i]));
         }
         return map;
     }
@@ -46,31 +46,29 @@ public class MapHandler
     @Override
     public String write(Map map) {
         Check.ifNull(map, "map");
-        String keyValueType = getProperTypeName(map.getFirstArchetype());
-        String valueValueType = getProperTypeName(map.getSecondArchetype());
-        TypeHandler keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(keyValueType);
-        TypeHandler valueHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(valueValueType);
-        MapDTO dto = new MapDTO();
-        dto.keyValueType = keyValueType;
-        dto.valueValueType = valueValueType;
-        dto.keySerializedValues = new String[map.size()];
-        dto.valueSerializedValues = new String[map.size()];
-        int indexCounter = 0;
-        for (Object key : map.keySet()) {
-            //noinspection unchecked
-            dto.keySerializedValues[indexCounter] = keyHandler.write(key);
-            //noinspection unchecked
-            dto.valueSerializedValues[indexCounter] = valueHandler.write(map.get(key));
+        var keyValueType = getProperTypeName(map.firstArchetype());
+        var valueValueType = getProperTypeName(map.secondArchetype());
+        var keyHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(keyValueType);
+        var valueHandler = PERSISTENT_VALUES_HANDLER.getTypeHandler(valueValueType);
+        var dto = new DTO();
+        dto.keyType = keyValueType;
+        dto.valueType = valueValueType;
+        dto.keys = new String[map.size()];
+        dto.values = new String[map.size()];
+        var indexCounter = 0;
+        for (var key : map.keySet()) {
+            dto.keys[indexCounter] = keyHandler.write(key);
+            dto.values[indexCounter] = valueHandler.write(map.get(key));
             indexCounter++;
         }
         return JSON.toJson(dto);
     }
 
-    private static class MapDTO {
-        String keyValueType;
-        String valueValueType;
-        String[] keySerializedValues;
-        String[] valueSerializedValues;
+    private static class DTO {
+        String keyType;
+        String valueType;
+        String[] keys;
+        String[] values;
     }
 
     private static class MapArchetype implements Map {
@@ -141,12 +139,12 @@ public class MapHandler
         }
 
         @Override
-        public Object getFirstArchetype() throws IllegalStateException {
+        public Object firstArchetype() throws IllegalStateException {
             return 0;
         }
 
         @Override
-        public Object getSecondArchetype() throws IllegalStateException {
+        public Object secondArchetype() throws IllegalStateException {
             return 0;
         }
 

@@ -1,66 +1,71 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.ListImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import soliloquy.specs.common.infrastructure.List;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
+import static inaugural.soliloquy.tools.random.Random.randomInt;
+import static inaugural.soliloquy.tools.random.Random.randomString;
+import static org.junit.Assert.*;
 
-class ListImplTests {
-    private List<Integer> _list;
+public class ListImplTests {
+    private final int ARCHETYPE = randomInt();
 
-    @BeforeEach
-    void setUp() {
-        _list = new ListImpl<>(123123);
+    private List<Integer> list;
+
+    @Before
+    public void setUp() {
+        list = new ListImpl<>(ARCHETYPE);
     }
 
     // TODO: Add other conditions
     @Test
-    void testConstructorWithInvalidParams() {
+    public void testConstructorWithInvalidParams() {
         assertThrows(IllegalArgumentException.class, () -> new ListImpl<>(null));
 
         assertThrows(IllegalArgumentException.class,
-                () -> new ListImpl<>(new ArrayList<String>(), null));
+                () -> new ListImpl<>(listOf(), null));
     }
 
     @Test
-    void testExtendsArrayList() {
-        assertTrue(_list instanceof ArrayList);
+    public void testExtendsArrayList() {
+        assertTrue(list instanceof ArrayList);
     }
 
     @Test
-    void testMakeClone() {
-        List<Integer> newCollection = _list.makeClone();
+    public void testMakeClone() {
+        var newCollection = list.makeClone();
 
-        assertEquals(_list, newCollection);
-        assertNotNull(newCollection.getArchetype());
+        assertEquals(list, newCollection);
+        assertNotNull(newCollection.archetype());
     }
 
     @Test
-    void testReadOnlyRepresentation() {
-        _list.add(1);
-        _list.add(2);
-        _list.add(3);
-        List<Integer> clonedList = _list.makeClone();
+    public void testReadOnlyRepresentation() {
+        list.add(randomInt());
+        list.add(randomInt());
+        list.add(randomInt());
+        var clonedList = list.makeClone();
 
         assertNotNull(clonedList);
-        assertNotSame(_list, clonedList);
-        assertEquals(_list, clonedList);
+        assertNotSame(list, clonedList);
+        assertEquals(list, clonedList);
     }
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Test
-    void testGetParameterizedClassName() {
-        List<String> strings = new ListImpl<>("");
+    public void testGetParameterizedClassName() {
+        var strings = new ListImpl<>("");
         assertEquals(List.class.getCanonicalName() + "<" +
                         String.class.getCanonicalName() + ">",
                 strings.getInterfaceName());
 
-        List<List<List<String>>> groupsOfGroupsOfStrings =
+        var groupsOfGroupsOfStrings =
                 new ListImpl<>(new ListImpl<>(new ListImpl<>("")));
         assertEquals(List.class.getCanonicalName() + "<" +
                         List.class.getCanonicalName() + "<" +
@@ -70,17 +75,17 @@ class ListImplTests {
     }
 
     @Test
-    void testGetArchetype() {
-        assertEquals(123123, (int) _list.getArchetype());
+    public void testArchetype() {
+        assertEquals(ARCHETYPE, (int) list.archetype());
     }
 
     @Test
-    void testHashCode() {
-        final String string1 = "string1";
-        final String string2 = "string2";
-        final String string3 = "string3";
+    public void testHashCode() {
+        final String string1 = randomString();
+        final String string2 = randomString();
+        final String string3 = randomString();
 
-        List<String> strings = new ListImpl<>("");
+        var strings = new ListImpl<>("");
 
         strings.add(string1);
         strings.add(string2);
@@ -90,21 +95,27 @@ class ListImplTests {
     }
 
     @Test
-    void testEquals() {
-        ListImpl<Integer> newCollection = new ListImpl<>(0);
-        _list.add(1);
-        assertNotEquals(_list, newCollection);
-        newCollection.add(1);
-        assertEquals(_list, newCollection);
-        _list.add(2);
-        assertNotEquals(_list, newCollection);
-        newCollection.add(3);
-        assertNotEquals(_list, newCollection);
+    public void testEquals() {
+        var item1 = randomInt();
+        var item2 = randomInt();
+        var item3 = randomInt();
+        var newCollection = new ListImpl<>(randomInt());
+
+        list.add(item1);
+        assertNotEquals(list, newCollection);
+
+        newCollection.add(item1);
+        assertEquals(list, newCollection);
+
+        list.add(item2);
+        assertNotEquals(list, newCollection);
+
+        newCollection.add(item3);
+        assertNotEquals(list, newCollection);
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Test
-    void testToString() {
-        assertThrows(UnsupportedOperationException.class, _list::toString);
+    public void testToString() {
+        assertThrows(UnsupportedOperationException.class, list::toString);
     }
 }
