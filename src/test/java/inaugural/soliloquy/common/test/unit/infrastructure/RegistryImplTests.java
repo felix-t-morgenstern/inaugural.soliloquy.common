@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.RegistryImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.shared.HasId;
 
@@ -14,11 +14,10 @@ import java.util.Collection;
 import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RegistryImplTests {
     private final String ID = randomString();
     private final String ID_1 = randomString();
@@ -35,9 +34,9 @@ public class RegistryImplTests {
 
     private Registry<HasId> registry;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        when(mockArchetype.getInterfaceName()).thenReturn(TYPE);
+        lenient().when(mockArchetype.getInterfaceName()).thenReturn(TYPE);
 
         registry = new RegistryImpl<>(mockArchetype);
     }

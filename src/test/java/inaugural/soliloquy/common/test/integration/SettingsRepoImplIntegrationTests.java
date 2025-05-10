@@ -2,8 +2,8 @@ package inaugural.soliloquy.common.test.integration;
 
 import com.google.inject.Guice;
 import inaugural.soliloquy.common.CommonModule;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.factories.SettingFactory;
@@ -22,7 +22,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static inaugural.soliloquy.tools.valueobjects.Pair.pairOf;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SettingsRepoImplIntegrationTests {
     private final int COORDINATE_SETTING_X = 123;
@@ -93,7 +93,7 @@ public class SettingsRepoImplIntegrationTests {
                     "\\\\\\\"789\\\\\\\"]}\\\"}\"},{\"id\":\"stringSetting\"," +
                     "\"value\":\"stringSettingValue\"}]";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         var commonInjector = Guice.createInjector(new CommonModule());
 

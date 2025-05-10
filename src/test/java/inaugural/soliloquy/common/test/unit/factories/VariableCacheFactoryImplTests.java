@@ -2,18 +2,18 @@ package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.VariableCacheFactoryImpl;
 import inaugural.soliloquy.common.infrastructure.VariableCacheImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.factories.VariableCacheFactory;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class VariableCacheFactoryImplTests {
 
     private VariableCacheFactory factory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         factory = new VariableCacheFactoryImpl();
     }

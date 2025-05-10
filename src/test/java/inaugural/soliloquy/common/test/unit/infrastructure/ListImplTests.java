@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.ListImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.List;
 
 import java.util.ArrayList;
@@ -11,14 +11,14 @@ import java.util.Objects;
 import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ListImplTests {
     private final int ARCHETYPE = randomInt();
 
     private List<Integer> list;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         list = new ListImpl<>(ARCHETYPE);
     }

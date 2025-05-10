@@ -2,11 +2,11 @@ package inaugural.soliloquy.common.test.integration;
 
 import com.google.inject.Guice;
 import inaugural.soliloquy.common.CommonModule;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.factories.MapFactory;
 import soliloquy.specs.common.factories.RegistryFactory;
@@ -25,11 +25,10 @@ import java.util.UUID;
 
 import static inaugural.soliloquy.tools.random.Random.randomString;
 import static inaugural.soliloquy.tools.valueobjects.Pair.pairOf;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class VariableCacheImplIntegrationTests {
     private final String HAS_ID_TYPE = HasId.class.getCanonicalName();
 
@@ -115,7 +114,7 @@ public class VariableCacheImplIntegrationTests {
                     "\\\\\\\"values\\\\\\\":[\\\\\\\"123\\\\\\\",\\\\\\\"456\\\\\\\"," +
                     "\\\\\\\"789\\\\\\\"]}\\\"}\"}]";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         var commonInjector = Guice.createInjector(new CommonModule());
 
@@ -125,15 +124,15 @@ public class VariableCacheImplIntegrationTests {
         mapFactory = commonInjector.getInstance(MapFactory.class);
         registryFactory = commonInjector.getInstance(RegistryFactory.class);
 
-        when(mockHasId.id()).thenReturn(randomString());
+        lenient().when(mockHasId.id()).thenReturn(randomString());
 
-        when(mockHasIdHandler.getInterfaceName()).thenReturn("<" + HAS_ID_TYPE + ">");
+        lenient().when(mockHasIdHandler.getInterfaceName()).thenReturn("<" + HAS_ID_TYPE + ">");
         var mockHasIdArchetype = mock(HasId.class);
-        when(mockHasIdHandler.archetype()).thenReturn(mockHasIdArchetype);
+        lenient().when(mockHasIdHandler.archetype()).thenReturn(mockHasIdArchetype);
         var hasIdValue = "hasIdValue";
         //noinspection unchecked
-        when(mockHasIdHandler.write(mockHasId)).thenReturn(hasIdValue);
-        when(mockHasIdHandler.read(hasIdValue)).thenReturn(mockHasId);
+        lenient().when(mockHasIdHandler.write(mockHasId)).thenReturn(hasIdValue);
+        lenient().when(mockHasIdHandler.read(hasIdValue)).thenReturn(mockHasId);
 
         var persistentValuesHandler = commonInjector.getInstance(PersistentValuesHandler.class);
         persistentValuesHandler.addTypeHandler(mockHasIdHandler);

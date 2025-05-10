@@ -1,8 +1,8 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.SettingsRepoImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
@@ -11,7 +11,7 @@ import soliloquy.specs.common.persistence.PersistentValuesHandler;
 import java.util.TreeMap;
 
 import static inaugural.soliloquy.tools.random.Random.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class SettingsRepoImplTests {
@@ -40,7 +40,7 @@ public class SettingsRepoImplTests {
 
     private SettingsRepoImpl settingsRepo;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mockPersistentValuesHandler = mock(PersistentValuesHandler.class);
 

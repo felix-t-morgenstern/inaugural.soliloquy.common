@@ -1,13 +1,13 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.Coordinate3dHandler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate3d;
 
 import static inaugural.soliloquy.tools.random.Random.randomInt;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class Coordinate3dHandlerTests {
@@ -19,7 +19,7 @@ public class Coordinate3dHandlerTests {
 
     private TypeHandler<Coordinate3d> Coordinate3dHandler;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         Coordinate3dHandler = new Coordinate3dHandler();
     }

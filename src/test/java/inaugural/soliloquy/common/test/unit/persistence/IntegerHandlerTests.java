@@ -1,12 +1,13 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.IntegerHandler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 
 import static inaugural.soliloquy.tools.random.Random.randomInt;
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class IntegerHandlerTests {
@@ -15,7 +16,7 @@ public class IntegerHandlerTests {
 
     private IntegerHandler handler;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         handler = new IntegerHandler();
     }

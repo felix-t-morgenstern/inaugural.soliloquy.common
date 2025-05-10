@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.SettingsRepoHandler;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import soliloquy.specs.common.infrastructure.Setting;
 import soliloquy.specs.common.infrastructure.SettingsRepo;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -19,17 +19,15 @@ import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
 import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SettingsRepoHandlerTests {
     private final String SETTING_1_ID = randomString();
-    private final String SETTING_1_NAME = randomString();
     private final String SETTING_1_VALUE = randomString();
 
     private final String SETTING_2_ID = randomString();
-    private final String SETTING_2_NAME = randomString();
     private final Integer SETTING_2_VALUE = randomInt();
 
     private final String SETTINGS_REPO_INTERFACE_NAME = randomString();
@@ -59,24 +57,25 @@ public class SettingsRepoHandlerTests {
 
     private TypeHandler<SettingsRepo> settingsRepoHandler;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        when(mockSetting1.id()).thenReturn(SETTING_1_ID);
-        when(mockSetting1.getValue()).thenReturn(SETTING_1_VALUE);
-        when(mockSetting1.archetype()).thenReturn(randomString());
+        lenient().when(mockSetting1.id()).thenReturn(SETTING_1_ID);
+        lenient().when(mockSetting1.getValue()).thenReturn(SETTING_1_VALUE);
+        lenient().when(mockSetting1.archetype()).thenReturn(randomString());
 
-        when(mockSetting2.id()).thenReturn(SETTING_2_ID);
-        when(mockSetting2.getValue()).thenReturn(SETTING_2_VALUE);
-        when(mockSetting2.archetype()).thenReturn(randomInt());
+        lenient().when(mockSetting2.id()).thenReturn(SETTING_2_ID);
+        lenient().when(mockSetting2.getValue()).thenReturn(SETTING_2_VALUE);
+        lenient().when(mockSetting2.archetype()).thenReturn(randomInt());
 
         mockSettingsRepo = mock(SettingsRepo.class);
-        when(mockSettingsRepo.getAllUngroupedRepresentation()).thenReturn(
+        lenient().when(mockSettingsRepo.getAllUngroupedRepresentation()).thenReturn(
                 listOf(mockSetting1, mockSetting2));
         //noinspection unchecked
-        when(mockSettingsRepo.getSetting(SETTING_1_ID)).thenReturn(mockSetting1);
+        lenient().when(mockSettingsRepo.getSetting(SETTING_1_ID)).thenReturn(mockSetting1);
         //noinspection unchecked
-        when(mockSettingsRepo.getSetting(SETTING_2_ID)).thenReturn(mockSetting2);
-        when(mockSettingsRepo.getInterfaceName()).thenReturn(SETTINGS_REPO_INTERFACE_NAME);
+        lenient().when(mockSettingsRepo.getSetting(SETTING_2_ID)).thenReturn(mockSetting2);
+        lenient().when(mockSettingsRepo.getInterfaceName())
+                .thenReturn(SETTINGS_REPO_INTERFACE_NAME);
 
         settingsRepoHandler =
                 new SettingsRepoHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockSettingsRepo);

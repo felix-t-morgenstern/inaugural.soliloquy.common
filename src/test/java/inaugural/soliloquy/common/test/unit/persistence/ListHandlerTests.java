@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.ListHandler;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import soliloquy.specs.common.factories.ListFactory;
 import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -17,11 +17,11 @@ import java.util.Map;
 import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ListHandlerTests {
     private final Integer INTEGER_1 = randomInt();
     private final Integer INTEGER_2 = randomInt();
@@ -47,15 +47,15 @@ public class ListHandlerTests {
 
     private ListHandler listHandler;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        when(mockList.archetype()).thenReturn(new Object());
+        lenient().when(mockList.archetype()).thenReturn(new Object());
 
         mockListFactory = mock(ListFactory.class);
         //noinspection unchecked
-        when(mockListFactory.make(any())).thenReturn(mockList);
+        lenient().when(mockListFactory.make(any())).thenReturn(mockList);
 
-        when(MOCK_PERSISTENT_VALUES_HANDLER.generateArchetype(anyString()))
+        lenient().when(MOCK_PERSISTENT_VALUES_HANDLER.generateArchetype(anyString()))
                 .thenReturn(GENERATED_ARCHETYPE);
 
         listHandler = new ListHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockListFactory);

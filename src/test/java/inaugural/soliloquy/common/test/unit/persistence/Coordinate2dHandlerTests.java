@@ -1,13 +1,13 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.Coordinate2dHandler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate2d;
 
 import static inaugural.soliloquy.tools.random.Random.randomInt;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class Coordinate2dHandlerTests {
@@ -18,7 +18,7 @@ public class Coordinate2dHandlerTests {
 
     private TypeHandler<Coordinate2d> coordinate2dHandler;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         coordinate2dHandler = new Coordinate2dHandler();
     }

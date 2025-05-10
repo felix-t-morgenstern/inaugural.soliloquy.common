@@ -2,26 +2,24 @@ package inaugural.soliloquy.common.test.unit.factories;
 
 import inaugural.soliloquy.common.factories.RegistryFactoryImpl;
 import inaugural.soliloquy.common.infrastructure.RegistryImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.shared.HasId;
 
-import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RegistryFactoryImplTests {
     @Mock private HasId archetype;
 
     private RegistryFactory registryFactory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         registryFactory = new RegistryFactoryImpl();
     }

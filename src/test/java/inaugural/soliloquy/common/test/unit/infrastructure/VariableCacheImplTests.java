@@ -1,12 +1,12 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.VariableCacheImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.VariableCache;
 
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class VariableCacheImplTests {
     private final String VARIABLE_1 = randomString();
@@ -18,7 +18,7 @@ public class VariableCacheImplTests {
 
     private VariableCache variableCache;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         variableCache = new VariableCacheImpl();
     }

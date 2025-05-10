@@ -1,17 +1,17 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.BooleanHandler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class BooleanHandlerTests {
     private BooleanHandler booleanHandler;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         booleanHandler = new BooleanHandler();
     }

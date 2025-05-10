@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.PersistentValuesHandlerImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import soliloquy.specs.common.infrastructure.List;
 import soliloquy.specs.common.infrastructure.Map;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -15,11 +15,11 @@ import soliloquy.specs.common.persistence.TypeWithTwoGenericParamsHandler;
 
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PersistentValuesHandlerImplTests {
     @Mock @SuppressWarnings("rawtypes") private TypeHandler mockIntegerHandler;
     @Mock @SuppressWarnings("rawtypes") private TypeHandler mockStringHandler;
@@ -28,18 +28,18 @@ public class PersistentValuesHandlerImplTests {
 
     private PersistentValuesHandlerImpl persistentValuesHandler;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        when(mockIntegerHandler.getInterfaceName())
+        lenient().when(mockIntegerHandler.getInterfaceName())
                 .thenReturn("<" + Integer.class.getCanonicalName() + ">");
 
-        when(mockStringHandler.getInterfaceName())
+        lenient().when(mockStringHandler.getInterfaceName())
                 .thenReturn("<" + String.class.getCanonicalName() + ">");
 
-        when(mockListHandler.getInterfaceName())
+        lenient().when(mockListHandler.getInterfaceName())
                 .thenReturn("<" + List.class.getCanonicalName() + ">");
 
-        when(mockMapHandler.getInterfaceName())
+        lenient().when(mockMapHandler.getInterfaceName())
                 .thenReturn("<" + Map.class.getCanonicalName() + ">");
 
         persistentValuesHandler = new PersistentValuesHandlerImpl();

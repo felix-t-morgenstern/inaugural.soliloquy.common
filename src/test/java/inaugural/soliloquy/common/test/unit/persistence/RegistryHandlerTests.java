@@ -1,11 +1,11 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.RegistryHandler;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import soliloquy.specs.common.factories.RegistryFactory;
 import soliloquy.specs.common.infrastructure.Registry;
 import soliloquy.specs.common.persistence.PersistentValuesHandler;
@@ -14,11 +14,11 @@ import soliloquy.specs.common.shared.HasId;
 
 import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class RegistryHandlerTests {
     private final String VALUE_1 = randomString();
     private final String VALUE_2 = randomString();
@@ -40,35 +40,35 @@ public class RegistryHandlerTests {
             String.format("{\"type\":\"%s\",\"values\":[\"%s\",\"%s\",\"%s\"]}",
                     INTERNAL_TYPE, VALUE_1, VALUE_2, VALUE_3);
 
-    @Before
+    @BeforeEach
     public void setup() {
         var archetype = mock(HasId.class);
-        when(archetype.getInterfaceName()).thenReturn(INTERNAL_TYPE);
-        when(mockRegistry.archetype()).thenReturn(archetype);
-        when(mockRegistry.iterator()).thenReturn(listOf(
+        lenient().when(archetype.getInterfaceName()).thenReturn(INTERNAL_TYPE);
+        lenient().when(mockRegistry.archetype()).thenReturn(archetype);
+        lenient().when(mockRegistry.iterator()).thenReturn(listOf(
             mockHasId1 = mock(HasId.class),
             mockHasId2 = mock(HasId.class),
             mockHasId3 = mock(HasId.class)
         ).iterator());
-        when(mockRegistry.size()).thenReturn(3);
+        lenient().when(mockRegistry.size()).thenReturn(3);
 
         //noinspection unchecked
-        when(mockRegistryFactory.make(any())).thenReturn(mockRegistry);
+        lenient().when(mockRegistryFactory.make(any())).thenReturn(mockRegistry);
 
         //noinspection unchecked
-        when(mockHasIdHandler.write(mockHasId1)).thenReturn(VALUE_1);
+        lenient().when(mockHasIdHandler.write(mockHasId1)).thenReturn(VALUE_1);
         //noinspection unchecked
-        when(mockHasIdHandler.write(mockHasId2)).thenReturn(VALUE_2);
+        lenient().when(mockHasIdHandler.write(mockHasId2)).thenReturn(VALUE_2);
         //noinspection unchecked
-        when(mockHasIdHandler.write(mockHasId3)).thenReturn(VALUE_3);
-        when(mockHasIdHandler.read(VALUE_1)).thenReturn(mockHasId1);
-        when(mockHasIdHandler.read(VALUE_2)).thenReturn(mockHasId2);
-        when(mockHasIdHandler.read(VALUE_3)).thenReturn(mockHasId3);
+        lenient().when(mockHasIdHandler.write(mockHasId3)).thenReturn(VALUE_3);
+        lenient().when(mockHasIdHandler.read(VALUE_1)).thenReturn(mockHasId1);
+        lenient().when(mockHasIdHandler.read(VALUE_2)).thenReturn(mockHasId2);
+        lenient().when(mockHasIdHandler.read(VALUE_3)).thenReturn(mockHasId3);
 
         //noinspection unchecked
-        when(mockPersistentValuesHandler.getTypeHandler(INTERNAL_TYPE))
+        lenient().when(mockPersistentValuesHandler.getTypeHandler(INTERNAL_TYPE))
                 .thenReturn(mockHasIdHandler);
-        when(mockPersistentValuesHandler.generateArchetype(INTERNAL_TYPE)).thenReturn(
+        lenient().when(mockPersistentValuesHandler.generateArchetype(INTERNAL_TYPE)).thenReturn(
                 mockGeneratedArchetype);
 
         registryHandler = new RegistryHandler(mockPersistentValuesHandler, mockRegistryFactory);

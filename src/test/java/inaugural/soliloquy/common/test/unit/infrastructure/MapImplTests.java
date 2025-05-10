@@ -1,15 +1,15 @@
 package inaugural.soliloquy.common.test.unit.infrastructure;
 
 import inaugural.soliloquy.common.infrastructure.MapImpl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.infrastructure.Map;
 
 import java.util.HashMap;
 import java.util.TreeMap;
 
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MapImplTests {
     private final String PAIR_1_KEY = randomString();
@@ -21,7 +21,7 @@ public class MapImplTests {
 
     private Map<String, String> map;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         map = new MapImpl<>(KEY_ARCHETYPE, VALUE_ARCHETYPE);
     }
