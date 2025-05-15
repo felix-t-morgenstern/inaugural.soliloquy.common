@@ -1,44 +1,51 @@
 package inaugural.soliloquy.common.persistence;
 
 import inaugural.soliloquy.tools.Check;
-import inaugural.soliloquy.tools.persistence.AbstractTypeWithOneGenericParamHandler;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.infrastructure.List;
-import soliloquy.specs.common.persistence.PersistentValuesHandler;
+import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
+import soliloquy.specs.common.persistence.PersistenceHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
-import soliloquy.specs.common.shared.Cloneable;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.List;
+import java.util.Objects;
+
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
 
 @SuppressWarnings("rawtypes")
-public class ListHandler
-        extends AbstractTypeWithOneGenericParamHandler<List>
-        implements TypeHandler<List> {
-    private final PersistentValuesHandler PERSISTENT_VALUES_HANDLER;
-    private final ListFactory LIST_FACTORY;
+public class ListHandler extends AbstractTypeHandler<List> implements TypeHandler<List> {
+    private final PersistenceHandler PERSISTENCE_HANDLER;
 
-    public ListHandler(PersistentValuesHandler persistentValuesHandler,
-                       ListFactory listFactory) {
-        super(
-                new ListArchetype(),
-                persistentValuesHandler,
-                archetype -> Check.ifNull(listFactory, "listFactory").make(archetype)
-        );
-        PERSISTENT_VALUES_HANDLER = Check.ifNull(persistentValuesHandler,
-                "persistentValuesHandler");
-        LIST_FACTORY = Check.ifNull(listFactory, "listFactory");
+    public ListHandler(PersistenceHandler PersistenceHandler) {
+        PERSISTENCE_HANDLER = Check.ifNull(PersistenceHandler,
+                "PersistenceHandler");
     }
 
     @Override
-    public List read(String valuesString) throws IllegalArgumentException {
+    public String typeHandled() {
+        return List.class.getCanonicalName();
+    }
+
+    @Override
+    public <T extends List> T read(String valuesString) throws IllegalArgumentException {
         Check.ifNullOrEmpty(valuesString, "valuesString");
         var dto = JSON.fromJson(valuesString, DTO.class);
-        var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(dto.type);
-        var list = LIST_FACTORY.make(PERSISTENT_VALUES_HANDLER.generateArchetype(dto.type));
+
+        if (dto.values == null) {
+            //noinspection unchecked
+            return (T)listOf();
+        }
+
+        var handler = PERSISTENCE_HANDLER.getTypeHandler(dto.type);
+        //noinspection unchecked
+        var list = (T) listOf();
         for (var i = 0; i < dto.values.length; i++) {
-            list.add(handler.read(dto.values[i]));
+            if (dto.values[i] != null) {
+                //noinspection unchecked
+                list.add(handler.read(dto.values[i]));
+            }
+            else {
+                //noinspection unchecked
+                list.add(null);
+            }
         }
         return list;
     }
@@ -46,15 +53,28 @@ public class ListHandler
     @Override
     public String write(List list) {
         Check.ifNull(list, "list");
-        var internalType = getProperTypeName(list.archetype());
-        var handler = PERSISTENT_VALUES_HANDLER.getTypeHandler(internalType);
         var dto = new DTO();
-        dto.type = internalType;
-        var serializedValues = new String[list.size()];
-        for (var i = 0; i < list.size(); i++) {
-            serializedValues[i] = handler.write(list.get(i));
+        if (!list.isEmpty()) {
+            //noinspection unchecked
+            var firstNonNull = list.stream().filter(Objects::nonNull).findFirst();
+            TypeHandler handler = null;
+            if (firstNonNull.isPresent()) {
+                var internalType = list.get(0).getClass().getCanonicalName();
+                handler = PERSISTENCE_HANDLER.getTypeHandler(internalType);
+                dto.type = internalType;
+            }
+            var serializedValues = new String[list.size()];
+            for (var i = 0; i < list.size(); i++) {
+                if (handler != null && list.get(i) != null) {
+                    //noinspection unchecked
+                    serializedValues[i] = handler.write(list.get(i));
+                }
+                else {
+                    serializedValues[i] = null;
+                }
+            }
+            dto.values = serializedValues;
         }
-        dto.values = serializedValues;
         return JSON.toJson(dto);
     }
 
@@ -63,137 +83,5 @@ public class ListHandler
     private class DTO {
         String type;
         String[] values;
-    }
-
-    private static class ListArchetype implements List {
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        @Override
-        public Iterator iterator() {
-            return null;
-        }
-
-        @Override
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        @Override
-        public boolean add(Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(Collection collection) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(int i, Collection collection) {
-            return false;
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public Object get(int i) {
-            return null;
-        }
-
-        @Override
-        public Object set(int i, Object o) {
-            return null;
-        }
-
-        @Override
-        public void add(int i, Object o) {
-
-        }
-
-        @Override
-        public Object remove(int i) {
-            return null;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public ListIterator listIterator() {
-            return null;
-        }
-
-        @Override
-        public ListIterator listIterator(int i) {
-            return null;
-        }
-
-        @Override
-        public java.util.List subList(int i, int i1) {
-            return null;
-        }
-
-        @Override
-        public boolean retainAll(Collection collection) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(Collection collection) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(Collection collection) {
-            return false;
-        }
-
-        @Override
-        public Object[] toArray(Object[] objects) {
-            return new Object[0];
-        }
-
-        @Override
-        public Cloneable makeClone() {
-            return null;
-        }
-
-        @Override
-        public Object archetype() {
-            return 0;
-        }
-
-        @Override
-        public String getInterfaceName() {
-            return List.class.getCanonicalName();
-        }
     }
 }

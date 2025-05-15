@@ -22,6 +22,11 @@ public class IntegerHandlerTests {
     }
 
     @Test
+    public void testTypeHandled() {
+        assertEquals(Integer.class.getCanonicalName(), handler.typeHandled());
+    }
+
+    @Test
     public void testRead() {
         assertEquals(VALUE, handler.read(WRITTEN_VALUE));
     }
@@ -39,42 +44,5 @@ public class IntegerHandlerTests {
     @Test
     public void testWriteWhenNull() {
         assertEquals("", handler.write(null));
-    }
-
-    @Test
-    public void testHashCode() {
-        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
-                        Integer.class.getCanonicalName() + ">").hashCode(),
-                handler.hashCode());
-    }
-
-    @Test
-    public void testEquals() {
-        var equalHandler = new IntegerHandler();
-        //noinspection unchecked
-        TypeHandler<Integer> unequalHandler = mock(TypeHandler.class);
-
-        assertEquals(handler, equalHandler);
-        assertNotEquals(handler, unequalHandler);
-        assertNotEquals(null, handler);
-    }
-
-    @Test
-    public void testToString() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        Integer.class.getCanonicalName() + ">",
-                handler.toString());
-    }
-
-    @Test
-    public void testArchetype() {
-        assertNotNull(handler.archetype());
-    }
-
-    @Test
-    public void testGetInterfaceName() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        Integer.class.getCanonicalName() + ">",
-                handler.getInterfaceName());
     }
 }

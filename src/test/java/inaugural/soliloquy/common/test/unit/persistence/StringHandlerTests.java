@@ -4,6 +4,7 @@ import inaugural.soliloquy.common.persistence.StringHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.valueobjects.Pair;
 
 import static inaugural.soliloquy.tools.random.Random.randomString;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,6 +17,11 @@ public class StringHandlerTests {
     @BeforeEach
     public void setUp() {
         handler = new StringHandler();
+    }
+
+    @Test
+    public void testTypeHandled() {
+        assertEquals(String.class.getCanonicalName(), handler.typeHandled());
     }
 
     @Test
@@ -40,17 +46,5 @@ public class StringHandlerTests {
     @Test
     public void testWrite() {
         assertEquals(VALUE, handler.write(VALUE));
-    }
-
-    @Test
-    public void testArchetype() {
-        assertNotNull(handler.archetype());
-    }
-
-    @Test
-    public void testGetInterfaceName() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        String.class.getCanonicalName() + ">",
-                handler.getInterfaceName());
     }
 }

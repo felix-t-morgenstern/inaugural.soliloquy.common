@@ -5,10 +5,12 @@ import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 import java.util.UUID;
 
 public class UuidHandler extends AbstractTypeHandler<UUID> {
-    public UuidHandler() {
-        super(UUID.randomUUID());
+    @Override
+    public String typeHandled() {
+        return UUID.class.getCanonicalName();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public UUID read(String serializedValue) throws IllegalArgumentException {
         if (serializedValue == null || serializedValue.equals("")) {

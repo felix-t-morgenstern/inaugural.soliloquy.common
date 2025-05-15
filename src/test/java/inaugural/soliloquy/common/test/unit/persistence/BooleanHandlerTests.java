@@ -9,62 +9,30 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class BooleanHandlerTests {
-    private BooleanHandler booleanHandler;
+    private BooleanHandler handler;
 
     @BeforeEach
     public void setUp() {
-        booleanHandler = new BooleanHandler();
+        handler = new BooleanHandler();
+    }
+
+    @Test
+    public void testTypeHandled() {
+        assertEquals(Boolean.class.getCanonicalName(), handler.typeHandled());
     }
 
     @Test
     public void testRead() {
-        assertEquals(true, booleanHandler.read("true"));
+        assertEquals(true, handler.read("true"));
     }
 
     @Test
     public void testReadNull() {
-        assertThrows(IllegalArgumentException.class, () -> booleanHandler.read(null));
+        assertThrows(IllegalArgumentException.class, () -> handler.read(null));
     }
 
     @Test
     public void testWrite() {
-        assertEquals("true", booleanHandler.write(true));
-    }
-
-    @Test
-    public void testArchetype() {
-        assertNotNull(booleanHandler.archetype());
-    }
-
-    @Test
-    public void testGetInterfaceName() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        Boolean.class.getCanonicalName() + ">",
-                booleanHandler.getInterfaceName());
-    }
-
-    @Test
-    public void testHashCode() {
-        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
-                        Boolean.class.getCanonicalName() + ">").hashCode(),
-                booleanHandler.hashCode());
-    }
-
-    @Test
-    public void testEquals() {
-        var equalHandler = new BooleanHandler();
-        //noinspection unchecked
-        TypeHandler<Boolean> unequalHandler = mock(TypeHandler.class);
-
-        assertEquals(booleanHandler, equalHandler);
-        assertNotEquals(booleanHandler, unequalHandler);
-        assertNotEquals(null, booleanHandler);
-    }
-
-    @Test
-    public void testToString() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        Boolean.class.getCanonicalName() + ">",
-                booleanHandler.toString());
+        assertEquals("true", handler.write(true));
     }
 }

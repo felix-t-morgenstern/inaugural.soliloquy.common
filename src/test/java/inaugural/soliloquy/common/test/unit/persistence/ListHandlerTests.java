@@ -6,175 +6,150 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import soliloquy.specs.common.factories.ListFactory;
-import soliloquy.specs.common.infrastructure.List;
-import soliloquy.specs.common.persistence.PersistentValuesHandler;
+import soliloquy.specs.common.persistence.PersistenceHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
-import soliloquy.specs.common.valueobjects.Pair;
 
-import java.util.Map;
+import java.util.List;
 
-import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
+import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
-import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ListHandlerTests {
-    private final Integer INTEGER_1 = randomInt();
-    private final Integer INTEGER_2 = randomInt();
-    private final Integer INTEGER_3 = randomInt();
+    private final Integer VALUE_1 = randomInt();
+    private final Integer VALUE_2 = randomInt();
+    private final Integer VALUE_3 = randomInt();
     private final String VALUES_STRING =
             String.format("{\"type\":\"%s\",\"values\":[\"%d\",\"%d\",\"%d\"]}",
                     Integer.class.getCanonicalName(),
-                    INTEGER_1, INTEGER_2, INTEGER_3);
-    private final Integer GENERATED_ARCHETYPE = randomInt();
-    @SuppressWarnings("rawtypes")
-    private final Pair<PersistentValuesHandler, Map<String, TypeHandler>>
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS =
-            generateMockPersistentValuesHandlerWithSimpleHandlers(
-                    arrayOf(INTEGER_1, INTEGER_2, INTEGER_3));
-    @SuppressWarnings("rawtypes") private final TypeHandler MOCK_INTEGER_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
-                    .get(Integer.class.getCanonicalName());
-    private final PersistentValuesHandler MOCK_PERSISTENT_VALUES_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item1();
+                    VALUE_1, VALUE_2, VALUE_3);
+    private final String VALUES_STRING_SECOND_NULL =
+            String.format("{\"type\":\"%s\",\"values\":[\"%d\",null,\"%d\"]}",
+                    Integer.class.getCanonicalName(),
+                    VALUE_1, VALUE_3);
+    private final String VALUES_ONLY_NULL = "{\"values\":[null,null,null]}";
 
-    @SuppressWarnings("rawtypes") @Mock private List mockList;
-    @Mock private ListFactory mockListFactory;
+    @SuppressWarnings("rawtypes") @Mock private TypeHandler mockTypeHandler;
+    @Mock private PersistenceHandler mockPersistenceHandler;
 
-    private ListHandler listHandler;
+    @SuppressWarnings("rawtypes") private TypeHandler<List> handler;
 
     @BeforeEach
     public void setUp() {
-        lenient().when(mockList.archetype()).thenReturn(new Object());
-
-        mockListFactory = mock(ListFactory.class);
         //noinspection unchecked
-        lenient().when(mockListFactory.make(any())).thenReturn(mockList);
+        lenient().when(mockPersistenceHandler.getTypeHandler(anyString()))
+                .thenReturn(mockTypeHandler);
+        lenient().when(mockTypeHandler.read(anyString()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        //noinspection unchecked
+        lenient().when(mockTypeHandler.write(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString());
 
-        lenient().when(MOCK_PERSISTENT_VALUES_HANDLER.generateArchetype(anyString()))
-                .thenReturn(GENERATED_ARCHETYPE);
-
-        listHandler = new ListHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockListFactory);
+        handler = new ListHandler(mockPersistenceHandler);
     }
 
     @Test
-    public void testConstructorWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new ListHandler(null, mockListFactory));
-        assertThrows(IllegalArgumentException.class,
-                () -> new ListHandler(MOCK_PERSISTENT_VALUES_HANDLER, null));
+    public void testConstructorWithInvalidArgs() {
+        assertThrows(IllegalArgumentException.class, () -> new ListHandler(null));
+    }
+
+    @Test
+    public void testTypeHandled() {
+        assertEquals(List.class.getCanonicalName(), handler.typeHandled());
     }
 
     @Test
     public void testWrite() {
-        when(mockList.size()).thenReturn(3);
-        when(mockList.get(0)).thenReturn(INTEGER_1);
-        when(mockList.get(1)).thenReturn(INTEGER_2);
-        when(mockList.get(2)).thenReturn(INTEGER_3);
-        when(mockList.archetype()).thenReturn(randomInt());
-
-        var output = listHandler.write(mockList);
+        var output = handler.write(listOf(VALUE_1, VALUE_2, VALUE_3));
 
         assertEquals(VALUES_STRING, output);
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
+        verify(mockPersistenceHandler, times(1))
                 .getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(INTEGER_1);
+        verify(mockTypeHandler, times(1)).write(VALUE_1);
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(INTEGER_2);
+        verify(mockTypeHandler, times(1)).write(VALUE_2);
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(INTEGER_3);
+        verify(mockTypeHandler, times(1)).write(VALUE_3);
     }
 
     @Test
-    public void testWriteNull() {
-        assertThrows(IllegalArgumentException.class,
-                () -> listHandler.write(null));
+    public void testWriteWithNullEntry() {
+        var output = handler.write(listOf(VALUE_1, null, VALUE_3));
+
+        assertEquals(VALUES_STRING_SECOND_NULL, output);
+        verify(mockPersistenceHandler, times(1))
+                .getTypeHandler(Integer.class.getCanonicalName());
+        //noinspection unchecked
+        verify(mockTypeHandler, times(1)).write(VALUE_1);
+        //noinspection unchecked
+        verify(mockTypeHandler, times(1)).write(VALUE_3);
     }
 
-    @SuppressWarnings("unchecked")
+    @Test
+    public void testWriteWithAllNullEntries() {
+        var output = handler.write(listOf(null, null, null));
+
+        assertEquals(VALUES_ONLY_NULL, output);
+        verify(mockPersistenceHandler, never()).getTypeHandler(anyString());
+        //noinspection unchecked
+        verify(mockTypeHandler, never()).write(any());
+    }
+
+    @Test
+    public void testWriteWithInvalidArgs() {
+        assertThrows(IllegalArgumentException.class, () -> handler.write(null));
+    }
+
     @Test
     public void testRead() {
-        var list = listHandler.read(VALUES_STRING);
+        when(mockTypeHandler.read(anyString()))
+                .thenReturn(VALUE_1).thenReturn(VALUE_2).thenReturn(VALUE_3);
+
+        var list = handler.read(VALUES_STRING);
 
         assertNotNull(list);
-        assertSame(mockList, list);
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
-                .generateArchetype(Integer.class.getCanonicalName());
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
+        assertEquals(listOf(VALUE_1, VALUE_2, VALUE_3), list);
+        verify(mockPersistenceHandler, times(1))
                 .getTypeHandler(Integer.class.getCanonicalName());
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(INTEGER_1.toString());
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(INTEGER_2.toString());
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(INTEGER_3.toString());
-        verify(mockList, times(1)).add(INTEGER_1);
-        verify(mockList, times(1)).add(INTEGER_2);
-        verify(mockList, times(1)).add(INTEGER_3);
+        verify(mockTypeHandler, times(1)).read(VALUE_1.toString());
+        verify(mockTypeHandler, times(1)).read(VALUE_2.toString());
+        verify(mockTypeHandler, times(1)).read(VALUE_3.toString());
     }
 
     @Test
-    public void testReadInvalidValues() {
-        assertThrows(IllegalArgumentException.class,
-                () -> listHandler.read(null));
-        assertThrows(IllegalArgumentException.class,
-                () -> listHandler.read(""));
+    public void testReadWithNullEntry() {
+        when(mockTypeHandler.read(anyString()))
+                .thenReturn(VALUE_1).thenReturn(VALUE_3);
+
+        var list = handler.read(VALUES_STRING_SECOND_NULL);
+
+        assertNotNull(list);
+        assertEquals(listOf(VALUE_1, null, VALUE_3), list);
+        verify(mockPersistenceHandler, times(1))
+                .getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler, times(2)).read(anyString());
+        verify(mockTypeHandler, times(1)).read(VALUE_1.toString());
+        verify(mockTypeHandler, never()).read(VALUE_2.toString());
+        verify(mockTypeHandler, times(1)).read(VALUE_3.toString());
     }
 
     @Test
-    public void testGetInterfaceName() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        List.class.getCanonicalName() + ">",
-                listHandler.getInterfaceName());
+    public void testReadWithAllNullEntries() {
+        var output = handler.read(VALUES_ONLY_NULL);
+
+        assertNotNull(output);
+        assertEquals(listOf(null, null, null), output);
+        verify(mockPersistenceHandler, never()).getTypeHandler(anyString());
+        verify(mockTypeHandler, never()).read(anyString());
     }
 
     @Test
-    public void testArchetype() {
-        assertNotNull(listHandler.archetype());
-        assertEquals(List.class.getCanonicalName(),
-                listHandler.archetype().getInterfaceName());
-    }
-
-    @Test
-    public void testGenerateArchetype() {
-        var generatedArchetype = listHandler.generateArchetype(Integer.class.getCanonicalName());
-
-        assertNotNull(generatedArchetype);
-        assertNotNull(generatedArchetype.archetype());
-    }
-
-    @Test
-    public void testGenerateArchetypeWithInvalidInputs() {
-        assertThrows(IllegalArgumentException.class, () ->
-                listHandler.generateArchetype(null));
-        assertThrows(IllegalArgumentException.class, () ->
-                listHandler.generateArchetype(""));
-    }
-
-    @Test
-    public void testHashCode() {
-        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
-                        List.class.getCanonicalName() + ">").hashCode(),
-                listHandler.hashCode());
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    @Test
-    public void testEquals() {
-        var equalHandler = new ListHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockListFactory);
-        TypeHandler<List> unequalHandler = mock(TypeHandler.class);
-
-        assertEquals(listHandler, equalHandler);
-        assertNotEquals(listHandler, unequalHandler);
-        assertNotEquals(null, listHandler);
-    }
-
-    @Test
-    public void testToString() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        List.class.getCanonicalName() + ">",
-                listHandler.toString());
+    public void testReadWithInvalidArgs() {
+        assertThrows(IllegalArgumentException.class, () -> handler.read(null));
+        assertThrows(IllegalArgumentException.class, () -> handler.read(""));
     }
 }

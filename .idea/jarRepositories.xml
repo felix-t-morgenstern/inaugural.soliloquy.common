@@ -2,14 +2,34 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://maven.pkg.github.com/felix-t-morgenstern/soliloquy.specs" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://maven.pkg.github.com/felix-t-morgenstern/soliloquy.common" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="github-mvn-repo" />
       <option name="name" value="github-mvn-repo" />
       <option name="url" value="https://raw.githubusercontent.com/felix-t-morgenstern/soliloquy.artifacts/master/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenRepo" />
+      <option name="name" value="MavenRepo" />
+      <option name="url" value="https://repo.maven.apache.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
@@ -25,21 +45,6 @@
       <option name="id" value="github" />
       <option name="name" value="GitHub felix-t-morgenstern Apache Maven Packages" />
       <option name="url" value="https://maven.pkg.github.com/felix-t-morgenstern/inaugural.soliloquy.tools" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="MavenRepo" />
-      <option name="name" value="MavenRepo" />
-      <option name="url" value="https://repo.maven.apache.org/maven2/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven" />
-      <option name="name" value="maven" />
-      <option name="url" value="https://maven.pkg.github.com/felix-t-morgenstern/soliloquy.specs" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="MavenLocal" />
-      <option name="name" value="MavenLocal" />
-      <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
     </remote-repository>
   </component>
 </project>

@@ -4,6 +4,7 @@ import inaugural.soliloquy.common.persistence.UuidHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
+import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.UUID;
 
@@ -21,15 +22,8 @@ public class UuidHandlerTests {
     }
 
     @Test
-    public void testArchetype() {
-        assertNotNull(handler.archetype());
-    }
-
-    @Test
-    public void testGetInterfaceName() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        UUID.class.getCanonicalName() + ">",
-                handler.getInterfaceName());
+    public void testTypeHandled() {
+        assertEquals(UUID.class.getCanonicalName(), handler.typeHandled());
     }
 
     @Test
@@ -50,30 +44,5 @@ public class UuidHandlerTests {
     @Test
     public void testWriteNull() {
         assertEquals("", handler.write(null));
-    }
-
-    @Test
-    public void testHashCode() {
-        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
-                        UUID.class.getCanonicalName() + ">").hashCode(),
-                handler.hashCode());
-    }
-
-    @Test
-    public void testEquals() {
-        var equalHandler = new UuidHandler();
-        //noinspection unchecked
-        TypeHandler<UUID> unequalHandler = mock(TypeHandler.class);
-
-        assertEquals(handler, equalHandler);
-        assertNotEquals(handler, unequalHandler);
-        assertNotEquals(null, handler);
-    }
-
-    @Test
-    public void testToString() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        UUID.class.getCanonicalName() + ">",
-                handler.toString());
     }
 }

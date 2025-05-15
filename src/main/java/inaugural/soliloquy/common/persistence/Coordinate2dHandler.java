@@ -4,18 +4,20 @@ import inaugural.soliloquy.tools.Check;
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 import soliloquy.specs.common.valueobjects.Coordinate2d;
 
-import static inaugural.soliloquy.tools.generic.Archetypes.generateSimpleArchetype;
+import static soliloquy.specs.common.valueobjects.Coordinate2d.coordinate2dOf;
 
 public class Coordinate2dHandler extends AbstractTypeHandler<Coordinate2d> {
-    public Coordinate2dHandler() {
-        super(generateSimpleArchetype(Coordinate2d.class));
+    @Override
+    public String typeHandled() {
+        return Coordinate2d.class.getCanonicalName();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Coordinate2d read(String serializedValue) throws IllegalArgumentException {
         Check.ifNullOrEmpty(serializedValue, "serializedValue");
         var dto = JSON.fromJson(serializedValue, DTO.class);
-        return Coordinate2d.of(dto.x, dto.y);
+        return coordinate2dOf(dto.x, dto.y);
     }
 
     @Override

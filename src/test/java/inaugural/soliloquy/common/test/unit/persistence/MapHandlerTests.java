@@ -6,203 +6,366 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import soliloquy.specs.common.factories.MapFactory;
-import soliloquy.specs.common.infrastructure.Map;
-import soliloquy.specs.common.persistence.PersistentValuesHandler;
+import org.opentest4j.AssertionFailedError;
+import soliloquy.specs.common.persistence.PersistenceHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
-import soliloquy.specs.common.valueobjects.Pair;
 
-import java.util.Set;
+import java.util.Map;
 
-import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
-import static inaugural.soliloquy.tools.collections.Collections.listOf;
+import static inaugural.soliloquy.tools.collections.Collections.mapOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
-import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistentValuesHandlerWithSimpleHandlers;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static soliloquy.specs.common.valueobjects.Pair.pairOf;
 
 @ExtendWith(MockitoExtension.class)
 public class MapHandlerTests {
     private final String KEY_1 = randomString();
     private final String KEY_2 = randomString();
-    private final String KEY_3 = randomString();
     private final Integer VALUE_1 = randomInt();
     private final Integer VALUE_2 = randomInt();
-    private final Integer VALUE_3 = randomInt();
-    private final String KEY_ARCHETYPE = randomString();
-    private final Integer VALUE_ARCHETYPE = randomInt();
-    @SuppressWarnings("rawtypes")
-    private final Pair<PersistentValuesHandler, java.util.Map<String, TypeHandler>>
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS =
-            generateMockPersistentValuesHandlerWithSimpleHandlers(
-                    arrayOf(KEY_1, KEY_2, KEY_3),
-                    arrayOf(VALUE_1, VALUE_2, VALUE_3));
-    private final PersistentValuesHandler MOCK_PERSISTENT_VALUES_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item1();
-    @SuppressWarnings("rawtypes") private final TypeHandler MOCK_STRING_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
-                    .get(String.class.getCanonicalName());
-    @SuppressWarnings("rawtypes") private final TypeHandler MOCK_INTEGER_HANDLER =
-            MOCK_PERSISTENT_VALUES_HANDLER_AND_TYPE_HANDLERS.item2()
-                    .get(Integer.class.getCanonicalName());
-    private final String VALUES_STRING = String.format(
-            "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\",\"%s\",\"%s\"]," +
-                    "\"values\":[\"%d\",\"%d\",\"%d\"]}",
+    private final String MAP_STRING_FORMAT = "{\"keyType\":%s,\"valueType\":%s,\"keys\":[%s,%s]," +
+            "\"values\":[%s,%s]}";
+    private final String MAP_STRING = String.format(
+            "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\",\"%s\"]," +
+                    "\"values\":[\"%d\",\"%d\"]}",
             String.class.getCanonicalName(), Integer.class.getCanonicalName(),
-            KEY_1, KEY_2, KEY_3, VALUE_1, VALUE_2, VALUE_3);
+            KEY_1, KEY_2, VALUE_1, VALUE_2);
+    private final String MAP_STRING_SECOND_KEY_NULL = String.format(
+            "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\",null]," +
+                    "\"values\":[\"%d\",\"%d\"]}",
+            String.class.getCanonicalName(), Integer.class.getCanonicalName(),
+            KEY_1, VALUE_1, VALUE_2);
+    private final String MAP_STRING_ALL_NULL_KEYS = String.format(
+            "{\"valueType\":\"%s\",\"keys\":[null],\"values\":[\"%d\"]}",
+            Integer.class.getCanonicalName(), VALUE_1);
+    private final String MAP_STRING_OPPOSITE_NULL_KEY_AND_VALUE = String.format(
+            "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\",null],\"values\":[null," +
+                    "\"%d\"]}",
+            String.class.getCanonicalName(), Integer.class.getCanonicalName(),
+            KEY_1, VALUE_2);
 
-    @SuppressWarnings("rawtypes") @Mock private Map mockMap;
-    @Mock private MapFactory mockMapFactory;
+    @SuppressWarnings("rawtypes") private TypeHandler mockTypeHandler1;
+    @SuppressWarnings("rawtypes") private TypeHandler mockTypeHandler2;
 
-    private MapHandler mapHandler;
+    @Mock private PersistenceHandler mockPersistenceHandler;
+
+    private MapHandler handler;
 
     @BeforeEach
     public void setUp() {
+        mockTypeHandler1 = passthroughMockHandler();
+        mockTypeHandler2 = passthroughMockHandler();
+
         //noinspection unchecked
-        lenient().when(mockMapFactory.make(any(), any())).thenReturn(mockMap);
+        lenient().when(mockPersistenceHandler.getTypeHandler(anyString()))
+                .thenReturn(mockTypeHandler1).thenReturn(mockTypeHandler2);
 
-        when(MOCK_PERSISTENT_VALUES_HANDLER.generateArchetype(String.class.getCanonicalName()))
-                .thenReturn(KEY_ARCHETYPE);
-        when(MOCK_PERSISTENT_VALUES_HANDLER.generateArchetype(Integer.class.getCanonicalName()))
-                .thenReturn(VALUE_ARCHETYPE);
+        handler = new MapHandler(mockPersistenceHandler);
+    }
 
-        mapHandler = new MapHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockMapFactory);
+    @SuppressWarnings("rawtypes")
+    private TypeHandler passthroughMockHandler() {
+        var mockTypeHandler = mock(TypeHandler.class);
+        //noinspection unchecked
+        lenient().when(mockTypeHandler.write(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0).toString());
+        lenient().when(mockTypeHandler.read(anyString()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+        return mockTypeHandler;
+    }
+
+    @Test
+    public void testTypeHandled() {
+        assertEquals(Map.class.getCanonicalName(), handler.typeHandled());
     }
 
     @Test
     public void testWrite() {
-        when(mockMap.firstArchetype()).thenReturn(KEY_ARCHETYPE);
-        when(mockMap.secondArchetype()).thenReturn(VALUE_ARCHETYPE);
-        when(mockMap.size()).thenReturn(3);
-        // NB: Making a list just to get its iterator is done to ensure that the keys are read in
-        // order to guarantee an output that matches VALUES_STRING; Set iterators are indeterminate
-        var keyList = listOf(KEY_1, KEY_2, KEY_3);
-        //noinspection unchecked
-        Set<String> mockKeySet = mock(Set.class);
-        when(mockKeySet.iterator()).thenReturn(keyList.iterator());
-        when(mockMap.keySet()).thenReturn(mockKeySet);
-        when(mockMap.get(KEY_1)).thenReturn(VALUE_1);
-        when(mockMap.get(KEY_2)).thenReturn(VALUE_2);
-        when(mockMap.get(KEY_3)).thenReturn(VALUE_3);
+        var output = handler.write(mapOf(
+                pairOf(KEY_1, VALUE_1),
+                pairOf(KEY_2, VALUE_2)
+        ));
 
-        var output = mapHandler.write(mockMap);
-
-        assertEquals(VALUES_STRING, output);
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
-                .getTypeHandler(String.class.getCanonicalName());
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
-                .getTypeHandler(Integer.class.getCanonicalName());
+        assertMapOutputStringMatches(output, MAP_STRING_FORMAT,
+                String.class.getCanonicalName(), Integer.class.getCanonicalName(),
+                KEY_1, KEY_2, VALUE_1, VALUE_2);
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
-        verify(MOCK_STRING_HANDLER, times(1)).write(KEY_1);
+        verify(mockTypeHandler1, times(2)).write(any());
         //noinspection unchecked
-        verify(MOCK_STRING_HANDLER, times(1)).write(KEY_2);
+        verify(mockTypeHandler1, times(1)).write(KEY_1);
         //noinspection unchecked
-        verify(MOCK_STRING_HANDLER, times(1)).write(KEY_3);
+        verify(mockTypeHandler1, times(1)).write(KEY_2);
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(VALUE_1);
+        verify(mockTypeHandler2, times(2)).write(any());
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(VALUE_2);
+        verify(mockTypeHandler2, times(1)).write(VALUE_1);
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(VALUE_3);
+        verify(mockTypeHandler2, times(1)).write(VALUE_2);
     }
 
     @Test
-    public void testWriteNull() {
-        assertThrows(IllegalArgumentException.class, () -> mapHandler.write(null));
+    public void testWriteWithNullKey() {
+        var output = handler.write(mapOf(
+                pairOf(KEY_1, VALUE_1),
+                pairOf(null, VALUE_2)
+        ));
+
+        assertMapOutputStringMatches(output, MAP_STRING_FORMAT,
+                String.class.getCanonicalName(), Integer.class.getCanonicalName(),
+                KEY_1, null, VALUE_1, VALUE_2);
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        //noinspection unchecked
+        verify(mockTypeHandler2, times(2)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler2, times(1)).write(VALUE_1);
+        //noinspection unchecked
+        verify(mockTypeHandler2, times(1)).write(VALUE_2);
     }
 
-    @SuppressWarnings("unchecked")
+    @Test
+    public void testWriteWithAllNullKeys() {
+        var output = handler.write(mapOf(
+                pairOf(null, VALUE_1)
+        ));
+
+        assertEquals(MAP_STRING_ALL_NULL_KEYS, output);
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        // (mockPersistenceHandler retrieves mockTypeHandler1 first, so it will be used to write
+        // values.)
+        //noinspection unchecked
+        verify(mockTypeHandler2, never()).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(VALUE_1);
+    }
+
+    @Test
+    public void testWriteWithNullValue() {
+        var output = handler.write(mapOf(
+                pairOf(KEY_1, VALUE_1),
+                pairOf(KEY_2, null)
+        ));
+
+        assertMapOutputStringMatches(output, MAP_STRING_FORMAT,
+                String.class.getCanonicalName(), Integer.class.getCanonicalName(),
+                KEY_1, KEY_2, VALUE_1, null);
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(2)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(KEY_2);
+        //noinspection unchecked
+        verify(mockTypeHandler2, times(1)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler2, times(1)).write(VALUE_1);
+    }
+
+    private String wrapNonNull(Object val) {
+        return val == null ? "null" : String.format("\"%s\"", val);
+    }
+
+    @Test
+    public void testWriteWithAllNullValues() {
+        var output = handler.write(mapOf(
+                pairOf(KEY_1, null),
+                pairOf(KEY_2, null)
+        ));
+
+        String mapStringAllNullValuesFormat =
+                "{\"keyType\":%s,\"keys\":[%s,%s],\"values\":[null,null]}";
+        assertMapOutputStringMatches(output, mapStringAllNullValuesFormat,
+                String.class.getCanonicalName(), null, KEY_1, KEY_2, null, null,
+                true, false);
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(2)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(KEY_2);
+        //noinspection unchecked
+        verify(mockTypeHandler2, never()).write(any());
+    }
+
+    @Test
+    public void testWriteWithOppositeNullKeyAndValue() {
+        var output = handler.write(mapOf(
+                pairOf(KEY_1, null),
+                pairOf(null, VALUE_2)
+        ));
+
+        assertMapOutputStringMatches(output, MAP_STRING_FORMAT, String.class.getCanonicalName(), Integer.class.getCanonicalName(), KEY_1, null, null, VALUE_2);
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        //noinspection unchecked
+        verify(mockTypeHandler2, times(1)).write(any());
+        //noinspection unchecked
+        verify(mockTypeHandler2, times(1)).write(VALUE_2);
+    }
+
+    private void assertMapOutputStringMatches(String output, String format,
+                                              String keyType, String valType,
+                                              String key1, String key2, Integer val1,
+                                              Integer val2, boolean... includeTypes) {
+        var keyTypeWrapped = wrapNonNull(keyType);
+        var valTypeWrapped = wrapNonNull(valType);
+        var key1Wrapped = wrapNonNull(key1);
+        var key2Wrapped = wrapNonNull(key2);
+        var val1Wrapped = wrapNonNull(val1);
+        var val2Wrapped = wrapNonNull(val2);
+        String expectedPermutation1;
+        String expectedPermutation2;
+        var includeKeyType = includeTypes == null || includeTypes.length < 1 || includeTypes[0];
+        var includeValType = includeTypes == null || includeTypes.length < 2 || includeTypes[1];
+        if (includeKeyType) {
+            if (includeValType) {
+                expectedPermutation1 = String.format(format, keyTypeWrapped, valTypeWrapped,
+                        key1Wrapped, key2Wrapped, val1Wrapped, val2Wrapped);
+                expectedPermutation2 = String.format(format, keyTypeWrapped, valTypeWrapped,
+                        key2Wrapped, key1Wrapped, val2Wrapped, val1Wrapped);
+            }
+            else {
+                expectedPermutation1 = String.format(format, keyTypeWrapped,
+                        key1Wrapped, key2Wrapped, val1Wrapped, val2Wrapped);
+                expectedPermutation2 = String.format(format, keyTypeWrapped,
+                        key2Wrapped, key1Wrapped, val2Wrapped, val1Wrapped);
+            }
+        }
+        else {
+            if (includeValType) {
+                expectedPermutation1 = String.format(format, valTypeWrapped,
+                        key1Wrapped, key2Wrapped, val1Wrapped, val2Wrapped);
+                expectedPermutation2 = String.format(format, valTypeWrapped,
+                        key2Wrapped, key1Wrapped, val2Wrapped, val1Wrapped);
+            }
+            else {
+                expectedPermutation1 = String.format(format,
+                        key1Wrapped, key2Wrapped, val1Wrapped, val2Wrapped);
+                expectedPermutation2 = String.format(format,
+                        key2Wrapped, key1Wrapped, val2Wrapped, val1Wrapped);
+            }
+        }
+
+        try {
+            assertEquals(expectedPermutation1, output);
+        }
+        catch (AssertionFailedError e1) {
+            assertEquals(expectedPermutation2, output);
+        }
+    }
+
+    @Test
+    public void testWriteWithInvalidArgs() {
+        assertThrows(IllegalArgumentException.class, () -> handler.write(null));
+    }
+
     @Test
     public void testRead() {
-        Map<String, Integer> map = mapHandler.read(VALUES_STRING);
+        Map<String, Integer> output = handler.read(MAP_STRING);
 
-        assertSame(mockMap, map);
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
-                .getTypeHandler(String.class.getCanonicalName());
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
-                .getTypeHandler(Integer.class.getCanonicalName());
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
-                .getTypeHandler(String.class.getCanonicalName());
-        verify(MOCK_PERSISTENT_VALUES_HANDLER, times(1))
-                .getTypeHandler(Integer.class.getCanonicalName());
-        verify(mockMapFactory, times(1)).make(KEY_ARCHETYPE, VALUE_ARCHETYPE);
-        verify(MOCK_STRING_HANDLER, times(1)).read(KEY_1);
-        verify(MOCK_STRING_HANDLER, times(1)).read(KEY_2);
-        verify(MOCK_STRING_HANDLER, times(1)).read(KEY_3);
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(VALUE_1.toString());
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(VALUE_2.toString());
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(VALUE_3.toString());
-        verify(mockMap, times(1)).put(KEY_1, VALUE_1);
-        verify(mockMap, times(1)).put(KEY_2, VALUE_2);
-        verify(mockMap, times(1)).put(KEY_3, VALUE_3);
+        var expected = mapOf(
+                pairOf(KEY_1, VALUE_1),
+                pairOf(KEY_2, VALUE_2)
+        );
+        assertMapsEqual(expected, output);
+        verify(mockPersistenceHandler, times(2)).getTypeHandler(anyString());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler1, times(2)).read(anyString());
+        verify(mockTypeHandler1, times(1)).read(eq(KEY_1));
+        verify(mockTypeHandler1, times(1)).read(eq(KEY_2));
+        verify(mockTypeHandler2, times(2)).read(anyString());
+        verify(mockTypeHandler2, times(1)).read(eq(VALUE_1.toString()));
+        verify(mockTypeHandler2, times(1)).read(eq(VALUE_2.toString()));
     }
 
     @Test
-    public void testReadWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class, () -> mapHandler.read(null));
-        assertThrows(IllegalArgumentException.class, () -> mapHandler.read(""));
+    public void testReadWithNullKey() {
+        Map<String, Integer> output = handler.read(MAP_STRING_SECOND_KEY_NULL);
+
+        var expected = mapOf(
+                pairOf(KEY_1, VALUE_1),
+                pairOf(null, VALUE_2)
+        );
+        assertMapsEqual(expected, output);
+        verify(mockPersistenceHandler, times(2)).getTypeHandler(anyString());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler1, times(1)).read(anyString());
+        verify(mockTypeHandler1, times(1)).read(eq(KEY_1));
+        verify(mockTypeHandler2, times(2)).read(anyString());
+        verify(mockTypeHandler2, times(1)).read(eq(VALUE_1.toString()));
+        verify(mockTypeHandler2, times(1)).read(eq(VALUE_2.toString()));
     }
 
     @Test
-    public void testGetInterfaceName() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        Map.class.getCanonicalName() + ">",
-                mapHandler.getInterfaceName());
+    public void testReadWithAllNullKeys() {
+        Map<String, Integer> output = handler.read(MAP_STRING_ALL_NULL_KEYS);
+
+        var expected = mapOf(
+                pairOf(null, VALUE_1)
+        );
+        assertMapsEqual(expected, output);
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(anyString());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler1, times(1)).read(anyString());
+        verify(mockTypeHandler1, times(1)).read(eq(VALUE_1.toString()));
+        verify(mockTypeHandler2, never()).read(anyString());
     }
 
     @Test
-    public void testArchetype() {
-        assertNotNull(mapHandler.archetype());
-        assertEquals(Map.class.getCanonicalName(), mapHandler.archetype().getInterfaceName());
-    }
+    public void testReadWithOppositeNullKeyAndValue() {
+        Map<String, Integer> output = handler.read(MAP_STRING_OPPOSITE_NULL_KEY_AND_VALUE);
 
-    @Test
-    public void testGenerateArchetype() {
-        //noinspection unchecked
-        Map<String, Integer> generatedArchetype = mapHandler.generateArchetype(
-                String.class.getCanonicalName(), Integer.class.getCanonicalName());
-
-        assertNotNull(generatedArchetype);
-        assertSame(mockMap, generatedArchetype);
-        verify(mockMapFactory, times(1)).make(KEY_ARCHETYPE, VALUE_ARCHETYPE);
-    }
-
-    @Test
-    public void testGenerateArchetypeWithInvalidParams() {
-        assertThrows(IllegalArgumentException.class, () ->
-                mapHandler.generateArchetype(null, Integer.class.getCanonicalName()));
-        assertThrows(IllegalArgumentException.class, () ->
-                mapHandler.generateArchetype("", Integer.class.getCanonicalName()));
-        assertThrows(IllegalArgumentException.class, () ->
-                mapHandler.generateArchetype(Integer.class.getCanonicalName(), null));
-        assertThrows(IllegalArgumentException.class, () ->
-                mapHandler.generateArchetype(Integer.class.getCanonicalName(), ""));
-    }
-
-    @Test
-    public void testHashCode() {
-        assertEquals((TypeHandler.class.getCanonicalName() + "<" +
-                        Map.class.getCanonicalName() + ">").hashCode(),
-                mapHandler.hashCode());
+        var expected = mapOf(
+                pairOf(KEY_1, null),
+                pairOf(null, VALUE_2)
+        );
+        assertMapsEqual(expected, output);
+        verify(mockPersistenceHandler, times(2)).getTypeHandler(anyString());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler1, times(1)).read(anyString());
+        verify(mockTypeHandler1, times(1)).read(eq(KEY_1));
+        verify(mockTypeHandler2, times(1)).read(anyString());
+        verify(mockTypeHandler2, times(1)).read(eq(VALUE_2.toString()));
     }
 
     @SuppressWarnings("rawtypes")
-    @Test
-    public void testEquals() {
-        var equalHandler = new MapHandler(MOCK_PERSISTENT_VALUES_HANDLER, mockMapFactory);
-        @SuppressWarnings("unchecked") TypeHandler<Map> unequalHandler = mock(TypeHandler.class);
-
-        assertEquals(mapHandler, equalHandler);
-        assertNotEquals(mapHandler, unequalHandler);
-        assertNotEquals(null, mapHandler);
+    private void assertMapsEqual(Map expected, Map output) {
+        assertEquals(expected.size(), output.size());
+        for (var expectedKey : expected.keySet()) {
+            assertTrue(output.containsKey(expectedKey));
+            if (expected.get(expectedKey) == null) {
+                assertNull(output.get(expectedKey));
+            }
+            else {
+                assertEquals(expected.get(expectedKey).toString(),
+                        output.get(expectedKey).toString());
+            }
+        }
     }
 
     @Test
-    public void testToString() {
-        assertEquals(TypeHandler.class.getCanonicalName() + "<" +
-                        Map.class.getCanonicalName() + ">",
-                mapHandler.toString());
+    public void testReadWithInvalidArgs() {
+        assertThrows(IllegalArgumentException.class, () -> handler.read(null));
+        assertThrows(IllegalArgumentException.class, () -> handler.read(""));
     }
 }
