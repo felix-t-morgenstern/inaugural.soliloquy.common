@@ -31,7 +31,7 @@ To use the Inaugural Common Module in your Soliloquy game, ensure that you have 
 
 ### Prerequisites
 
-* [Maven](https://maven.apache.org/) - Dependency Management
+* [Gradle](https://gradle.org/) - Dependency Management
 
 ### Installing
 
