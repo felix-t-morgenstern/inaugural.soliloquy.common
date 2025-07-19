@@ -32,8 +32,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.13.1")
-    // https://mvnrepository.com/artifact/com.google.inject/guice
-    implementation("com.google.inject:guice:7.0.0")
+    // https://mvnrepository.com/artifact/org.int4.dirk/dirk-di
+    implementation("org.int4.dirk:dirk-di:1.0.0-beta1")
 
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation("org.mockito:mockito-core:5.17.0")
