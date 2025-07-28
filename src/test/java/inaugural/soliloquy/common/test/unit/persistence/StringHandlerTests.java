@@ -20,11 +20,6 @@ public class StringHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(String.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testRead() {
         assertEquals(VALUE, handler.read(VALUE));
     }

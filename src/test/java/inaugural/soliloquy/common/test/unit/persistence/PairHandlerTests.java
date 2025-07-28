@@ -59,11 +59,6 @@ public class PairHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(Pair.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testWrite() {
         var pair = pairOf(VALUE_1, VALUE_2);
 

@@ -25,11 +25,6 @@ public class Coordinate2dHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(Coordinate2d.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testWrite() {
         var output = handler.write(coordinate2dOf(X, Y));
 

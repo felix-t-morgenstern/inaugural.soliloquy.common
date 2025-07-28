@@ -77,11 +77,6 @@ public class MapHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(Map.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testWrite() {
         var output = handler.write(mapOf(
                 pairOf(KEY_1, VALUE_1),

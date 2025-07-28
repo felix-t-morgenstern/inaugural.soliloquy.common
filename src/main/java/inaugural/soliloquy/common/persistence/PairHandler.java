@@ -16,11 +16,6 @@ public class PairHandler extends AbstractTypeHandler<Pair> implements TypeHandle
         PERSISTENCE_HANDLER = Check.ifNull(persistenceHandler, "persistenceHandler");
     }
 
-    @Override
-    public String typeHandled() {
-        return Pair.class.getCanonicalName();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public Pair read(String valuesString) throws IllegalArgumentException {

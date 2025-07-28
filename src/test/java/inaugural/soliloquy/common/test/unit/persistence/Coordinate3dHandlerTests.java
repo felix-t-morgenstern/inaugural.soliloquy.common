@@ -26,11 +26,6 @@ public class Coordinate3dHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(Coordinate3d.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testWrite() {
         var output = handler.write(coordinate3dOf(X, Y, Z));
 

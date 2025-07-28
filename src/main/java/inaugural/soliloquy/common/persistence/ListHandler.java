@@ -20,11 +20,6 @@ public class ListHandler extends AbstractTypeHandler<List> implements TypeHandle
     }
 
     @Override
-    public String typeHandled() {
-        return List.class.getCanonicalName();
-    }
-
-    @Override
     public <T extends List> T read(String valuesString) throws IllegalArgumentException {
         Check.ifNullOrEmpty(valuesString, "valuesString");
         var dto = JSON.fromJson(valuesString, DTO.class);

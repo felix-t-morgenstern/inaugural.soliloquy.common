@@ -3,11 +3,6 @@ package inaugural.soliloquy.common.persistence;
 import inaugural.soliloquy.tools.persistence.AbstractTypeHandler;
 
 public class BooleanHandler extends AbstractTypeHandler<Boolean> {
-    @Override
-    public String typeHandled() {
-        return Boolean.class.getCanonicalName();
-    }
-
     @SuppressWarnings({"ConstantConditions", "unchecked"})
     @Override
     public Boolean read(String serializedValue) throws IllegalArgumentException {

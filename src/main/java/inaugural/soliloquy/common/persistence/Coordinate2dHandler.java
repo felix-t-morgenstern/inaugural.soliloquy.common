@@ -7,11 +7,6 @@ import soliloquy.specs.common.valueobjects.Coordinate2d;
 import static soliloquy.specs.common.valueobjects.Coordinate2d.coordinate2dOf;
 
 public class Coordinate2dHandler extends AbstractTypeHandler<Coordinate2d> {
-    @Override
-    public String typeHandled() {
-        return Coordinate2d.class.getCanonicalName();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public Coordinate2d read(String serializedValue) throws IllegalArgumentException {

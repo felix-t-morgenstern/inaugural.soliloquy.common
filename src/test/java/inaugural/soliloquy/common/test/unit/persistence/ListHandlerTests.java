@@ -57,11 +57,6 @@ public class ListHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(List.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testWrite() {
         var output = handler.write(listOf(VALUE_1, VALUE_2, VALUE_3));
 

@@ -10,103 +10,94 @@ import soliloquy.specs.common.persistence.PersistenceHandler;
 import soliloquy.specs.common.persistence.TypeHandler;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class PersistenceHandlerImplTests {
-    @Mock @SuppressWarnings("rawtypes") private TypeHandler mockIntegerHandler;
-    @Mock @SuppressWarnings("rawtypes") private TypeHandler mockStringHandler;
+    @Mock private TypeHandler<Integer> mockIntegerHandler;
+    @Mock private TypeHandler<String> mockStringHandler;
 
-    private PersistenceHandlerImpl PersistenceHandler;
+    private PersistenceHandlerImpl persistenceHandler;
 
     @BeforeEach
     public void setUp() {
-        lenient().when(mockIntegerHandler.typeHandled())
-                .thenReturn(Integer.class.getCanonicalName());
-
-        lenient().when(mockStringHandler.typeHandled())
-                .thenReturn(String.class.getCanonicalName());
-
-        PersistenceHandler = new PersistenceHandlerImpl();
+        persistenceHandler = new PersistenceHandlerImpl();
     }
 
     @Test
     public void testAddAndGetTypeHandler() {
-        PersistenceHandler.addTypeHandler(mockIntegerHandler);
+        persistenceHandler.addTypeHandler(Integer.class, mockIntegerHandler);
 
         assertSame(mockIntegerHandler,
-                PersistenceHandler.getTypeHandler(Integer.class.getCanonicalName()));
+                persistenceHandler.getTypeHandler(Integer.class.getCanonicalName()));
     }
 
     @Test
     public void testAddAndGetTypeHandlerWithTypeParameters() {
-        PersistenceHandler.addTypeHandler(mockIntegerHandler);
+        persistenceHandler.addTypeHandler(Integer.class, mockIntegerHandler);
 
         assertSame(mockIntegerHandler,
-                PersistenceHandler.getTypeHandler(Integer.class.getCanonicalName()));
+                persistenceHandler.getTypeHandler(Integer.class.getCanonicalName()));
     }
 
     @Test
     public void testGetTypeHandlerWithInvalidArgs() {
         assertThrows(IllegalArgumentException.class, () ->
-                PersistenceHandler.getTypeHandler(null));
+                persistenceHandler.getTypeHandler(null));
         assertThrows(IllegalArgumentException.class, () ->
-                PersistenceHandler.getTypeHandler(""));
+                persistenceHandler.getTypeHandler(""));
         assertThrows(IllegalArgumentException.class, () ->
-                PersistenceHandler.getTypeHandler(Float.class.getCanonicalName()));
+                persistenceHandler.getTypeHandler(Float.class.getCanonicalName()));
     }
 
     @Test
     public void testAddTypeHandlerTwiceException() {
         assertThrows(IllegalArgumentException.class, () -> {
-            PersistenceHandler.addTypeHandler(mockIntegerHandler);
-            PersistenceHandler.addTypeHandler(mockIntegerHandler);
+            persistenceHandler.addTypeHandler(Integer.class, mockIntegerHandler);
+            persistenceHandler.addTypeHandler(Integer.class, mockIntegerHandler);
         });
     }
 
     @Test
     public void testRemoveTypeHandler() {
-        assertFalse(PersistenceHandler.removeTypeHandler(Integer.class.getCanonicalName()));
-        PersistenceHandler.addTypeHandler(mockIntegerHandler);
-        assertSame(PersistenceHandler.<Integer>getTypeHandler(
-                        Integer.class.getCanonicalName()),
-                mockIntegerHandler);
-        assertTrue(PersistenceHandler.removeTypeHandler(Integer.class.getCanonicalName()));
+        assertFalse(persistenceHandler.removeTypeHandler(Integer.class));
+
+        persistenceHandler.addTypeHandler(Integer.class, mockIntegerHandler);
+
+        assertTrue(persistenceHandler.removeTypeHandler(Integer.class));
     }
 
     @Test
     public void testAddGetAndRemoveTypeHandlerWithInvalidArgs() {
         assertThrows(IllegalArgumentException.class,
-                () -> PersistenceHandler.addTypeHandler(null));
+                () -> persistenceHandler.addTypeHandler(null, mockIntegerHandler));
         assertThrows(IllegalArgumentException.class,
-                () -> PersistenceHandler.removeTypeHandler(null));
+                () -> persistenceHandler.addTypeHandler(Integer.class, null));
         assertThrows(IllegalArgumentException.class,
-                () -> PersistenceHandler.removeTypeHandler(""));
+                () -> persistenceHandler.removeTypeHandler(null));
         assertThrows(IllegalArgumentException.class,
-                () -> PersistenceHandler.getTypeHandler(null));
+                () -> persistenceHandler.getTypeHandler(null));
         assertThrows(IllegalArgumentException.class,
-                () -> PersistenceHandler.getTypeHandler(""));
+                () -> persistenceHandler.getTypeHandler(""));
     }
 
     @Test
     public void testTypesHandled() {
-        assertTrue(PersistenceHandler.typesHandled().isEmpty());
+        assertTrue(persistenceHandler.typesHandled().isEmpty());
 
-        PersistenceHandler.addTypeHandler(mockIntegerHandler);
-        PersistenceHandler.addTypeHandler(mockStringHandler);
+        persistenceHandler.addTypeHandler(Integer.class, mockIntegerHandler);
+        persistenceHandler.addTypeHandler(String.class, mockStringHandler);
 
-        assertEquals(2, PersistenceHandler.typesHandled().size());
-        assertTrue(PersistenceHandler.typesHandled()
-                .contains(Integer.class.getCanonicalName()));
-        assertTrue(PersistenceHandler.typesHandled()
-                .contains(String.class.getCanonicalName()));
+        assertNotSame(persistenceHandler.typesHandled(), persistenceHandler.typesHandled());
+        assertEquals(2, persistenceHandler.typesHandled().size());
+        assertTrue(persistenceHandler.typesHandled().contains(Integer.class));
+        assertTrue(persistenceHandler.typesHandled().contains(String.class));
     }
 
     @Test
     public void testHashCode() {
         assertEquals(PersistenceHandlerImpl.class.getCanonicalName().hashCode(),
-                PersistenceHandler.hashCode());
+                persistenceHandler.hashCode());
     }
 
     @Test
@@ -114,14 +105,14 @@ public class PersistenceHandlerImplTests {
         var equalPersistenceHandler = new PersistenceHandlerImpl();
         var unequalPersistenceHandler = mock(PersistenceHandler.class);
 
-        assertEquals(PersistenceHandler, equalPersistenceHandler);
-        assertNotEquals(PersistenceHandler, unequalPersistenceHandler);
-        assertNotEquals(null, PersistenceHandler);
+        assertEquals(persistenceHandler, equalPersistenceHandler);
+        assertNotEquals(persistenceHandler, unequalPersistenceHandler);
+        assertNotEquals(null, persistenceHandler);
     }
 
     @Test
     public void testToString() {
         assertEquals(PersistenceHandlerImpl.class.getCanonicalName(),
-                PersistenceHandler.toString());
+                persistenceHandler.toString());
     }
 }

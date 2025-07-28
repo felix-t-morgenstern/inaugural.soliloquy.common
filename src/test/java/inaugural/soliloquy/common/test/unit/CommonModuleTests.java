@@ -18,15 +18,12 @@ import static soliloquy.specs.common.valueobjects.Pair.pairOf;
 @ExtendWith(MockitoExtension.class)
 public class CommonModuleTests {
     // (NB: Taken from MapHandlerTests to increase surety that instance works properly)
-    private final String KEY_1 = randomString();
-    private final String KEY_2 = randomString();
-    private final Integer VALUE_1 = randomInt();
-    private final Integer VALUE_2 = randomInt();
+    private final String KEY = randomString();
+    private final Integer VALUE = randomInt();
     private final String MAP_STRING = String.format(
-            "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\",\"%s\"]," +
-                    "\"values\":[\"%d\",\"%d\"]}",
+            "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\"],\"values\":[\"%d\"]}",
             String.class.getCanonicalName(), Integer.class.getCanonicalName(),
-            KEY_1, KEY_2, VALUE_1, VALUE_2);
+            KEY, VALUE);
 
     private CommonModule module;
 
@@ -39,10 +36,7 @@ public class CommonModuleTests {
     public void testProvideClass() {
         var persistenceHandler = module.provide(PersistenceHandler.class);
         var mapHandler = persistenceHandler.getTypeHandler(Map.class.getCanonicalName());
-        var map = mapOf(
-                pairOf(KEY_1, VALUE_1),
-                pairOf(KEY_2, VALUE_2)
-        );
+        var map = mapOf(pairOf(KEY, VALUE));
         var mapHandlerOutput = mapHandler.write(map);
 
         assertNotNull(persistenceHandler);

@@ -22,11 +22,6 @@ public class IntegerHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(Integer.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testRead() {
         assertEquals(VALUE, handler.read(WRITTEN_VALUE));
     }

@@ -17,11 +17,6 @@ public class BooleanHandlerTests {
     }
 
     @Test
-    public void testTypeHandled() {
-        assertEquals(Boolean.class.getCanonicalName(), handler.typeHandled());
-    }
-
-    @Test
     public void testRead() {
         assertEquals(true, handler.read("true"));
     }

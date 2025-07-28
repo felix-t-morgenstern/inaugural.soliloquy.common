@@ -10,13 +10,8 @@ import java.util.Map;
 import static inaugural.soliloquy.tools.collections.Collections.mapOf;
 
 @SuppressWarnings("rawtypes")
-public class MapHandler extends AbstractTypeHandler<Map<?,?>> implements TypeHandler<Map<?,?>> {
+public class MapHandler extends AbstractTypeHandler<Map> implements TypeHandler<Map> {
     private final PersistenceHandler PERSISTENCE_HANDLER;
-
-    @Override
-    public String typeHandled() {
-        return Map.class.getCanonicalName();
-    }
 
     public MapHandler(PersistenceHandler persistenceHandler) {
         PERSISTENCE_HANDLER = Check.ifNull(persistenceHandler, "persistenceHandler");
@@ -24,7 +19,7 @@ public class MapHandler extends AbstractTypeHandler<Map<?,?>> implements TypeHan
 
     @SuppressWarnings({"unchecked"})
     @Override
-    public <M extends Map<?,?>> M read(String valuesString) throws IllegalArgumentException {
+    public <M extends Map> M read(String valuesString) throws IllegalArgumentException {
         Check.ifNullOrEmpty(valuesString, "valuesString");
         var dto = JSON.fromJson(valuesString, DTO.class);
         var keyHandler = PERSISTENCE_HANDLER.getTypeHandler(dto.keyType);
@@ -40,13 +35,14 @@ public class MapHandler extends AbstractTypeHandler<Map<?,?>> implements TypeHan
     }
 
     @Override
-    public String write(Map<?,?> map) {
+    public String write(Map map) {
         Check.ifNull(map, "map");
         var dto = new DTO();
         if (!map.isEmpty()) {
             TypeHandler keyHandler = null;
             String keyType = null;
-            var keyEntry = map.entrySet().stream().filter(e -> e.getKey() != null).findFirst();
+            var keyEntry = ((Map<?, ?>) map).entrySet().stream().filter(e -> e.getKey() != null)
+                    .findFirst();
             if (keyEntry.isPresent()) {
                 keyType = keyEntry.get().getKey().getClass().getCanonicalName();
                 keyHandler = PERSISTENCE_HANDLER.getTypeHandler(keyType);
@@ -54,7 +50,8 @@ public class MapHandler extends AbstractTypeHandler<Map<?,?>> implements TypeHan
 
             TypeHandler valueHandler = null;
             String valueType = null;
-            var valueEntry = map.entrySet().stream().filter(e -> e.getValue() != null).findFirst();
+            var valueEntry = ((Map<?, ?>) map).entrySet().stream().filter(e -> e.getValue() != null)
+                    .findFirst();
             if (valueEntry.isPresent()) {
                 valueType = valueEntry.get().getValue().getClass().getCanonicalName();
                 valueHandler = PERSISTENCE_HANDLER.getTypeHandler(valueType);

@@ -4,7 +4,6 @@ import inaugural.soliloquy.common.persistence.UuidHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import soliloquy.specs.common.persistence.TypeHandler;
-import soliloquy.specs.common.valueobjects.Pair;
 
 import java.util.UUID;
 
@@ -19,11 +18,6 @@ public class UuidHandlerTests {
     @BeforeEach
     public void setUp() {
         handler = new UuidHandler();
-    }
-
-    @Test
-    public void testTypeHandled() {
-        assertEquals(UUID.class.getCanonicalName(), handler.typeHandled());
     }
 
     @Test

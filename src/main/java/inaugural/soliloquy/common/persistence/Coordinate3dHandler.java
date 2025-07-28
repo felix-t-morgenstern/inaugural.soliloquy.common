@@ -7,11 +7,6 @@ import soliloquy.specs.common.valueobjects.Coordinate3d;
 import static soliloquy.specs.common.valueobjects.Coordinate3d.coordinate3dOf;
 
 public class Coordinate3dHandler extends AbstractTypeHandler<Coordinate3d> {
-    @Override
-    public String typeHandled() {
-        return Coordinate3d.class.getCanonicalName();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public Coordinate3d read(String serializedValue) throws IllegalArgumentException {
