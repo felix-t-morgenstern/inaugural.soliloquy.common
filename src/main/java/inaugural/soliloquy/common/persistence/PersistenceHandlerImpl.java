@@ -21,33 +21,33 @@ public class PersistenceHandlerImpl implements PersistenceHandler {
     }
 
     @Override
-    public <T> void addTypeHandler(Class<T> clazz, TypeHandler<T> typeHandler)
+    public <T, TImpl extends T> void addTypeHandler(Class<TImpl> aClass, TypeHandler<T> typeHandler)
             throws IllegalArgumentException {
-        Check.ifNull(clazz, "clazz");
+        Check.ifNull(aClass, "aClass");
         Check.ifNull(typeHandler, "typeHandler");
 
-        if (TYPE_HANDLERS.containsKey(clazz.getCanonicalName())) {
+        if (TYPE_HANDLERS.containsKey(aClass.getCanonicalName())) {
             throw new IllegalArgumentException(
                     "PersistenceHandler.addTypeHandler: already has handler for " +
-                            clazz.getCanonicalName());
+                            aClass.getCanonicalName());
         }
-        TYPE_HANDLERS.put(clazz.getCanonicalName(), typeHandler);
-        TYPES_HANDLED.add(clazz);
+        TYPE_HANDLERS.put(aClass.getCanonicalName(), typeHandler);
+        TYPES_HANDLED.add(aClass);
     }
 
     @Override
-    public <T> boolean removeTypeHandler(Class<T> clazz) {
-        return TYPE_HANDLERS.remove(Check.ifNull(clazz, "clazz").getCanonicalName()) != null;
+    public <T> boolean removeTypeHandler(Class<T> aClass) {
+        return TYPE_HANDLERS.remove(Check.ifNull(aClass, "aClass").getCanonicalName()) != null;
     }
 
     @Override
-    public <T> TypeHandler<T> getTypeHandler(String clazz) throws IllegalArgumentException {
-        Check.ifNullOrEmpty(clazz, "clazz");
+    public <T> TypeHandler<T> getTypeHandler(String aClass) throws IllegalArgumentException {
+        Check.ifNullOrEmpty(aClass, "aClass");
         //noinspection unchecked
-        var handler = (TypeHandler<T>) TYPE_HANDLERS.get(clazz);
+        var handler = (TypeHandler<T>) TYPE_HANDLERS.get(aClass);
         if (handler == null) {
             throw new IllegalArgumentException(
-                    "PersistenceHandlerImpl.getTypeHandler: no handler found for type " + clazz);
+                    "PersistenceHandlerImpl.getTypeHandler: no handler found for type " + aClass);
         }
         else {
             return handler;
