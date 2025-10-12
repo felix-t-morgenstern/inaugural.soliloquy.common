@@ -1,20 +1,15 @@
 package inaugural.soliloquy.common;
 
 import inaugural.soliloquy.common.persistence.*;
-import inaugural.soliloquy.tools.Check;
-import org.int4.dirk.api.Injector;
-import org.int4.dirk.di.Injectors;
+import inaugural.soliloquy.tools.module.AbstractModule;
 import soliloquy.specs.common.valueobjects.Coordinate2d;
 import soliloquy.specs.common.valueobjects.Coordinate3d;
 import soliloquy.specs.common.valueobjects.Pair;
-import soliloquy.specs.game.Module;
 
 import java.util.List;
 import java.util.Map;
 
-public class CommonModule implements Module {
-    private final Injector INJECTOR;
-
+public class CommonModule extends AbstractModule {
     public CommonModule() {
         var persistenceHandler = new PersistenceHandlerImpl();
 
@@ -36,18 +31,6 @@ public class CommonModule implements Module {
         persistenceHandler.addTypeHandler(Map.class, mapHandler);
         persistenceHandler.addTypeHandler(Pair.class, pairHandler);
 
-        INJECTOR = Injectors.manual();
-
         INJECTOR.registerInstance(persistenceHandler);
-    }
-
-    @Override
-    public <T> T provide(Class<T> clazz) throws IllegalArgumentException {
-        return INJECTOR.getInstance(clazz);
-    }
-
-    public <T> T provide(String instance) throws IllegalArgumentException {
-        Check.ifNullOrEmpty(instance, "instance");
-        throw new IllegalArgumentException("No named instances within CommonModule");
     }
 }
