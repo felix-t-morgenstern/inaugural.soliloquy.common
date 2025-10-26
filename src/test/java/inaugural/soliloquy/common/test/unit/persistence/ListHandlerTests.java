@@ -1,6 +1,7 @@
 package inaugural.soliloquy.common.test.unit.persistence;
 
 import inaugural.soliloquy.common.persistence.ListHandler;
+import inaugural.soliloquy.tools.collections.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -86,7 +87,7 @@ public class ListHandlerTests {
 
     @Test
     public void testWriteWithAllNullEntries() {
-        var output = handler.write(listOf(null, null, null));
+        var output = handler.write(Collections.<Object>listOf(null, null, null));
 
         assertEquals(VALUES_ONLY_NULL, output);
         verify(mockPersistenceHandler, never()).getTypeHandler(anyString());
@@ -137,7 +138,7 @@ public class ListHandlerTests {
         var output = handler.read(VALUES_ONLY_NULL);
 
         assertNotNull(output);
-        assertEquals(listOf(null, null, null), output);
+        assertEquals(Collections.<Object>listOf(null, null, null), output);
         verify(mockPersistenceHandler, never()).getTypeHandler(anyString());
         verify(mockTypeHandler, never()).read(anyString());
     }
