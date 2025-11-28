@@ -31,6 +31,6 @@ public class CommonModule extends AbstractModule {
         persistenceHandler.addTypeHandler(Map.class, mapHandler);
         persistenceHandler.addTypeHandler(Pair.class, pairHandler);
 
-        INJECTOR.registerInstance(persistenceHandler);
+        andRegister(persistenceHandler);
     }
 }
