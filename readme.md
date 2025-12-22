@@ -1,6 +1,6 @@
 # Inaugural Engine, Common Module
 
-This is the module for the Soliloquy Inaugural Engine which supports functionality common across nearly all other modules, such as Collections, Maps, and the handling of persistent data.
+This is the module for the Soliloquy Inaugural Engine which supports functionality common across nearly all other modules, such as Collections, Maps, and the handling of persistent data. (This module contains implementations specified in soliloquy.specs, unlike soliloquy.tools, which contains helper methods for objects defined within soliloquy.specs.)
 
 ## Getting Started
 
