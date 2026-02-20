@@ -14,6 +14,7 @@ import java.util.List;
 
 import static inaugural.soliloquy.tools.collections.Collections.listOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
+import static inaugural.soliloquy.tools.testing.Assertions.once;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -24,14 +25,14 @@ public class ListHandlerTests {
     private final Integer VALUE_2 = randomInt();
     private final Integer VALUE_3 = randomInt();
     private final String VALUES_STRING =
-            String.format("{\"type\":\"%s\",\"values\":[\"%d\",\"%d\",\"%d\"]}",
+            String.format("{\"type\":\"%s\",\"vals\":[\"%d\",\"%d\",\"%d\"]}",
                     Integer.class.getCanonicalName(),
                     VALUE_1, VALUE_2, VALUE_3);
     private final String VALUES_STRING_SECOND_NULL =
-            String.format("{\"type\":\"%s\",\"values\":[\"%d\",null,\"%d\"]}",
+            String.format("{\"type\":\"%s\",\"vals\":[\"%d\",null,\"%d\"]}",
                     Integer.class.getCanonicalName(),
                     VALUE_1, VALUE_3);
-    private final String VALUES_ONLY_NULL = "{\"values\":[null,null,null]}";
+    private final String VALUES_ONLY_NULL = "{\"vals\":[null,null,null]}";
 
     @SuppressWarnings("rawtypes") @Mock private TypeHandler mockTypeHandler;
     @Mock private PersistenceHandler mockPersistenceHandler;
@@ -62,14 +63,14 @@ public class ListHandlerTests {
         var output = handler.write(listOf(VALUE_1, VALUE_2, VALUE_3));
 
         assertEquals(VALUES_STRING, output);
-        verify(mockPersistenceHandler, times(1))
+        verify(mockPersistenceHandler, once())
                 .getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
-        verify(mockTypeHandler, times(1)).write(VALUE_1);
+        verify(mockTypeHandler, once()).write(VALUE_1);
         //noinspection unchecked
-        verify(mockTypeHandler, times(1)).write(VALUE_2);
+        verify(mockTypeHandler, once()).write(VALUE_2);
         //noinspection unchecked
-        verify(mockTypeHandler, times(1)).write(VALUE_3);
+        verify(mockTypeHandler, once()).write(VALUE_3);
     }
 
     @Test
@@ -77,12 +78,12 @@ public class ListHandlerTests {
         var output = handler.write(listOf(VALUE_1, null, VALUE_3));
 
         assertEquals(VALUES_STRING_SECOND_NULL, output);
-        verify(mockPersistenceHandler, times(1))
+        verify(mockPersistenceHandler, once())
                 .getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
-        verify(mockTypeHandler, times(1)).write(VALUE_1);
+        verify(mockTypeHandler, once()).write(VALUE_1);
         //noinspection unchecked
-        verify(mockTypeHandler, times(1)).write(VALUE_3);
+        verify(mockTypeHandler, once()).write(VALUE_3);
     }
 
     @Test
@@ -109,11 +110,11 @@ public class ListHandlerTests {
 
         assertNotNull(list);
         assertEquals(listOf(VALUE_1, VALUE_2, VALUE_3), list);
-        verify(mockPersistenceHandler, times(1))
+        verify(mockPersistenceHandler, once())
                 .getTypeHandler(Integer.class.getCanonicalName());
-        verify(mockTypeHandler, times(1)).read(VALUE_1.toString());
-        verify(mockTypeHandler, times(1)).read(VALUE_2.toString());
-        verify(mockTypeHandler, times(1)).read(VALUE_3.toString());
+        verify(mockTypeHandler, once()).read(VALUE_1.toString());
+        verify(mockTypeHandler, once()).read(VALUE_2.toString());
+        verify(mockTypeHandler, once()).read(VALUE_3.toString());
     }
 
     @Test
@@ -125,12 +126,12 @@ public class ListHandlerTests {
 
         assertNotNull(list);
         assertEquals(listOf(VALUE_1, null, VALUE_3), list);
-        verify(mockPersistenceHandler, times(1))
+        verify(mockPersistenceHandler, once())
                 .getTypeHandler(Integer.class.getCanonicalName());
         verify(mockTypeHandler, times(2)).read(anyString());
-        verify(mockTypeHandler, times(1)).read(VALUE_1.toString());
+        verify(mockTypeHandler, once()).read(VALUE_1.toString());
         verify(mockTypeHandler, never()).read(VALUE_2.toString());
-        verify(mockTypeHandler, times(1)).read(VALUE_3.toString());
+        verify(mockTypeHandler, once()).read(VALUE_3.toString());
     }
 
     @Test

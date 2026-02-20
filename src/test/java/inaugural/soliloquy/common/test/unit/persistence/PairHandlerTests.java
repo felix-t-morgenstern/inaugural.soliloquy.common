@@ -12,6 +12,7 @@ import java.util.Map;
 import static inaugural.soliloquy.tools.collections.Collections.arrayOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
+import static inaugural.soliloquy.tools.testing.Assertions.once;
 import static inaugural.soliloquy.tools.testing.Mock.generateMockPersistenceHandlerWithSimpleHandlers;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -65,12 +66,12 @@ public class PairHandlerTests {
         var output = handler.write(pair);
 
         assertEquals(VALUES_STRING, output);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_1);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_2);
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_1);
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_2);
         //noinspection unchecked
-        verify(MOCK_STRING_HANDLER, times(1)).write(VALUE_1);
+        verify(MOCK_STRING_HANDLER, once()).write(VALUE_1);
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(VALUE_2);
+        verify(MOCK_INTEGER_HANDLER, once()).write(VALUE_2);
     }
 
     @Test
@@ -80,9 +81,9 @@ public class PairHandlerTests {
         var output = handler.write(pair);
 
         assertEquals(VALUES_STRING_FIRST_NULL, output);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_2);
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_2);
         //noinspection unchecked
-        verify(MOCK_INTEGER_HANDLER, times(1)).write(VALUE_2);
+        verify(MOCK_INTEGER_HANDLER, once()).write(VALUE_2);
     }
 
     @Test
@@ -92,9 +93,9 @@ public class PairHandlerTests {
         var output = handler.write(pair);
 
         assertEquals(VALUES_STRING_SECOND_NULL, output);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_1);
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_1);
         //noinspection unchecked
-        verify(MOCK_STRING_HANDLER, times(1)).write(VALUE_1);
+        verify(MOCK_STRING_HANDLER, once()).write(VALUE_1);
     }
 
     @Test
@@ -110,10 +111,10 @@ public class PairHandlerTests {
         assertNotNull(pair);
         assertEquals(VALUE_1, pair.FIRST);
         assertEquals(VALUE_2, pair.SECOND);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_1);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_2);
-        verify(MOCK_STRING_HANDLER, times(1)).read(VALUE_1);
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(VALUE_2.toString());
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_1);
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_2);
+        verify(MOCK_STRING_HANDLER, once()).read(VALUE_1);
+        verify(MOCK_INTEGER_HANDLER, once()).read(VALUE_2.toString());
     }
 
     @SuppressWarnings("unchecked")
@@ -124,8 +125,8 @@ public class PairHandlerTests {
         assertNotNull(pair);
         assertNull(pair.FIRST);
         assertEquals(VALUE_2, pair.SECOND);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_2);
-        verify(MOCK_INTEGER_HANDLER, times(1)).read(VALUE_2.toString());
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_2);
+        verify(MOCK_INTEGER_HANDLER, once()).read(VALUE_2.toString());
     }
 
     @SuppressWarnings("unchecked")
@@ -136,8 +137,8 @@ public class PairHandlerTests {
         assertNotNull(pair);
         assertEquals(VALUE_1, pair.FIRST);
         assertNull(pair.SECOND);
-        verify(MOCK_PERSISTENCE_HANDLER, times(1)).getTypeHandler(TYPE_1);
-        verify(MOCK_STRING_HANDLER, times(1)).read(VALUE_1);
+        verify(MOCK_PERSISTENCE_HANDLER, once()).getTypeHandler(TYPE_1);
+        verify(MOCK_STRING_HANDLER, once()).read(VALUE_1);
     }
 
     @Test

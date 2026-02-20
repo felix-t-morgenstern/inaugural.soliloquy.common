@@ -15,6 +15,7 @@ import java.util.Map;
 import static inaugural.soliloquy.tools.collections.Collections.mapOf;
 import static inaugural.soliloquy.tools.random.Random.randomInt;
 import static inaugural.soliloquy.tools.random.Random.randomString;
+import static inaugural.soliloquy.tools.testing.Assertions.once;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static soliloquy.specs.common.valueobjects.Pair.pairOf;
@@ -40,6 +41,9 @@ public class MapHandlerTests {
     private final String MAP_STRING_ALL_NULL_KEYS = String.format(
             "{\"valueType\":\"%s\",\"keys\":[null],\"values\":[\"%d\"]}",
             Integer.class.getCanonicalName(), VALUE_1);
+    private final String MAP_STRING_ALL_NULL_VALUES = String.format(
+            "{\"keyType\":\"%s\",\"keys\":[\"%s\"],\"values\":[null]}",
+            String.class.getCanonicalName(), KEY_1);
     private final String MAP_STRING_OPPOSITE_NULL_KEY_AND_VALUE = String.format(
             "{\"keyType\":\"%s\",\"valueType\":\"%s\",\"keys\":[\"%s\",null],\"values\":[null," +
                     "\"%d\"]}",
@@ -86,20 +90,20 @@ public class MapHandlerTests {
         assertMapOutputStringMatches(output, MAP_STRING_FORMAT,
                 String.class.getCanonicalName(), Integer.class.getCanonicalName(),
                 KEY_1, KEY_2, VALUE_1, VALUE_2);
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
         verify(mockTypeHandler1, times(2)).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        verify(mockTypeHandler1, once()).write(KEY_1);
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_2);
+        verify(mockTypeHandler1, once()).write(KEY_2);
         //noinspection unchecked
         verify(mockTypeHandler2, times(2)).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(VALUE_1);
+        verify(mockTypeHandler2, once()).write(VALUE_1);
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(VALUE_2);
+        verify(mockTypeHandler2, once()).write(VALUE_2);
     }
 
     @Test
@@ -112,18 +116,18 @@ public class MapHandlerTests {
         assertMapOutputStringMatches(output, MAP_STRING_FORMAT,
                 String.class.getCanonicalName(), Integer.class.getCanonicalName(),
                 KEY_1, null, VALUE_1, VALUE_2);
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(any());
+        verify(mockTypeHandler1, once()).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        verify(mockTypeHandler1, once()).write(KEY_1);
         //noinspection unchecked
         verify(mockTypeHandler2, times(2)).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(VALUE_1);
+        verify(mockTypeHandler2, once()).write(VALUE_1);
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(VALUE_2);
+        verify(mockTypeHandler2, once()).write(VALUE_2);
     }
 
     @Test
@@ -133,15 +137,15 @@ public class MapHandlerTests {
         ));
 
         assertEquals(MAP_STRING_ALL_NULL_KEYS, output);
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
         // (mockPersistenceHandler retrieves mockTypeHandler1 first, so it will be used to write
         // values.)
         //noinspection unchecked
         verify(mockTypeHandler2, never()).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(any());
+        verify(mockTypeHandler1, once()).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(VALUE_1);
+        verify(mockTypeHandler1, once()).write(VALUE_1);
     }
 
     @Test
@@ -154,18 +158,18 @@ public class MapHandlerTests {
         assertMapOutputStringMatches(output, MAP_STRING_FORMAT,
                 String.class.getCanonicalName(), Integer.class.getCanonicalName(),
                 KEY_1, KEY_2, VALUE_1, null);
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
         verify(mockTypeHandler1, times(2)).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        verify(mockTypeHandler1, once()).write(KEY_1);
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_2);
+        verify(mockTypeHandler1, once()).write(KEY_2);
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(any());
+        verify(mockTypeHandler2, once()).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(VALUE_1);
+        verify(mockTypeHandler2, once()).write(VALUE_1);
     }
 
     private String wrapNonNull(Object val) {
@@ -184,13 +188,13 @@ public class MapHandlerTests {
         assertMapOutputStringMatches(output, mapStringAllNullValuesFormat,
                 String.class.getCanonicalName(), null, KEY_1, KEY_2, null, null,
                 true, false);
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
         //noinspection unchecked
         verify(mockTypeHandler1, times(2)).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        verify(mockTypeHandler1, once()).write(KEY_1);
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_2);
+        verify(mockTypeHandler1, once()).write(KEY_2);
         //noinspection unchecked
         verify(mockTypeHandler2, never()).write(any());
     }
@@ -203,16 +207,16 @@ public class MapHandlerTests {
         ));
 
         assertMapOutputStringMatches(output, MAP_STRING_FORMAT, String.class.getCanonicalName(), Integer.class.getCanonicalName(), KEY_1, null, null, VALUE_2);
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(any());
+        verify(mockTypeHandler1, once()).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler1, times(1)).write(KEY_1);
+        verify(mockTypeHandler1, once()).write(KEY_1);
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(any());
+        verify(mockTypeHandler2, once()).write(any());
         //noinspection unchecked
-        verify(mockTypeHandler2, times(1)).write(VALUE_2);
+        verify(mockTypeHandler2, once()).write(VALUE_2);
     }
 
     private void assertMapOutputStringMatches(String output, String format,
@@ -281,14 +285,14 @@ public class MapHandlerTests {
         );
         assertMapsEqual(expected, output);
         verify(mockPersistenceHandler, times(2)).getTypeHandler(anyString());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
         verify(mockTypeHandler1, times(2)).read(anyString());
-        verify(mockTypeHandler1, times(1)).read(eq(KEY_1));
-        verify(mockTypeHandler1, times(1)).read(eq(KEY_2));
+        verify(mockTypeHandler1, once()).read(eq(KEY_1));
+        verify(mockTypeHandler1, once()).read(eq(KEY_2));
         verify(mockTypeHandler2, times(2)).read(anyString());
-        verify(mockTypeHandler2, times(1)).read(eq(VALUE_1.toString()));
-        verify(mockTypeHandler2, times(1)).read(eq(VALUE_2.toString()));
+        verify(mockTypeHandler2, once()).read(eq(VALUE_1.toString()));
+        verify(mockTypeHandler2, once()).read(eq(VALUE_2.toString()));
     }
 
     @Test
@@ -301,27 +305,46 @@ public class MapHandlerTests {
         );
         assertMapsEqual(expected, output);
         verify(mockPersistenceHandler, times(2)).getTypeHandler(anyString());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
-        verify(mockTypeHandler1, times(1)).read(anyString());
-        verify(mockTypeHandler1, times(1)).read(eq(KEY_1));
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler1, once()).read(anyString());
+        verify(mockTypeHandler1, once()).read(eq(KEY_1));
         verify(mockTypeHandler2, times(2)).read(anyString());
-        verify(mockTypeHandler2, times(1)).read(eq(VALUE_1.toString()));
-        verify(mockTypeHandler2, times(1)).read(eq(VALUE_2.toString()));
+        verify(mockTypeHandler2, once()).read(eq(VALUE_1.toString()));
+        verify(mockTypeHandler2, once()).read(eq(VALUE_2.toString()));
     }
 
     @Test
     public void testReadWithAllNullKeys() {
+        doThrow(new IllegalArgumentException()).when(mockPersistenceHandler).getTypeHandler(null);
+
         Map<String, Integer> output = handler.read(MAP_STRING_ALL_NULL_KEYS);
 
         var expected = mapOf(
                 pairOf(null, VALUE_1)
         );
         assertMapsEqual(expected, output);
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(anyString());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
-        verify(mockTypeHandler1, times(1)).read(anyString());
-        verify(mockTypeHandler1, times(1)).read(eq(VALUE_1.toString()));
+        verify(mockPersistenceHandler, once()).getTypeHandler(anyString());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler1, once()).read(anyString());
+        verify(mockTypeHandler1, once()).read(eq(VALUE_1.toString()));
+        verify(mockTypeHandler2, never()).read(anyString());
+    }
+
+    @Test
+    public void testReadWithAllNullValues() {
+        doThrow(new IllegalArgumentException()).when(mockPersistenceHandler).getTypeHandler(null);
+
+        Map<String, Integer> output = handler.read(MAP_STRING_ALL_NULL_VALUES);
+
+        var expected = mapOf(
+                pairOf(KEY_1, null)
+        );
+        assertMapsEqual(expected, output);
+        verify(mockPersistenceHandler, once()).getTypeHandler(anyString());
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockTypeHandler1, once()).read(any());
+        verify(mockTypeHandler1, once()).read(eq(KEY_1));
         verify(mockTypeHandler2, never()).read(anyString());
     }
 
@@ -335,12 +358,12 @@ public class MapHandlerTests {
         );
         assertMapsEqual(expected, output);
         verify(mockPersistenceHandler, times(2)).getTypeHandler(anyString());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(String.class.getCanonicalName());
-        verify(mockPersistenceHandler, times(1)).getTypeHandler(Integer.class.getCanonicalName());
-        verify(mockTypeHandler1, times(1)).read(anyString());
-        verify(mockTypeHandler1, times(1)).read(eq(KEY_1));
-        verify(mockTypeHandler2, times(1)).read(anyString());
-        verify(mockTypeHandler2, times(1)).read(eq(VALUE_2.toString()));
+        verify(mockPersistenceHandler, once()).getTypeHandler(String.class.getCanonicalName());
+        verify(mockPersistenceHandler, once()).getTypeHandler(Integer.class.getCanonicalName());
+        verify(mockTypeHandler1, once()).read(anyString());
+        verify(mockTypeHandler1, once()).read(eq(KEY_1));
+        verify(mockTypeHandler2, once()).read(anyString());
+        verify(mockTypeHandler2, once()).read(eq(VALUE_2.toString()));
     }
 
     @SuppressWarnings("rawtypes")

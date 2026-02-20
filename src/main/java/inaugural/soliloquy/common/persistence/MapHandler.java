@@ -8,6 +8,7 @@ import soliloquy.specs.common.persistence.TypeHandler;
 import java.util.Map;
 
 import static inaugural.soliloquy.tools.collections.Collections.mapOf;
+import static inaugural.soliloquy.tools.exception.Exception.ignoreException;
 
 @SuppressWarnings("rawtypes")
 public class MapHandler extends AbstractTypeHandler<Map> implements TypeHandler<Map> {
@@ -22,8 +23,10 @@ public class MapHandler extends AbstractTypeHandler<Map> implements TypeHandler<
     public <M extends Map> M read(String valuesString) throws IllegalArgumentException {
         Check.ifNullOrEmpty(valuesString, "valuesString");
         var dto = JSON.fromJson(valuesString, DTO.class);
-        var keyHandler = PERSISTENCE_HANDLER.getTypeHandler(dto.keyType);
-        var valueHandler = PERSISTENCE_HANDLER.getTypeHandler(dto.valueType);
+        var keyHandler = ignoreException(() ->
+                PERSISTENCE_HANDLER.getTypeHandler(dto.keyType)).value();
+        var valueHandler = ignoreException(() ->
+                PERSISTENCE_HANDLER.getTypeHandler(dto.valueType)).value();
         var map = (M) mapOf();
         for (int i = 0; i < dto.keys.length; i++) {
             map.put(

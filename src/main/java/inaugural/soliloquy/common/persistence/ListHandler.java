@@ -8,6 +8,7 @@ import soliloquy.specs.common.persistence.TypeHandler;
 import java.util.List;
 import java.util.Objects;
 
+import static inaugural.soliloquy.tools.Tools.defaultIfNull;
 import static inaugural.soliloquy.tools.collections.Collections.listOf;
 
 @SuppressWarnings("rawtypes")
@@ -24,18 +25,19 @@ public class ListHandler extends AbstractTypeHandler<List> implements TypeHandle
         Check.ifNullOrEmpty(valuesString, "valuesString");
         var dto = JSON.fromJson(valuesString, DTO.class);
 
-        if (dto.values == null) {
+        if (dto.vals == null) {
             //noinspection unchecked
             return (T)listOf();
         }
 
-        var handler = PERSISTENCE_HANDLER.getTypeHandler(dto.type);
+        TypeHandler<T> handler = null;
         //noinspection unchecked
         var list = (T) listOf();
-        for (var i = 0; i < dto.values.length; i++) {
-            if (dto.values[i] != null) {
+        for (var i = 0; i < dto.vals.length; i++) {
+            if (dto.vals[i] != null) {
+                handler = defaultIfNull(handler, () -> PERSISTENCE_HANDLER.getTypeHandler(dto.type));
                 //noinspection unchecked
-                list.add(handler.read(dto.values[i]));
+                list.add(handler.read(dto.vals[i]));
             }
             else {
                 //noinspection unchecked
@@ -54,7 +56,7 @@ public class ListHandler extends AbstractTypeHandler<List> implements TypeHandle
             var firstNonNull = list.stream().filter(Objects::nonNull).findFirst();
             TypeHandler handler = null;
             if (firstNonNull.isPresent()) {
-                var internalType = list.get(0).getClass().getCanonicalName();
+                var internalType = firstNonNull.get().getClass().getCanonicalName();
                 handler = PERSISTENCE_HANDLER.getTypeHandler(internalType);
                 dto.type = internalType;
             }
@@ -68,15 +70,14 @@ public class ListHandler extends AbstractTypeHandler<List> implements TypeHandle
                     serializedValues[i] = null;
                 }
             }
-            dto.values = serializedValues;
+            dto.vals = serializedValues;
         }
         return JSON.toJson(dto);
     }
 
-    // TODO: Abbreviate DTO param names
     @SuppressWarnings("InnerClassMayBeStatic")
     private class DTO {
         String type;
-        String[] values;
+        String[] vals;
     }
 }
