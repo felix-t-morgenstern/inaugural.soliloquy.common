@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static inaugural.soliloquy.tools.Tools.defaultIfNull;
+import static inaugural.soliloquy.tools.Tools.getDefaultIfNull;
 import static inaugural.soliloquy.tools.collections.Collections.listOf;
 
 @SuppressWarnings("rawtypes")
@@ -27,7 +28,7 @@ public class ListHandler extends AbstractTypeHandler<List> implements TypeHandle
 
         if (dto.vals == null) {
             //noinspection unchecked
-            return (T)listOf();
+            return (T) listOf();
         }
 
         TypeHandler<T> handler = null;
@@ -35,7 +36,8 @@ public class ListHandler extends AbstractTypeHandler<List> implements TypeHandle
         var list = (T) listOf();
         for (var i = 0; i < dto.vals.length; i++) {
             if (dto.vals[i] != null) {
-                handler = defaultIfNull(handler, () -> PERSISTENCE_HANDLER.getTypeHandler(dto.type));
+                handler = getDefaultIfNull(handler,
+                        () -> PERSISTENCE_HANDLER.getTypeHandler(dto.type));
                 //noinspection unchecked
                 list.add(handler.read(dto.vals[i]));
             }
